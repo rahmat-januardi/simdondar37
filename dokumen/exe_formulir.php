@@ -18,13 +18,13 @@ $kontrol9 = $_POST['kontrol9'];
 $tipe_dokumen = $_POST['tipe_dokumen'];
 $periode = $_POST['periode'];
 $no_versi = $_POST['no_versi'];
-$tgl_setuju = $_POST['tgl_setuju'];
+// $tgl_setuju = $_POST['tgl_setuju'];
 $tgl_pelaksanaan = $_POST['tgl_pelaksanaan'];
 $tgl_peninjauan = $_POST['tgl_peninjauan'];
-$pembuat = $_POST['pembuat'];
-$pemeriksa = $_POST['pemeriksa'];
-$pengesah = $_POST['pengesah'];
-$pengesah2 = $_POST['pengesah2'];
+// $pembuat = $_POST['pembuat'];
+// $pemeriksa = $_POST['pemeriksa'];
+// $pengesah = $_POST['pengesah'];
+// $pengesah2 = $_POST['pengesah2'];
 $ImageName = $_FILES['fileupload']['name'];
 
 $cek_klausul = $kontrol7 > 0 ? '-' . $kontrol7 . '-' : '-';
@@ -37,8 +37,7 @@ if ($tipe_dokumen === 'udd') {
 values ('$terkait','$bidang','$nama1','$nama2','$tingkat','$kontrol1',
 concat ('$kontrol1','$kontrol2','$kontrol3','$kontrol4'),
 concat('$kontrol2','$kontrol5','$kontrol3'),
-'$periode','$no_versi','$tgl_setuju','$tgl_pelaksanaan','$tgl_peninjauan','$pembuat','$pemeriksa',
-'$pengesah','$pengesah2','$tgl2','$ImageName')";
+'$periode','$no_versi','$tgl_pelaksanaan','$tgl_pelaksanaan','$tgl_peninjauan','-','-', '-','-','$tgl2','$ImageName')";
 
     $master_nomor = mysql_query(
         "insert into master_nomor_formulir(bidang,nama1,kontrol2) values ('$bidang','$nama1',concat ('$kontrol1','$kontrol2','$kontrol3','$kontrol4'))"
@@ -48,8 +47,7 @@ concat('$kontrol2','$kontrol5','$kontrol3'),
 	values ('$terkait','$bidang','$nama1','$nama2','$tingkat','$kontrol5',
 	concat ('$kontrol5','$kontrol6','$cek_klausul', '$kontrol8', '-','$kontrol9'),
 	concat('$kontrol6','$cek_klausul', '$kontrol8', '-'),
-	'$periode','$no_versi','$tgl_setuju','$tgl_pelaksanaan','$tgl_peninjauan','$pembuat','$pemeriksa',
-	'$pengesah','$pengesah2','$tgl2','$ImageName')";
+	'$periode','$no_versi','$tgl_pelaksanaan','$tgl_pelaksanaan','$tgl_peninjauan','-','-','-','-','$tgl2','$ImageName')";
 
     $master_nomor = mysql_query(
         "insert into master_nomor_formulir(bidang,nama1,kontrol2) values ('$bidang','$nama1',concat ('$kontrol5','$kontrol6','$cek_klausul', '$kontrol8', '-','$kontrol9'))"

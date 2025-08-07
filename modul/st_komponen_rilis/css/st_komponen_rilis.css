@@ -1,0 +1,160 @@
+/* Cetak hanya isi penting */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #formPengirimanWrapper,
+    #formPengirimanWrapper * {
+        visibility: visible;
+    }
+
+    .btn,
+    .collapse {
+        display: none !important;
+    }
+}
+
+.form-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+
+}
+
+.form-group {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+
+.form-control-plaintext {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    line-height: 1.5;
+    background-color: transparent;
+    border: 1px dashed #ced4da;
+    border-radius: .25rem;
+    color: #495057;
+}
+
+@media (max-width: 575.98px) {
+    .form-group {
+        margin-bottom: 10px;
+    }
+}
+
+.box {
+    /* box-shadow: 0 6px 20px rgba(0,0,0,0.2); */
+    /* border: 1px solid #ad040488; */
+    border: 1px solid #52c3bc;
+    /* border: 1px solid #3fafa8; */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    /* box-shadow: 0 4px 12px rgba(145, 34, 0, 0.4); */
+}
+
+.box-header {
+    /* background-color: #912200; */
+    background-color: #52c3bc;
+    /* background-color: #3fafa8; */
+    /* color: #355c5e; */
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    margin: -15px -15px 15px -15px;
+    border-radius: 5px 5px 0 0;
+}
+.box-header-ringkasan {
+    /* background-color: #912200; */
+    background-color: #FF90BB;
+    /* background-color: #3fafa8; */
+    /* color: #355c5e; */
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    margin: -15px -15px 15px -15px;
+    border-radius: 5px 5px 0 0;
+}
+
+.bayangan {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    font-size: small;
+}
+
+.bayangan-kecil {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: white;
+    border-radius: 8px;
+    padding: 5px;
+    /* margin-bottom: 2px; */
+}
+
+#kantongTableContainer {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.table-fixed thead {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+}
+
+/* th,
+        td {
+            white-space: nowrap;
+            border: 1px solid rgb(255, 255, 255) !important;
+        } */
+
+.modal-body {
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+    box-shadow: 0 0 13px rgba(0, 0, 0, 0.2);
+}
+
+#tabelPengiriman {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#tabelPengiriman thead {
+    /* background-color: #912200; */
+    background-color: #0aacb5;
+    color: white;
+    font-size: 14px;
+}
+
+#tabelPengiriman thead th {
+    border: 1px solid #ffffff !important;
+    padding: 8px !important;
+}
+
+#tabelPengiriman tbody td {
+    font-size: 13px;
+    padding: 6px;
+    border: 1px solid #e9e9e9 !important;
+    /* hilangkan border di body */
+}
+
+#tabelPengiriman tbody tr:hover {
+    background-color: #fce4ec;
+}
+
+input[type="date"] {
+    padding-top: 1px;
+    /* padding-bottom: 8px; */
+    /* height: calc(1.5em + .75rem + 2px); */
+    line-height: normal;
+}

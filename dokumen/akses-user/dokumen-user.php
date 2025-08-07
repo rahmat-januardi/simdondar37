@@ -7,19 +7,20 @@ function tampilkanTabelDokumen($title, $dataResult, $withFormat = false, $isEkst
 
   echo "<table>
     <thead>
-      <tr width='100%'><td colspan='" . ($withFormat ? 5 : 4) . "'><h3><b>$title</b></h3></td></tr>
+      <tr width='100%'><td colspan='" . ($withFormat ? 6 : 5) . "'><h3><b>$title</b></h3></td></tr>
       <tr>
         <th rowspan='2'>No</th>
         <th rowspan='2'>Bidang</th>
+        <th rowspan='2'>Kode Dokumen</th>
         <th rowspan='2'>Judul Dokumen</th>";
   if ($withFormat) echo "<th rowspan='2'>Format Dokumen</th><th rowspan='2'>Aksi</th>";
-  else echo "<th rowspan='2'>File</th>";
+  else echo "<th rowspan='2'>Aksi</th>";
   echo "</tr></thead><tbody id='myTable'>";
 
   $no = 0;
   while ($data = mysql_fetch_array($dataResult)) {
     $no++;
-    echo "<tr><td>$no</td><td>{$data['bidang']}</td><td>{$data['nama1']}</td>";
+    echo "<tr><td>$no</td><td>{$data['bidang']}</td><td>{$data['kontrol2']}</td><td>{$data['nama1']}</td>";
 
     if (!$withFormat) {
       echo "<td><a href='download-user.php?filename=" . urlencode($data['fileku']) . "' target='_blank'>

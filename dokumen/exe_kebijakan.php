@@ -1,4 +1,5 @@
 <?php
+
 include 'koneksi.php';
 
 $bidang = $_POST['bidang'];
@@ -9,11 +10,11 @@ $kontrol1 = $_POST['kontrol1'];
 $kontrol2 = $_POST['kontrol2'];
 $kontrol3 = $_POST['kontrol3'];
 $kontrol4 = $_POST['kontrol4'];
-$kontrol5 = $_POST['kontrol5'];
-$kontrol6 = $_POST['kontrol6'];
-$kontrol7 = $_POST['kontrol7'];
-$kontrol8 = $_POST['kontrol8'];
-$kontrol9 = $_POST['kontrol9'];
+$kontrol5 = $_POST['kontrol5'] ? $_POST['kontrol5'] : '';
+$kontrol6 = $_POST['kontrol6'] ? $_POST['kontrol6'] : '';
+$kontrol7 = $_POST['kontrol7'] ? $_POST['kontrol7'] : '';
+$kontrol8 = $_POST['kontrol8'] ? $_POST['kontrol8'] : '';
+$kontrol9 = $_POST['kontrol9'] ? $_POST['kontrol9'] : '';
 $tipe_dokumen = $_POST['tipe_dokumen'];
 $periode = $_POST['periode'];
 $no_versi = $_POST['no_versi'];
@@ -27,7 +28,9 @@ $pengesah2 = $_POST['pengesah2'];
 $namafile = $_POST['fileku'];
 $ImageName = $_FILES['fileupload']['name'];
 
-$nokontrol = $kontrol9 !== "" ? concat('$kontrol5','$kontrol6','$cek_klausul', '$kontrol8', '-','$kontrol9') : concat('$kontrol5','$kontrol6','$cek_klausul', '$kontrol8') ;
+if ($tipe_dokumen != 'udd') {
+    $nokontrol = $kontrol9 != "" ? concat('$kontrol5', '$kontrol6', '$cek_klausul', '$kontrol8', '-', '$kontrol9') : concat('$kontrol5', '$kontrol6', '$cek_klausul', '$kontrol8');
+}
 
 $cek_klausul = $kontrol7 > 0 ? '-' . $kontrol7 . '-' : '-';
 

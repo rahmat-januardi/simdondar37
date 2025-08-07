@@ -15,6 +15,8 @@
 			<font size="1"><a href="../dokumen/lacakdokumen.php" target="isiadmin" class="fisheyeItem"
 			        title="Dokumen Eksternal"><img src="dokumen/images/logAktivitas.png" />Lacak Dokumen</a></font>
 			<!-- <font size="1"><a href="../dokumen/eformulir.php" target="isiadmin" class="fisheyeItem" title="Dokumen Eksternal"><img src="dokumen/images/eform.png" />Master E-Formulir</a></font> -->
+			<font size="1"><a href="../dokumen/master_bidang.php" target="isiadmin" class="fisheyeItem"
+			        title="Master Bidang"><img src="dokumen/images/master_bidang.png" />Master Bidang</a></font>
 			<font size="1"><a href="../dokumen/petugas_dokumen.php" target="isiadmin" class="fisheyeItem" title="Kebijakan"><img
 			            src="dokumen/images/pegawai.png" />PETUGAS</a></font>
 

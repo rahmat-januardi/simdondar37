@@ -1,360 +1,410 @@
 <?php
-	include "koneksi.php";
-	//include "index.php";
-	
-	$detail = $_GET['detail'];
+include "koneksi.php";
+//include "index.php";
+
+$detail = $_GET['detail'];
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-<link href="../modul/thickbox/thickbox.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
-	<!--<script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>-->
-	<script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
-	<script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
-	<script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
-	<script language="javascript" src="../js/jquery.js"></script>
-	<script language="javascript" src="../modul/thickbox/thickbox.js"></script>
-<link rel="stylesheet" href="jquery-ui-1.10.3/demos.css">
-<script>
-	$(function() {
-		$( "#datepicker" ).datepicker();
-		$("#datepicker").change(function(){
-			$("#datepicker").datepicker("option","dateFormat","dd MM yy");
-			});
-	});
-</script>
-<script>
-	$(function() {
-		$( "#datepicker2" ).datepicker();
-		$("#datepicker2").change(function(){
-			$("#datepicker2").datepicker("option","dateFormat","dd MM yy");
-			});
-	});
-</script>
-<script>
-	$(function() {
-		$( "#datepicker3" ).datepicker();
-		$("#datepicker3").change(function(){
-			$("#datepicker3").datepicker("option","dateFormat","dd MM yy");
-			});
-	});
-</script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled Document</title>
+    <link href="../modul/thickbox/thickbox.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
+    <!--<script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>-->
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
+    <script language="javascript" src="../js/jquery.js"></script>
+    <script language="javascript" src="../modul/thickbox/thickbox.js"></script>
+    <link rel="stylesheet" href="jquery-ui-1.10.3/demos.css">
+    <script>
+    $(function() {
+        $("#datepicker").datepicker();
+        $("#datepicker").change(function() {
+            $("#datepicker").datepicker("option", "dateFormat", "dd MM yy");
+        });
+    });
+    </script>
+    <script>
+    $(function() {
+        $("#datepicker2").datepicker();
+        $("#datepicker2").change(function() {
+            $("#datepicker2").datepicker("option", "dateFormat", "dd MM yy");
+        });
+    });
+    </script>
+    <script>
+    $(function() {
+        $("#datepicker3").datepicker();
+        $("#datepicker3").change(function() {
+            $("#datepicker3").datepicker("option", "dateFormat", "dd MM yy");
+        });
+    });
+    </script>
 
-<script language="javascript">
-function selectSupplier(Kode){
-	  $('input[@name=kodeSup]').val(Kode);
-	  tb_remove(); 
-}
-</script>
+    <script language="javascript">
+    function selectSupplier(Kode) {
+        $('input[@name=kodeSup]').val(Kode);
+        tb_remove();
+    }
+    </script>
 
-<style type="text/css">
-		.ui-datepicker {
-				font-family:Garamond;
-				font-size:12px;
-				margin-left:10px
-				}
-.COOPER {
-	font-family: Cooper Black;
-}
-.coper {
-	font-family: Cooper Black;
-}
-</style>
-<style>
-.button1 {
-  padding: 10px 20px;
-  font-size: 12px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background-color: #556B2F;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 5px #999;
-}
+    <style type="text/css">
+    .ui-datepicker {
+        font-family: Garamond;
+        font-size: 12px;
+        margin-left: 10px
+    }
 
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-	font-size:12px;
-}
+    .COOPER {
+        font-family: Cooper Black;
+    }
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-}
+    .coper {
+        font-family: Cooper Black;
+    }
+    </style>
+    <style>
+    .button1 {
+        padding: 10px 20px;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        background-color: #556B2F;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 5px #999;
+    }
 
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
 
-</style>
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+    </style>
 </head>
 
 <body>
-<br /><br />
-<p align="center" class="COOPER"><font size="5"><u>INPUT IK BARU</u></font></p>
+    <br /><br />
+    <p align="center" class="COOPER">
+        <font size="5"><u>INPUT IK BARU</u></font>
+    </p>
 
-  <form action="exe_ika.php" method="post" enctype="multipart/form-data">
-  <table align="center" border="1" cellpadding="10" cellspacing="1" bgcolor="#FFFFFF">
-  <tr>
-    <td valign="top">
-      <table align="center">
-        <tr>
-          <td><div align="right"><strong>SPO Terkait</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <input type="text" name="terkait" size="50" value="<?php echo $detail; ?>" readonly="readonly" />
-          </strong></div></td>
-          </tr>
-	<tr>
-          <td><div align="right"></td>
-          <td></td>
-          <td><div align="left"><strong>
-		<?php
-        $sql="select * from pks where nama1='$detail'";
-	$proses=mysql_query($sql);
-	$data=mysql_fetch_array($proses);
-	?>
-            <?php echo $data['kontrol2']; ?>
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Bidang</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <select name="bidang">
-            <option>...</option>
-	    <option>Manajemen Kualitas</option>
-	    <option>Manajemen Mutu</option>
-            <option>Penyediaan Donor</option>
-            <option>Kerjasama Hukum dan Humas</option>
-            <option>Simdondar</option>
-            <option>Penyediaan Darah</option>
-            <option>Rujukan IMLTD</option>
-            <option>Rujukan Imunohematologi</option>
-            <option>Litbang</option>
-	    <option>Produksi</option>
-	    <option>Kalibrasi</option>
-	    <option>Pengawasan Mutu</option>
-            <option>Pembinaan Kualitas</option>
-	    <option>Umum</option>
-	    <option>Logistik</option>
-	    <option>Sekretariat</option>
-	    <option>Rumah Tangga</option>
-	    <option>Wisma</option>
-	    <option>Kepegawaian</option>
-	    <option>Keuangan</option>
-	    <option>Diklat</option>
-	    
-          </select>
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Judul Dokumen</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <input type="text" name="nama1" size="50" required="" placeholder="judul dokumen" />
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Judul Dokumen Sebelumnya</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <input type="text" name="nama2" size="50" value="N/A" />
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Tingkatan Dokumen</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <select name="tingkat">
-              <!--<option>...</option>
+    <form action="exe_ika.php" method="post" enctype="multipart/form-data">
+        <table align="center" border="1" cellpadding="10" cellspacing="1" bgcolor="#FFFFFF">
+            <tr>
+                <td valign="top">
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <div align="right"><strong>SPO Terkait</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="terkait" size="50" value="<?php echo $detail; ?>"
+                                            readonly="readonly" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right">
+                            </td>
+                            <td></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <?php
+                    $sql = "select * from pks where nama1='$detail'";
+                    $proses = mysql_query($sql);
+                    $data = mysql_fetch_array($proses);
+                    ?>
+                                        <?php echo $data['kontrol2']; ?>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Bidang</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <select name="bidang">
+                                            <option>...</option>
+                                            <?php
+                      $sql = "select * from master_bidang order by bidang";
+                      $proses = mysql_query($sql);
+                      while ($data = mysql_fetch_array($proses)) {
+                        echo "<option value='$data[bidang]'>$data[bidang]</option>";
+                      }
+                      ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Judul Dokumen</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="nama1" size="50" required=""
+                                            placeholder="judul dokumen" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Judul Dokumen Sebelumnya</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="nama2" size="50" value="N/A" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tingkatan Dokumen</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <select name="tingkat">
+                                            <!--<option>...</option>
               <option>1</option>
               <option>2</option>-->
-              <option>3</option>
-              <!--<option>4</option>
+                                            <option>3</option>
+                                            <!--<option>4</option>
               <option>5</option>-->
-            </select>
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>No. Kontrol Dokumen</strong></div></td>
-          <td><strong>:</strong></td>
-		<?php
-			$sql="select count(*)+1 as jumlah from master_nomorik";
-			$proses=mysql_query($sql);
-			$data=mysql_fetch_array($proses);
-		?>
-          <td><div align="left"><strong>
-            <input type="text" name="kontrol1" value="UDDP-" readonly="readonly" size="5" />
-          
-          <select name="kontrol2">
-            <option></option>
-	    <option>MK</option>
-            <option>PDR</option>
-            <option>HMS</option>
-            <option>SIM</option>
-            <option>PDD</option>
-            <option>IMLTD</option>
-            <option>SGD</option>
-            <option>LITBANG</option>
-            <option>PRR</option>
-	    <option>KAL</option>
-            <option>PM</option>
-            <option>PK</option>
-	    <option>UMM</option>
-	    <option>LOG</option>
-	    <option>SEKR</option>
-	    <option>RT</option>
-	    <option>WM</option>
-	    <option>KEPEG</option>
-	    <option>KEU</option>
-	    <option>DIKLAT</option>
-	    <option>UM</option>
-	    
-          </select>
-          
-          <input type="text" name="kontrol3" value="-L3-" readonly="readonly" size="5" />
-	  <input type="text" name="kontrol4" size="10"/>
-	  <a href="cari_data_ik.php?&width=400&height=350" class="thickbox"><img src="images/cari.png" width="40" height="40" border="0" /></a>
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Periode Kaji Ulang (bulan)</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <input type="text" name="periode" size="5" required="" placeholder="bulan" />
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>No. Versi</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <input type="text" name="no_versi" size="10" required="" placeholder="versi" />
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Tanggal Disahkan</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <input type="text" name="tgl_setuju" id="datepicker" required="" placeholder="Tahun-Bulan-Tanggal" />
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Tanggal Berlaku</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <input type="text" name="tgl_pelaksanaan" id="datepicker2" required="" placeholder="Tahun-Bulan-Tanggal" />
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Tanggal Kaji Ulang</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <input type="text" name="tgl_peninjauan" id="datepicker3" required="" placeholder="Tahun-Bulan-Tanggal" />
-          </strong></div></td>
-          </tr>
-        <tr>
-          <td><div align="right"><strong>Disusun Oleh</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <select name="pembuat">
-              <option>...</option>
-              <?php
-    			$query = "select * from user order by nama_lengkap";
-    			$hasil = mysql_query($query);
-    			while($data=mysql_fetch_array($hasil)){
-        		echo "<option>$data[nama_lengkap]</option>";
-    			}
-			?>
-            </select>
-          </strong></div></td>
-          </tr>
-        <?php
-	$sql="select * from ika order by kontrol2";
-	$proses=mysql_query($sql);
-	$data=mysql_fetch_array($proses);
-	?>
-        <tr>
-          <td><div align="right"><strong>Diperiksa Oleh</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <select name="pemeriksa">
-              <option>...</option>
-              <?php
-    			$query = "select * from user order by nama_lengkap";
-    			$hasil = mysql_query($query);
-    			while($data=mysql_fetch_array($hasil)){
-        		echo "<option>$data[nama_lengkap]</option>";
-    			}
-			?>
-            </select>
-          </strong></div></td>
-          </tr>
-        <?php
-	$sql="select * from ika order by kontrol2";
-	$proses=mysql_query($sql);
-	$data=mysql_fetch_array($proses);
-	?>
-        <tr>
-          <td><div align="right"><strong>Disetujui Oleh</strong></div></td>
-          <td><strong>:</strong></td>
-          <td><div align="left"><strong>
-            <select name="pengesah">
-              <option>...</option>
-              <?php
-    			$query = "select * from user order by nama_lengkap";
-    			$hasil = mysql_query($query);
-    			while($data=mysql_fetch_array($hasil)){
-        		echo "<option>$data[nama_lengkap]</option>";
-    			}
-			?>
-            </select>
-          </strong></div></td>
-          </tr>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>No. Kontrol Dokumen</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <?php
+              $sql = "select count(*)+1 as jumlah from master_nomorik";
+              $proses = mysql_query($sql);
+              $data = mysql_fetch_array($proses);
+              ?>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="kontrol1" value="UDDP-" readonly="readonly" size="5" />
 
-	<tr>
-    	<td><div align="right"><strong>Disahkan Oleh</strong></div></td>
-        <td><strong>:</strong></td>
-        <td><div align="left"><strong>
-          <select name="pengesah2">
-            <option>...</option>
-            <?php
-    			$query = "select * from user order by nama_lengkap";
-    			$hasil = mysql_query($query);
-    			while($data=mysql_fetch_array($hasil)){
-        		echo "<option>$data[nama_lengkap]</option>";
-    			}
-			?>
-          </select>
-        </strong></div></td>
-    </tr>
+                                        <select name="kontrol2">
+                                            <option></option>
+                                            <?php
+                      $query = 'select * from master_bidang order by bidang';
+                      $hasil = mysql_query($query);
+                      while ($data = mysql_fetch_array($hasil)) {
+                        echo "<option>$data[kode_bidang]</option>";
+                      }
+                      ?>
+                                        </select>
 
-        <!--awal upload-->
-    <tr>
-    	<td><div align="right"><strong>Upload Dokumen</strong></div></td>
-        <td><strong>:</strong></td>
-        <td><div align="left"><strong>
-          
-		<input type="file" name="fileupload" id="fileupload" class="form-control" />
-        </strong></div></td>
-    </tr>
-	<!--akhir upload-->
+                                        <input type="text" name="kontrol3" value="-L3-" readonly="readonly" size="5" />
+                                        <input type="text" name="kontrol4" size="10" />
+                                        <a href="cari_data_ik.php?&width=400&height=350" class="thickbox"><img
+                                                src="images/cari.png" width="40" height="40" border="0" /></a>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Periode Kaji Ulang (bulan)</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="periode" size="5" required="" placeholder="bulan" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>No. Versi</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="no_versi" size="10" required="" placeholder="versi" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tanggal Disahkan</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="tgl_setuju" id="datepicker" required=""
+                                            placeholder="Tahun-Bulan-Tanggal" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tanggal Berlaku</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="tgl_pelaksanaan" id="datepicker2" required=""
+                                            placeholder="Tahun-Bulan-Tanggal" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tanggal Kaji Ulang</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" name="tgl_peninjauan" id="datepicker3" required=""
+                                            placeholder="Tahun-Bulan-Tanggal" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Disusun Oleh</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <select name="pembuat">
+                                            <option>...</option>
+                                            <?php
+                      $query = "select * from user order by nama_lengkap";
+                      $hasil = mysql_query($query);
+                      while ($data = mysql_fetch_array($hasil)) {
+                        echo "<option>$data[nama_lengkap]</option>";
+                      }
+                      ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <?php
+            $sql = "select * from ika order by kontrol2";
+            $proses = mysql_query($sql);
+            $data = mysql_fetch_array($proses);
+            ?>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Diperiksa Oleh</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <select name="pemeriksa">
+                                            <option>...</option>
+                                            <?php
+                      $query = "select * from user order by nama_lengkap";
+                      $hasil = mysql_query($query);
+                      while ($data = mysql_fetch_array($hasil)) {
+                        echo "<option>$data[nama_lengkap]</option>";
+                      }
+                      ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <?php
+            $sql = "select * from ika order by kontrol2";
+            $proses = mysql_query($sql);
+            $data = mysql_fetch_array($proses);
+            ?>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Disetujui Oleh</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <select name="pengesah">
+                                            <option>...</option>
+                                            <?php
+                      $query = "select * from user order by nama_lengkap";
+                      $hasil = mysql_query($query);
+                      while ($data = mysql_fetch_array($hasil)) {
+                        echo "<option>$data[nama_lengkap]</option>";
+                      }
+                      ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
 
-        <tr>
-          <td colspan="3" align="right"><strong>
-            <input class="button1" type="submit" name="upload" value="Simpan" />
-            </strong></td>
-          </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Disahkan Oleh</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+                                        <select name="pengesah2">
+                                            <option>...</option>
+                                            <?php
+                      $query = "select * from user order by nama_lengkap";
+                      $hasil = mysql_query($query);
+                      while ($data = mysql_fetch_array($hasil)) {
+                        echo "<option>$data[nama_lengkap]</option>";
+                      }
+                      ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+
+                        <!--awal upload-->
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Upload Dokumen</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left"><strong>
+
+                                        <input type="file" name="fileupload" id="fileupload" class="form-control" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <!--akhir upload-->
+
+                        <tr>
+                            <td colspan="3" align="right"><strong>
+                                    <input class="button1" type="submit" name="upload" value="Simpan" />
+                                </strong></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
         </table>
-      </td>
-  </tr>
-  </table>
-  </form>
-<br />
+    </form>
+    <br />
 </body>
+
 </html>

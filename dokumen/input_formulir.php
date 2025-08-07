@@ -179,28 +179,13 @@ $detail = $_GET['detail'];
                                 <div align="left"><strong>
                                         <select name="bidang">
                                             <option>...</option>
-                                            <option>Manajemen Kualitas</option>
-					    <option>Manajemen Mutu</option>
-                                            <option>Penyediaan Donor</option>
-                                            <option>Kerjasama Hukum dan Humas</option>
-                                            <option>Simdondar</option>
-                                            <option>Penyediaan Darah</option>
-                                            <option>Rujukan IMLTD</option>
-                                            <option>Rujukan Imunohematologi</option>
-                                            <option>Litbang</option>
-                                            <option>Produksi</option>
-                                            <option>Kalibrasi</option>
-                                            <option>Pengawasan Mutu</option>
-                                            <option>Pembinaan Kualitas</option>
-                                            <option>Umum</option>
-                                            <option>Logistik</option>
-                                            <option>Sekretariat</option>
-                                            <option>Rumah Tangga</option>
-                                            <option>Wisma</option>
-                                            <option>Kepegawaian</option>
-                                            <option>Keuangan</option>
-                                            <option>Diklat</option>
-
+                                            <?php
+                                            $sql = "select * from master_bidang order by bidang";
+                                            $proses = mysql_query($sql);
+                                            while ($data = mysql_fetch_array($proses)) {
+                                                echo "<option value='$data[bidang]'>$data[bidang]</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
@@ -279,27 +264,13 @@ $detail = $_GET['detail'];
                                             readonly="readonly" size="7" disabled />
                                         <select name="kontrol2" id="kontrol2" disabled>
                                             <option></option>
-                                            <option>MK</option>
-                                            <option>PDR</option>
-                                            <option>HMS</option>
-                                            <option>SIM</option>
-                                            <option>PDD</option>
-                                            <option>IMLTD</option>
-                                            <option>SGD</option>
-                                            <option>LITBANG</option>
-                                            <option>PRR</option>
-                                            <option>KAL</option>
-                                            <option>PM</option>
-                                            <option>PK</option>
-                                            <option>UMM</option>
-                                            <option>LOG</option>
-                                            <option>SEKR</option>
-                                            <option>RT</option>
-                                            <option>WM</option>
-                                            <option>KEPEG</option>
-                                            <option>KEU</option>
-                                            <option>DIKLAT</option>
-					    <option>UM</option>
+                                            <?php
+                                            $query = 'select * from master_bidang order by bidang';
+                                            $hasil = mysql_query($query);
+                                            while ($data = mysql_fetch_array($hasil)) {
+                                                echo "<option>$data[kode_bidang]</option>";
+                                            }
+                                            ?>
                                         </select>
                                         <input type="text" id="kontrol3" name="kontrol3" value="-L4-"
                                             readonly="readonly" size="5" disabled />
@@ -355,7 +326,7 @@ $detail = $_GET['detail'];
                                     </strong></div>
                             </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td>
                                 <div align="right"><strong>Tanggal Disahkan</strong></div>
                             </td>
@@ -366,7 +337,7 @@ $detail = $_GET['detail'];
                                             placeholder="Tahun-Bulan-Tanggal" />
                                     </strong></div>
                             </td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td>
                                 <div align="right"><strong>Tanggal Berlaku</strong></div>
@@ -391,7 +362,7 @@ $detail = $_GET['detail'];
                                     </strong></div>
                             </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td>
                                 <div align="right"><strong>Disusun Oleh</strong></div>
                             </td>
@@ -501,7 +472,7 @@ $detail = $_GET['detail'];
                                         </select>
                                     </strong></div>
                             </td>
-                        </tr>
+                        </tr> -->
 
                         <!--awal upload-->
                         <tr>
