@@ -30,56 +30,56 @@
     <!-- <link rel="stylesheet" href="../css/pengolahan.css"> -->
 
     <script>
-        window.onload = function () {
-            document.getElementById('nomorKantong').focus();
-        };
+    window.onload = function() {
+        document.getElementById('nomorKantong').focus();
+    };
     </script>
 
     <style>
-        .table th,
-        td {
-            padding: 0.1rem;
-        }
+    .table th,
+    td {
+        padding: 0.1rem;
+    }
 
-        .bstatus-slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 30%;
-            height: 10px;
-            border-radius: 4px;
-            background: #ccc;
-            /* Default warna abu-abu */
-            outline: none;
-            transition: 0.3s;
-        }
+    .bstatus-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 30%;
+        height: 10px;
+        border-radius: 4px;
+        background: #ccc;
+        /* Default warna abu-abu */
+        outline: none;
+        transition: 0.3s;
+    }
 
-        /* Gaya tombol slider */
-        .bstatus-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: white;
-            cursor: pointer;
-            border-radius: 50%;
-            transition: 0.3s;
-        }
+    /* Gaya tombol slider */
+    .bstatus-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        background: white;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
 
 
-        .form-control {
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 0.8rem;
-        }
+    .form-control {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 0.8rem;
+    }
 
-        .custom-select {
-            width: 100%;
-            border-radius: 4px;
-            font-size: 10px;
-            padding: .375rem 1.75rem .375rem .75rem;
-            color: #333;
-            background-color: #f9f9f9;
-        }
+    .custom-select {
+        width: 100%;
+        border-radius: 4px;
+        font-size: 10px;
+        padding: .375rem 1.75rem .375rem .75rem;
+        color: #333;
+        background-color: #f9f9f9;
+    }
     </style>
 
 </head>
@@ -129,7 +129,7 @@ $defaultValues = [
     'mPisah' => '',
     'sPisah' => ''
 ];
-*/
+ */
 
 $defaultValues = array(
     'aPutar' => '',
@@ -190,10 +190,10 @@ if ($aPisah == '') {
                         $aPutarOptions = mysqli_query($dbi, "SELECT id, kode, nama_barang FROM logbook_h WHERE fungsi LIKE '%pemutaran%'");
                         while ($aP = mysqli_fetch_assoc($aPutarOptions)) {
                             $selected = ($aP['kode'] == $aPutar) ? 'selected' : '';
-                            ?>
-                            <option value="<?php echo $aP['kode']; ?>" <?php echo $selected; ?>>
-                                <?php echo $aP['kode'] . " - " . $aP['nama_barang']; ?>
-                            </option>
+                        ?>
+                        <option value="<?php echo $aP['kode']; ?>" <?php echo $selected; ?>>
+                            <?php echo $aP['kode'] . " - " . $aP['nama_barang']; ?>
+                        </option>
                         <?php } ?>
                     </select>
                 </div>
@@ -206,10 +206,10 @@ if ($aPisah == '') {
                         $aPisahOptions = mysqli_query($dbi, "SELECT id, kode, nama_barang FROM logbook_h WHERE fungsi LIKE '%pemisahan%'");
                         while ($aPs = mysqli_fetch_assoc($aPisahOptions)) {
                             $selected = ($aPs['kode'] == $aPisah) ? 'selected' : '';
-                            ?>
-                            <option value="<?php echo $aPs['kode']; ?>" <?php echo $selected; ?>>
-                                <?php echo $aPs['kode'] . " - " . $aPs['nama_barang']; ?>
-                            </option>
+                        ?>
+                        <option value="<?php echo $aPs['kode']; ?>" <?php echo $selected; ?>>
+                            <?php echo $aPs['kode'] . " - " . $aPs['nama_barang']; ?>
+                        </option>
                         <?php } ?>
                     </select>
                 </div>
@@ -220,26 +220,30 @@ if ($aPisah == '') {
             <div class="col-sm-2">
                 <label for="clockpicker">Pilih Waktu Mulai Pemutaran:</label>
                 <input id="jMPutar" type="text" name="jamMulaiPutar" class="form-control"
-                    placeholder="Waktu Mulai Pemutaran" value="<?php echo htmlspecialchars($mPutar); ?>" Required>
+                    placeholder="Waktu Mulai Pemutaran"
+                    value="<?php echo htmlspecialchars($mPutar) ? htmlspecialchars($mPutar) : '00:00'; ?>">
             </div>
 
             <div class="col-sm-2">
                 <label for="clockpicker">Selesai Pemutaran:</label>
                 <input id="jSPutar" type="text" name="jamSelesaiPutar" class="form-control"
-                    placeholder="Selesai Pemutaran" value="<?php echo htmlspecialchars($sPutar); ?>" Required>
+                    placeholder="Selesai Pemutaran"
+                    value="<?php echo htmlspecialchars($sPutar) ? htmlspecialchars($sPutar) : '00:00'; ?>">
                 <!-- <label for="jamSelesai" class="form-label">Jam Selesai</label>
                 <div id="jamSelesai" class="time-picker" data-coreui-locale="en-US" data-coreui-seconds="false" data-coreui-toggle="time-picker"></div> -->
             </div>
             <div class="col-sm-2">
                 <label for="clockpicker">Pilih Waktu Mulai Pemisahan:</label>
                 <input id="jMPisah" type="text" name="jamMulaiPisah" class="form-control"
-                    placeholder="Waktu Mulai Pemisahan" value="<?php echo htmlspecialchars($mPisah); ?>" Required>
+                    placeholder="Waktu Mulai Pemisahan"
+                    value="<?php echo htmlspecialchars($mPisah) ? htmlspecialchars($mPisah) : '00:00'; ?>">
             </div>
 
             <div class="col-sm-2">
                 <label for="clockpicker">Selesai Pemisahan:</label>
                 <input id="jSPisah" type="text" name="jamSelesaiPisah" class="form-control"
-                    placeholder="Selesai Pemisahan" value="<?php echo htmlspecialchars($sPisah); ?>" Required>
+                    placeholder="Selesai Pemisahan"
+                    value="<?php echo htmlspecialchars($sPisah) ? htmlspecialchars($sPisah) : '00:00'; ?>">
                 <!-- <label for="jamSelesai" class="form-label">Jam Selesai</label>
                 <div id="jamSelesai" class="time-picker" data-coreui-locale="en-US" data-coreui-seconds="false" data-coreui-toggle="time-picker"></div> -->
             </div>
@@ -288,7 +292,8 @@ if ($aPisah == '') {
                     <?php include 'pengolahan_data.php'; ?>
                 </tbody>
             </table>
-            <button class="btn btn-success mb-3" type="button" onclick="simpanDanLanjutkan()" <?php echo $isDisabled; ?>>
+            <button class="btn btn-success mb-3" type="button" onclick="simpanDanLanjutkan()"
+                <?php echo $isDisabled; ?>>
                 Simpan dan Lanjutkan
             </button>
             &NonBreakingSpace;
@@ -301,6 +306,11 @@ if ($aPisah == '') {
                 <input class="form-check-input" type="radio" name="cetakLabelOption" id="cetakLabel2Kolom"
                     value="2Kolom" checked>
                 <label class="form-check-label" for="cetakLabel2Kolom">Cetak Label 2 Kolom</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="cetakLabelOption" id="tidakCetakLabel"
+                    value="tidakCetak" checked>
+                <label class="form-check-label" for="tidakCetakLabel">Tidak Cetak Label</label>
             </div>
         </form>
     </div>
@@ -370,43 +380,53 @@ if ($aPisah == '') {
     <!-- <script src="../js/aksiPengolahan.js" defer></script> -->
 
     <script>
-        function getSelectedCetakLabelOption() {
-            return document.querySelector('input[name="cetakLabelOption"]:checked').value;
-        }
+    function getSelectedCetakLabelOption() {
+        return document.querySelector('input[name="cetakLabelOption"]:checked').value;
+    }
 
-        function simpanDanLanjutkan() {
-            var formData = new FormData(document.getElementById('pengolahanForm'));
+    function simpanDanLanjutkan() {
+        var formData = new FormData(document.getElementById('pengolahanForm'));
 
-            $.ajax({
-                url: 'modul/pengolahan/prosesPengolahan.php',
-                // url: 'prosesPengolahan.php',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    try {
-                        var jsonResponse = response; 
+        $.ajax({
+            url: 'modul/pengolahan/prosesPengolahan.php',
+            // url: 'prosesPengolahan.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                try {
+                    var jsonResponse = response;
 
-                        if (jsonResponse.status === 'success') {
-                            $('#suksesModal .modal-body').html(jsonResponse.message);
-                            $('#suksesModal').modal('show');
+                    if (jsonResponse.status === 'success') {
+                        $('#suksesModal .modal-body').html(jsonResponse.message);
+                        $('#suksesModal').modal('show');
 
-                            $('#suksesModal').on('hidden.bs.modal', function () {
-                                // var selectedOption = $('input[name="cetakLabelOption"]:checked').val();
+                        $('#suksesModal').on('hidden.bs.modal', function() {
+                            // var selectedOption = $('input[name="cetakLabelOption"]:checked').val();
+                            var selectedOption = getSelectedCetakLabelOption();
+
+                            if (jsonResponse.noTrans) {
                                 var selectedOption = getSelectedCetakLabelOption();
-
-                                if (jsonResponse.noTrans) {
-                                    var selectedOption = getSelectedCetakLabelOption();
-                                    var labelUrl = selectedOption === '1Kolom'
-                                        ? 'labelPengolahan1Kolom.php?nT=' + encodeURIComponent(jsonResponse.noTrans) + '&barcode=C128&transaksi=transaksi'
-                                        : 'labelPengolahan2Kolom.php?nT=' + encodeURIComponent(jsonResponse.noTrans) + '&barcode=C128&transaksi=transaksi';
-                                } else {
-                                    console.error('Error: noTrans value is missing in the response.');
+                                if (selectedOption === 'tidakCetak') {
+                                    window.location.href = 'pmikomponen.php?module=pengolahan';
                                     return;
+                                } else {
+                                    var labelUrl = selectedOption === '1Kolom' ?
+                                        'labelPengolahan1Kolom.php?nT=' + encodeURIComponent(
+                                            jsonResponse.noTrans) +
+                                        '&barcode=C128&transaksi=transaksi' :
+                                        'labelPengolahan2Kolom.php?nT=' + encodeURIComponent(
+                                            jsonResponse.noTrans) +
+                                        '&barcode=C128&transaksi=transaksi';
                                 }
 
-                                var cetakLabelModal = `
+                            } else {
+                                console.error('Error: noTrans value is missing in the response.');
+                                return;
+                            }
+
+                            var cetakLabelModal = `
                                 <div class="modal fade" id="cetakLabelModal" tabindex="-1" role="dialog" aria-labelledby="cetakLabelModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
@@ -426,62 +446,62 @@ if ($aPisah == '') {
                                     </div>
                                 </div>
                                 `;
-                                $('body').append(cetakLabelModal);
-                                $('#cetakLabelModal').modal('show');
+                            $('body').append(cetakLabelModal);
+                            $('#cetakLabelModal').modal('show');
 
-                                $('#cetakLabelModal').on('hidden.bs.modal', function () {
-                                    window.location.href = 'pmikomponen.php?module=pengolahan';
-                                });
+                            $('#cetakLabelModal').on('hidden.bs.modal', function() {
+                                window.location.href = 'pmikomponen.php?module=pengolahan';
                             });
-                        } else {
-                            $('#errorModal .modal-body').html(jsonResponse.message);
-                            $('#errorModal').modal('show');
-                        }
-                    } catch (e) {
-                        $('#errorModal .modal-body').html('Terjadi kesalahan saat memproses respons.');
+                        });
+                    } else {
+                        $('#errorModal .modal-body').html(jsonResponse.message);
                         $('#errorModal').modal('show');
                     }
-
+                } catch (e) {
+                    $('#errorModal .modal-body').html('Terjadi kesalahan saat memproses respons.');
+                    $('#errorModal').modal('show');
                 }
-            });
-        }
-    </script>
 
-    <script>
-        $(document).ready(function () {
-            $('#jMPutar, #jSPutar, #jMPisah, #jSPisah').clockpicker({
-                autoclose: true, 
-                placement: 'bottom', 
-                align: 'left', 
-                donetext: 'Selesai', 
-                twelvehour: false 
-            });
-        });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            updateSliders();
-
-            document.querySelectorAll(".bstatus-slider").forEach(function (slider) {
-                slider.addEventListener("input", function () {
-                    updateSliderColor(this);
-                });
-            });
-        });
-
-        // Fungsi untuk memperbarui warna slider
-        function updateSliders() {
-            document.querySelectorAll(".bstatus-slider").forEach(updateSliderColor);
-        }
-
-        function updateSliderColor(slider) {
-            if (slider.value == "1") {
-                slider.style.background = "#2196F3"; 
-            } else {
-                slider.style.background = "red";
             }
+        });
+    }
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        $('#jMPutar, #jSPutar, #jMPisah, #jSPisah').clockpicker({
+            autoclose: true,
+            placement: 'bottom',
+            align: 'left',
+            donetext: 'Selesai',
+            twelvehour: false
+        });
+    });
+    </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        updateSliders();
+
+        document.querySelectorAll(".bstatus-slider").forEach(function(slider) {
+            slider.addEventListener("input", function() {
+                updateSliderColor(this);
+            });
+        });
+    });
+
+    // Fungsi untuk memperbarui warna slider
+    function updateSliders() {
+        document.querySelectorAll(".bstatus-slider").forEach(updateSliderColor);
+    }
+
+    function updateSliderColor(slider) {
+        if (slider.value == "1") {
+            slider.style.background = "#2196F3";
+        } else {
+            slider.style.background = "red";
         }
+    }
     </script>
 
 
