@@ -78,22 +78,22 @@ try {
 
         // Statement untuk insert ke dpengolahan
         $insert_sql = "INSERT INTO dpengolahan 
-        (NoTrans, noKantong, Produk, petugas, tgl, aPutar, aPisah, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulai, selesai, bstatus, bsuhu, verifikator, musnah)
-        SELECT NoTrans, noKantong, Produk, petugas, tgl, aPutar, aPisah, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulai, selesai, bstatus, bsuhu, verifikator, musnah
+        (NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, SelesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah)
+        SELECT NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah
         FROM dpengolahan_temp";
 
         // $selDTemp = "SELECT NoTrans, noKantong, Produk, petugas, tgl, aPutar, aPisah, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulai, selesai, bstatus, bsuhu, verifikator, musnah, CONCAT(DATE(tgl), ' ', TIME(selesai)) AS tglPengolahan  FROM dpengolahan_temp WHERE noKantong = '$noKantong'";
 
 
-            $selDTemp = "SELECT substring(noKantong, -1) as nK, NoTrans, noKantong, Produk, petugas, tgl, tglAftap, ed_produk, goldarah, rhesus, jenis, volume, shift, mulai, selesai, bstatus, bsuhu, verifikator, musnah, CONCAT(DATE(tgl), ' ', TIME(selesai)) AS tglPengolahan 
+        $selDTemp = "SELECT substring(noKantong, -1) as nK, NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, tglAftap, ed_produk, goldarah, rhesus, jenis, volume, shift, mulai, selesai, bstatus, bsuhu, verifikator, musnah, CONCAT(DATE(tgl), ' ', TIME(selesai)) AS tglPengolahan 
             FROM dpengolahan_temp WHERE noKantong = ?";
 
-            if ($stmtSelect = $dbi->prepare($selDTemp)) {
-                // Prepare both update queries
-                $upStokAll = "UPDATE stokkantong SET tgl_Aftap = ?, kadaluwarsa = ?, produk = ?, volume = ?, tglpengolahan = ? WHERE noKantong = ?";
-                $upStokNoAftap = "UPDATE stokkantong SET kadaluwarsa = ?, produk = ?, volume = ?, tglpengolahan = ? WHERE noKantong = ?";
+        if ($stmtSelect = $dbi->prepare($selDTemp)) {
+            // Prepare both update queries
+            $upStokAll = "UPDATE stokkantong SET tgl_Aftap = ?, kadaluwarsa = ?, produk = ?, volume = ?, tglpengolahan = ? WHERE noKantong = ?";
+            $upStokNoAftap = "UPDATE stokkantong SET kadaluwarsa = ?, produk = ?, volume = ?, tglpengolahan = ? WHERE noKantong = ?";
 
-                foreach ($noKantong as $vKantong) {
+            foreach ($noKantong as $vKantong) {
                 $stmtSelect->bind_param('s', $vKantong);
                 $stmtSelect->execute();
 
@@ -107,6 +107,7 @@ try {
                     $produk,
                     $petugas,
                     $tgl,
+                    $tglPengerjaan,
                     $tglAftap,
                     $ed_produk,
                     $goldarah,
@@ -129,59 +130,59 @@ try {
                     $produkStok = null;
                     $cekProdukSql = "SELECT produk FROM stokkantong WHERE noKantong = ?";
                     if ($cekProdukStmt = $dbi->prepare($cekProdukSql)) {
-                    $cekProdukStmt->bind_param('s', $noKantongRes);
-                    $cekProdukStmt->execute();
-                    $cekProdukStmt->bind_result($produkStok);
-                    $cekProdukStmt->fetch();
-                    $cekProdukStmt->close();
+                        $cekProdukStmt->bind_param('s', $noKantongRes);
+                        $cekProdukStmt->execute();
+                        $cekProdukStmt->bind_result($produkStok);
+                        $cekProdukStmt->fetch();
+                        $cekProdukStmt->close();
                     }
 
                     // Validasi: jika produk di stokkantong sudah ada (tidak kosong/tidak null)
                     // dan produk hasil ($produk) kosong/null, skip update
                     if (
-                    !empty($produkStok) && 
-                    (is_null($produk) || $produk === '')
+                        !empty($produkStok) &&
+                        (is_null($produk) || $produk === '')
                     ) {
-                    // Tidak perlu update, skip ke berikutnya
-                    continue;
+                        // Tidak perlu update, skip ke berikutnya
+                        continue;
                     }
 
-                    $volum = '±' . $volume;
+                    $volum = $volume;
 
                     if ($nkSatelite === 'A') {
-                    // Tidak update tgl_Aftap
-                    if ($stmtUpdate = $dbi->prepare($upStokNoAftap)) {
-                        $stmtUpdate->bind_param('sssss', $ed_produk, $produk, $volum, $tglPengolahan, $noKantongRes);
-                        if (!$stmtUpdate->execute()) {
-                        error_log("Failed to execute update (no tgl_Aftap): " . $stmtUpdate->error);
+                        // Tidak update tgl_Aftap
+                        if ($stmtUpdate = $dbi->prepare($upStokNoAftap)) {
+                            $stmtUpdate->bind_param('sssss', $ed_produk, $produk, $volum, $tglPengerjaan, $noKantongRes);
+                            if (!$stmtUpdate->execute()) {
+                                error_log("Failed to execute update (no tgl_Aftap): " . $stmtUpdate->error);
+                            }
+                            $stmtUpdate->close();
+                        } else {
+                            error_log('Failed to prepare update statement for stokkantong (no tgl_Aftap): ' . $dbi->error);
+                            throw new Exception('Statement gagal untuk prepared update stokkantong (no tgl_Aftap): ' . $dbi->error);
                         }
-                        $stmtUpdate->close();
                     } else {
-                        error_log('Failed to prepare update statement for stokkantong (no tgl_Aftap): ' . $dbi->error);
-                        throw new Exception('Statement gagal untuk prepared update stokkantong (no tgl_Aftap): ' . $dbi->error);
-                    }
-                    } else {
-                    // Update semua field termasuk tgl_Aftap
-                    if ($stmtUpdate = $dbi->prepare($upStokAll)) {
-                        $stmtUpdate->bind_param('ssssss', $tglAftap, $ed_produk, $produk, $volum, $tglPengolahan, $noKantongRes);
-                        if (!$stmtUpdate->execute()) {
-                        error_log("Failed to execute update: " . $stmtUpdate->error);
+                        // Update semua field termasuk tgl_Aftap
+                        if ($stmtUpdate = $dbi->prepare($upStokAll)) {
+                            $stmtUpdate->bind_param('ssssss', $tglAftap, $ed_produk, $produk, $volum, $tglPengerjaan, $noKantongRes);
+                            if (!$stmtUpdate->execute()) {
+                                error_log("Failed to execute update: " . $stmtUpdate->error);
+                            }
+                            $stmtUpdate->close();
+                        } else {
+                            error_log('Failed to prepare update statement for stokkantong: ' . $dbi->error);
+                            throw new Exception('Statement gagal untuk prepared update stokkantong: ' . $dbi->error);
                         }
-                        $stmtUpdate->close();
-                    } else {
-                        error_log('Failed to prepare update statement for stokkantong: ' . $dbi->error);
-                        throw new Exception('Statement gagal untuk prepared update stokkantong: ' . $dbi->error);
-                    }
                     }
                 }
-                }
-
-                $stmtSelect->close();
-            } else {
-                error_log('Failed to prepare select statement for dpengolahan_temp: ' . $dbi->error);
-
-                throw new Exception('Failed to prepare select statement for dpengolahan_temp: ' . $dbi->error);
             }
+
+            $stmtSelect->close();
+        } else {
+            error_log('Failed to prepare select statement for dpengolahan_temp: ' . $dbi->error);
+
+            throw new Exception('Failed to prepare select statement for dpengolahan_temp: ' . $dbi->error);
+        }
 
 
         // Eksekusi insert dan cek hasilnya
@@ -210,7 +211,7 @@ try {
                 $kett = "-";
                 $tempat = "DG";
                 $log_aksi = 'Pengolahan (Konvensional), dengan No.Transaksi ' . $noTrans . ', Nomor Kantong: ' . $noKantongRes . ', menjadi Produk: ' . $produk;
-                $insLog->bind_param('sssssss', $time_aksi, $clip, $nmus, $log_mdl, $log_aksi, $kett, $tempat);
+                $insLog->bind_param('sssssss', $tglPengerjaan, $clip, $nmus, $log_mdl, $log_aksi, $kett, $tempat);
                 if (!$insLog->execute()) {
                     throw new Exception('Gagal menyimpan log pengolahan.');
                 }
@@ -233,10 +234,13 @@ try {
             $logUnix = $noKantongRes;
             $tempat = "DG";
             $log_aksi = 'Pengolahan (Konvensional), dengan No.Transaksi ' . $noTrans . ', Nomor Kantong: ' . $noKantongRes . ', menjadi Produk: ' . $produk;
-            if (!file_exists("/var/www/simudda/modul/user_log.php")) {
-                error_log("File user_log.php tidak ditemukan!");
+
+            $logFile = __DIR__ . "/../user_log.php";
+
+            if (!file_exists($logFile)) {
+                error_log("File user_log.php tidak ditemukan! Path: $logFile");
             } else {
-                include_once "/var/www/simudda/modul/user_log.php";
+                include_once $logFile;
             }
             //=====================================================================================================
 

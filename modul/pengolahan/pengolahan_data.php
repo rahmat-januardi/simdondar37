@@ -6,10 +6,7 @@ error_reporting(E_ALL);
 include "config/dbi_connect.php";
 $petugas = $_SESSION['namauser'];
 
-// include "../config/dbi_connect.php";
-// $petugas = "irawanDB";
 
-/**
 function formatTanggal($inputTanggal)
 {
     $bulan = array(
@@ -26,54 +23,24 @@ function formatTanggal($inputTanggal)
         'November',
         'Desember'
     );
-    $dateTime = new DateTime($inputTanggal);
+
+    // Cek apakah input valid
+    if (!$inputTanggal || !strtotime($inputTanggal)) {
+        return "Tanggal tidak valid";
+    }
+
     $split = explode('-', $inputTanggal);
-    // return $split[2] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[0];
 
-    // Format tanggal dengan zona waktu WIB.
-    // $formattedDate = $dateTime->format("d ") . $bulan[(int)$split[1]] . $dateTime->format(" Y - H:i") . " WIB";
+    // Cek apakah hasil explode menghasilkan 3 elemen (tahun-bulan-tanggal)
+    if (count($split) < 3) {
+        return "Format tanggal tidak valid";
+    }
 
-    // tanpa zona waktu ..
-    $formattedDate = $dateTime->format("d ") . $bulan[(int) $split[1]] . $dateTime->format(" Y - H:i");
+    $dateTime = new DateTime($inputTanggal);
+    $formattedDate = $dateTime->format("d ") . $bulan[(int) $split[1]] . $dateTime->format(" Y - H:i") . " WIB";
 
     return $formattedDate;
 }
-*/
-
-function formatTanggal($inputTanggal)
-        {
-            $bulan = array(
-                1 => 'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-            );
-
-            // Cek apakah input valid
-            if (!$inputTanggal || !strtotime($inputTanggal)) {
-                return "Tanggal tidak valid";
-            }
-
-            $split = explode('-', $inputTanggal);
-
-            // Cek apakah hasil explode menghasilkan 3 elemen (tahun-bulan-tanggal)
-            if (count($split) < 3) {
-                return "Format tanggal tidak valid";
-            }
-
-            $dateTime = new DateTime($inputTanggal);
-            $formattedDate = $dateTime->format("d ") . $bulan[(int) $split[1]] . $dateTime->format(" Y - H:i") . " WIB";
-
-            return $formattedDate;
-        }
 
 $sql = "SELECT * FROM dpengolahan_temp WHERE petugas = '$petugas' ORDER BY `id` ASC";
 $result = $dbi->query($sql);
@@ -201,39 +168,50 @@ if ($result->num_rows > 0) {
                 }
 
                 // Ambil data master_kantong
-                $sql = "SELECT pr_utama, pr_s1, pr_s2, pr_s3, pr_s4, pr_s5, pr_s6, pr_s7 
-            FROM master_kantong 
-            WHERE merk = '$merk0' AND vol = '$volasal0' AND jenis = '$jenis_kantong0' LIMIT 1";
+                $sql = "SELECT berat_ku, berat_s1, berat_s2, berat_s3, berat_s4, berat_s5, berat_s6, berat_s7, pr_utama, pr_s1, pr_s2, pr_s3, pr_s4, pr_s5, pr_s6, pr_s7, antikoagulant FROM master_kantong 
+                WHERE merk = '$merk0' AND vol = '$volasal0' AND jenis = '$jenis_kantong0' LIMIT 1";
                 $result = $dbi->query($sql);
 
                 if ($result && $row = $result->fetch_assoc()) {
                     switch ($tipe) {
                         case 'A':
                             $produkString = $row['pr_utama'];
+                            $beratKantongKosong = $row['berat_ku'];
+                            $antikoagulan = $row['antikoagulant'];
                             break;
                         case 'B':
                             $produkString = $row['pr_s1'];
+                            $beratKantongKosong = $row['berat_s1'];
                             break;
                         case 'C':
                             $produkString = $row['pr_s2'];
+                            $beratKantongKosong = $row['berat_s2'];
                             break;
                         case 'D':
                             $produkString = $row['pr_s3'];
+                            $beratKantongKosong = $row['berat_s3'];
                             break;
                         case 'E':
                             $produkString = $row['pr_s4'];
+                            $beratKantongKosong = $row['berat_s4'];
                             break;
                         case 'F':
                             $produkString = $row['pr_s5'];
+                            $beratKantongKosong = $row['berat_s5'];
                             break;
                         case 'G':
                             $produkString = $row['pr_s6'];
+                            $beratKantongKosong = $row['berat_s6'];
                             break;
                         case 'H':
                             $produkString = $row['pr_s7'];
+                            $beratKantongKosong = $row['berat_s7'];
                             break;
                         default:
                             $produkString = '';
+                            $beratKantongKosong = 0;
+                            $antikoagulan = 0;
+                            break;
                     }
 
                     $produkArrayRaw = array_map('trim', explode(',', $produkString));
@@ -265,7 +243,7 @@ if ($result->num_rows > 0) {
                         $selected = ($option == $selProduk) ? "selected" : "";
 
                         // Ambil data produk
-                        $qProduk = "SELECT umurhari, umurjam, volume, suhusimpan AS psuhu, waktu_pengolahan AS pcepat 
+                        $qProduk = "SELECT beratjenis, umurhari, umurjam, volume, suhusimpan AS psuhu, waktu_pengolahan AS pcepat 
                                     FROM produk WHERE Nama = '$option' LIMIT 1";
                         $resProduk = $dbi->query($qProduk);
                         $umurhari = $umurjam = $volume = '';
@@ -278,6 +256,7 @@ if ($result->num_rows > 0) {
                             $umurhari = $rowp['umurhari'] ? $rowp['umurhari'] : 0;
                             $umurjam = $rowp['umurjam'] ? $rowp['umurjam'] : 0;
                             $volume = $rowp['volume'] ? $rowp['volume'] : 0;
+                            $beratjenis = $rowp['beratjenis'] ? $rowp['beratjenis'] : 0;
                             switch ($option) {
                                 case "WE":
                                     $pCepat = 3000;
@@ -317,19 +296,34 @@ if ($result->num_rows > 0) {
                                     $bSuhu = 22;
                                     break;
                             }
-
                         }
+
+                        // Dapat Perhitungan Volume
+                        // Jika Tidak WB : Volume = (Berat kantong (gram) - Berat Kantong Kosong) : berat jenis
+                        // Jika WB : Volume = ((Berat kantong (gram) - Berat Kantong Kosong) : berat jenis) - antikoagulan
+
+                        $ambilNK = substr($nKA, 0, -1);
+                        $nKantong = $ambilNK . $tipe;
+                        $dataTimbangdarah = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT berat_ukur FROM timbang_darah WHERE nokantong = '$nKantong' ORDER BY id DESC LIMIT 1"));
+                        $beratKantongDarah = isset($dataTimbangdarah['berat_ukur']) ? $dataTimbangdarah['berat_ukur'] : 0;
+
+                        if (stripos($option, 'wb') !== false) {
+                            $hitungVolume = ($beratKantongDarah - $beratKantongKosong) / $beratjenis;
+                            $resultVolume = round($hitungVolume - $antikoagulan);
+                        } else {
+                            $resultVolume = round(($beratKantongDarah - $beratKantongKosong) / $beratjenis);
+                        }
+
 
                         $optionsHTML .= "<option value=\"$option\" $selected 
                             data-umurhari=\"$umurhari\" 
                             data-umurjam=\"$umurjam\" 
                             data-tgl-aftap=\"$tglAftap\"
-                            data-volume=\"$volume\"
+                            data-volume=\"$resultVolume\"
                             data-psuhu=\"$bSuhu\"
                             data-pcepat=\"$pCepat\">
                             $option</option>\n";
                     }
-
                 }
                 return $optionsHTML;
             }
@@ -352,6 +346,7 @@ if ($result->num_rows > 0) {
             $row["noKantong"] . "
                 </td>";
         echo "<td>" . (!empty($row["tglAftap"]) && $row["tglAftap"] !== '0000-00-00 00:00:00' ? formatTanggal($row["tglAftap"]) : "Tidak ada data Tanggal (N/A)") . "</td>";
+        echo "<td>" . (!empty($row["tglPengerjaan"]) ? $row["tglPengerjaan"] : "0000-00-00") . "</td>";
         echo "<td>" . $row["goldarah"] . " (" . $row["rhesus"] . ")</td>";
         echo "<td>" . $jK . "</td>";
         $options = createOptions($merk0, $volasal0, $jenis_kantong0, $tipe, $selProduk, $nKA, $dbi);
@@ -366,6 +361,8 @@ if ($result->num_rows > 0) {
         echo "<td>
                 <input id='ed_produk_$no' style='text-align: center' type='text' name='ed_produk[]' value=''>
                 </td>";
+        echo "<td>± 
+                <input id='volume_$no' style='text-align: center' type='text' name='volume[]' value='' size='1'/> cc</td>";
         echo "<td>" . $row["aPutar"] . "</td>";
         // echo "<td>" . $jarak . "</td>";
         //echo "<td>" . $row["pcepat"] . "</td>";
@@ -376,8 +373,6 @@ if ($result->num_rows > 0) {
                 <input id='psuhu_$no' style='text-align: center;min-width:40px;' type='text' name='psuhu[]' value='" . $row["psuhu"] . "' size='1'>
                 </td>";
         echo "<td>" . $waktuPutar . "</td>";
-        echo "<td>± 
-                <input id='volume_$no' style='text-align: center' type='text' name='volume[]' value='' size='1'/> cc</td>";
         echo "<td>
             <select class='custom-select' name='metode[]' style='min-width:70px;'>
                 <option value='0'>Manual</option>
@@ -388,11 +383,15 @@ if ($result->num_rows > 0) {
         echo "<td>" . substr($row["mulaiPisah"], 0, 5) . "</td>";
         echo "<td>" . substr($row["selesaiPisah"], 0, 5) . "</td>";
 
-        echo "<td style='text-align: center;'>
-        <label class='slider-label'>Tidak</label>
-        <input type='range' class='bstatus-slider' name='bstatus[$index]' min='0' max='1' step='1' value='" . $row['bstatus'] . "'>
-        <label class='slider-label'>Iya</label>
-        </td>";
+        // echo "<td style='text-align: center;'>
+        // <label class='slider-label'>Tidak</label>
+        // <input type='range' class='bstatus-slider' name='bstatus[$index]' min='0' max='1' step='1' value='" . $row['bstatus'] . "'>
+        // <label class='slider-label'>Iya</label>
+        // </td>";
+
+        echo "<td>" . $row["aBeku"] . "</td>";
+        echo "<td>" . substr($row["mulaiBeku"], 0, 5) . "</td>";
+        echo "<td>" . substr($row["selesaiBeku"], 0, 5) . "</td>";
 
         echo "<td>
         <input style='text-align: center;min-width:40px;' type='text' name='bsuhu[]' value='" . $row["bsuhu"] . "' size='2'>
@@ -460,7 +459,7 @@ if ($result->num_rows > 0) {
                 produk: selectedValue,
                 jKantong: noKantongInput.value
             },
-            success: function (response) {
+            success: function(response) {
                 const data = JSON.parse(response);
 
                 //logging
@@ -477,7 +476,7 @@ if ($result->num_rows > 0) {
                     console.error("❌ Gagal mengambil data produk dari server:", data.produk);
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("❌ AJAX Error:", error);
             }
         });
@@ -492,7 +491,7 @@ if ($result->num_rows > 0) {
 
         $('#confirmDeleteModal').modal('show');
 
-        document.getElementById('confirmDeleteButton').onclick = function () {
+        document.getElementById('confirmDeleteButton').onclick = function() {
             $.ajax({
                 url: 'modul/pengolahan/hapusPengolahanTemp.php',
                 // url: 'hapusPengolahanTemp.php',
@@ -500,7 +499,7 @@ if ($result->num_rows > 0) {
                 data: {
                     id: id
                 },
-                success: function (response) {
+                success: function(response) {
                     try {
                         var jsonResponse = JSON.parse(response);
                         if (jsonResponse.success) {
@@ -515,7 +514,7 @@ if ($result->num_rows > 0) {
                     // Sembunyikan modal setelah penghapusan
                     $('#confirmDeleteModal').modal('hide');
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     alert('Terjadi kesalahan saat menghapus data: ' + error);
                     $('#confirmDeleteModal').modal('hide');
                 }
