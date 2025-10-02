@@ -297,21 +297,23 @@ function isValidNomorKantong($nK, $dbi)
 
         // 🔹 Kalau satelit B/C/D dst → cek dulu datanya lengkap atau nggak
         if ($sD['nK'] != 'A') {
+            // kalau satelit status 2 → jangan fallback, langsung pakai data satelit
             if (
-                empty($sD['tglAftap']) || $sD['tglAftap'] == '0000-00-00' || $sD['Status'] == 3
+                empty($sD['tglAftap']) || $sD['tglAftap'] == '0000-00-00'
             ) {
-                // fallback ke kantong utama
+                // fallback ke kantong utama hanya kalau data satelit tidak lengkap
                 $sData1 = "SELECT `jenis`, `produk`, `tglpengolahan`, `Status`, 
-                                `volume`, `merk`, `lama_pengambilan`, 
-                                `sah`, `kadaluwarsa`, DATE(tgl_Aftap) AS tglAftap 
-                        FROM stokkantong 
-                        WHERE noKantong = '$ktgUtama'";
+                        `volume`, `merk`, `lama_pengambilan`, 
+                        `sah`, `kadaluwarsa`, DATE(tgl_Aftap) AS tglAftap 
+                FROM stokkantong 
+                WHERE noKantong = '$ktgUtama'";
                 $result1 = mysqli_query($dbi, $sData1);
                 if ($result1 && mysqli_num_rows($result1) > 0) {
                     $sD = mysqli_fetch_assoc($result1);
                 }
             }
         }
+
 
         $tglAftap = (is_null($sD['tglAftap'])) ? "KOSONG" : (($sD['tglAftap'] == '0000-00-00') ? '0000-00-00' : $sD['tglAftap']);
         $kedaluwarsa = strtotime($sD['kadaluwarsa']);
@@ -335,10 +337,20 @@ function isValidNomorKantong($nK, $dbi)
             }
         }
 
-        if ($sD['Status'] == 3) {
-            echo json_encode(array('status' => 'error', 'message' => 'Status <b>Kantong Keluar</b>, harap periksa kembali nomor kantong yang anda masukkan'));
+        // 🔹 Validasi status keluar
+        if ($sD['nK'] == 'A' && $sD['Status'] == 3) {
+            echo json_encode(array('status' => 'error', 'message' => 'Status <b>Kantong Utama (A) Keluar</b>, tidak bisa diproses.'));
             exit;
         }
+
+        if ($sD['nK'] != 'A') {
+            // satelit hanya boleh status 2
+            if ($sD['Status'] != 2) {
+                echo json_encode(array('status' => 'error', 'message' => 'Status <b>Kantong Satelit</b> tidak sesuai. Hanya kantong satelit dengan status 2 yang bisa diproses.'));
+                exit;
+            }
+        }
+
 
         if ($sD['Status'] == 7) {
             echo json_encode(array('status' => 'error', 'message' => 'Status Kantong <b>REAKTIF</b> !!! <br>Silahkan Periksa Kantong yang Anda masukkan atau masukkan kantong lain.'));
@@ -360,9 +372,11 @@ function isValidNomorKantong($nK, $dbi)
             exit;
         }
 
-        if (!is_null($sD['kadaluwarsa']) && $kedaluwarsa < time()) {
-            echo json_encode(array('status' => 'error', 'message' => 'Kantong darah sudah <b>KEDALUWARSA</b> pada tanggal: <br><b>' . formatTanggal($sD['kadaluwarsa']) . '</b> dan tidak dapat diproses.'));
-            exit;
+        if ($sD['nK'] == 'A') {
+            if (!is_null($sD['kadaluwarsa']) && $kedaluwarsa < time()) {
+                echo json_encode(array('status' => 'error', 'message' => 'Kantong darah sudah <b>KEDALUWARSA</b> pada tanggal: <br><b>' . formatTanggal($sD['kadaluwarsa']) . '</b> dan tidak dapat diproses.'));
+                exit;
+            }
         }
 
         if ($sD['lama_pengambilan'] <= 0 || $sD['lama_pengambilan'] >= 15) {

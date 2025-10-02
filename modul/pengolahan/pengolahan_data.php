@@ -361,7 +361,7 @@ if ($result->num_rows > 0) {
         echo "<td>
                 <input id='ed_produk_$no' style='text-align: center' type='text' name='ed_produk[]' value=''>
                 </td>";
-        echo "<td>± 
+        echo "<td>&plusmn; 
                 <input id='volume_$no' style='text-align: center' type='text' name='volume[]' value='' size='1'/> cc</td>";
         echo "<td>" . $row["aPutar"] . "</td>";
         // echo "<td>" . $jarak . "</td>";
@@ -402,7 +402,7 @@ if ($result->num_rows > 0) {
     }
 } else {
     echo "<tr>";
-    echo "<td colspan='19'><b>TIDAK ADA DATA</b> untuk ditampilkan.</td>";
+    echo "<td colspan='22'><b>TIDAK ADA DATA</b> untuk ditampilkan.</td>";
     echo "</tr>";
 }
 ?>

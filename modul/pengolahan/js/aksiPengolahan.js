@@ -2,7 +2,7 @@
 
 function handleKeyPress(event) {
   var nomorKantong = document.getElementById("nomorKantong").value;
-  var tglPengerjaan = document.getElementById("tglPengerjaan").value;
+  // var tglPengerjaan = document.getElementById("tglPengerjaan").value;
   var alatPemutaran = document.getElementById("alatPemutaran").value;
   var alatPemisahan = document.getElementById("alatPemisahan").value;
   var alatPembekuan = document.getElementById("alatPembekuan").value;
@@ -13,6 +13,27 @@ function handleKeyPress(event) {
   var jMBeku = document.getElementById("jMBeku").value.trim();
   var jSBeku = document.getElementById("jSBeku").value.trim();
   var shift = document.getElementById("shift").value;
+
+  // Normalisasi tglPengerjaan ke format Y-m-d H:i:s
+  let tglPengerjaanRaw = document.getElementById("tglPengerjaan").value;
+  let tglPengerjaan = "";
+  if (tglPengerjaanRaw) {
+    let d = new Date(tglPengerjaanRaw);
+    if (!isNaN(d.getTime())) {
+      tglPengerjaan =
+        d.getFullYear() +
+        "-" +
+        ("0" + (d.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + d.getDate()).slice(-2) +
+        " " +
+        ("0" + d.getHours()).slice(-2) +
+        ":" +
+        ("0" + d.getMinutes()).slice(-2) +
+        ":" +
+        ("0" + d.getSeconds()).slice(-2);
+    }
+  }
 
   // Cek apakah semua field waktu telah diisi
   if (!jMPutar || !jSPutar || !jMPisah || !jSPisah) {
@@ -87,6 +108,7 @@ function insertData(
         showModal("Kesalahan saat memproses data dari server.");
       }
     } else {
+      console.error("JSON Parse error:", e);
       showModal("Terjadi kesalahan saat menyimpan data.");
     }
   };
