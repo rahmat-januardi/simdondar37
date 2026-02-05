@@ -49,8 +49,8 @@ if (isset($kantong1[rnokantong])) {
 	<!--input name=cetak type=button value="Label Besar" class="swn_button_blue" onclick="$.fn.colorbox({href:'qa_label_105.php?noKantong=<?=$kantong1[rnokantong]?>', iframe:true, innerWidth:500, innerHeight:250},function(){ $().bind('cbox_closed', function(){window.location ='pmiqa.php?module=cetak_release'})});">
 	<input name=cetak type=button value="Label Kecil" class="swn_button_blue" onclick="$.fn.colorbox({href:'qa_label_73.php?noKantong=<?=$kantong1[rnokantong]?>', iframe:true, innerWidth:500, innerHeight:250},function(){ $().bind('cbox_closed', function(){window.location ='pmiqa.php?module=cetak_release'})});"-->
 
-	<input name=cetak type=button value="Label Besar" class="swn_button_blue" onclick="$.fn.colorbox({href:'qa_label_cetak.php?noKantong=<?=$kantong1[rnokantong]?>', iframe:true, innerWidth:500, innerHeight:250},function(){ $().bind('cbox_closed', function(){window.location ='pmiqa.php?module=cetak_release'})});">
-	<input name=cetak type=button value="Label Kecil" class="swn_button_blue" onclick="$.fn.colorbox({href:'qa_label_cetak.php?noKantong=<?=$kantong1[rnokantong]?>', iframe:true, innerWidth:500, innerHeight:250},function(){ $().bind('cbox_closed', function(){window.location ='pmiqa.php?module=cetak_release'})});">
+	<input name=cetak type=button value="Cetak Label" class="swn_button_blue" onclick="$.fn.colorbox({href:'qa_label_cetak.php?noKantong=<?=$kantong1[rnokantong]?>', iframe:true, innerWidth:500, innerHeight:250},function(){ $().bind('cbox_closed', function(){window.location ='pmiqa.php?module=cetak_release'})});">
+	<!--<input name=cetak type=button value="Label Kecil" class="swn_button_blue" onclick="$.fn.colorbox({href:'qa_label_cetak.php?noKantong=<?=$kantong1[rnokantong]?>', iframe:true, innerWidth:500, innerHeight:250},function(){ $().bind('cbox_closed', function(){window.location ='pmiqa.php?module=cetak_release'})});">-->
 	</td><td></td></tr>
 <? } ?>
 </table>

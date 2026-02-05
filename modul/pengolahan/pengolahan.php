@@ -277,7 +277,7 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                         <?php
                         $aBekuOptions = mysqli_query($dbi, "SELECT id, kode, nama_barang FROM logbook_h WHERE fungsi LIKE '%pembekuan%'");
                         while ($aBk = mysqli_fetch_assoc($aBekuOptions)) {
-                            $selected = ($aBk['kode'] == $aBeku) ? 'selected' : ''; // ✅ benar
+                            $selected = ($aBk['kode'] == $aBeku) ? 'selected' : ''; // ? benar
 
                         ?>
                             <option value="<?php echo $aBk['kode']; ?>" <?php echo $selected; ?>>
@@ -382,7 +382,7 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                         <!-- Subheader pakai class -->
                         <th class="col-pemutaran">Alat</th>
                         <th class="col-pemutaran">Kecepatan (Xg)</th>
-                        <th class="col-pemutaran">Suhu (°C)</th>
+                        <th class="col-pemutaran">Suhu (�C)</th>
                         <th class="col-pemutaran">Waktu (menit)</th>
 
                         <th class="col-pengolahan">Metode</th>

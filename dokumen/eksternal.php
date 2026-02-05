@@ -1,175 +1,254 @@
 <?php
-	include "koneksi.php";
-	//include "index.php";
+include "koneksi.php";
+session_start();
+$namauser = $_SESSION['namauser'];
+
+// ==================== CREATE ====================
+if (isset($_POST['tambah'])) {
+
+	$nama   = $_POST['nama'];
+	$tingkat = $_POST['tingkat'];
+	$nomor  = $_POST['no_tahun'];
+	$petugas = $_POST['petugas'];
+
+	// Pastikan folder upload ada
+if (!is_dir("upload")) {
+    mkdir("upload", 0777, true);
+}
+
+// ambil file lama
+$fileku = $_POST['file_lama'];
+
+// jika ada file baru
+if (!empty($_FILES['fileku']['name'])) {
+
+    // hapus file lama jika ada
+    if (!empty($fileku) && file_exists("upload/" . $fileku)) {
+        unlink("upload/" . $fileku);
+    }
+
+    // BERSIHKAN nama file baru (Wajib)
+    $nama_asli = $_FILES['fileku']['name'];
+    $nama_bersih = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $nama_asli);
+
+    // Buat nama final
+    $fileku = time() . "_" . $nama_bersih;
+
+    // Upload
+    if (move_uploaded_file($_FILES['fileku']['tmp_name'], "upload/" . $fileku)) {
+        mysql_query("INSERT INTO eksternal (nama, tingkat, no_tahun_dokumen, petugas, fileku, aktif)
+			VALUES ('$nama', '$tingkat', '$nomor', '$petugas', '$fileku', '0')");
+
+
+	echo "<script>alert('Dokumen berhasil ditambahkan');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
+    } else {
+        echo "<script>alert('GAGAL upload file!');</script>";
+    }
+}
+
+	
+}
+
+// ==================== DELETE ====================
+if (isset($_GET['delete'])) {
+
+	$id = $_GET['delete'];
+
+	// ambil nama file
+	$q = mysql_query("SELECT fileku FROM eksternal WHERE id='$id'");
+	$d = mysql_fetch_array($q);
+
+	if (!empty($d['fileku']) && file_exists("upload/" . $d['fileku'])) {
+		unlink("upload/" . $d['fileku']);
+	}
+
+	mysql_query("DELETE FROM eksternal WHERE id='$id'");
+
+	echo "<script>alert('Dokumen berhasil dihapus');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
+}
+
+// ==================== GET DATA FOR EDIT ====================
+$editMode = false;
+$editData = array();
+
+if (isset($_GET['edit'])) {
+	$editMode = true;
+	$id = $_GET['edit'];
+	$q = mysql_query("SELECT * FROM eksternal WHERE id='$id'");
+	$editData = mysql_fetch_array($q);
+}
+
+// ==================== UPDATE ====================
+if (isset($_POST['update'])) {
+	$id = $_POST['id'];
+	$nama = $_POST['nama'];
+	$tingkat = $_POST['tingkat'];
+	$nomor = $_POST['no_tahun'];
+	$petugas = $_POST['petugas'];
+
+
+	// cek file baru
+	$fileku = $_POST['file_lama'];
+	if (!empty($_FILES['fileku']['name'])) {
+
+		// hapus file lama
+		if (!empty($fileku) && file_exists("upload/" . $fileku)) {
+			unlink("upload/" . $fileku);
+		}
+
+		$fileku = time() . "_" . $_FILES['fileku']['name'];
+		move_uploaded_file($_FILES['fileku']['tmp_name'], "upload/" . $fileku);
+	}
+
+	mysql_query("UPDATE eksternal SET
+             nama='$nama',
+             tingkat='$tingkat',
+             no_tahun_dokumen='$nomor',
+             petugas='$petugas',
+             fileku='$fileku'
+             WHERE id='$id'");
+
+
+	echo "<script>alert('Perubahan berhasil disimpan');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
+}
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script>
-<style>
-.button1 {
-  padding: 10px 20px;
-  font-size: 12px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background-color: #ff0000;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 5px #999;
-}
-
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-	font-size:12px;
-	margin:auto;
-	width:100%;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 8px;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
-<style> 
-input[type=text] {
-    width: 130px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    background-image: url('searchicon.png');
-    background-position: 10px 10px; 
-    background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-}
-
-input[type=text]:focus {
-    width: 100%;
-	margin:auto;
-}
-</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+    .no-edit {
+        pointer-events: none;
+        background-color: #e9ecef;
+    }
+    </style>
 </head>
-<body>
-<br />
-<input id="myInput" type="text" placeholder="Search..">
-<br><br>
-<a href="rekap_musnah.php"><button class="button1">Daftar Pemusnahan Dokumen</button></a>
-<br><br>
-<p align="center"><b> Dokumen Eksternal (L5)</b></p>
-<table>
-  <thead>
-    <tr>
-      	<th rowspan="2">No</th>
-    	<th rowspan="2">Bidang</th>
-    	<th rowspan="2">Judul Dokumen</th>
-    	<th rowspan="2" style="width:10px">Identitas Dokumen Sebelumnya</th>
-    	<th rowspan="2" style="width:10px">Tingkat Dokumen</th>
-    	<th rowspan="2">No. Kontrol Dokumen</th>
-    	<th rowspan="2" style="width:10px">Periode Kaji Ulang (bln)</th>
-    	<th rowspan="2" style="width:10px">No. Versi</th>
-    	<th rowspan="2">Tanggal Disahkan</th>
-    	<th rowspan="2">Tanggal Berlaku</th>
-    	<th rowspan="2">Tanggal Kaji Ulang</th>
-	<th rowspan="2">File</th>
-	<th colspan="3">Keterangan Masa Aktif Dokumen</th>
-	<th rowspan="2">Pengeluaran Dokumen</th>
-	<th rowspan="2">Peninjauan Kembali Dokumen</th>
-	<th rowspan="2">Pemusnahan Dokumen</th>
-	
-    </tr>
 
-    <tr>
-	<th>Masih Berlaku</th>
-	<th>Habis Masa Kadaluwarsa</th>
-	<th>Peninjauan Kembali</th>
-	</tr>
-  </thead>
-  <tbody id="myTable">
-    <?php
-	$donor = "select * from eksternal where aktif='0' order by kontrol2";
-	$proses = mysql_query($donor);
+<body class="container mt-4">
 
-	// awal Konversi tanggal ke bahasa indonesia
-	function format_indo($date){
-    	$BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+    <h4 class="text-center mb-4">
+        <b>Dokumen Eksternal (L5)</b>
+    </h4>
 
-    	$tahun = substr($date, 0, 4);               
-    	$bulan = substr($date, 5, 2);
-    	$tgl   = substr($date, 8, 2);
-    	$result = $tgl . " " . $BulanIndo[(int)$bulan-1]. " ". $tahun;
-    	return($result);
-	}
-	// akhir Konversi tanggal ke bahasa indonesia
+    <!-- ===================== FORM TAMBAH / EDIT ===================== -->
+    <div class="card p-3 mb-4">
+        <h5><?= $editMode ? "Edit Dokumen" : "Tambah Dokumen" ?></h5>
+        <form method="post" enctype="multipart/form-data">
 
-	$nourut = 0;
-	while($data = mysql_fetch_array($proses)){ 
-	$nourut++;
+            <?php if ($editMode) { ?>
+            <input type="hidden" name="id" value="<?= $editData['id'] ?>">
+            <input type="hidden" name="file_lama" value="<?= $editData['fileku'] ?>">
+            <?php } ?>
 
-	//awal penanda dokumen
-	$today=date('Y-m-d');
-	if ($data['tgl_peninjauan']>="$today") $pengerjaan1='<span style="background-color:#DEB887">Masih Berlaku</span>';
-	if ($data['tgl_peninjauan']<="$today") $pengerjaan1='<span>-</span>';
-	if ($data['tgl_peninjauan']=="$today") $pengerjaan1='<span>-</span>';
+            <div class="row mb-2">
+                <div class="col-md-4">
+                    <label>Judul Dokumen</label>
+                    <input type="text" name="nama" class="form-control"
+                        value="<?= $editMode ? $editData['nama'] : "" ?>" required>
+                </div>
 
-	if ($data['tgl_peninjauan']<="$today") $pengerjaan2='<span style="background-color:#B22222"><font style="color:white">Habis Masa Berlaku</font></span>';
-	if ($data['tgl_peninjauan']>="$today") $pengerjaan2='<span>-</span>';
-	if ($data['tgl_peninjauan']=="$today") $pengerjaan2='<span>-</span>';
+                <div class="col-md-3">
+                    <label>No & Tahun Dokumen</label>
+                    <input type="text" name="no_tahun" class="form-control"
+                        value="<?= $editMode ? $editData['no_tahun_dokumen'] : "" ?>" required>
+                </div>
 
-	
-	if ($data['tgl_notif']>="$today") $pengerjaan3='<span">-</span>';	
-	if ($data['tgl_notif']<="$today") $pengerjaan3='<span style="background-color:yellow">Waktunya Peninjauan Kembali</span>';
-	if ($data['tgl_notif']=="$today") $pengerjaan3='<span style="background-color:yellow">Waktunya Peninjauan Kembali</span>';
-	//akhir penanda dokumen
+                <div class="col-md-2">
+                    <label>Tingkat</label>
+                    <input type="text" name="tingkat" class="form-control no-edit"
+                        value="<?= $editMode ? $editData['tingkat'] : "L5" ?>">
+                </div>
 
-	?>
-        <tr>
-        	<td><div align="center"><?php echo $nourut; ?></div></td>
-            <td><div align="left"><?php echo $data['bidang']; ?></div></td>
-            <td><div align="left"><?php echo $data['nama1']; ?></div></td>
-            <td><div align="center"><?php echo $data['nama2']; ?></div></td>
-            <td><div align="center"><?php echo $data['tingkat']; ?></div></td>
-            <td><div align="center"><?php echo $data['kontrol2']; ?></div></td>
-            <td><div align="center"><?php echo $data['periode']; ?></div></td>
-            <td><div align="center"><?php echo $data['no_versi']; ?></div></td>
-            <td><div align="center"><?php echo format_indo($data['tgl_setuju']); ?></div></td>
-            <td><div align="center"><?php echo format_indo($data['tgl_pelaksanaan']); ?></div></td>
-            <td><div align="center"><?php echo format_indo($data['tgl_peninjauan']); ?></div></td>
-	    <td><a href="download.php?filename=<?=$data['fileku']?>"><?php echo $data['fileku']; ?></a></td>
-	    <td><div align="center"><?php echo $pengerjaan1; ?></div></td>
-	    <td><div align="center"><?php echo $pengerjaan2; ?></div></td> 
-	    <td><div align="center"><?php echo $pengerjaan3; ?></div></td> 
-	    <td><a href="keluar_eksternal.php?detail=<?php echo $data['kontrol2']; ?>"><img src="images/clip.png" width="30" height="30"></img>
-	    </a></td>
-            <td><a href="detail_eksternal.php?detail=<?php echo $data['kontrol2']; ?>"><img src="images/revisi.png" width="30" height="30"></img></a></td>
-	    <td><a href="musnah_eksternal.php?detail=<?php echo $data['kontrol2']; ?>"><img src="images/musnah.png" width="30" height="30"></img></a></td>
-	    
-        </tr>
-  <?php
-		}
-		?>
-  </tbody>
-</table>
+                <div class="col-md-3">
+                    <label>Petugas</label>
+                    <input type="text" name="petugas" class="form-control no-edit"
+                        value="<?= $editMode ? $editData['petugas'] : "$namauser" ?>">
+                </div>
+            </div>
+
+
+            <div class="mb-2">
+                <label>File Dokumen (PDF/DOC/Excel/GAMBAR)</label>
+                <input type="file" name="fileku" class="form-control">
+                <small>Maximal File bisa upload 5MB</small>
+
+                <?php if ($editMode && !empty($editData['fileku'])) { ?>
+                <small>File sekarang: <?= $editData['fileku'] ?></small>
+                <?php } ?>
+            </div>
+
+            <button type="submit" name="<?= $editMode ? 'update' : 'tambah' ?>" class="btn btn-primary mt-2">
+                <?= $editMode ? "Update Dokumen" : "Simpan Dokumen" ?>
+            </button>
+
+            <?php if ($editMode) { ?>
+            <a href="<?= $_SERVER['PHP_SELF'] ?>" class="btn btn-secondary mt-2">Batal</a>
+            <?php } ?>
+        </form>
+    </div>
+
+    <!-- ===================== TABEL ===================== -->
+    <input id="myInput" type="text" class="form-control mb-3" placeholder="Search...">
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="table-secondary">
+                <th width="50">No</th>
+                <th>Judul Dokumen</th>
+                <th width="120">Tingkat</th>
+                <th width="150">Nomor & Tahun</th>
+                <th width="180">File</th>
+                <th>Petugas</th>
+                <th width="120">Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody id="myTable">
+            <?php
+			$q = mysql_query("SELECT * FROM eksternal WHERE aktif='0' ORDER BY id ASC");
+			$no = 1;
+			while ($data = mysql_fetch_array($q)) {
+			?>
+            <tr>
+                <td><?= $no++ ?></td>
+                <td><?= $data['nama'] ?></td>
+                <td><?= $data['tingkat'] ?></td>
+                <td><?= $data['no_tahun_dokumen'] ?></td>
+                <td>
+                    <a href="download.php?filename=<?= $data['fileku'] ?>">
+                        <?= $data['fileku'] ?>
+                    </a>
+                </td>
+                <td><?= $data['petugas'] ?></td>
+                <td>
+                    <a href="?edit=<?= $data['id'] ?>" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="?delete=<?= $data['id'] ?>" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Hapus dokumen ini?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+    </script>
 
 </body>
+
 </html>

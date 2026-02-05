@@ -1366,8 +1366,8 @@ if (empty($level)) {
                                                         case 
                                                         when `Hasil`='0' then 'Non Reaktif' 
                                                         when `Hasil`='1' then 'Reaktif'
-                                                        when `Hasil`='2' then 'Grayzone'  End As Hasil
-                                                        FROM `hasilnat` WHERE `noKantong` = '$no_kantonga' order by `natid`");
+                                                        when `Hasil`='2' then 'Invalid'  End As Hasil
+                                                        FROM `hasilnat` WHERE `noKantong` = '$no_kantonga' order by `id`");
 
                 ?>
                 <br>
@@ -1397,7 +1397,7 @@ if (empty($level)) {
                     $no = "0";
                     while ($imltdn = mysqli_fetch_assoc($sq_nat)) {
                         $no++;
-                        if (($imltdn['Hasil'] == "Reaktif") or ($imltdn['Hasil'] == "Grayzone")) {
+                        if (($imltdn['Hasil'] == "Reaktif") or ($imltdn['Hasil'] == "Invalid")) {
                             $var_imltd = '1';
                         }
                         $sq_reagen = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `Nama`, `noLot`, `tglKad`  FROM `reagen` WHERE kode='$imltd[noLot]'"));

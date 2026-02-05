@@ -2,11 +2,18 @@
 include "koneksi.php";
 //include "index.php";
 
-$detail = $_GET['detail'];
+$detail = mysql_real_escape_string($_GET['detail']); // contoh ambil dari URL
+$nomor =  $_GET['no'];
 
-$sql = "select * from formulir where kontrol2='$detail'";
+$sql = "SELECT formulir.*, pks.bidang as bidangSPO, pks.nama1 as namaSPO, pks.kontrol2 as kodeSPO FROM formulir JOIN pks ON formulir.terkait=pks.nama1 WHERE formulir.kontrol2='$detail' AND formulir.aktif='0' AND formulir.nomor='$nomor'";
 $proses = mysql_query($sql);
 $data = mysql_fetch_array($proses);
+
+$query = "SELECT * FROM user ORDER BY nama_lengkap";
+$hasilPembuat = mysql_query($query);
+$hasilPemeriksa = mysql_query($query);
+$hasilPengesah = mysql_query($query);
+$hasilPengesah2 = mysql_query($query);
 ?>
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,12 +22,19 @@ $data = mysql_fetch_array($proses);
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Untitled Document</title>
-    <link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
-    <script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
-    <script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
-    <link rel="stylesheet" href="jquery-ui-1.10.3/demos.css">
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- jQuery (harus sebelum jQuery UI dan Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- jQuery UI (opsional, untuk datepicker) -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
     $(function() {
         $("#datepicker").datepicker();
@@ -94,45 +108,32 @@ $data = mysql_fetch_array($proses);
     <p align="center" class="COOPER">
         <font size="5"><u>DOKUMEN FORMULIR<br /><?php echo $data['nama1']; ?></u></font>
     </p>
-    <?php
-  $sql = "select formulir.terkait as nama, pks.kontrol as kontrol, pks.kontrol2 as kontrol2, pks.kontrol3 as kontrol3  from pks,formulir where pks.nama1=formulir.terkait and formulir.nomor='$detail'";
-  $proses = mysql_query($sql);
-  $data = mysql_fetch_array($proses);
-  ?>
-    <p align="center">
-        <?php echo $data['nama']; ?><?php echo $data['kontrol']; ?><?php echo $data['kontrol2']; ?><?php echo $data['kontrol3']; ?>
-    </p>
-    <?php
-  $sql = "select * from formulir where kontrol2='$detail'";
-  $proses = mysql_query($sql);
-  $data = mysql_fetch_array($proses);
-  ?>
+
     <form method="post" action="edit_formulir.php" enctype="multipart/form-data">
-
-
-        <input type="text" name="bidang_riwayat" value="<?php echo $data['bidang']; ?>" style="display:none" />
-        <input type="text" name="nama1_riwayat" value="<?php echo $data['nama1']; ?>" style="display:none" />
-        <input type="text" name="nama2_riwayat" value="<?php echo $data['nama2']; ?>" style="display:none" />
-        <input type="text" name="tingkat_riwayat" value="<?php echo $data['tingkat']; ?>" style="display:none" />
-        <input type="text" name="kontrol_riwayat" value="<?php echo $data['kontrol']; ?>" style="display:none" />
-        <input type="text" name="kontrol2_riwayat" value="<?php echo $data['kontrol2']; ?>" style="display:none" />
-        <input type="text" name="kontrol3_riwayat" value="<?php echo $data['kontrol3']; ?>" style="display:none" />
-        <input type="text" name="periode riwayat" value="<?php echo $data['periode']; ?>" style="display:none" />
-        <input type="text" name="versi_riwayat" value="<?php echo $data['no_versi']; ?>" style="display:none" />
-        <input type="text" name="setuju_riwayat" value="<?php echo $data['tgl_setuju']; ?>" style="display:none" />
-        <input type="text" name="pelaksanaan_riwayat" value="<?php echo $data['tgl_pelaksanaan']; ?>"
-            style="display:none" />
-        <input type="text" name="peninjauan_riwayat" value="<?php echo $data['tgl_peninjauan']; ?>"
-            style="display:none" />
-        <input type="text" name="pembuat_riwayat" value="<?php echo $data['pembuat']; ?>" style="display:none" />
-        <input type="text" name="pemeriksa_riwayat" value="<?php echo $data['pemeriksa']; ?>" style="display:none" />
-        <input type="text" name="pengesah_riwayat" value="<?php echo $data['pengesah']; ?>" style="display:none" />
-        <input type="text" name="pengesah_riwayat2" value="<?php echo $data['pengesah2']; ?>" style="display:none" />
-
+        <input type="hidden" name="nomor" value="<?= $data['nomor'] ?>">
+        <input type="hidden" name="kontrol1" value="<?= $data['kontrol1'] ?>">
+        <input type="hidden" name="kontrol3" value="<?= $data['kontrol3'] ?>">
+        <input type="hidden" name="terkait" value="<?= $data['terkait'] ?>">
+        <input type="hidden" name="fileku" value="<?= $data['fileku'] ?>">
         <table align="center" border="1" cellpadding="10" cellspacing="1" bgcolor="#FFFFFF">
             <tr>
                 <td valign="top">
                     <table align="center">
+                        <tr>
+                            <td>
+                                <div align="right"><strong>SPO Terkait</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td>
+                                <div align="left">
+                                    <strong>
+                                        <?= $data['namaSPO']; ?>
+                                        - <?= $data['kodeSPO']; ?>
+                                    </strong>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
                         <tr>
                             <td>
                                 <div align="right"><strong>Bidang</strong></div>
@@ -142,22 +143,22 @@ $data = mysql_fetch_array($proses);
                                 <div align="left"><strong>
                                         <select name="bidang">
                                             <?php
-                      // Ambil nilai bidang dari data detail
-                      $selected_bidang = $data['bidang'];
+                                            // Ambil nilai bidang dari data detail
+                                            $selected_bidang = $data['bidang'];
 
-                      // Ambil semua opsi dari master_bidang
-                      $sql = "SELECT * FROM master_bidang ORDER BY bidang";
-                      $proses = mysql_query($sql);
+                                            // Ambil semua opsi dari master_bidang
+                                            $sql = "SELECT * FROM master_bidang ORDER BY bidang";
+                                            $proses = mysql_query($sql);
 
-                      while ($row = mysql_fetch_array($proses)) {
-                        $bidang = $row['bidang'];
+                                            while ($row = mysql_fetch_array($proses)) {
+                                                $bidang = $row['bidang'];
 
-                        // Cek apakah bidang ini yang dipilih
-                        $selected = ($bidang == $selected_bidang) ? "selected" : "";
+                                                // Cek apakah bidang ini yang dipilih
+                                                $selected = ($bidang == $selected_bidang) ? "selected" : "";
 
-                        echo "<option value='$bidang' $selected>$bidang</option>";
-                      }
-                      ?>
+                                                echo "<option value='$bidang' $selected>$bidang</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div> <strong><text style="display:none">
                                         <div align="left">
@@ -200,11 +201,6 @@ $data = mysql_fetch_array($proses);
                                 <div align="left"><strong>
                                         <select name="tingkat">
                                             <option><?php echo $data['tingkat']; ?></option>
-                                            <!--<option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>-->
                                         </select>
                                     </strong></div>
                             </td>
@@ -245,7 +241,7 @@ $data = mysql_fetch_array($proses);
                                     </strong></div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr style="display:none">
                             <td>
                                 <div align="right"><strong>Tanggal Disahkan</strong></div>
                             </td>
@@ -281,98 +277,95 @@ $data = mysql_fetch_array($proses);
                                     </strong></div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr style="display:none">
                             <td>
                                 <div align="right"><strong>Disusun Oleh</strong></div>
                             </td>
                             <td><strong>:</strong></td>
                             <td>
                                 <div align="left"><strong>
-                                        <select name="pembuat">
-                                            <option><?php echo $data['pembuat']; ?></option>
+                                        <select class="select2" name="pembuat" style="width:100%;">
                                             <?php
-                      $query = "select * from user order by nama_lengkap";
-                      $hasil = mysql_query($query);
-                      while ($data = mysql_fetch_array($hasil)) {
-                        echo "<option>$data[nama_lengkap]</option>";
-                      }
-                      ?>
+                                            // Ambil nilai bidang dari data detail
+                                            $selected_pembuat = $data['pembuat'];
+
+                                            while ($row = mysql_fetch_array($hasilPembuat)) {
+                                                $pembuat = $row['nama_lengkap'];
+
+                                                $selectedPembuat = ($pembuat == $selected_pembuat) ? "selected" : "";
+                                                echo "<option value='$pembuat' $selectedPembuat>$pembuat</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
                         </tr>
-                        <tr>
-                            <?php
-              $sql = "select * from formulir where kontrol2='$detail'";
-              $proses = mysql_query($sql);
-              $data = mysql_fetch_array($proses);
-              ?>
+                        <tr style="display:none">
                             <td>
                                 <div align="right"><strong>Diperiksa Oleh</strong></div>
                             </td>
                             <td><strong>:</strong></td>
                             <td>
                                 <div align="left"><strong>
-                                        <select name="pemeriksa">
-                                            <option><?php echo $data['pemeriksa']; ?></option>
+                                        <select class="select2" style="width:100%;" name="pemeriksa">
                                             <?php
-                      $query = "select * from user order by nama_lengkap";
-                      $hasil = mysql_query($query);
-                      while ($data = mysql_fetch_array($hasil)) {
-                        echo "<option>$data[nama_lengkap]</option>";
-                      }
-                      ?>
+                                            // Ambil nilai bidang dari data detail
+                                            $selected_pemeriksa = $data['pemeriksa'];
+
+                                            while ($row = mysql_fetch_array($hasilPemeriksa)) {
+                                                $pemeriksa = $row['nama_lengkap'];
+
+                                                $selectedPemeriksa = ($pemeriksa == $selected_pemeriksa) ? "selected" : "";
+                                                echo "<option value='$pemeriksa' $selectedPemeriksa>$pemeriksa</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
                         </tr>
-                        <tr>
-                            <?php
-              $sql = "select * from formulir where kontrol2='$detail'";
-              $proses = mysql_query($sql);
-              $data = mysql_fetch_array($proses);
-              ?>
+                        <tr style="display:none">
                             <td>
                                 <div align="right"><strong>Disetujui Oleh</strong></div>
                             </td>
                             <td><strong>:</strong></td>
                             <td>
                                 <div align="left"><strong>
-                                        <select name="pengesah">
-                                            <option><?php echo $data['pengesah']; ?></option>
+                                        <select class="select2" style="width:100%;" name="pengesah">
                                             <?php
-                      $query = "select * from user order by nama_lengkap";
-                      $hasil = mysql_query($query);
-                      while ($data = mysql_fetch_array($hasil)) {
-                        echo "<option>$data[nama_lengkap]</option>";
-                      }
-                      ?>
+                                            // Ambil nilai bidang dari data detail
+                                            $selected_pengesah = $data['pengesah'];
+
+                                            while ($row = mysql_fetch_array($hasilPengesah)) {
+                                                $pengesah = $row['nama_lengkap'];
+
+                                                $selectedPengesah = ($pengesah == $selected_pengesah) ? "selected" : "";
+                                                echo "<option value='$pengesah' $selectedPengesah>$pengesah</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
                         </tr>
 
-                        <tr>
-                            <?php
-              $sql = "select * from formulir where kontrol2='$detail'";
-              $proses = mysql_query($sql);
-              $data = mysql_fetch_array($proses);
-              ?>
+                        <tr style="display:none">
                             <td>
                                 <div align="right"><strong>Disahkan Oleh</strong></div>
                             </td>
                             <td><strong>:</strong></td>
                             <td>
                                 <div align="left"><strong>
-                                        <select name="pengesah2">
-                                            <option><?php echo $data['pengesah2']; ?></option>
+                                        <select class="select2" style="width:100%;" name="pengesah2">
                                             <?php
-                      $query = "select * from user order by nama_lengkap";
-                      $hasil = mysql_query($query);
-                      while ($data = mysql_fetch_array($hasil)) {
-                        echo "<option>$data[nama_lengkap]</option>";
-                      }
-                      ?>
+                                            // Ambil nilai bidang dari data detail
+                                            $selected_pengesah2 = $data['pengesah2'];
+
+                                            while ($row = mysql_fetch_array($hasilPengesah2)) {
+                                                $pengesah2 = $row['nama_lengkap'];
+
+                                                $selectedPengesah2 = ($pengesah2 == $selected_pengesah2) ? "selected" : "";
+                                                echo "<option value='$pengesah2' $selectedPengesah2>$pengesah2</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
@@ -417,37 +410,37 @@ $data = mysql_fetch_array($proses);
             <td><strong>No. Kontrol Dokumen</strong></td>
             <td><strong>Periode Review</strong></td>
             <td><strong>No Versi</strong></td>
-            <td><strong>Tgl Disetujui</strong></td>
+            <td style="display:none"><strong>Tgl Disetujui</strong></td>
             <td><strong>Tgl Berlaku</strong></td>
             <td><strong>Tgl Kaji Ulang</strong></td>
-            <td><strong>Disusun Oleh</strong></td>
-            <td><strong>Diperiksa Oleh</strong></td>
-            <td><strong>Disetujui Oleh</strong></td>
-            <td><strong>Disahkan Oleh</strong></td>
+            <td style="display:none"><strong>Disusun Oleh</strong></td>
+            <td style="display:none"><strong>Diperiksa Oleh</strong></td>
+            <td style="display:none"><strong>Disetujui Oleh</strong></td>
+            <td style="display:none"><strong>Disahkan Oleh</strong></td>
         </tr>
         <?php
-    $detail = $_GET['detail'];
-    $donor = "select * from riwayat where kontrol2='$detail'";
-    //$donor = "select * from riwayat where nama1 like '%IKM%' order by nomor desc";
+        $detail = $_GET['detail'];
+        $donor = "select * from riwayat where kontrol2='$detail'";
+        //$donor = "select * from riwayat where nama1 like '%IKM%' order by nomor desc";
 
-    // awal Konversi tanggal ke bahasa indonesia
-    function format_indo($date)
-    {
-      $BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        // awal Konversi tanggal ke bahasa indonesia
+        function format_indo($date)
+        {
+            $BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
-      $tahun = substr($date, 0, 4);
-      $bulan = substr($date, 5, 2);
-      $tgl   = substr($date, 8, 2);
-      $result = $tgl . " " . $BulanIndo[(int)$bulan - 1] . " " . $tahun;
-      return ($result);
-    }
-    // akhir Konversi tanggal ke bahasa indonesia
+            $tahun = substr($date, 0, 4);
+            $bulan = substr($date, 5, 2);
+            $tgl   = substr($date, 8, 2);
+            $result = $tgl . " " . $BulanIndo[(int)$bulan - 1] . " " . $tahun;
+            return ($result);
+        }
+        // akhir Konversi tanggal ke bahasa indonesia
 
-    $proses = mysql_query($donor);
-    $nourut = 0;
-    while ($data = mysql_fetch_array($proses)) {
-      $nourut++;
-    ?>
+        $proses = mysql_query($donor);
+        $nourut = 0;
+        while ($data = mysql_fetch_array($proses)) {
+            $nourut++;
+        ?>
         <tr>
             <td><?php echo $nourut; ?></td>
             <td><?php echo $data['bidang']; ?></td>
@@ -456,19 +449,36 @@ $data = mysql_fetch_array($proses);
             <td><?php echo $data['kontrol2']; ?></td>
             <td><?php echo $data['periode']; ?></td>
             <td><?php echo $data['no_versi']; ?></td>
-            <td><?php echo format_indo($data['tgl_setuju']); ?></td>
+            <td style="display:none"><?php echo format_indo($data['tgl_setuju']); ?></td>
             <td><?php echo format_indo($data['tgl_pelaksanaan']); ?></td>
             <td><?php echo format_indo($data['tgl_peninjauan']); ?></td>
-            <td><?php echo $data['pembuat']; ?></td>
-            <td><?php echo $data['pemeriksa']; ?></td>
-            <td><?php echo $data['pengesah']; ?></td>
-            <td><?php echo $data['pengesah2']; ?></td>
+            <td style="display:none"><?php echo $data['pembuat']; ?></td>
+            <td style="display:none"><?php echo $data['pemeriksa']; ?></td>
+            <td style="display:none"><?php echo $data['pengesah']; ?></td>
+            <td style="display:none"><?php echo $data['pengesah2']; ?></td>
         </tr>
         <?php
-    }
-    ?>
+        }
+        ?>
     </table>
     <br />
+    <script>
+    $(document).ready(function() {
+        // Inisialisasi Select2
+        $('.select2').select2({
+            placeholder: "Pilih opsi",
+            allowClear: true,
+            width: 'resolve'
+        });
+
+        // Otomatis fokus ke kolom pencarian saat dropdown dibuka
+        $(document).on('select2:open', () => {
+            // Tunggu sedikit supaya elemen input sudah siap
+            document.querySelector('.select2-search__field').focus();
+        });
+    });
+    </script>
+
 </body>
 
 </html>

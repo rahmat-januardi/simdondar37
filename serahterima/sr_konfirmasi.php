@@ -158,6 +158,9 @@ if(isset($_POST['nomorkantong'])){
             color: #000000;
         }
     </style>
+<script language="javascript">
+    function setFocus(){document.serahterima.nomorkantong.focus();}
+</script>
 </head>
 <?php
 

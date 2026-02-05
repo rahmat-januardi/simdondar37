@@ -2,19 +2,19 @@
 session_start();
 include "../koneksi.php";
 
-$namauser = $_SESSION['namauser'];
+$namauser = $_SESSION['nama_lengkap'];
 $today = date('YmdHis');
 $notrans = $today . "-" . $namauser;
 $level = $_SESSION['bagian'];
 
 if (isset($_GET['filename'])) {
-        $filename = $_GET['filename'];
-        $back_dir = "../upload/";
-        $file = $back_dir . $_GET['filename'];
-        $nurdin = $file;
+    $filename = $_GET['filename'];
+    $back_dir = "../upload/";
+    $file = $back_dir . $_GET['filename'];
+    $nurdin = $file;
 }
 
-$tambah = mysql_query("insert into lacakdokumen (notrans, nama_pengakses, level_pengakses, tanggal_akses, nama_dokumen) values ('$notrans', '$namauser', '$level', '$today', '$filename')");
+$tambah = mysql_query("insert into lacakdokumen (notrans, nama_pengakses, level_pengakses, tanggal_akses, nama_dokumen, keterangan) values ('$notrans', '$namauser', '$level', '$today', '$filename', '$namauser melakukan aktivitas PREVIEW, dokumen: $filename')");
 ?>
 
 <!DOCTYPE html>

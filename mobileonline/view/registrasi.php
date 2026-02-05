@@ -196,7 +196,7 @@
                 gol_darah,rhesus,pekerjaan,donorke,user,jam_mulai,rs, donor_tpk)
                 value
                 ('$id_transaksi_baru','$kodep','$kodep','$today1','-','-','0','$namains',
-                 '$jenis_donor','','0','-','$aph','','$shif','$udd[id]','$umur','1','$jk',
+                 '$jenis_donor','','0','-','$aph','','$shif','$udd[id]','$umur','0','$jk',
                          '$gol','$rh','$pekerjaan','$donorke','$iduser','$jam_donor','','$tpk')";
             if (mysqli_query($con,$q_htrans)){
                 $msg .= '- Pendaftaran - berhasil<br>';

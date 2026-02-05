@@ -167,6 +167,9 @@ if(isset($_POST['Button']))  {
     $v_ruser=$_POST['petugas'];
     $v_rchecker=$_POST['dicekoleh'];
     $v_rpengesah=$_POST['disahkanoleh'];
+    if ($v_rpengesah == 'putri') {
+        $v_rpengesah = 'dr. Srihartaty';
+    }
     $hasilrilis=$_POST['hasil_rilis'];
 
     switch($v_rstatus){
@@ -289,11 +292,11 @@ if(isset($_POST['Button']))  {
         echo "<meta http-equiv='refresh' content='2;url=pmiqa.php?module=timbang'>";
     } else{
 	//sebelumnya
-        // echo "<meta http-equiv='refresh' content='2;url=qa_label_cetak.php?noKantong=$nkt'>";
+        echo "<meta http-equiv='refresh' content='2;url=qa_label_cetak.php?noKantong=$nkt'>";
 	//diganti
-        $tipe_barcode='C128';
+        //$tipe_barcode='C128';
         //?kantong='.$v_kantong.'&tipe='.$v_barcodetipe
-        echo "<meta http-equiv='refresh' content='2;url=release/qa_release_label_90cm.php?kantong=$nkt&tipe=C128'>";
+        //echo "<meta http-equiv='refresh' content='2;url=release/qa_release_label_90cm.php?kantong=$nkt&tipe=C128'>";
     }
 } //post
     ?>
@@ -321,10 +324,10 @@ if(isset($_POST['Button']))  {
         <? include "release/qa_release_komponen.php";?>
     </div>
 
-    <!--div id="trace" class="tabcontent">
+    <div id="trace" class="tabcontent">
         <font size="4" color=00008B><br>REKAM JEJAK KANTONG</font><br>
         <? //include "release/qa_release_trace.php";?>
-    </div-->
+    </div>
 
     <div id="history" class="tabcontent">
         <? include "release/qa_release_periksa_last.php";?>

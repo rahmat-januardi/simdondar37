@@ -57,7 +57,7 @@ if ($unit == "" || $id === "") {
     $v_hemoglobin  = $_POST['reqhemoglobin'];
     $v_suhu        = $_POST['reqtemperatur'];
 
-    $dokter = mysqli_query($con, "select * from `dokter_periksa` where `Nama`='$v_ptgtensi' limit 1");
+    $dokter = mysqli_query($con, "select * from `dokter_periksa` where `Nama`='$v_ptgdokter' limit 1");
     $dokter2 = mysqli_fetch_assoc($dokter);
     $kode = $dokter2['kode'];
     //echo "nama dokter =============>" . $v_ptgdokter . "<br>";
@@ -76,7 +76,7 @@ if ($unit == "" || $id === "") {
       $ketbatal = '-';
     }
     $sql_transaksi = "UPDATE `htransaksi` SET
-                        `namadokter`='$kode',
+                        `NamaDokter`='$kode',
                         `petugasHB`='$v_ptgshb',
                         `petugasTensi`='$v_ptgtensi',
                         `beratbadan`='$v_bb',
@@ -89,6 +89,7 @@ if ($unit == "" || $id === "") {
                         `Status`='$status',
                         `Pengambilan`='$pengambilan',
                         `ketBatal`='$ketbatal',
+			`tempat`='M',
                         `mu`='1',
                         `gol_darah`='$v_goldarah_a',
                         `user`='$user',
@@ -106,26 +107,27 @@ if ($unit == "" || $id === "") {
     //=====================================================================================================
 
     if ($tambah) {
-      $msg .= '- Medical Checkup - berhasil<br>';
-      $lanjut = '0';
-    } else {
-      $msg .= '- Medical Checkup - Gagal<br>';
-      $lanjut = '1';
-    }
-
-    if ($lanjut == "0") {
-      echo $msg . "- Silahkan Lanjutkan Pengambilan Darah";
-      //header("location: ?page=aftap");
-?>
-
-      <META http-equiv="refresh" content="3; url=?page=aftap&NoTrans=<?php echo $notrans; ?>&kodep=<?php echo $kodep; ?>">
-    <?php } else {
-      echo $msg . "- kesalahan data";
-      //header("location: ?page=dash");
+  $msg .= '- Medical Checkup berhasil disimpan<br>';
+  
+  if ($v_lolos == '0') { // Lolos
+    echo $msg . "Silahkan Lanjutkan Pengambilan Darah";
     ?>
-      <META http-equiv="refresh" content="5; url=?page=dash">
+    <META http-equiv="refresh" content="3; url=?page=aftap&NoTrans=<?php echo $notrans; ?>&kodep=<?php echo $kodep; ?>">
+    <?php
+    exit; // penting: hentikan eksekusi lebih lanjut
+  } else { // Tidak Lolos
+    echo $msg . "Donor Tidak Lolos Seleksi Medical Checkup";
+    ?>
+    <META http-equiv="refresh" content="5; url=?page=dash">
+    <?php
+    exit;
+  }
+} else {
+  echo "Gagal menyimpan data Medical Checkup";
+  ?>
+  <META http-equiv="refresh" content="5; url=?page=dash">
   <?php
-    }
+}
     //mysqli_close;
   }
 

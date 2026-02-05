@@ -4,7 +4,7 @@ include "koneksi.php";
 
 $detail = $_GET['detail'];
 
-$sql = "select * from pendukung where kontrol2='$detail'";
+$sql = "select * from pendukung where kontrol2='$detail' and aktif='0'";
 $proses = mysql_query($sql);
 $data = mysql_fetch_array($proses);
 ?>
@@ -95,18 +95,18 @@ $data = mysql_fetch_array($proses);
         <font size="5"><u>DOKUMEN PENDUKUNG<br /><?php echo $data['nama1']; ?></u></font>
     </p>
     <?php
-  $sql = "select pendukung.terkait as nama, pks.kontrol as kontrol, pks.kontrol2 as kontrol2, pks.kontrol3 as kontrol3  from pks,pendukung where pks.nama1=pendukung.terkait and pendukung.nomor='$detail'";
-  $proses = mysql_query($sql);
-  $data = mysql_fetch_array($proses);
-  ?>
+    $sql = "select pendukung.terkait as nama, pks.kontrol as kontrol, pks.kontrol2 as kontrol2, pks.kontrol3 as kontrol3  from pks,pendukung where pks.nama1=pendukung.terkait and pendukung.nomor='$detail'";
+    $proses = mysql_query($sql);
+    $data = mysql_fetch_array($proses);
+    ?>
     <p align="center">
         <?php echo $data['nama']; ?><?php echo $data['kontrol']; ?><?php echo $data['kontrol2']; ?><?php echo $data['kontrol3']; ?>
     </p>
     <?php
-  $sql = "select * from pendukung where kontrol2='$detail'";
-  $proses = mysql_query($sql);
-  $data = mysql_fetch_array($proses);
-  ?>
+    $sql = "select * from pendukung where kontrol2='$detail' and aktif='0'";
+    $proses = mysql_query($sql);
+    $data = mysql_fetch_array($proses);
+    ?>
     <form method="post" action="edit_pendukung.php" enctype="multipart/form-data">
 
 
@@ -142,22 +142,22 @@ $data = mysql_fetch_array($proses);
                                 <div align="left"><strong>
                                         <select name="bidang">
                                             <?php
-                      // Ambil nilai bidang dari data detail
-                      $selected_bidang = $data['bidang'];
+                                            // Ambil nilai bidang dari data detail
+                                            $selected_bidang = $data['bidang'];
 
-                      // Ambil semua opsi dari master_bidang
-                      $sql = "SELECT * FROM master_bidang ORDER BY bidang";
-                      $proses = mysql_query($sql);
+                                            // Ambil semua opsi dari master_bidang
+                                            $sql = "SELECT * FROM master_bidang ORDER BY bidang";
+                                            $proses = mysql_query($sql);
 
-                      while ($row = mysql_fetch_array($proses)) {
-                        $bidang = $row['bidang'];
+                                            while ($row = mysql_fetch_array($proses)) {
+                                                $bidang = $row['bidang'];
 
-                        // Cek apakah bidang ini yang dipilih
-                        $selected = ($bidang == $selected_bidang) ? "selected" : "";
+                                                // Cek apakah bidang ini yang dipilih
+                                                $selected = ($bidang == $selected_bidang) ? "selected" : "";
 
-                        echo "<option value='$bidang' $selected>$bidang</option>";
-                      }
-                      ?>
+                                                echo "<option value='$bidang' $selected>$bidang</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div> <strong><text style="display:none">
                                         <div align="left">
@@ -291,22 +291,22 @@ $data = mysql_fetch_array($proses);
                                         <select name="pembuat">
                                             <option><?php echo $data['pembuat']; ?></option>
                                             <?php
-                      $query = "select * from user order by nama_lengkap";
-                      $hasil = mysql_query($query);
-                      while ($data = mysql_fetch_array($hasil)) {
-                        echo "<option>$data[nama_lengkap]</option>";
-                      }
-                      ?>
+                                            $query = "select * from user order by nama_lengkap";
+                                            $hasil = mysql_query($query);
+                                            while ($data = mysql_fetch_array($hasil)) {
+                                                echo "<option>$data[nama_lengkap]</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
                         </tr>
                         <tr>
                             <?php
-              $sql = "select * from pendukung where kontrol2='$detail'";
-              $proses = mysql_query($sql);
-              $data = mysql_fetch_array($proses);
-              ?>
+                            $sql = "select * from pendukung where kontrol2='$detail' and aktif='0'";
+                            $proses = mysql_query($sql);
+                            $data = mysql_fetch_array($proses);
+                            ?>
                             <td>
                                 <div align="right"><strong>Diperiksa Oleh</strong></div>
                             </td>
@@ -316,22 +316,22 @@ $data = mysql_fetch_array($proses);
                                         <select name="pemeriksa">
                                             <option><?php echo $data['pemeriksa']; ?></option>
                                             <?php
-                      $query = "select * from user order by nama_lengkap";
-                      $hasil = mysql_query($query);
-                      while ($data = mysql_fetch_array($hasil)) {
-                        echo "<option>$data[nama_lengkap]</option>";
-                      }
-                      ?>
+                                            $query = "select * from user order by nama_lengkap";
+                                            $hasil = mysql_query($query);
+                                            while ($data = mysql_fetch_array($hasil)) {
+                                                echo "<option>$data[nama_lengkap]</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
                         </tr>
                         <tr>
                             <?php
-              $sql = "select * from pendukung where kontrol2='$detail'";
-              $proses = mysql_query($sql);
-              $data = mysql_fetch_array($proses);
-              ?>
+                            $sql = "select * from pendukung where kontrol2='$detail' and aktif='0'";
+                            $proses = mysql_query($sql);
+                            $data = mysql_fetch_array($proses);
+                            ?>
                             <td>
                                 <div align="right"><strong>Disetujui Oleh</strong></div>
                             </td>
@@ -341,12 +341,12 @@ $data = mysql_fetch_array($proses);
                                         <select name="pengesah">
                                             <option><?php echo $data['pengesah']; ?></option>
                                             <?php
-                      $query = "select * from user order by nama_lengkap";
-                      $hasil = mysql_query($query);
-                      while ($data = mysql_fetch_array($hasil)) {
-                        echo "<option>$data[nama_lengkap]</option>";
-                      }
-                      ?>
+                                            $query = "select * from user order by nama_lengkap";
+                                            $hasil = mysql_query($query);
+                                            while ($data = mysql_fetch_array($hasil)) {
+                                                echo "<option>$data[nama_lengkap]</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
@@ -354,10 +354,10 @@ $data = mysql_fetch_array($proses);
 
                         <tr>
                             <?php
-              $sql = "select * from pendukung where kontrol2='$detail'";
-              $proses = mysql_query($sql);
-              $data = mysql_fetch_array($proses);
-              ?>
+                            $sql = "select * from pendukung where kontrol2='$detail' and aktif='0'";
+                            $proses = mysql_query($sql);
+                            $data = mysql_fetch_array($proses);
+                            ?>
                             <td>
                                 <div align="right"><strong>Disahkan Oleh</strong></div>
                             </td>
@@ -367,12 +367,12 @@ $data = mysql_fetch_array($proses);
                                         <select name="pengesah2">
                                             <option><?php echo $data['pengesah2']; ?></option>
                                             <?php
-                      $query = "select * from user order by nama_lengkap";
-                      $hasil = mysql_query($query);
-                      while ($data = mysql_fetch_array($hasil)) {
-                        echo "<option>$data[nama_lengkap]</option>";
-                      }
-                      ?>
+                                            $query = "select * from user order by nama_lengkap";
+                                            $hasil = mysql_query($query);
+                                            while ($data = mysql_fetch_array($hasil)) {
+                                                echo "<option>$data[nama_lengkap]</option>";
+                                            }
+                                            ?>
                                         </select>
                                     </strong></div>
                             </td>
@@ -427,29 +427,29 @@ $data = mysql_fetch_array($proses);
             <td><strong>Disahkan Oleh</strong></td>
         </tr>
         <?php
-    $detail = $_GET['detail'];
-    $donor = "select * from riwayat where kontrol2='$detail'";
-    //$donor = "select * from riwayat where nama1 like '%IKM%' order by nomor desc";
+        $detail = $_GET['detail'];
+        $donor = "select * from riwayat where kontrol2='$detail'";
+        //$donor = "select * from riwayat where nama1 like '%IKM%' order by nomor desc";
 
-    // awal Konversi tanggal ke bahasa indonesia
-    function format_indo($date)
-    {
-      $BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        // awal Konversi tanggal ke bahasa indonesia
+        function format_indo($date)
+        {
+            $BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
-      $tahun = substr($date, 0, 4);
-      $bulan = substr($date, 5, 2);
-      $tgl   = substr($date, 8, 2);
-      $result = $tgl . " " . $BulanIndo[(int)$bulan - 1] . " " . $tahun;
-      return ($result);
-    }
-    // akhir Konversi tanggal ke bahasa indonesia
+            $tahun = substr($date, 0, 4);
+            $bulan = substr($date, 5, 2);
+            $tgl   = substr($date, 8, 2);
+            $result = $tgl . " " . $BulanIndo[(int)$bulan - 1] . " " . $tahun;
+            return ($result);
+        }
+        // akhir Konversi tanggal ke bahasa indonesia
 
 
-    $proses = mysql_query($donor);
-    $nourut = 0;
-    while ($data = mysql_fetch_array($proses)) {
-      $nourut++;
-    ?>
+        $proses = mysql_query($donor);
+        $nourut = 0;
+        while ($data = mysql_fetch_array($proses)) {
+            $nourut++;
+        ?>
         <tr>
             <td><?php echo $nourut; ?></td>
             <td><?php echo $data['bidang']; ?></td>
@@ -467,8 +467,8 @@ $data = mysql_fetch_array($proses);
             <td><?php echo $data['pengesah2']; ?></td>
         </tr>
         <?php
-    }
-    ?>
+        }
+        ?>
     </table>
     <br />
 </body>

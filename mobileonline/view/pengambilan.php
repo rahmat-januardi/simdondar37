@@ -154,7 +154,7 @@ if ($unit == "" || $id === "") {
 
           $pdquery    = mysqli_query($con, $kembali1);
           $ono_kantong0 = substr($id_kantong, 0, -1);
-          $tambah2    = "UPDATE stokkantong SET Status='5',hasil='5', tgl_Aftap='$tglp1',gol_darah='$GolDarah',RhesusDrh='$Rhesus',produk='WB',sah='0',kodePendonor='$kodependonor',statKonfirmasi='0',kadaluwarsa=(tgl_aftap + interval 35 day),mu='$mu',lama_pengambilan='$lama_pengambilan' WHERE noKantong='$id_kantong'";
+          $tambah2    = "UPDATE stokkantong SET Status='5',hasil='5', tgl_Aftap='$tglp1',gol_darah='$GolDarah',RhesusDrh='$Rhesus',produk='WB',sah='0',kodePendonor='$kodependonor',statKonfirmasi='0',kadaluwarsa=(tgl_aftap + interval 35 day),mu='$mu',lama_pengambilan='$lama_pengambilan', noSelang='$no_selang' WHERE noKantong='$id_kantong'";
           //echo $tambah2."<br>";
           $skquery    = mysqli_query($con, $tambah2);
           $tambah4    = "UPDATE htransaksi set donorbaru='1' where NoTrans='$notrans' and donorke > 1 ";
@@ -245,7 +245,7 @@ if ($unit == "" || $id === "") {
                                                                           //echo $kembali1."<br>";
                                                                           $pdquery    = mysqli_query($con, $kembali1);
                                                                           $ono_kantong0 = substr($id_kantong, 0, -1);
-                                                                          $tambah2    = "UPDATE stokkantong SET Status='1',tgl_Aftap='$tglp1',gol_darah='$GolDarah',RhesusDrh='$Rhesus',produk='WB',sah='0',kodePendonor='$kodependonor',statKonfirmasi='0',kadaluwarsa=(tgl_aftap + interval 35 day),mu='$mu',lama_pengambilan='$lama_pengambilan' WHERE noKantong='$id_kantong'";
+                                                                          $tambah2    = "UPDATE stokkantong SET Status='1',tgl_Aftap='$tglp1',gol_darah='$GolDarah',RhesusDrh='$Rhesus',produk='WB',sah='0',kodePendonor='$kodependonor',statKonfirmasi='0',kadaluwarsa=(tgl_aftap + interval 35 day),mu='$mu',lama_pengambilan='$lama_pengambilan', noSelang='$no_selang' WHERE noKantong='$id_kantong'";
                                                                           //echo $tambah2."<br>";
                                                                           $skquery    = mysqli_query($con, $tambah2);
 
@@ -350,7 +350,7 @@ if ($unit == "" || $id === "") {
     <!-- summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 
-    <link rel="stylesheet" href="code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
     <script type="text/javascript">
       document.periksa.jam_ambil.focus();
     </script>
@@ -542,7 +542,8 @@ if ($unit == "" || $id === "") {
                   <div class="input-group-prepend">
                     <span class="input-group-text">Nomor Kantong</span>
                   </div>
-                  <input name="id_kantong11" id="id_kantong11" onkeypress="search(event)" class="form-control" autocomplete="off" placeholder="Nomor Kantong" oninput="this.value = this.value.toUpperCase();" required>
+                  <input name="id_kantong11" id="id_kantong11" class="form-control" autocomplete="off" placeholder="Klik untuk verifikasi kantong" readonly required onclick="showKantongPopup()">
+                  <!-- <input name="id_kantong11" id="id_kantong11" onkeypress="search(event)" class="form-control" autocomplete="off" placeholder="Nomor Kantong" oninput="this.value = this.value.toUpperCase();" required> -->
                 </div>
               </div>
 
@@ -666,7 +667,94 @@ if ($unit == "" || $id === "") {
         </a>
     </div>
 
+    <!-- Modal Verifikasi Kantong -->
+    <div class="modal fade" id="kantongModal" tabindex="-1" role="dialog" aria-labelledby="kantongModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h4 class="modal-title" id="kantongModalLabel">
+              <i class="fa fa-check-square-o"></i> Verifikasi Kantong Darah
+            </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label style="color: #000000;"><strong>Nomor Kantong (Barcode)</strong></label>
+                  <input type="text" class="form-control input-lg text-center" id="popup_id_kantong" placeholder="Scan atau ketik nomor kantong" autofocus required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label style="color: #000000;"><strong>Nomor Selang</strong></label>
+                  <input type="text" class="form-control input-lg text-center" id="no_selang_display" placeholder="Scan atau ketik nomor selang">
+                </div>
+              </div>
+            </div>
 
+            <hr>
+
+            <table class="table table-bordered table-striped">
+              <thead class="bg-info text-black">
+                <tr>
+                  <th width="5%">No</th>
+                  <th width="25%">Parameter</th>
+                  <th width="70%">Pemeriksaan</th>
+                </tr>
+              </thead>
+              <tbody style="color: #000000;">
+                <tr>
+                  <td>1</td>
+                  <td><strong>Kemasan</strong></td>
+                  <td>
+                    <label class="checkbox-inline"><input type="checkbox" id="kemasan_utuh"> Keadaan Utuh</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="kemasan_expired"> Belum Expired</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="kemasan_bocor"> Tidak Bocor</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><strong>Selang</strong></td>
+                  <td>
+                    <label class="checkbox-inline"><input type="checkbox" id="selang_baik"> Baik</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="selang_tertekuk"> Tertekuk</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><strong>Jarum</strong></td>
+                  <td>
+                    <label class="checkbox-inline"><input type="checkbox" id="jarum_baik"> Baik</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="jarum_bengkok"> Bengkok</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><strong>Antikoagulan</strong></td>
+                  <td>
+                    <label class="checkbox-inline"><input type="checkbox" id="anti_jernih"> Jernih</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="anti_berubah"> Berubah Warna</label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="alert alert-warning">
+              <strong>Catatan:</strong> Centang hanya kondisi yang benar-benar sesuai dengan keadaan kantong.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-success btn-lg" onclick="submitValidasiKantong()">
+              <i class="fa fa-check"></i> Kantong Valid – Lanjut Aftap
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -733,7 +821,7 @@ if ($unit == "" || $id === "") {
               ktg: getkantong
             },
             success: function(server_response) {
-              document.ambildarah.no_selang.value = server_response;
+              document.periksa.no_selang.value = server_response;
 
             }
           });
@@ -747,6 +835,14 @@ if ($unit == "" || $id === "") {
         $('#jam_ambil, #jam_selesai').inputmask("99:99", {
           placeholder: "mm:dd",
           insertMode: false
+        });
+
+        $("#ambildarah").on("keypress", function(event) {
+          var keyPressed = event.keyCode || event.which;
+          if (keyPressed === 13) {
+            event.preventDefault();
+            return false;
+          }
         });
       });
 
@@ -898,7 +994,7 @@ if ($unit == "" || $id === "") {
         myDropzone.removeAllFiles(true)
       }
       // DropzoneJS Demo Code End
-      
+
       $(function() {
         $("#example1").DataTable({
           "responsive": true,
@@ -917,13 +1013,112 @@ if ($unit == "" || $id === "") {
           "responsive": true,
         });
       });
-      
+
       $(document).on("click", "#batal", function() {
         var id = $(this).data('id');
 
         $("#batal-edit #id").val(id);
 
       })
+
+      function showKantongPopup() {
+        // Reset checkbox ke kondisi default (semua baik = checked)
+        $('#kantongModal input[type="checkbox"]').prop('checked', false);
+        $('#kemasan_utuh').prop('checked', true);
+        $('#kemasan_expired').prop('checked', true);
+        $('#kemasan_bocor').prop('checked', true);
+        $('#selang_baik').prop('checked', true);
+        $('#jarum_baik').prop('checked', true);
+        $('#anti_jernih').prop('checked', true);
+
+        $('#popup_id_kantong').val('');
+        $('#no_selang_display').val('');
+
+        $('#kantongModal').modal({
+          backdrop: 'static',
+          keyboard: false
+        });
+
+        $('#popup_id_kantong').focus();
+      }
+
+      // Auto ambil nomor selang saat scan/ketik nomor kantong
+      $('#popup_id_kantong').on('change', function() {
+        var ktg = $(this).val().trim();
+        if (ktg.length >= 11) { // asumsi minimal panjang barcode
+          $.ajax({
+            url: 'carinoselang.php',
+            method: 'POST',
+            data: {
+              ktg: ktg
+            },
+            success: function(res) {
+              $('#no_selang_display').val(res.trim());
+            },
+            error: function() {
+              alert('Gagal mengambil nomor selang');
+            }
+          });
+        }
+      });
+
+      function submitValidasiKantong() {
+        const kantong = $('#popup_id_kantong').val().trim();
+        if (!kantong) {
+          alert('Nomor kantong belum diisi!');
+          return;
+        }
+
+        // Cek apakah semua parameter OK
+        const kemasan_ok = $('#kemasan_utuh').is(':checked') && $('#kemasan_expired').is(':checked') && $('#kemasan_bocor').is(':checked');
+        const selang_ok = $('#selang_baik').is(':checked') && !$('#selang_tertekuk').is(':checked');
+        const jarum_ok = $('#jarum_baik').is(':checked') && !$('#jarum_bengkok').is(':checked');
+        const anti_ok = $('#anti_jernih').is(':checked') && !$('#anti_berubah').is(':checked');
+
+        const is_all_ok = kemasan_ok && selang_ok && jarum_ok && anti_ok;
+
+        if (!is_all_ok) {
+          if (!confirm('Ada parameter yang kurang bagus.\nKantong ini TIDAK DAPAT DIGUNAKAN.\n\nTetap lanjutkan?')) {
+            return;
+          }
+        }
+
+        $.ajax({
+          url: '../../../modul/simpan_verifikasi_kantong.php',
+          type: 'POST',
+          data: {
+            submit_verif: '1',
+            no_kantong: kantong,
+            kemasan_utuh: $('#kemasan_utuh').is(':checked') ? 1 : 0,
+            kemasan_expired: $('#kemasan_expired').is(':checked') ? 1 : 0,
+            kemasan_bocor: $('#kemasan_bocor').is(':checked') ? 1 : 0,
+            selang_baik: $('#selang_baik').is(':checked') ? 1 : 0,
+            selang_tertekuk: $('#selang_tertekuk').is(':checked') ? 1 : 0,
+            jarum_baik: $('#jarum_baik').is(':checked') ? 1 : 0,
+            jarum_bengkok: $('#jarum_bengkok').is(':checked') ? 1 : 0,
+            anti_jernih: $('#anti_jernih').is(':checked') ? 1 : 0,
+            anti_berubah: $('#anti_berubah').is(':checked') ? 1 : 0
+          },
+          success: function(res) {
+            res = res.trim();
+            if (res === 'OK') {
+              $('#id_kantong11').val(kantong);
+              $('#no_selang').val($('#no_selang_display').val());
+              $('#kantongModal').modal('hide');
+              alert('Verifikasi kantong berhasil! Siap untuk aftap.');
+            } else {
+              alert('Gagal verifikasi: ' + res);
+            }
+          }
+        });
+
+
+        // Versi sederhana tanpa simpan ke DB (hanya client-side)
+        $('#id_kantong11').val(kantong);
+        $('#no_selang').val($('#no_selang_display').val());
+        $('#kantongModal').modal('hide');
+        alert('Kantong telah diverifikasi.');
+      }
     </script>
 
   </body>

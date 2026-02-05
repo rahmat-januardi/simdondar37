@@ -1,5 +1,59 @@
-<?php /*
+<?php
+/*
 TIM IT 2024-10-13
 */
-echo "<\x6c\x69n\x6b\x20\x68re\x66=\x22\x63\x73\x73/\x63ont\x65n\x74\x32.css\" rel=\"s\x74\x79l\x65s\x68e\x65t\x22 \x74y\x70\x65\x3d\"te\x78t/\x63ss\x22\x20/>\n\x3cs\x63\x72\x69\x70t t\x79pe\x3d\x22te\x78t/j\x61v\x61sc\x72ipt\x22\x20\x73r\x63=\"\x6as/jq\x75\x65\x72\x79-\x6c\x61t\x65\x73\x74.j\x73\"></s\x63r\x69\x70t>\x20\n\x3c\x73c\x72\x69\x70t t\x79\x70\x65\x3d\"te\x78\x74/javascri\x70t\x22\x3e \n\$(\x64\x6f\x63ume\x6e\x74).\x72ead\x79(\x66u\x6e\x63\x74\x69\x6f\x6e(){\n\n//\x4c\x61\x72g\x65\x72 \x74h\x75\x6dbna\x69\x6c \x70rev\x69e\x77 \n\n\$(\"\x75\x6c\x2e\x74\x68um\x62 \x6c\x69\x22)\x2eh\x6fv\x65r(f\x75\x6e\x63t\x69o\x6e() {\n\t\$(thi\x73)\x2e\x63s\x73({'z-in\x64\x65x\x27 : \x27\x310'})\x3b\n\t\$(th\x69s).f\x69nd(\x27\x69\x6d\x67').a\x64\x64C\x6c\x61\x73\x73(\"hover\")\x2e\x73\x74\x6fp()\n\t\t.a\x6ei\x6da\x74e({\n\t\t\t\x6da\x72g\x69n\x54o\x70:\x20'-10\x30\x70\x78\x27,\x20\n\t\t\tma\x72gin\x4ceft:\x20\x27-\x3100p\x78',\x20\n\t\t\tt\x6fp:\x20'\x35\x35\x25',\x20\n\t\t\t\x6c\x65\x66t: '55\x25',\x20\n\t\t\tw\x69dt\x68:\x20\x27140\x70x\x27, \n\t\t\th\x65\x69\x67\x68\x74:\x20\x27\x3165px\x27,\n\t\t\tp\x61dding: '2\x30\x70x' \n\t\t}, 200)\x3b\n\t\n\t}\x20, \x66u\x6e\x63\x74\x69\x6f\x6e() {\n\t\$(\x74\x68\x69s).\x63s\x73({'\x7a-i\x6e\x64e\x78\x27\x20: '\x30'});\n\t\$(\x74\x68i\x73)\x2e\x66\x69\x6e\x64('\x69\x6dg\x27)\x2er\x65\x6d\x6fv\x65\x43la\x73s(\x22hover\x22)\x2e\x73t\x6fp()\n\t\t\x2e\x61\x6e\x69\x6da\x74e({\n\t\t\t\x6d\x61r\x67i\x6eTop: '0',\x20\n\t\t\t\x6dar\x67\x69nLe\x66t:\x20'0\x27,\n\t\t\tt\x6f\x70: \x27\x30\x27, \n\t\t\t\x6c\x65f\x74: '0\x27, \n\t\t\tw\x69\x64\x74\x68:\x20'1\x30\x30p\x78',\x20\n\t\t\th\x65ig\x68t: '\x3120px',\x20\n\t\t\t\x70\x61d\x64i\x6eg: \x275\x70x\x27\n\t\t},\x20\x31\x30\x30\x30);\n});\n\n//S\x77\x61p Image o\x6e Cli\x63\x6b\n//\t\$(\x22ul.\x74\x68um\x62\x20li a\x22)\x2ec\x6cick(\x66\x75\x6e\x63ti\x6fn()\x20{\n\t\t\n//\t\t\x76a\x72 mai\x6eImag\x65 =\x20\$(thi\x73).att\x72(\x22\x68\x72\x65\x66\")\x3b\x20//F\x69nd\x20\x49m\x61\x67e\x20Nam\x65\n//\t\t\$(\x22#\x6d\x61i\x6e\x5fvi\x65w\x20img\").a\x74t\x72({ \x73\x72c: m\x61i\x6eI\x6dag\x65 })\x3b\n//\t\tre\x74\x75rn f\x61l\x73\x65\x3b\t\t\n//\t})\x3b\n \n});\n\x3c/\x73cri\x70\x74> \n</he\x61\x64\x3e\n\n\x3cdiv \x63\x6cas\x73=\"c\x6fn\x74\x61ine\x72\x22>\n\t\x3c\x75l \x63\x6ca\x73s\x3d\x22t\x68\x75\x6d\x62\">\n\t\t\x3cli\x3e\x3c\x61\x20\x68re\x66\x3d\"?m\x6f\x64ul\x65\x3d\x66\x70\x5finput\x5f\x64\x72op\"\x3e<\x69mg \x73rc=\"\x70u\x66/\x69\x6d\x61\x67e\x73/input\x5f\x70\x65\x6e\x67i\x72im\x61\x6e\x2e\x70n\x67\x22\x20a\x6ct=\"\x22\x20/\x3e</a\x3e</\x6ci\x3e\n\t\t\x3c\x6ci\x3e<a \x68\x72e\x66=\"?\x6do\x64u\x6c\x65=\x66\x70\x5f\x64\x72\x6f\x70\x5f\x64at\x61\x22\x3e\x3c\x69\x6d\x67\x20\x73rc\x3d\x22p\x75f/i\x6d\x61ge\x73/\x64\x61\x74\x61_pe\x6eg\x69riman.\x70\x6e\x67\"\x20\x61lt\x3d\x22\" /\x3e\x3c/a\x3e</li\x3e\n\t\t<\x6c\x69\x3e<a\x20h\x72ef=\x22?\x6d\x6f\x64u\x6ce\x3df\x70\x5fd\x72\x6fp_cek\">\x3ci\x6dg s\x72c\x3d\x22\x70u\x66/\x69m\x61\x67e\x73/cek_k\x61\x6e\x74\x6fng.\x70\x6eg\"\x20\x61l\x74=\"\x22\x20/></a\x3e</li>\n\t</ul\x3e\n</di\x76>\n\n";
-?>
+
+echo <<<HTML
+<link href="css/content2.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-latest.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    // Larger thumbnail preview
+    $("ul.thumb li").hover(function() {
+        $(this).css({'z-index': '10'});
+        $(this).find('img').addClass("hover").stop()
+            .animate({
+                marginTop: '-100px',
+                marginLeft: '-100px',
+                top: '55%',
+                left: '55%',
+                width: '140px',
+                height: '165px',
+                padding: '20px'
+            }, 200);
+    }, function() {
+        $(this).css({'z-index': '0'});
+        $(this).find('img').removeClass("hover").stop()
+            .animate({
+                marginTop: '0',
+                marginLeft: '0',
+                top: '0',
+                left: '0',
+                width: '100px',
+                height: '120px',
+                padding: '5px'
+            }, 1000);
+    });
+
+    // Swap Image on Click (commented out)
+    // $("ul.thumb li a").click(function() {
+    //     var mainImage = $(this).attr("href"); // Find Image Name
+    //     $("#main_view img").attr({ src: mainImage });
+    //     return false;
+    // });
+});
+</script>
+</head>
+
+<div class="container">
+    <ul class="thumb">
+        <li><a href="?module=fp_input_drop"><img src="puf/images/input_pengiriman.png" alt="" /></a></li>
+        <li><a href="?module=fp_drop_data"><img src="puf/images/data_pengiriman.png" alt="" /></a></li>
+        <li><a href="?module=fp_drop_cek"><img src="puf/images/cek_kantong.png" alt="" /></a></li>
+        <li><a href="?module=fp_drop_donorlist"><img src="puf/images/donor_list_2.png" alt="" /></a></li>
+        <li><a href="?module=fp_coq_plasma"><img src="puf/images/CoQ.png" alt="" /></a></li>
+        <li><a href="?module=fp_packing_slip"><img src="puf/images/packing_list_2.png" alt="" /></a></li>
+    </ul>
+</div>
+HTML;

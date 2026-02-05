@@ -1,206 +1,173 @@
 <?php
-//============================================================+
-// File name   : example_027.php
-// Begin       : 2008-03-04
-// Last Update : 2010-05-02
-//
-// Description : Example 027 for TCPDF class
-//               1D Barcodes
-//
-// Author: Nicola Asuni
-//
-// (c) Copyright:
-//               Nicola Asuni
-//               Tecnick.com s.r.l.
-//               Via Della Pace, 11
-//               09044 Quartucciu (CA)
-//               ITALY
-//               www.tecnick.com
-//               info@tecnick.com
-//============================================================+
-
-/**
- * Creates an example PDF TEST document using TCPDF
- * @package com.tecnick.tcpdf
- * @abstract TCPDF - Example: 1D Barcodes.
- * @author Nicola Asuni
- * @copyright 2004-2009 Nicola Asuni - Tecnick.com S.r.l (www.tecnick.com) Via Della Pace, 11 - 09044 - Quartucciu (CA) - ITALY - www.tecnick.com - info@tecnick.com
- * @link http://tcpdf.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
- * @since 2008-03-04
- */
-
 require_once('tcpdf/config/lang/eng.php');
 require_once('tcpdf/tcpdf.php');
+require_once('config/koneksi.php');
 
-// create new PDF document
+$nkt = $_GET['noKantong'];
+$no_kantonga = substr_replace($nkt, 'A', -1, 1);
+$donasi = mysql_fetch_assoc(mysql_query("SELECT * FROM htransaksi WHERE NoKantong ='" . $no_kantonga . "'"));
+$kantong = mysql_query("SELECT * FROM stokkantong WHERE noKantong='" . $_GET['noKantong'] . "'");
+$donasi22 = mysql_fetch_assoc(mysql_query("SELECT * FROM htransaksi WHERE noKantong='" . $_GET['noKantong'] . "'"));
+$kantong1 = mysql_fetch_assoc($kantong);
+$kantonga = mysql_fetch_assoc(mysql_query("SELECT * FROM stokkantong WHERE noKantong='" . $no_kantonga . "'"));
+$kantongnat = mysql_fetch_assoc(mysql_query("SELECT * FROM hasilnat WHERE noKantong='" . $no_kantonga . "'"));
+
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-// set document information
 $pdf->SetCreator(PDF_CREATOR);
-
-// set default header data
-//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+$pdf->SetAuthor('PMI');
+$pdf->SetTitle('Label Kantong Darah');
 $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
-
-// set header and footer fonts
-//$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-//$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-// set default monospaced font
-$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-//set margins
-//$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->SetMargins(false);
-//$pdf->SetMargins(0,0,0);
-//$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-//$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-//set auto page breaks
-//$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-$pdf->SetAutoPageBreak(TRUE, 0);
-
-//set image scale factor
+$pdf->SetMargins(0, 0, 0);
+$pdf->SetAutoPageBreak(true, 0);
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+$pdf->AddPage('L', 'IDH');
 
-//set some language-dependent strings
-$pdf->setLanguageArray($l);
+$style = array('border' => false);
+$udd = mysql_fetch_assoc(mysql_query("SELECT nama,alamat,telp FROM utd WHERE down='1' AND aktif='1'"));
 
-// ---------------------------------------------------------
+// Header
+$pdf->SetXY(0, 0);
+$pdf->Cell(0, 12, 'PALANG MERAH INDONESIA', 0, 1, 'C');
 
-// set font
-$pdf->SetFont('helvetica', '', 10);
-
-require_once('config/koneksi.php');
-$nktnat     = $_GET['noKantong'];
-$noktnat    = substr_replace($nktnat,'A',-1,1);
-
-//-------------------- add a page ------------------------
-$hasil=mysql_query("SELECT  `rnokantong`, round(`rvolume`,0) as volume,
-                    `rproduk`, `rgolda`,DATE_FORMAT(`rtgl_aftap`, '%d-%m-%Y') as tglaftap,
-                    DATE_FORMAT(`rtgl_olah`, '%d-%m-%Y') as tglolah ,
-                    DATE_FORMAT(`rtgl_ed`, '%d-%m-%Y %H:%i') as tgled,rstatus,rsatus_ket
-                    FROM `release` WHERE rnokantong='$_GET[noKantong]' order by rid DESC");
-$hasil1=mysql_fetch_assoc($hasil);
-//$pdf->AddPage('P','IDH'); ==> original
-$pdf->AddPage('L','QA');
-$pdf->SetFillColor(255,255,255);
-$udd=mysql_fetch_assoc(mysql_query("select nama,alamat from utd where down='1' and aktif='1'"));
-$abs=mysql_fetch_assoc(mysql_query("select abs, noSelang from stokkantong where noKantong='$_GET[noKantong]'"));
-$nat=mysql_num_rows(mysql_query("select noKantong from hasilnat where noKantong='$noktnat'"));
+$udd = mysql_fetch_assoc(mysql_query("select nama,alamat, telp from utd where down='1' and aktif='1'"));
 $pdf->SetFont('helvetica', 'b', 12);
-$pdf->SetXY(4,2);$pdf->Cell(0, 0,$udd[nama],0, 1, 'L');
-$pdf->SetXY(4,7);$pdf->write1DBarcode(strtoupper($hasil1[rnokantong]), 'C39', '', '', '', 8, 0.28, $style, 'N');
-$pdf->SetFont('helvetica', 'b', 9);
-$pdf->SetXY(4,10);$pdf->Cell(0, 16, 'No Kantong:', 0,1,'L');
-$pdf->SetXY(24,12);$pdf->SetFont('helvetica', 'b', 12);
-$pdf->Cell(0, 12, strtoupper($hasil1[rnokantong]), 0,1,'L');
+$pdf->SetXY(0, 5);
+$pdf->Cell(0, 12, $udd[nama], 0, 1, 'C');
+$pdf->SetFont('helvetica', '', 7);
+$pdf->SetXY(0, 14);
+$pdf->Cell(0, 0, $udd[alamat], 0, 1, 'C');
+$pdf->Cell(0, 0, 'No. Telp. ' . $udd[telp], 0, 1, 'C');
 
+$pdf->SetLineWidth(0.5);
+$pdf->Line(0, 22, 110, 22);
 
-$selang = $abs['noSelang'];
-if ($selang ==""){$selang = $nktnat;}
-$pdf->SetFont('helvetica','',8);
-$pdf->SetXY(4,14);$pdf->Cell(0, 16, 'No Selang : '.$selang, 0,1,'L');
-
-//Garis
-$style2 = array('width' => 0.5, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
-$pdf->Rect(75, 2, 8, 5, 'D', array('all' => $style2)); // Persegi Panjang QC
-$pdf->Rect(83, 2, 15, 5, 'D', array('all' => $style2)); // Persegi Panjang Status QC
-
-//Jika Status Lulus
-if ($hasil1[rstatus]=='0'){
-    
-    $pdf->SetFont('helvetica', 'b', 10);
-    $pdf->SetXY(75,2);$pdf->Cell(0, 0,'QA',0, 1, 'L');
-    $pdf->SetFont('helvetica', 'b', 8);
-    $pdf->SetXY(84,2.5);$pdf->Cell(0, 0,'LULUS',0, 1, 'L');
-}else{
-    $pdf->SetFont('helvetica', 'b', 10);
-    $pdf->SetXY(75,2);$pdf->Cell(0, 0,'QA',0, 1, 'L');
-    $pdf->SetFont('helvetica', 'b', 5.5);
-    $pdf->SetXY(83,3);$pdf->Cell(0, 0,'TIDAK LULUS',0, 1, 'L');
-}
-                   
-
-
-//info NAT
-if ($nat =="1"){
-    $pdf->SetFont('helvetica', 'b', 8);
-    $pdf->SetXY(72,8);$pdf->Cell(0, 0,'NAT |',0, 1, 'L');
-    $pdf->SetFont('helvetica',  6);
-    $pdf->SetXY(80,8);$pdf->Cell(0, 0,'Non Reactive',0, 1, 'L');
-}
-
-//produk, vol, Golda
-if (strlen($hasil1[rproduk])>5){
-    
-    $pdf->SetXY(4,24);$pdf->SetFont('helvetica', 'b', 10);
-    $pdf->Cell(40, 0,$hasil1[rproduk], 0, 5, 'C');
-}else{
-    $pdf->SetXY(4,24);$pdf->SetFont('helvetica', 'b', 12);
-    $pdf->Cell(40, 0,$hasil1[rproduk], 0, 5, 'C');
-}
-$pdf->SetXY(4,28);$pdf->SetFont('helvetica', 'b', 16);
-$pdf->Cell(40, 0, $hasil1[volume].' ml', 0, 5, 'C');
-$pdf->SetXY(4,32);$pdf->SetFont('helvetica', 'b', 40);
-$pdf->Cell(40, 0,$hasil1[rgolda], 0, 5, 'C');
-
-    
-//IMLTD
-$pdf->SetXY(45,20);$pdf->SetFont('helvetica','',8);
-$pdf->Cell(0, 0, 'Non Reaktif terhadap:', 0,1);
-$pdf->SetXY(45,23);
-$pdf->Cell(0, 0, 'Anti HIV, Anti HCV, HBsAg & Syphilis', 0,1);
-$pdf->SetLineWidth(0.1);$pdf->Line(45,28,99,28);
-    
-
-//Informasi Tanggal
-$pdf->SetFont('helvetica', 10);
-$pdf->SetXY(45,29);    $pdf->Cell(0, 0, 'Aftap', 0);
-$pdf->SetXY(59,29);    $pdf->Cell(0, 0, ':', 0);
-$pdf->SetXY(62,29);    $pdf->Cell(0, 0, $hasil1[tglaftap], 0);
-$pdf->SetFont('helvetica', 10);
-$pdf->SetXY(45,33);    $pdf->Cell(0, 0, 'Produksi', 0);
-$pdf->SetXY(59,33);    $pdf->Cell(0, 0, ':', 0);
-if ($hasil1[rproduk]=='WB'){
-$pdf->SetXY(62,33);    $pdf->Cell(0, 0, 'Tidak Ada', 0);
-                   } else {
-$pdf->SetXY(62,33);    $pdf->Cell(0, 0, $hasil1[tglolah], 0);
-                   }
-$pdf->SetFont('helvetica', 10);
-$pdf->SetXY(45,37);    $pdf->Cell(0, 0, 'ED', 0);
-$pdf->SetXY(59,37);    $pdf->Cell(0, 0, ':', 0);
-$pdf->SetXY(62,37);    $pdf->Cell(0, 0, $hasil1[tgled], 0);
-
-//Info ABS
-$pdf->SetFont('helvetica', 10);
-$pdf->SetXY(45,41);    $pdf->Cell(0, 0, 'ABS', 0);
-$pdf->SetXY(59,41);    $pdf->Cell(0, 0, ':', 0);
-$pdf->SetXY(62,41);    $pdf->Cell(0, 0, $abs[abs], 0);
-
-
-//Informasi Penyimpanan
-$pdf->SetXY(45,44);    $pdf->SetFont('helvetica','', 9);
-$pdf->Cell(0, 0, 'Simpan pada Suhu', 0);
-$pdf->SetXY(78,44);    $pdf->SetFont('helvetica','b', 9);
-if (($hasil1[rproduk]=='TC') or ($hasil1[rproduk]=='TC Aferesis')) {
-          $pdf->writeHTML(': 20-24<sup>o</sup>C', true, 0, true, 0);
-} elseif ($hasil1[rproduk]=='FFP'){
-        $pdf->writeHTML(': -30<sup>o</sup>C', true, 0, true, 0);
-} elseif ($hasil1[rproduk]=='FFP Konvalesen'){
-        $pdf->writeHTML(': -30<sup>o</sup>C', true, 0, true, 0);
-} elseif ($hasil1[rproduk]=='Plasmaconcurrent'){
-        $pdf->writeHTML(': -20<sup>o</sup>C', true, 0, true, 0);
-} elseif ($hasil1[rproduk]=='Plasmapheresis'){
-        $pdf->writeHTML(': -20<sup>o</sup>C', true, 0, true, 0);
+// Info jam ambil
+if ($kantong1['produk'] == 'WE') {
+    $ambil1 = date("H:i", strtotime($kantong1['kadaluwarsa']));
 } else {
-           $pdf->writeHTML(': 2-6<sup>o</sup>C', true, 0, true, 0);
+    $ambil1 = date("H:i", strtotime($kantong1['tglpengolahan']));
 }
-$pdf->Output('label_release.pdf', 'I');
+if ($kantong1['produk'] == 'WB' && $donasi22['jam_ambil']) {
+    $ambil1 = date("H:i", strtotime($donasi22['jam_ambil']));
+}
 
-//============================================================+
-// END OF FILE
-//============================================================+
-?>
+function tglFormat($tgl)
+{
+    $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+    $d = date("d", strtotime($tgl));
+    $m = date("n", strtotime($tgl));
+    $y = date("Y", strtotime($tgl));
+    return $d . ' ' . $bulan[$m] . ' ' . $y;
+}
+
+// Kiri
+$pdf->SetFont('helvetica', 'B', 9);
+$pdf->SetXY(3, 25);
+$pdf->Cell(20, 0, 'No. Kantong', 0);
+$pdf->SetFont('helvetica', 'B', 11);
+$pdf->Cell(0, 0, ': ' . $_GET['noKantong'], 0);
+
+$pdf->SetFont('helvetica', 'B', 9);
+$pdf->SetXY(3, 30);
+$pdf->Cell(20, 0, 'No. Selang', 0);
+$pdf->SetFont('helvetica', 'B', 11);
+$pdf->Cell(0, 0, ': ' . $kantonga['noSelang'], 0);
+
+$pdf->SetXY(4, 35);
+$pdf->write1DBarcode(trim($_GET['noKantong']), 'C128', '', '', '55', 10, 0.35, $style, 'B');
+
+$pdf->SetXY(3, 47);
+$pdf->SetFont('helvetica', '', 8);
+$pdf->Cell(23, 0, 'Tgl. Aftap ', 0);
+$pdf->Cell(0, 0, ': ' . tglFormat($kantong1['tgl_Aftap']), 0);
+$pdf->SetXY(3, 51);
+$pdf->Cell(23, 0, 'Durasi Aftap', 0);
+$pdf->Cell(0, 0, ': ' . $kantong1['lama_pengambilan'] . ' menit', 0);
+$pdf->SetXY(3, 55);
+$pdf->Cell(23, 0, 'Tgl. Pengolahan', 0);
+if ($kantong1['produk'] != 'WB') {
+    $pdf->Cell(0, 0, ': ' . tglFormat($kantong1['tglpengolahan']), 0);
+} else {
+    $pdf->Cell(0, 0, ': -', 0);
+}
+$pdf->SetXY(3, 59);
+$pdf->Cell(23, 0, 'Tgl. Kedaluwarsa', 0);
+// $pdf->Cell(0, 0, ': ' . tglFormat($kantong1['kadaluwarsa']), 0);
+$pdf->Cell(0, 0, ': ' . tglFormat($kantong1['kadaluwarsa']) . '  ' . $ambil1, 0);
+
+// Fungsi untuk menghapus '450' dari nama produk
+function cleanProductName($product) {
+    return preg_replace('/\s*450\b/', '', $product); // Menghapus '450' atau ' 450' di akhir string
+}
+
+// Terapkan pembersihan pada nama produk
+$cleanedProduct = cleanProductName($kantong1['produk']);
+
+$pdf->SetXY(3, 67);
+$pdf->SetFont('helvetica', 'B', 8);
+$pdf->Cell(23, 0, 'Produk', 0);
+$pdf->Cell(0, 0, ': ', 0);
+$pdf->SetXY(3, 70);
+$pdf->SetFont('helvetica', 'B', 35);
+$pdf->Cell(0, 5, $cleanedProduct, 0);
+$pdf->SetXY(3, 85);
+$pdf->SetFont('helvetica', '', 8);
+$pdf->Cell(23, 0, 'Volume', 0);
+$pdf->Cell(0, 0, ': ' . $kantong1['volume'] . ' cc', 0);
+$pdf->SetFont('helvetica', '', 8);
+$pdf->SetXY(3, 90);
+$pdf->Cell(23, 0, 'Suhu Simpan', 0);
+if ($cleanedProduct == 'FFP') {
+    $pdf->Cell(0, 0, ': <= -20°C', 0);
+} elseif ($cleanedProduct == 'PRP' || $cleanedProduct == 'TC') {
+    $pdf->Cell(0, 0, ': 20-24°C', 0);
+} else {
+    $pdf->Cell(0, 0, ': 2-6°C', 0);
+}
+//$pdf->Cell(0, 0, ': 2-6°C', 0);
+
+// Kanan
+$pdf->SetXY(55, 25);
+$pdf->SetFont('helvetica', '', 8);
+$pdf->Cell(0, 0, 'Golongan Darah ABO dan Rhesus :', 0);
+$pdf->SetXY(65, 28);
+$pdf->SetFont('helvetica', 'B', 40);
+$pdf->Cell(0, 0, $kantong1['gol_darah'] . '' . $kantong1['RhesusDrh'], 0);
+$pdf->SetXY(55, 47);
+$pdf->SetFont('helvetica', '', 8);
+if ($kantong1['abs'] == 'Pos' || $kantong1['abs'] == 'Neg') {
+    $pdf->Cell(0, 0, 'ABS : ' . strtoupper($kantong1['abs']), 0);
+} else {
+    $pdf->Cell(0, 0, 'ABS : -', 0);
+}
+$pdf->SetXY(55, 67);
+$pdf->SetFont('helvetica', 'B', 8);
+$pdf->Cell(0, 0, 'Non-Reaktif:', 0);
+$pdf->SetFont('helvetica', '', 8);
+$pdf->SetXY(55, 71);
+$pdf->Cell(0, 0, '1. CHLIA (HIV, HCV, HBsAg, Sifilis)', 0);
+$pdf->SetXY(55, 74);
+if (!empty($kantongnat)) {
+    $pdf->Cell(0, 0, '2. NAT (HIV, HCV, HBsAg)', 0);
+}
+
+// Status
+$pdf->SetFont('helvetica', 'B', 8);
+$pdf->SetXY(55, 81);
+$pdf->Cell(0, 0, 'Status:', 0);
+$pdf->SetXY(56, 86);
+$pdf->SetFont('helvetica', 'B', 20);
+if ($kantong1['hasil_release'] == '2') {
+    $pdf->SetFillColor(0, 0, 0); // hitam
+    $pdf->SetTextColor(255, 255, 255); // merah
+    $pdf->Rect(56, 86, 45, 10, 'DF');
+    $pdf->Cell(45, 10, 'R E J E C T', 0, 0, 'C', 0, '', 1);
+} else {
+    $pdf->SetFillColor(255, 255, 255); // putih
+    $pdf->SetTextColor(0, 0, 0); // hitam
+    $pdf->Rect(56, 86, 45, 10, 'DF');
+    $pdf->Cell(45, 10, 'R E L E A S E D', 0, 0, 'C', 0, '', 1);
+}
+
+$pdf->Output('label_kantong.pdf', 'I');

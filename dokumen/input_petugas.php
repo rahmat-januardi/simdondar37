@@ -88,30 +88,15 @@ td, th {
         <td><strong>:</strong></td>
         <td><div align="left"><strong>
           <select name="bidang">
-            <option></option>
-            <option>Penyediaan Donor</option>
-            <option>Kerjasama Hukum dan Humas</option>
-            <option>Simdondar</option>
-            <option>Penyediaan Darah</option>
-            <option>Rujukan IMLTD</option>
-            <option>Serologi Golongan Darah</option>
-            <option>Produksi</option>
-            <option>Pengawasan Mutu</option>
-	    <option>Kalibrasi</option>
-            <option>Penelitian dan Pengembangan</option>
-            <option>Pembinaan Kualitas</option>
-	    <option>Perencanaan dan Keuangan</option>
-	    <option>Kepegawaian</option>
-	    <option>Diklat</option>
-	    <option>Logistik</option>
-	    <option>Rumah Tangga</option>
-	    <option>Penunjang</option>
-	    <option>Manajemen Kualitas</option>
-	    <option>Litbang dan Produksi</option>
-	    <option>Pelayanan</option>
-	    <option>Rekrutment dan Pembinaan Donor</option>
-          </select>
-        </strong></div></td>
+                      <option>===Input Bidang===</option>
+                      <?php
+                      $sql = "select * from master_bidang order by bidang";
+                      $proses = mysql_query($sql);
+                      while ($data = mysql_fetch_array($proses)) {
+                        echo "<option value='$data[bidang]'>$data[bidang]</option>";
+                      }
+                      ?>
+                    </select>        </strong></div></td>
     </tr>
 
     <tr>

@@ -1,0 +1,556 @@
+<?php
+/*
+TIM IT 2024-10-13
+*/
+
+require_once("clogin.php");
+require_once("config/dbi_connect.php");
+
+$leveluser = $_SESSION["level"];
+$namauser = $_SESSION["namauser"];
+$namalengkap = $_SESSION["nama_lengkap"];
+
+$f_tanggal1 = date("Y-m-d");
+$f_tanggal2 = date("Y-m-d");
+
+// === PROSES TAMPILKAN ===
+if (isset($_POST["btnTampilkan"])) {
+    $f_tanggal1 = $_POST["tanggal_kirim1"];
+    $f_tanggal2 = $_POST["tanggal_kirim2"];
+
+    if ($f_tanggal2 < $f_tanggal1) {
+        $temp = $f_tanggal1;
+        $f_tanggal1 = $f_tanggal2;
+        $f_tanggal2 = $temp;
+    }
+}
+
+// === AMBIL KODE UDD ===
+$utd = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `id`, `nama`, `alamat` FROM `utd` WHERE `aktif`='1';"));
+$udd_kode = $utd["id"]; // fallback jika gagal
+$udd_nama = $utd["nama"];
+$udd_alamat = $utd["alamat"];
+
+// === FUNGSI AMBIL PRODUCTION TYPE ===
+function getProductionTypes($dbi, $tgl1, $tgl2)
+{
+    $sql = "SELECT DISTINCT s.ktg_produk 
+            FROM pmf_stokkantong s
+            LEFT JOIN pmf_distribusi d ON s.puf_trxdistribusi = d.pmfd_notransaksi
+            WHERE DATE(d.pmfd_tanggal) BETWEEN '$tgl1' AND '$tgl2' 
+            AND s.puf_trxdistribusi IS NOT NULL 
+            AND s.puf_status = '1'
+            AND s.ktg_produk IS NOT NULL
+            AND s.ktg_produk != ''
+            ORDER BY s.ktg_produk ASC";
+
+    $query = mysqli_query($dbi, $sql);
+    $produk = array();
+
+    while ($row = mysqli_fetch_assoc($query)) {
+        if (!empty($row['ktg_produk'])) {
+            $produk[] = $row['ktg_produk'];
+        }
+    }
+
+    return !empty($produk) ? implode(', ', $produk) : 'Unknown';
+}
+
+// === PROSES SIMPAN BOL (GENERATE OTOMATIS) ===
+if (isset($_POST["btnSimpanBOL"])) {
+    $tgl1   = mysqli_real_escape_string($dbi, $_POST["tgl_kirim1"]);
+    $tgl2   = mysqli_real_escape_string($dbi, $_POST["tgl_kirim2"]);
+    $tahap  = mysqli_real_escape_string($dbi, $_POST["tahap_pengiriman"]);
+    $prefix = mysqli_real_escape_string($dbi, $_POST["perusahaan"]); // Ambil prefix dari pilihan perusahaan
+
+    // Validasi tanggal
+    if ($tgl2 < $tgl1) {
+        $temp = $tgl1;
+        $tgl1 = $tgl2;
+        $tgl2 = $temp;
+    }
+
+    // Validasi tahap
+    $tahap = str_pad($tahap, 2, '0', STR_PAD_LEFT); // jadi 01, 02, ..., 12
+
+    // Generate BOL: [PREFIX][YY][MM][KODE UDD][TAHAP]
+    $yy = substr($tgl1, 2, 2); // 25
+    $mm = substr($tgl1, 5, 2); // 11
+    $no_bol = "{$prefix}{$yy}{$mm}{$udd_kode}{$tahap}";
+
+    // Cek apakah ada data di rentang tanggal
+    $check = mysqli_query($dbi, "SELECT COUNT(*) as total FROM pmf_distribusi 
+                                 WHERE DATE(pmfd_tanggal) BETWEEN '$tgl1' AND '$tgl2'");
+    $row = mysqli_fetch_assoc($check);
+
+    if ($row['total'] == 0) {
+        echo "<script>
+            Swal.fire('Peringatan', 'Tidak ada data distribusi pada rentang tanggal yang dipilih.', 'warning');
+        </script>";
+    } else {
+        // Update BOL
+        $update_sql = "UPDATE pmf_distribusi 
+                       SET pmfd_no_bol = '$no_bol'
+                       WHERE DATE(pmfd_tanggal) BETWEEN '$tgl1' AND '$tgl2'";
+
+        if (mysqli_query($dbi, $update_sql)) {
+            $affected = mysqli_affected_rows($dbi);
+            echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: 'Nomor BOL <strong>$no_bol</strong> disimpan ke $affected record.',
+                    html: true,
+                    timer: 3000,
+                    showConfirmButton: false
+                }).then(() => { window.location.href = window.location.href; });
+            </script>";
+        } else {
+            echo "<script>
+                Swal.fire('Error', 'Gagal menyimpan: " . mysqli_error($dbi) . "', 'error');
+            </script>";
+        }
+    }
+}
+
+// === AMBIL PRODUCTION TYPE UNTUK EXPORT ===
+$production_types = getProductionTypes($dbi, $f_tanggal1, $f_tanggal2);
+?>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Donorlist Pengiriman</title>
+    <link rel="stylesheet" href="bootsrap337/bspmi.css">
+    <link rel="stylesheet" href="bootsrap337/w3.css">
+    <link rel="stylesheet" href="puf/puf.css">
+    <link rel="stylesheet" href="bootsrap337/css/bootstrap.min.css">
+    <link href="bootsrap337/datepicker/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="bootsrap337/chosen/chosen.css">
+    <link href="https://cdn.datatables.net/v/bs/dt-1.13.8/datatables.min.css" rel="stylesheet">
+
+    <style>
+        .table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .total-row {
+            background-color: #d9edf7;
+            font-weight: bold;
+        }
+
+        .form-inline .form-group {
+            margin-right: 10px;
+        }
+
+        .btn-export {
+            background-color: #337ab7;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background-color: #286090;
+        }
+
+        .preview-bol {
+            font-family: monospace;
+            font-weight: bold;
+            color: #f15006ff;
+        }
+
+        .modal-content {
+            background-color: rgba(255, 255, 255, 1) !important;
+            color: #000;
+            border-radius: 10px;
+        }
+
+        .modal-header {
+            background-color: #6a92f7ff !important;
+            color: #000;
+            border-bottom: 1px solid #bbb;
+        }
+    </style>
+</head>
+
+<body style="font-size:13px;">
+    <div id="loading"></div>
+    <div class="container-fluid" style="margin: 30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel w3-border-theme shadow">
+                    <div class="panel-heading w3-theme-d5 clearfix">
+                        <div class="col-lg-9 col-md-8 col-sm-7 col-xs-8 text-left text-shadow" style="font-size: 150%;font-weight: bold;">
+                            Donorlist Pengiriman
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4 text-right">
+                            <button type="button" class="w3-btn w3-theme-d3 w3-hover-green" data-toggle="modal" data-target="#modalInputBOL" style="margin-left: 5px;">
+                                <i class="glyphicon glyphicon-edit"></i> Input BOL
+                            </button>
+                            <a href="?module=fp_transport" class="w3-btn w3-theme-l3 w3-hover-yellow">
+                                <i class="glyphicon glyphicon-repeat"></i> Kembali
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        <!-- FORM FILTER -->
+                        <form method="POST" class="form-inline" style="margin-bottom: 15px;">
+                            <div class="form-group">
+                                <label>Tanggal Kirim</label>
+                                <input type="text" class="form-control datepicker" name="tanggal_kirim1" value="<?= $f_tanggal1 ?>" style="width:120px;">
+                                <span style="margin:0 5px;">s/d</span>
+                                <input type="text" class="form-control datepicker" name="tanggal_kirim2" value="<?= $f_tanggal2 ?>" style="width:120px;">
+                            </div>
+                            <button type="submit" name="btnTampilkan" class="w3-btn w3-theme-d5 w3-hover-yellow">
+                                <i class="glyphicon glyphicon-search"></i> Tampilkan
+                            </button>
+                            <button type="button" class="w3-btn btn-export w3-hover-yellow" onclick="exportToExcel()">
+                                <i class="glyphicon glyphicon-download"></i> Export XLS
+                            </button>
+                        </form>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-condensed" id="tabledata">
+                                <thead class="w3-theme-d4">
+                                    <tr>
+                                        <th style="text-align: center;">BOL No.</th>
+                                        <th style="text-align: center;">Carton ID</th>
+                                        <th style="text-align: center;">Unit#</th>
+                                        <th style="text-align: center;">Collection Date</th>
+                                        <th style="text-align: center;">Volume</th>
+                                        <th style="text-align: center;">HBS</th>
+                                        <th style="text-align: center;">HCV</th>
+                                        <th style="text-align: center;">HIV</th>
+                                        <th style="text-align: center;">Syphilis</th>
+                                        <th style="text-align: center;">HIV NAT</th>
+                                        <th style="text-align: center;">HCV NAT</th>
+                                        <th style="text-align: center;">HBV NAT</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $where = " WHERE DATE(d.pmfd_tanggal) BETWEEN '$f_tanggal1' AND '$f_tanggal2' 
+                                               AND s.puf_trxdistribusi IS NOT NULL 
+                                               AND s.puf_status = '1'";
+
+                                    $sql = "SELECT 
+                                                d.pmfd_no_bol,
+                                                d.pmfd_kodebox as carton_id,
+                                                s.ktg_kantong as unit_no,
+                                                s.ktg_volume,
+                                                s.ktg_tgl_aftap,
+                                                s.ujs_b_hasil as hbs,
+                                                s.ujs_c_hasil as hcv,
+                                                s.ujs_i_hasil as hiv,
+                                                s.ujs_s_hasil as syphilis,
+                                                s.nat_hasil as nat
+                                            FROM pmf_stokkantong s
+                                            LEFT JOIN pmf_distribusi d ON s.puf_trxdistribusi = d.pmfd_notransaksi
+                                            $where
+                                            ORDER BY d.pmfd_kodebox ASC, s.ktg_kantong";
+
+                                    $query = mysqli_query($dbi, $sql);
+                                    $total_volume = 0;
+                                    $total_kantong = 0;
+
+                                    while ($row = mysqli_fetch_assoc($query)) {
+                                        $total_volume += $row['ktg_volume'];
+                                        $total_kantong++;
+                                        $bol = !empty($row['pmfd_no_bol']) ? htmlspecialchars($row['pmfd_no_bol']) : '-';
+                                        echo "<tr>
+                                            <td class='text-center'>$bol</td>
+                                            <td>{$row['carton_id']}</td>
+                                            <td>{$row['unit_no']}</td>
+                                            <td class='text-center'>" . date('Y-m-d', strtotime($row['ktg_tgl_aftap'])) . "</td>
+                                            <td class='text-center'>{$row['ktg_volume']}</td>
+                                            <td class='text-center'>" . ($row['hbs'] == '0' ? 'NR' : $row['hbs']) . "</td>
+                                            <td class='text-center'>" . ($row['hcv'] == '0' ? 'NR' : $row['hcv']) . "</td>
+                                            <td class='text-center'>" . ($row['hiv'] == '0' ? 'NR' : $row['hiv']) . "</td>
+                                            <td class='text-center'>" . ($row['syphilis'] == '0' ? 'NR' : $row['syphilis']) . "</td>
+                                            <td class='text-center'>" . ($row['nat'] == '0' ? 'NR' : $row['nat']) . "</td>
+                                            <td class='text-center'>" . ($row['nat'] == '0' ? 'NR' : $row['nat']) . "</td>
+                                            <td class='text-center'>" . ($row['nat'] == '0' ? 'NR' : $row['nat']) . "</td>
+                                        </tr>";
+                                    }
+                                    ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="total-row">
+                                        <td colspan="2" class="text-right"><strong>Total Unit:</strong></td>
+                                        <td class="text-center"><strong><?= number_format($total_kantong, 0) ?> kantong</strong></td>
+                                        <td class="text-right"><strong>Total Volume:</strong></td>
+                                        <td class="text-center"><strong><?= number_format($total_volume, 0) ?> mL (<?= round($total_volume / 1000, 1) ?> L)</strong></td>
+                                        <td colspan="7"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL INPUT BOL -->
+    <div class="modal fade" id="modalInputBOL" tabindex="-1" role="dialog" aria-labelledby="modalInputBOLLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="POST" action="">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="modalInputBOLLabel">Input Nomor BOL</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label>Tanggal Kirim</label>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control datepicker" name="tgl_kirim1" value="<?= $f_tanggal1 ?>" placeholder="Dari" required>
+                                </div>
+                                <div class="col-xs-6">
+                                    <input type="text" class="form-control datepicker" name="tgl_kirim2" value="<?= $f_tanggal2 ?>" placeholder="Sampai" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fraksionator</label>
+                            <select name="perusahaan" id="perusahaan" class="form-control" required>
+                                <option value="">-- Pilih Fraksionator --</option>
+                                <option value="SKP">SK Plasma</option>
+                                <option value="TAK">Takeda</option>
+                                <!-- Tambahkan pilihan lain jika diperlukan, misalnya: -->
+                                <!-- <option value="DLL">DLL</option> -->
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tahap Pengiriman</label>
+                            <select name="tahap_pengiriman" id="tahap_pengiriman" class="form-control" required>
+                                <option value="">-- Pilih Tahap --</option>
+                                <?php for ($i = 1; $i <= 12; $i++): ?>
+                                    <option value="<?= $i ?>">Tahap <?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nomor BOL (Otomatis)</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                                <input type="text" class="form-control preview-bol" id="preview_bol" readonly placeholder="Pilih tanggal, perusahaan & tahap">
+                            </div>
+                            <small class="text-muted">Format: [Fraksionator][YY][MM][KODE UDD][TAHAP]</small>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <button type="submit" name="btnSimpanBOL" class="btn btn-primary" id="btnSimpan">
+                            <i class="glyphicon glyphicon-save"></i> Simpan BOL
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="bootsrap337/js/jquery.min.js"></script>
+    <script src="bootsrap337/js/bootstrap.min.js"></script>
+    <script src="bootsrap337/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs/dt-1.13.8/datatables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        // Kirim data total dari PHP ke JS
+        window.exportTotals = {
+            units: <?= $total_kantong ?>,
+            volume: <?= $total_volume ?>,
+            productionTypes: '<?= addslashes($production_types) ?>'
+        };
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $('#modalInputBOL').on('shown.bs.modal', function() {
+                $('.datepicker').datepicker('update');
+                updatePreviewBOL();
+            });
+
+            $('input[name="tgl_kirim1"], #perusahaan, #tahap_pengiriman').on('change', function() {
+                updatePreviewBOL();
+            });
+
+            function updatePreviewBOL() {
+                const tgl = $('input[name="tgl_kirim1"]').val();
+                const prefix = $('#perusahaan').val();
+                const tahap = $('#tahap_pengiriman').val();
+                if (tgl && prefix && tahap) {
+                    const yy = tgl.substr(2, 2);
+                    const mm = tgl.substr(5, 2);
+                    const kode = '<?= $udd_kode ?>';
+                    const th = tahap.padStart(2, '0');
+                    $('#preview_bol').val(`${prefix}${yy}${mm}${kode}${th}`);
+                } else {
+                    $('#preview_bol').val('');
+                }
+            }
+
+            $('#tabledata').DataTable({
+                paging: true,
+                searching: true,
+                info: true, // opsional, biar ada tulisan "Showing 1 to 10 of 384 entries"
+                lengthChange: true, // <-- DIIJINKAN lagi
+                pageLength: 10, // default tampilkan 25 baris (bisa diganti 10/50 sesuai selera)
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ], // <-- INI YANG ANDA MAU!
+                order: [
+                    [1, 'asc']
+                ],
+                language: {
+                    lengthMenu: "Tampilkan _MENU_ data per halaman",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    paginate: {
+                        previous: "Sebelumnya",
+                        next: "Berikutnya"
+                    }
+                }
+            });
+        });
+
+        function exportToExcel() {
+            const dtTable = $('#tabledata').DataTable(); // Ambil instance DataTables
+
+            // Ambil header row menggunakan API DataTables
+            const headerRow = dtTable.columns().header().toArray().map(header => header.innerText.trim());
+
+            // Ambil SEMUA body data (mengabaikan paging, search, dll.)
+            // Ini akan mengembalikan array of arrays, setiap array adalah satu baris data (text clean tanpa HTML)
+            const bodyData = dtTable.rows({
+                search: 'applied',
+                order: 'applied'
+            }).data().toArray();
+
+            // Ambil totals dari window.exportTotals (sudah dari PHP)
+            const totalKantong = window.exportTotals.units || 0;
+            const totalVolume = window.exportTotals.volume || 0;
+            const productionType = window.exportTotals.productionTypes || 'Unknown';
+
+            const units = totalKantong.toLocaleString('en-US');
+            const totalMilliliters = totalVolume.toLocaleString('en-US');
+
+            const bloodCenter = '<?= addslashes($udd_nama) ?>';
+            const address = '<?= addslashes($udd_alamat) ?>';
+
+            const dateInput = document.querySelector('input[name="tanggal_kirim1"]').value;
+            const date1 = new Date(dateInput);
+            const day = date1.getDate().toString().padStart(2, '0');
+            const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            const month = monthNames[date1.getMonth()];
+            const year = date1.getFullYear();
+            const shippingDate = `${day} ${month} ${year}`;
+
+            // Header data tambahan (sama seperti sebelumnya)
+            const headerData = [
+                ['Blood Center:', bloodCenter],
+                ['Address:', address],
+                ['Shipping Date:', shippingDate],
+                ['Production Type:', productionType],
+                ['Units:', units],
+                ['Total Milliliters:', totalMilliliters],
+                []
+            ];
+
+            // Gabungkan semuanya: headerData + headerRow + bodyData
+            const wsData = [...headerData, headerRow, ...bodyData];
+
+            // Buat worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+            // Set lebar kolom (sama seperti sebelumnya)
+            ws['!cols'] = [{
+                    wch: 20
+                }, {
+                    wch: 19
+                }, {
+                    wch: 18
+                }, {
+                    wch: 16
+                }, {
+                    wch: 10
+                },
+                {
+                    wch: 8
+                }, {
+                    wch: 8
+                }, {
+                    wch: 8
+                }, {
+                    wch: 10
+                }, {
+                    wch: 10
+                }, {
+                    wch: 10
+                }, {
+                    wch: 10
+                }
+            ];
+
+            // Styling (bold untuk header dan totals) - sama seperti sebelumnya
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let R = 0; R <= range.e.r; ++R) {
+                for (let C = 0; C <= range.e.c; ++C) {
+                    const cell_address = {
+                        c: C,
+                        r: R
+                    };
+                    const cell_ref = XLSX.utils.encode_cell(cell_address);
+                    if (!ws[cell_ref]) continue;
+
+                    if (R === 7 || R === wsData.length - 1) { // Row header tabel dan total (adjust jika perlu)
+                        ws[cell_ref].s = {
+                            font: {
+                                bold: true
+                            }
+                        };
+                    }
+                    if (C === 0 && R < 7) {
+                        ws[cell_ref].s = {
+                            font: {
+                                bold: true
+                            }
+                        };
+                    }
+                }
+            }
+
+            // Append sheet dan download
+            XLSX.utils.book_append_sheet(wb, ws, 'Donorlist');
+
+            const date1Raw = document.querySelector('input[name="tanggal_kirim1"]').value;
+            const date2Raw = document.querySelector('input[name="tanggal_kirim2"]').value;
+            XLSX.writeFile(wb, `Donorlist_Pengiriman_${date1Raw}_sd_${date2Raw}.xlsx`);
+        }
+
+        const load = document.getElementById("loading");
+        window.addEventListener('load', () => load.style.display = "none");
+    </script>
+</body>
+
+</html>

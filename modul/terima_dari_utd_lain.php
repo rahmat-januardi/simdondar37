@@ -185,9 +185,8 @@ if (isset($_POST[submit])) {
 						<td class="input">
 							<select name="merk">
 							<?
-							$select1='';	$select2='';	$select3='';	$select4='';	$select5='';	$select6='';
-							$select7='';	$select8='';	$select9='';	$select10='';	$select11='';	$select12='';
-							$select13='';	$select14='';	$select15='';	$select16='';	$select17='';	$select18='';
+							$select1='';	$select2='';
+							$select3='';	$select4='';
 							if ($_POST[merk]=='KARMI') $select1='selected';
 							if ($_POST[merk]=='TERUMO') $select2='selected';
 							if ($_POST[merk]=='JMS') $select3='selected';
@@ -199,13 +198,6 @@ if (isset($_POST[submit])) {
 							if ($_POST[merk]=='Amicore') $select8='selected';
 							if ($_POST[merk]=='COM.TECH') $select9='selected';
 							if ($_POST[merk]=='Produk Demo') $select10='selected';
-							if ($_POST[merk]=='HLHAEMOPACK') $select11='selected';
-							if ($_POST[merk]=='ZONTIC') $select12='selected';
-							if ($_POST[merk]=='ONE BAG') $select13='selected';
-							if ($_POST[merk]=='MITRA') $select14='selected';
-							if ($_POST[merk]=='WASH') $select15='selected';
-							if ($_POST[merk]=='REVEOS') $select16='selected';
-
 							?>
 							<option value="iControl" <?=$select11?>>iControl</option>
 							<option value="KARMI" <?=$select1?>>KARMI</option>
@@ -218,26 +210,6 @@ if (isset($_POST[submit])) {
 							<option value="Amicore" <?=$select8?>>AMICORE</option>
 							<option value="Com.Tech" <?=$select9?>>COM.TECH</option>
 							<option value="Produk Demo" <?=$select10?>>Produk DEMO</option>
-							<option value="HLHAEMOPACK" <?=$select11?>>HLHAEMOPACK</option>
-							<option value="ZONTIC" <?=$select12?>>ZONTIC</option>
-							<option value="ONE BAG" <?=$select13?>>ONE BAG</option>
-							<option value="MITRA" <?=$select14?>>MITRA</option>
-							<option value="WASH" <?=$select15?>>WASH</option>
-							<option value="REVEOS" <?=$select15?>>REVEOS</option>
-
-							AMICUS
-COM.TECH
-CompoFlex
-GREEN CROSS
-HAEMONETICS
-HLHAEMOPACK
-JML
-JMS
-KARMI
-Produk DEMO
-TERUMO
-TERUMO ONE BAG
-ZONTIC
 							
 							</select>
 						</td>

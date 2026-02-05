@@ -147,12 +147,12 @@ if (($_SESSION['leveluser']) == 'qa') {
          } elseif ($module == 'cetak_rekap') {
             include "release/qa_list_release_xls.php";
          } elseif ($module == 'cetak_release') {
-/*
+
             require_once('color.inc');
             include "release/qa_label.php";
-*/
+
 //2025-04-12
-	 include "release/qa_release_label_2025.php";
+	 //include "release/qa_release_label_2025.php";
          } elseif ($module == 'releaseload') {
             include "release/qa_release_inputkantongload.php";
          }

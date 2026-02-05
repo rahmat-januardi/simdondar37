@@ -50,12 +50,14 @@ $("ul.thumb li").hover(function() {
     <li><a href="pmiaftap.php?module=hb&jenis=1"><img src="images/periksa_gol.png" alt=""/></a></li>
     <!--li><a href="pmiaftap.php?module=check"><img src="images/medical_checkup.png" alt=""/></a></li-->
 	<li><a href="pmiaftap.php?module=spengambilan"><img src="images/aftap_pengambilandarah1.png" alt=""/></a></li>
+        <li><a href="pmiaftap.php?module=spengambilan_alat"><img src="images/timbang_aftap.png" alt="" /></a></li>
 	<li><a href="pmiaftap.php?module=gantikantong"><img src="images/pergantian_kantong.png" alt=""/></a></li>
 	<li><a href="pmiaftap.php?module=daftar_permintaan_plebotomi"><img src="images/transaksi_plebotomi.png" alt=""/></a></li>
 	<!--li><a href="pmiaftap.php?module=daftar_permintaan_plebotomi"><img src="images/a.png" alt=""/></a></li-->
 	<!--li><a href="pmiaftap.php?module=pengesahan_pengambilan"><img src="images/pengesahan.png" alt="" /></a></li>
 	<li><a href="pmiaftap.php?module=rekap_pengesahan"><img src="images/rekap_pengesahan.png" alt="" /></a></li-->
 	<li><a href="pmiaftap.php?module=epengambilan"><img src="images/pengambilan_edit.png" alt=""/></a></li>
+<li><a href="pmiaftap.php?module=edit_status_kantong"><img src="images/reset_status_kantong.png" alt=""/></a></li>
 
 </ul>
 </ul>

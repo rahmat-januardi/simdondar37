@@ -51,7 +51,8 @@ $("ul.thumb li").hover(function() {
     <!--li><a href="pmiaftap.php?module=pmk_lap_donasi"><img src="laporan/images/laporan_bulanan_wb.png" alt="" /></a></li-->
     <!--li><a href="pmiaftap.php?module=pmk_lap_aphe"><img src="laporan/images/laporan_bulanan_aph.png" alt="" /></a></li-->
     <!--li><a href="pmiaftap.php?module=rekap_batal"><img src="images/donor_ditolak.png" alt=""/></a></li-->
-    <li><a href="pmiaftap.php?module=rekap_validktg"><img src="aftap/validasiktg.png" alt=""/></a></li>
+    <!--li><a href="pmiaftap.php?module=rekap_validktg"><img src="aftap/validasiktg.png" alt=""/></a></li-->
+    <li><a href="pmiaftap.php?module=rekap_validktg"><img src="images/verifikasiktg.png" alt="" /></a></li>
 
 </ul>
 </ul>

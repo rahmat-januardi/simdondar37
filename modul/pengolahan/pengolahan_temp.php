@@ -295,9 +295,9 @@ function isValidNomorKantong($nK, $dbi)
         $sD = mysqli_fetch_assoc($result0);
         $ktgUtama = $sD['tanpaSatelite'] . 'A';
 
-        // 🔹 Kalau satelit B/C/D dst → cek dulu datanya lengkap atau nggak
+        // ?? Kalau satelit B/C/D dst ? cek dulu datanya lengkap atau nggak
         if ($sD['nK'] != 'A') {
-            // kalau satelit status 2 → jangan fallback, langsung pakai data satelit
+            // kalau satelit status 2 ? jangan fallback, langsung pakai data satelit
             if (
                 empty($sD['tglAftap']) || $sD['tglAftap'] == '0000-00-00'
             ) {
@@ -337,19 +337,19 @@ function isValidNomorKantong($nK, $dbi)
             }
         }
 
-        // 🔹 Validasi status keluar
+        // ?? Validasi status keluar
         if ($sD['nK'] == 'A' && $sD['Status'] == 3) {
             echo json_encode(array('status' => 'error', 'message' => 'Status <b>Kantong Utama (A) Keluar</b>, tidak bisa diproses.'));
             exit;
         }
 
-        if ($sD['nK'] != 'A') {
-            // satelit hanya boleh status 2
-            if ($sD['Status'] != 2) {
-                echo json_encode(array('status' => 'error', 'message' => 'Status <b>Kantong Satelit</b> tidak sesuai. Hanya kantong satelit dengan status 2 yang bisa diproses.'));
-                exit;
-            }
-        }
+        // if ($sD['nK'] != 'A') {
+        //     // satelit hanya boleh status 2
+        //     if ($sD['Status'] != 2) {
+        //         echo json_encode(array('status' => 'error', 'message' => 'Status <b>Kantong Satelit</b> tidak sesuai. Hanya kantong satelit dengan status 2 yang bisa diproses.'));
+        //         exit;
+        //     }
+        // }
 
 
         if ($sD['Status'] == 7) {
@@ -357,7 +357,7 @@ function isValidNomorKantong($nK, $dbi)
             exit;
         }
 
-        if ($sD['sah'] == 0 || is_null($sD['sah'])) {
+        if ($sD['nK'] == 'A' && ($sD['sah'] == 0 || is_null($sD['sah']))) {
             echo json_encode(array('status' => 'error', 'message' => 'Kantong darah <b>BELUM DISAHKAN.</b>!'));
             exit;
         }

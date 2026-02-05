@@ -1,12 +1,12 @@
 <?php
 require_once('clogin.php');
 require_once('config/db_connect.php');
-$namauser=$_SESSION[namauser];
-$namalengkap=$_SESSION[nama_lengkap];
-$tglsebelum = mktime(0,0,0,date("m"),1,date("Y"));
-$tglawal=date("Y-m-d");
+$namauser = $_SESSION[namauser];
+$namalengkap = $_SESSION[nama_lengkap];
+$tglsebelum = mktime(0, 0, 0, date("m"), 1, date("Y"));
+$tglawal = date("Y-m-d");
 $hariini = date("Y-m-d");
-    $tampil = "0";
+$tampil = "0";
 ?>
 <!DOCTYPE html>
 <link type="text/css" href="../css/blitzer/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
@@ -15,48 +15,51 @@ $hariini = date("Y-m-d");
 <html>
 
 <head>
-<style>
-    body {font-family: "Lato", sans-serif;}
-</style>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+        }
+    </style>
 
-<script type="text/javascript" language="JavaScript">
-  document.forms['prolis'].elements['noktg'].focus();
-</script>
+    <script type="text/javascript" language="JavaScript">
+        document.forms['prolis'].elements['noktg'].focus();
+    </script>
 
 </head>
+
 <body OnLoad="document.prolis.noktg.focus();">
-<form name="prolis" method=post>
-    <font size="4" color=00008B>PELULUSAN <br> </font>
-    <INPUT type="text"  name="noktg" style="text-transform:uppercase" minlength="5" required="">
-    <input type=submit name=cari value=OK class="swn_button_blue">
-    <a href="pmiqa.php?module=input_qa"class="swn_button_blue">Kembali</a>
-</form>
-<?
+    <form name="prolis" method=post>
+        <font size="4" color=00008B>PELULUSAN <br> </font>
+        <INPUT type="text" name="noktg" style="text-transform:uppercase" minlength="5" required="">
+        <input type=submit name=cari value=OK class="swn_button_blue">
+        <a href="pmiqa.php?module=input_qa" class="swn_button_blue">Kembali</a>
+    </form>
+    <?
 
-if (isset($_POST[cari])) {
-    $nkt=$_POST[noktg];
-    echo "- load data Kantong<br>";
-    echo "- load data Transaksi Donor<br>";
-    echo "- load data Aftap<br>";
-    echo "- load data Pendonor<br>";
-    echo "- load data Pengolahan Komponen<br>";
-    echo "- load data IMLTD<br>";
-    echo "- load data Konfirmasi Golongan<br>";
-    echo "- load data Look Back IMLTD<br>";
+    if (isset($_POST[cari])) {
+        $nkt = $_POST[noktg];
+        echo "- load data Kantong<br>";
+        echo "- load data Transaksi Donor<br>";
+        echo "- load data Aftap<br>";
+        echo "- load data Pendonor<br>";
+        echo "- load data Pengolahan Komponen<br>";
+        echo "- load data IMLTD<br>";
+        echo "- load data Konfirmasi Golongan<br>";
+        echo "- load data Look Back IMLTD<br>";
     ?>
-    <META http-equiv="refresh" content="4; url=pmiqa.php?module=releaseload&nkt=<?php echo $nkt;?>">
-<?php }
+        <META http-equiv="refresh" content="4; url=pmiqa.php?module=releaseload&nkt=<?php echo $nkt; ?>">
+    <?php }
 
-if ($tampil =="3") {
-    $nkt=$_POST[noktg];
-    $sql="select * from stokkantong where upper(nokantong)=upper('$nkt')";
-    $stokkantong=mysql_fetch_assoc(mysql_query($sql));
-    if (($stokkantong['Status']=='2') and ($stokkantong['sah']=='1')){
-        $URL="pmiqa.php?module=release_proses&nokantong=$nkt&mode=2";
-        header("Location: $URL");
-    }else{
-        switch ($stokkantong['Status']){
-            case '0' :  $statuskantong='Kosong';
+    if ($tampil == "3") {
+        $nkt = $_POST[noktg];
+        $sql = "select * from stokkantong where upper(nokantong)=upper('$nkt')";
+        $stokkantong = mysql_fetch_assoc(mysql_query($sql));
+        if (($stokkantong['Status'] == '2') and ($stokkantong['sah'] == '1') and ($stokkantong['statKonfirmasi'] == '1') and (strtotime($stokkantong['kadaluwarsa']) >= time())) {
+            $URL = "pmiqa.php?module=release_proses&nokantong=$nkt&mode=2";
+            header("Location: $URL");
+        } else {
+            switch ($stokkantong['Status']) {
+                case '0' :  $statuskantong='Kosong';
                         if ($stokkantong[StatTempat]==NULL) $statuskantong='Kosong - di Logistik';
                         if ($stokkantong[StatTempat]=='0')  $statuskantong='Kosong - di Logistik';
                         if ($stokkantong[StatTempat]=='1')  $statuskantong='Kosong - di Aftap';
@@ -74,11 +77,10 @@ if ($tampil =="3") {
             case '4' : $statuskantong='Rusak';break;
             case '5' : $statuskantong='Rusak-Gagal';break;
             case '6' : $statuskantong='Dimusnahkan';break;
-            default  : $statuskantong='-';
+            default  : $statuskantong='-';            }
+            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
         }
-        echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
-    }
-}?>
+    } ?>
 </body>
-</html> 
 
+</html>

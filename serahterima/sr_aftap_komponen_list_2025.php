@@ -183,7 +183,7 @@ if(isset($_POST['vreset'])){
                                                             echo '<a href="?module=sr_rpt_kgd&no='.$row['hst_notrans'].'">KGD</a> | ';
                                                             echo '<a href="?module=sr_rpt_nat&no='.$row['hst_notrans'].'">NAT</a> ';
                                                             if($row['up_data']=='0'){
-                                                                echo '<a href="#" class="btn-kirim" data-id="'.$row['hst_notrans'].'" data-toggle="modal" data-target="#mKirim"> | KIRIM</a>';;
+                                                                echo '<a href="#" class="btn-kirim" data-id="'.$row['hst_notrans'].'" data-toggle="modal" data-target="#mKirim"> | KIRIM KONSOLIDASI</a>';
                                                             }
                                                         echo '</td>';
                                                         echo '</tr>';

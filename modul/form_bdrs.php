@@ -47,7 +47,7 @@ if (isset($_POST[submit])) {
 		'$pd[RhesusDrh]','$pd[stat2]','$pd[StatTempat]','$pd[kodePendonor]','$pd[kodePendonor_lama]',
 		'$pd[statKonfirmasi]','$pd[statQC]',
 		'$pd[AsalUTD]','$pd[tgl_Aftap]','$pd[kadaluwarsa]','$pd[tglpengolahan]','$pd[mu]','$pd[stokcheck]','$pd[tgl_keluar]')";
-		$bdrs_sql=mysql_query("insert into kirimbdrs (nokantong,bdrs,tgl,petugas) values ('$pd[noKantong]','$pd[stat2]','$pd[tgl_keluar]','$namauser')");
+		$bdrs_sql=mysql_query("insert into kirimbdrs (nokantong,bdrs,tgl,petugas,status) values ('$pd[noKantong]','$pd[stat2]','$pd[tgl_keluar]','$namauser', '0')");
 
 		$pd_sql=base64_encode($pd_sql.';');
 		

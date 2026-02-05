@@ -9,28 +9,21 @@ if($op=='del'){
 	$kantong    = $_GET['ktg'];
 	$user		= $_GET['usr'];
     $level		= $_GET['bagian'];
+
     $sq_del   	= "DELETE FROM `ar_stokkantongtemp` WHERE `noKantong`='$kantong' AND  `bagian`='$level'";
 	$sql_delete  = mysqli_query($dbi, $sq_del);
-    echo $sq_del;
-	if ($sql_delete){
-		echo '<script language="javascript">';
-		echo 'alert("Penghapusan data BERHASIL dilakukan.")';
-		echo '</script>';
-        if ($level == "komponen"){ 
-            header("Location: pmikomponen.php?module=musnah");
-        }else{
-            header("Location: pmiqa.php?module=musnah");
-        }
-	} else {
-		echo '<script language="javascript">';
-		echo 'alert("Penghapusan data GAGAL.")';
-		echo '</script>';
-        if ($level == "komponen"){
-            header("Location: pmikomponen.php?module=musnah");
-        }else{
-            header("Location: pmiqa.php?module=musnah");
-        }
-	}
+if ($sql_delete) {
+    echo "<script>alert('Penghapusan data BERHASIL dilakukan.');</script>";
+} else {
+    echo "<script>alert('Penghapusan data GAGAL.');</script>";
+}
+
+if ($level == "komponen") {
+    header("Location: pmikomponen.php?module=musnah");
+} else {
+    header("Location: pmiqa.php?module=musnah");
+}
+exit;
 }
 
 if($op=='batal'){

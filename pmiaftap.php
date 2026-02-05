@@ -34,8 +34,12 @@ if (($_SESSION['leveluser']) == 'aftap') { ?>
                 echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<img src=images/donate.jpg>";
             } elseif ($_GET['module'] == 'spengambilan') {
                 include "modul/search_transaksi.php";
+            } elseif ($_GET['module'] == 'spengambilan_alat') {
+                include "modul/search_transaksi_alat.php";
             } elseif ($_GET['module'] == 'pengambilan') {
                 include "modul/pengambilan_darah23.php";
+            } elseif ($_GET['module'] == 'pengambilan_alat') {
+                include "modul/pengambilan_darah_alat.php";
             } elseif ($_GET['module'] == 'pengambilan_apheresis') {
                 include "modul/pengambilan_darahaph23.php";
             } elseif ($_GET['module'] == 'pengesahan_kantong') {
@@ -344,7 +348,8 @@ if (($_SESSION['leveluser']) == 'aftap') { ?>
             }
             //rekap validasi kantong
             elseif ($_GET['module'] == 'rekap_validktg') {
-                include "aftap/rekapvalidktg.php";
+                // include "aftap/rekapvalidktg.php";
+                include "modul/rekap_verifikasi_kantong.php";
             }
             //Eksport validasi kantong excell
             elseif ($_GET['module'] == 'excell_validktg') {
@@ -353,6 +358,8 @@ if (($_SESSION['leveluser']) == 'aftap') { ?>
             //Eksport validasi kantong print
             elseif ($_GET['module'] == 'cetak_validktg') {
                 include "aftap/rekapvalidktgcetak.php";
+            } elseif ($_GET['module'] == 'edit_status_kantong') {
+                include "modul/edit_status_kantong.php";
             }
 
 

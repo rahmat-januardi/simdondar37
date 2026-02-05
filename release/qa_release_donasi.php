@@ -165,19 +165,43 @@ if ($volumekomponendarah > $vol_max){$var_volume_kantong='1';}
     <tr>
         <td valign="top">
             <table width="100%" cellpadding="5" cellspacing="5">
-                <tr><td style="background-color: mistyrose">Merk kantong</td>           <td><?=$merk?></td></tr>
-                <tr><td style="background-color: mistyrose">Standar lama kantong terbuka</td><td><?=$lamabukakantong?> Hari</td></tr>
-                <tr><td style="background-color: mistyrose">Volume kantong</td>         <td><?=$volumeasal?> ml</td></tr>
-                <tr><td style="background-color: mistyrose">Jenis Kantong</td>          <td><?=$jeniskantong?></td></tr>
-                <tr><td style="background-color: mistyrose">Nomor LOT Kantong</td>      <td><?=$lotkantong?></td></tr>
-                <tr><td style="background-color: mistyrose">Tgl. ED Kantong</td><td><?=$edkantong?></td></tr>
-                <tr><td style="background-color: mistyrose">Tanggal input logistik</td> <td><?=$tglinputlogistik?></td></tr>
-                <tr><td style="background-color: mistyrose">Tanggal mutasi ke aftap</td><td><?=$tglmutasi?></td></tr>
+                <tr>
+                    <td style="background-color: mistyrose">Merk kantong</td>
+                    <td><?=$merk?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Standar lama kantong terbuka</td>
+                    <td><?=$lamabukakantong?> Hari</td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Volume kantong</td>
+                    <td><?=$volumeasal?> ml</td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Jenis Kantong</td>
+                    <td><?=$jeniskantong?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Nomor LOT Kantong</td>
+                    <td><?=$lotkantong?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Tgl. ED Kantong</td>
+                    <td><?=$edkantong?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Tanggal input logistik</td>
+                    <td><?=$tglinputlogistik?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Tanggal mutasi ke aftap</td>
+                    <td><?=$tglmutasi?></td>
+                </tr>
             </table>
         </td>
         <td valign="top">
-        <table width="100%" cellpadding="3" cellspacing="5">
-            <?
+            <table width="100%" cellpadding="3" cellspacing="5">
+                <?
             $qpdokter=mysql_fetch_assoc(mysql_query("select Nama from dokter_periksa where kode='$kodedokter'"));
             $qptensi=mysql_fetch_assoc(mysql_query("select nama_lengkap from `user` where `id_user`='$ptgtensi'"));
             $qpaftap=mysql_fetch_assoc(mysql_query("select nama_lengkap from `user` where `id_user`='$ptgaftap'"));
@@ -187,22 +211,76 @@ if ($volumekomponendarah > $vol_max){$var_volume_kantong='1';}
 		//Cari Asal Kantong
 		if ($asalk ==NULL){
 	    ?>
-            <tr><td style="background-color: mistyrose">Tempat Pengambilan</td> <td><?=$asaldonor?></td></tr>
-            <tr><td style="background-color: mistyrose">Kode Pendonor</td>      <td><?=$kodependonor?></td></tr>
-	    <tr><td style="background-color: mistyrose">Jenis Kelamin</td>      <td><?=$jeniskelamin?></td></tr>
-	    <tr><td style="background-color: mistyrose">Donor Ke</td>      <td><?=$donasidonor?> kali</td></tr>
-            <tr><td style="background-color: mistyrose">Tgl Pengambilan</td>    <td><?=$datakantong['tgl_Aftap']?></td><input type="hidden" name="tgl_aftap" value="<?=$datakantong['tgl_Aftap']?>"> </tr>
-	    <tr><td style="background-color: mistyrose">Lama Pengambilan</td>   <td><?=$lamaaftap?> Menit</td></tr>				
-            <tr><td style="background-color: mistyrose">Volume pengambilan</td> <td><?=$volumeambil.' ml.'?></td></tr>
-            <tr><td style="background-color: mistyrose">Golongan Darah</td>     <td><?=$datakantong['gol_darah']?>(<?=$datakantong['RhesusDrh']?>)</td></tr>
-            <tr><td style="background-color: mistyrose">HB & BB</td>            <td><?='Hb: '.$hb.' g/dl,  BB: '.$bb.' kg'?></td></tr>
-            <tr><td style="background-color: mistyrose">Tensi, Nadi & Suhu</td> <td><?='Tensi: '.$tensi.' mmHg, Nadi: '.$nadi.'/mnt, Suhu: '.$suhu.'<sup>O</sup>C'?></td></tr>
-            <tr><td style="background-color: mistyrose">Petugas Tensi</td>      <td><?=$ptgtensi.' - '.$qptensi['nama_lengkap']?></td></tr>
-            <tr><td style="background-color: mistyrose">Dokter</td>             <td><?=$qpdokter['Nama']?></td></tr>
-            <tr><td style="background-color: mistyrose">Petugas HB</td>         <td><?=$ptghb.' - '.$qphb['nama_lengkap']?></td></tr>
-            <tr><td style="background-color: mistyrose">Petugas Aftap</td>      <td><?=$ptgaftap.' - '.$qpaftap['nama_lengkap']?></td></tr>
-            <tr><td style="background-color: mistyrose">Petugas Input data</td> <td><?=$ptgadmin.' - '.$qpinput['nama_lengkap']?></td></tr>
-		<?} else {
+                <tr>
+                    <td style="background-color: mistyrose">Tempat Pengambilan</td>
+                    <td><?=$asaldonor?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Kode Pendonor</td>
+                    <td><?=$kodependonor?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Jenis Kelamin</td>
+                    <td><?=$jeniskelamin?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Donor Ke</td>
+                    <td><?=$donasidonor?> kali</td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Tgl Pengambilan</td>
+                    <td><?= substr($datakantong['tgl_Aftap'], 0, 10);?></td><input type="hidden" name="tgl_aftap"
+                        value="<?=$datakantong['tgl_Aftap']?>">
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Waktu Awal Pengambilan</td>
+                    <td><?=date('H:i', strtotime($donasi['jam_ambil'])) ?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Waktu Selesai Pengambilan</td>
+                    <td><?=date('H:i', strtotime($donasi['jam_selesai']))?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Lama Pengambilan</td>
+                    <td><?=$lamaaftap?> Menit</td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Volume pengambilan</td>
+                    <td><?=$volumeambil.' ml.'?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Golongan Darah</td>
+                    <td><?=$datakantong['gol_darah']?>(<?=$datakantong['RhesusDrh']?>)</td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">HB & BB</td>
+                    <td><?='Hb: '.$hb.' g/dl,  BB: '.$bb.' kg'?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Tensi, Nadi & Suhu</td>
+                    <td><?='Tensi: '.$tensi.' mmHg, Nadi: '.$nadi.'/mnt, Suhu: '.$suhu.'<sup>O</sup>C'?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Petugas Tensi</td>
+                    <td><?=$ptgtensi.' - '.$qptensi['nama_lengkap']?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Dokter</td>
+                    <td><?=$qpdokter['Nama']?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Petugas HB</td>
+                    <td><?=$ptghb.' - '.$qphb['nama_lengkap']?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Petugas Aftap</td>
+                    <td><?=$ptgaftap.' - '.$qpaftap['nama_lengkap']?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Petugas Input data</td>
+                    <td><?=$ptgadmin.' - '.$qpinput['nama_lengkap']?></td>
+                </tr>
+                <?} else {
 		$donasi=mysql_fetch_assoc(mysql_query("select * from htransaksi where nokantong ='$asalk'"));
 		$notrans_aftap      =$donasi['NoTrans'];
 		$asaldonor          =substr($notrans_aftap,0,1);
@@ -232,26 +310,70 @@ if ($volumekomponendarah > $vol_max){$var_volume_kantong='1';}
 		if ($donasi[jumHB]=='2') $hb1='Melayang';
 		if ($donasi[jumHB]=='3') $hb1='Mengapung';		
 		?>
-	    <tr style="color:#000000;" onMouseOver="this.className='highlight';" onMouseOut="this.className='normal';">
-            <td colspan="2" class=input align="center">DATA PENGAMBILAN KANTONG ASAL <br>( <?=$asalk?> )</td>
-	    
-	    <tr><td style="background-color: mistyrose">Tempat Pengambilan</td> <td><?=$asaldonor?></td></tr>
-            <tr><td style="background-color: mistyrose">Kode Pendonor</td>      <td><?=$kodependonor?></td></tr>
-	    <tr><td style="background-color: mistyrose">Jenis Kelamin</td>      <td><?=$jeniskelamin?></td></tr>
-	    <tr><td style="background-color: mistyrose">Donor Ke</td>      <td><?=$donasidonor?> kali</td></tr>
-            <tr><td style="background-color: mistyrose">Tgl Pengambilan</td>    <td><?=$datakantong['tgl_Aftap']?></td><input type="hidden" name="tgl_aftap" value="<?=$datakantong['tgl_Aftap']?>"> </tr>
-	    				
-            <tr><td style="background-color: mistyrose">Volume pengambilan</td> <td><?=$volumeambil.' ml.'?></td></tr>
-            <tr><td style="background-color: mistyrose">Golongan Darah</td>     <td><?=$datakantong['gol_darah']?>(<?=$datakantong['RhesusDrh']?>)</td></tr>
-            <tr><td style="background-color: mistyrose">HB & BB</td>            <td><?='Hb: '.$hb.' g/dl,  BB: '.$bb.' kg'?></td></tr>
-            <tr><td style="background-color: mistyrose">Tensi, Nadi & Suhu</td> <td><?='Tensi: '.$tensi.' mmHg, Nadi: '.$nadi.'/mnt, Suhu: '.$suhu.'<sup>O</sup>C'?></td></tr>
-            <tr><td style="background-color: mistyrose">Petugas Tensi</td>      <td><?=$ptgtensi.' - '.$qptensi['nama_lengkap']?></td></tr>
-            <tr><td style="background-color: mistyrose">Dokter</td>             <td><?=$qpdokter['Nama']?></td></tr>
-            <tr><td style="background-color: mistyrose">Petugas HB</td>         <td><?=$ptghb.' - '.$qphb['nama_lengkap']?></td></tr>
-            <tr><td style="background-color: mistyrose">Petugas Aftap</td>      <td><?=$ptgaftap.' - '.$qpaftap['nama_lengkap']?></td></tr>
-            <tr><td style="background-color: mistyrose">Petugas Input data</td> <td><?=$ptgadmin.' - '.$qpinput['nama_lengkap']?></td></tr>
-<?}?>
-        </table>
+                <tr style="color:#000000;" onMouseOver="this.className='highlight';"
+                    onMouseOut="this.className='normal';">
+                    <td colspan="2" class=input align="center">DATA PENGAMBILAN KANTONG ASAL <br>( <?=$asalk?> )</td>
+
+                <tr>
+                    <td style="background-color: mistyrose">Tempat Pengambilan</td>
+                    <td><?=$asaldonor?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Kode Pendonor</td>
+                    <td><?=$kodependonor?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Jenis Kelamin</td>
+                    <td><?=$jeniskelamin?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Donor Ke</td>
+                    <td><?=$donasidonor?> kali</td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Tgl Pengambilan</td>
+                    <td><?=$datakantong['tgl_Aftap']?></td><input type="hidden" name="tgl_aftap"
+                        value="<?=$datakantong['tgl_Aftap']?>">
+                </tr>
+
+                <tr>
+                    <td style="background-color: mistyrose">Volume pengambilan</td>
+                    <td><?=$volumeambil.' ml.'?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Golongan Darah</td>
+                    <td><?=$datakantong['gol_darah']?>(<?=$datakantong['RhesusDrh']?>)</td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">HB & BB</td>
+                    <td><?='Hb: '.$hb.' g/dl,  BB: '.$bb.' kg'?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Tensi, Nadi & Suhu</td>
+                    <td><?='Tensi: '.$tensi.' mmHg, Nadi: '.$nadi.'/mnt, Suhu: '.$suhu.'<sup>O</sup>C'?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Petugas Tensi</td>
+                    <td><?=$ptgtensi.' - '.$qptensi['nama_lengkap']?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Dokter</td>
+                    <td><?=$qpdokter['Nama']?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Petugas HB</td>
+                    <td><?=$ptghb.' - '.$qphb['nama_lengkap']?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Petugas Aftap</td>
+                    <td><?=$ptgaftap.' - '.$qpaftap['nama_lengkap']?></td>
+                </tr>
+                <tr>
+                    <td style="background-color: mistyrose">Petugas Input data</td>
+                    <td><?=$ptgadmin.' - '.$qpinput['nama_lengkap']?></td>
+                </tr>
+                <?}?>
+            </table>
         </td>
     </tr>
 </table>

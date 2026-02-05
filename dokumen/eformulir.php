@@ -104,185 +104,155 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 
 $where = "WHERE 1=1";
 if ($filter_bidang != '') {
-    $where .= " AND bidang = '" . mysql_real_escape_string($filter_bidang) . "'";
+    $where .= " AND bidang = '".mysql_real_escape_string($filter_bidang)."'";
 }
 if ($search != '') {
-    $where .= " AND nama_dokumen LIKE '%" . mysql_real_escape_string($search) . "%'";
+    $where .= " AND nama_dokumen LIKE '%".mysql_real_escape_string($search)."%'";
 }
 
 // Daftar bidang
 $bidangList = array(
-    "Manajemen Kualitas",
-    "Penyediaan Donor",
-    "Kerjasama Hukum dan Humas",
-    "Teknologi Informasi",
-    "Penyediaan Darah",
-    "Rujukan IMLTD",
-    "Rujukan Imunohematologi",
-    "Litbang",
-    "Produksi",
-    "Kalibrasi",
-    "Pengawasan Mutu",
-    "Pembinaan Kualitas",
-    "Umum",
-    "Logistik",
-    "Sekretariat",
-    "Rumah Tangga",
-    "Wisma",
-    "Kepegawaian",
-    "Keuangan",
-    "Diklat"
+    "Manajemen Kualitas", "Penyediaan Donor", "Kerjasama Hukum dan Humas", "Teknologi Informasi",
+    "Penyediaan Darah", "Rujukan IMLTD", "Rujukan Imunohematologi", "Litbang",
+    "Produksi", "Kalibrasi", "Pengawasan Mutu", "Pembinaan Kualitas",
+    "Umum", "Logistik", "Sekretariat", "Rumah Tangga", "Wisma",
+    "Kepegawaian", "Keuangan", "Diklat"
 );
 ?>
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Form Upload Dokumen</title>
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 30px;
-        background: #f9f9f9;
-    }
-
-    h2 {
-        color: #333;
-    }
-
-    form {
-        background: #fff;
-        padding: 20px;
-        border: 1px solid #ccc;
-        margin-bottom: 20px;
-    }
-
-    input[type=text],
-    select,
-    input[type=file] {
-        width: 100%;
-        padding: 8px;
-        margin-top: 4px;
-        margin-bottom: 10px;
-        border: 1px solid #aaa;
-    }
-
-    button {
-        padding: 8px 16px;
-        background: #28a745;
-        border: none;
-        color: #fff;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background: #218838;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background: #fff;
-    }
-
-    th,
-    td {
-        border: 1px solid #ccc;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background: #eee;
-    }
-
-    .actions a {
-        margin-right: 5px;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f9f9f9;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        input[type=text], select, input[type=file] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #aaa;
+        }
+        button {
+            padding: 8px 16px;
+            background: #28a745;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background: #eee;
+        }
+        .actions a {
+            margin-right: 5px;
+        }
     </style>
 </head>
-
 <body>
 
-    <h1 style="text-align: center;">Master E-Formulir</h1>
-    <hr>
+<h1 style="text-align: center;" >Master E-Formulir</h1>
+<hr>
 
-    <h2><?php echo $editData ? 'Edit Dokumen' : 'Tambah Dokumen'; ?></h2>
+<h2><?php echo $editData ? 'Edit Dokumen' : 'Tambah Dokumen'; ?></h2>
 
-    <?php if ($error) echo "<p style='color:red'>$error</p>"; ?>
-    <?php if ($success) echo "<p style='color:green'>$success</p>"; ?>
+<?php if ($error) echo "<p style='color:red'>$error</p>"; ?>
+<?php if ($success) echo "<p style='color:green'>$success</p>"; ?>
 
-    <form method="post" enctype="multipart/form-data">
-        <?php if ($editData): ?>
+<form method="post" enctype="multipart/form-data">
+    <?php if ($editData): ?>
         <input type="hidden" name="id" value="<?php echo $editData['id']; ?>">
-        <?php endif; ?>
-        <label>Nama Dokumen:</label>
-        <input type="text" name="nama" required value="<?php echo $editData ? $editData['nama_dokumen'] : ''; ?>">
+    <?php endif; ?>
+    <label>Nama Dokumen:</label>
+    <input type="text" name="nama" required value="<?php echo $editData ? $editData['nama_dokumen'] : ''; ?>">
 
-        <label>Bidang:</label>
-        <select name="bidang" required>
-            <option value="">-- Pilih Bidang --</option>
-            <?php
-            foreach ($bidangList as $b) {
-                $selected = ($filter_bidang === $b) ? 'selected' : '';
-                echo "<option value=\"$b\" $selected>$b</option>";
-            }
-            ?>
-        </select>
-
-        <label>File Dokumen (max 5 MB):</label>
-        <input type="file" name="file" <?php echo $editData ? '' : 'required'; ?>>
-
-        <button type="submit" name="<?php echo $editData ? 'update' : 'submit'; ?>">
-            <?php echo $editData ? 'Update' : 'Simpan'; ?>
-        </button>
-        <?php if ($editData): ?>
-        <a href="/dokumen/eformulir.php" style="margin-left:10px;">Batal</a>
-        <?php endif; ?>
-    </form>
-
-    <h2>Daftar Dokumen</h2>
-
-    <form method="get" style="margin-bottom:10px;">
-        <input type="text" name="search" placeholder="Cari nama dokumen"
-            value="<?php echo htmlspecialchars($search); ?>">
-        <select name="filter_bidang">
-            <option value="">Semua Bidang</option>
-            <?php
-            foreach ($bidangList as $b) {
-                $selected = ($filter_bidang === $b) ? 'selected' : '';
-                echo "<option value=\"$b\" $selected>$b</option>";
-            }
-            ?>
-        </select>
-        <button type="submit">Filter</button>
-        <a href="/dokumen/eformulir.php" style="margin-left:10px;">Reset</a>
-    </form>
-
-    <table>
-        <tr>
-            <th>No</th>
-            <th>Nama Dokumen</th>
-            <th>Format</th>
-            <th>Bidang</th>
-            <th>File</th>
-            <th>Aksi</th>
-        </tr>
+    <label>Bidang:</label>
+    <select name="bidang" required>
+        <option value="">-- Pilih Bidang --</option>
         <?php
-        $no = 1;
-        $res = mysql_query("SELECT * FROM master_eform $where ORDER BY id DESC");
-        while ($row = mysql_fetch_assoc($res)) {
-            $preview = preg_match('/\\.pdf$/i', $row['nama_file'])
-                ? "<a href='{$row['lokasi_file']}' target='_blank'>Preview</a>"
-                : "<span style='color:gray'>Preview Tidak tersedia</span>";
+        foreach ($bidangList as $b) {
+            $selected = ($filter_bidang === $b) ? 'selected' : '';
+            echo "<option value=\"$b\" $selected>$b</option>";
+        }
+        ?>
+    </select>
 
-            $format = strtoupper(pathinfo($row['nama_file'], PATHINFO_EXTENSION));
+    <label>File Dokumen (max 5 MB):</label>
+    <input type="file" name="file" <?php echo $editData ? '' : 'required'; ?>>
 
-            echo "<tr>
+    <button type="submit" name="<?php echo $editData ? 'update' : 'submit'; ?>">
+        <?php echo $editData ? 'Update' : 'Simpan'; ?>
+    </button>
+    <?php if ($editData): ?>
+        <a href="/dokumen/eformulir.php" style="margin-left:10px;">Batal</a>
+    <?php endif; ?>
+</form>
+
+<h2>Daftar Dokumen</h2>
+
+<form method="get" style="margin-bottom:10px;">
+    <input type="text" name="search" placeholder="Cari nama dokumen" value="<?php echo htmlspecialchars($search); ?>">
+    <select name="filter_bidang">
+        <option value="">Semua Bidang</option>
+        <?php
+        foreach ($bidangList as $b) {
+            $selected = ($filter_bidang === $b) ? 'selected' : '';
+            echo "<option value=\"$b\" $selected>$b</option>";
+        }
+        ?>
+    </select>
+    <button type="submit">Filter</button>
+    <a href="/dokumen/eformulir.php" style="margin-left:10px;">Reset</a>
+</form>
+
+<table>
+    <tr>
+        <th>No</th>
+        <th>Nama Dokumen</th>
+	<th>Format</th>
+        <th>Bidang</th>
+        <th>File</th>
+        <th>Aksi</th>
+    </tr>
+    <?php
+    $no = 1;
+    $res = mysql_query("SELECT * FROM master_eform $where ORDER BY id DESC");
+    while ($row = mysql_fetch_assoc($res)) {
+        $preview = preg_match('/\\.pdf$/i', $row['nama_file'])
+                   ? "<a href='{$row['lokasi_file']}' target='_blank'>Preview</a>"
+                   : "<span style='color:gray'>Preview Tidak tersedia</span>";
+
+	$format = strtoupper(pathinfo($row['nama_file'], PATHINFO_EXTENSION));
+
+        echo "<tr>
                 <td>$no</td>
                 <td>{$row['nama_dokumen']}</td>
-                <td>$format</td>
+		<td>$format</td>
                 <td>{$row['bidang']}</td>
                 <td><a href='{$row['lokasi_file']}' target='_blank'>Download</a></td>
                 <td class='actions'>
@@ -291,11 +261,10 @@ $bidangList = array(
                     <a href='?delete={$row['id']}' onclick=\"return confirm('Hapus data ini?')\">Hapus</a>
                 </td>
               </tr>";
-            $no++;
-        }
-        ?>
-    </table>
+        $no++;
+    }
+    ?>
+</table>
 
 </body>
-
 </html>

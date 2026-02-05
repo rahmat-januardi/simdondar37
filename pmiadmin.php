@@ -413,6 +413,12 @@ if (($_SESSION['leveluser']) == 'admin') {
 				include "whatsapp/wa_setting.php";
 			} elseif ($_GET['module'] == 'wa_instansi') {
 				include "whatsapp/wa_donor_ins.php";
+			} elseif ($_GET[module] == 'edit_kantong') {
+				include "modul/edit_kantong.php";
+			} elseif ($_GET[module] == 'edit_transaksi') {
+				include "modul/edit_transaksi.php";
+			} elseif ($_GET[module] == 'edit_cross') {
+				include "modul/edit_cross.php";
 			}
 	}
 }

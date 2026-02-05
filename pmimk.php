@@ -52,7 +52,10 @@ elseif ($_GET[module]=='ganti_menu'){
 }
 elseif ($_GET[module]=='ganti_passwd'){
    include  "modul/ganti_passwd.php";
-}
+} 
+elseif ($_GET[module] == 'notifikasi_dokumen') {
+            include  "dokumen/notifikasi_dokumen.php";
+         }
 
 
 //wa support

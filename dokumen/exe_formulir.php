@@ -1,98 +1,89 @@
 <?php
 include 'koneksi.php';
 
-$terkait = $_POST['terkait'];
-$bidang = $_POST['bidang'];
-$nama1 = $_POST['nama1'];
-$nama2 = $_POST['nama2'];
-$tingkat = $_POST['tingkat'];
-$kontrol1 = $_POST['kontrol1'];
-$kontrol2 = $_POST['kontrol2'];
-$kontrol3 = $_POST['kontrol3'];
-$kontrol4 = $_POST['kontrol4'];
-$kontrol5 = $_POST['kontrol5'];
-$kontrol6 = $_POST['kontrol6'];
-$kontrol7 = $_POST['kontrol7'];
-$kontrol8 = $_POST['kontrol8'];
-$kontrol9 = $_POST['kontrol9'];
+// ================== AMBIL DATA POST ==================
+$terkait   = $_POST['terkait'];
+$bidang    = $_POST['bidang'];
+$nama1     = $_POST['nama1'];
+$nama2     = $_POST['nama2'];
+$tingkat   = $_POST['tingkat'];
+$kontrol1  = $_POST['kontrol1'];
+$kontrol2  = $_POST['kontrol2'];
+$kontrol3  = $_POST['kontrol3'];
+$kontrol4  = $_POST['kontrol4'];
+$kontrol5  = $_POST['kontrol5'];
+$kontrol6  = $_POST['kontrol6'];
+$kontrol7  = $_POST['kontrol7'];
+$kontrol8  = $_POST['kontrol8'];
+$kontrol9  = $_POST['kontrol9'];
 $tipe_dokumen = $_POST['tipe_dokumen'];
-$periode = $_POST['periode'];
-$no_versi = $_POST['no_versi'];
-// $tgl_setuju = $_POST['tgl_setuju'];
+$periode   = $_POST['periode'];
+$no_versi  = $_POST['no_versi'];
 $tgl_pelaksanaan = $_POST['tgl_pelaksanaan'];
-$tgl_peninjauan = $_POST['tgl_peninjauan'];
-// $pembuat = $_POST['pembuat'];
-// $pemeriksa = $_POST['pemeriksa'];
-// $pengesah = $_POST['pengesah'];
-// $pengesah2 = $_POST['pengesah2'];
-$ImageName = $_FILES['fileupload']['name'];
+$tgl_peninjauan  = $_POST['tgl_peninjauan'];
 
-$cek_klausul = $kontrol7 > 0 ? '-' . $kontrol7 . '-' : '-';
+// ================== FILE UPLOAD ==================
+$temp = 'upload/';
+if (!file_exists($temp)) mkdir($temp, 0777, true);
 
-$tgl1 = "$tgl_peninjauan";
-$tgl2 = date('Y-m-d', strtotime('-60 days', strtotime($tgl1)));
+$ImageName = '';
+if (!empty($_FILES['fileupload']['name'])) {
+    $nama_asli = $_FILES['fileupload']['name'];
+    $nama_bersih = preg_replace("/[^a-zA-Z0-9_\-\.]/", "_", $nama_asli);
+    $ImageName = time() . "_" . $nama_bersih;
 
-if ($tipe_dokumen === 'udd') {
-    $sql = "insert into formulir(terkait,bidang,nama1,nama2,tingkat,kontrol,kontrol2,kontrol3,periode,no_versi,tgl_setuju,tgl_pelaksanaan,tgl_peninjauan,pembuat,pemeriksa,pengesah,pengesah2,tgl_notif,fileku) 
-values ('$terkait','$bidang','$nama1','$nama2','$tingkat','$kontrol1',
-concat ('$kontrol1','$kontrol2','$kontrol3','$kontrol4'),
-concat('$kontrol2','$kontrol5','$kontrol3'),
-'$periode','$no_versi','$tgl_pelaksanaan','$tgl_pelaksanaan','$tgl_peninjauan','-','-', '-','-','$tgl2','$ImageName')";
-
-    $master_nomor = mysql_query(
-        "insert into master_nomor_formulir(bidang,nama1,kontrol2) values ('$bidang','$nama1',concat ('$kontrol1','$kontrol2','$kontrol3','$kontrol4'))"
-    );
-} else {
-    $sql = "insert into formulir(terkait,bidang,nama1,nama2,tingkat,kontrol,kontrol2,kontrol3,periode,no_versi,tgl_setuju,tgl_pelaksanaan,tgl_peninjauan,pembuat,pemeriksa,pengesah,pengesah2,tgl_notif,fileku) 
-	values ('$terkait','$bidang','$nama1','$nama2','$tingkat','$kontrol5',
-	concat ('$kontrol5','$kontrol6','$cek_klausul', '$kontrol8', '-','$kontrol9'),
-	concat('$kontrol6','$cek_klausul', '$kontrol8', '-'),
-	'$periode','$no_versi','$tgl_pelaksanaan','$tgl_pelaksanaan','$tgl_peninjauan','-','-','-','-','$tgl2','$ImageName')";
-
-    $master_nomor = mysql_query(
-        "insert into master_nomor_formulir(bidang,nama1,kontrol2) values ('$bidang','$nama1',concat ('$kontrol5','$kontrol6','$cek_klausul', '$kontrol8', '-','$kontrol9'))"
-    );
+    if (!move_uploaded_file($_FILES['fileupload']['tmp_name'], $temp . $ImageName)) {
+        die("Gagal upload file!");
+    }
 }
 
-$result = mysql_query($sql);
+// ================== CEK KLAUSUL ==================
+$cek_klausul = ($kontrol7 > 0) ? '-' . $kontrol7 . '-' : '-';
+
+// ================== HITUNG TGL_NOTIF ==================
+$tgl_notif = date('Y-m-d', strtotime('-60 days', strtotime($tgl_peninjauan)));
+
+// ================== INSERT FORMULIR ==================
+if ($tipe_dokumen === 'udd') {
+    $sql = "INSERT INTO formulir
+        (terkait,bidang,nama1,nama2,tingkat,kontrol,kontrol2,kontrol3,
+         periode,no_versi,tgl_setuju,tgl_pelaksanaan,tgl_peninjauan,
+         pembuat,pemeriksa,pengesah,pengesah2,tgl_notif,fileku)
+        VALUES
+        ('$terkait','$bidang','$nama1','$nama2','$tingkat','$kontrol1',
+         CONCAT('$kontrol1','$kontrol2','$kontrol3','$kontrol4'),
+         CONCAT('$kontrol2','$kontrol5','$kontrol3'),
+         '$periode','$no_versi','-','$tgl_pelaksanaan','$tgl_peninjauan',
+         '-','-','-','-','$tgl_notif','$ImageName')";
+
+    $master_nomor = mysql_query("INSERT INTO master_nomor_formulir
+        (bidang,nama1,kontrol2)
+        VALUES
+        ('$bidang','$nama1',CONCAT('$kontrol1','$kontrol2','$kontrol3','$kontrol4'))");
+} else {
+    $sql = "INSERT INTO formulir
+        (terkait,bidang,nama1,nama2,tingkat,kontrol,kontrol2,kontrol3,
+         periode,no_versi,tgl_setuju,tgl_pelaksanaan,tgl_peninjauan,
+         pembuat,pemeriksa,pengesah,pengesah2,tgl_notif,fileku)
+        VALUES
+        ('$terkait','$bidang','$nama1','$nama2','$tingkat','$kontrol5',
+         CONCAT('$kontrol5','$kontrol6','$cek_klausul','$kontrol8','-','$kontrol9'),
+         CONCAT('$kontrol6','$cek_klausul','$kontrol8','-'),
+         '$periode','$no_versi','-','$tgl_pelaksanaan','$tgl_peninjauan',
+         '-','-','-','-','$tgl_notif','$ImageName')";
+
+    $master_nomor = mysql_query("INSERT INTO master_nomor_formulir
+        (bidang,nama1,kontrol2)
+        VALUES
+        ('$bidang','$nama1',CONCAT('$kontrol5','$kontrol6','$cek_klausul','$kontrol8','-','$kontrol9'))");
+}
+
+// ================== EKSEKUSI ==================
+$result = mysql_query($sql) or die("Gagal insert formulir: " . mysql_error());
 
 if ($result) {
     include 'formulir.php';
-    echo 'Dokumen Formulir berhasil di input';
+    echo "Dokumen Formulir berhasil diinput";
 } else {
-    echo 'ERROR';
+    echo "ERROR";
 }
-?>
-
-<!--upload file-->
-<?php if (isset($_POST['upload'])) {
-    $temp = 'upload/';
-    if (!file_exists($temp)) {
-        mkdir($temp);
-    }
-
-    $fileupload = $_FILES['fileupload']['tmp_name'];
-    $ImageName = $_FILES['fileupload']['name'];
-    $ImageType = $_FILES['fileupload']['type'];
-
-    $namafile = $_POST['fileku'];
-    $type = 'pdf';
-
-    if (!empty($fileupload)) {
-        // mengacak angka untuk nama file
-        //$acak = rand(00000000, 99999999);
-
-        //$ImageExt       = substr($ImageName, strrpos($ImageName, '.'));
-        $ImageExt = str_replace('.', '', $ImageExt); // Extension
-        //$ImageName      = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
-        $NewImageName = $ImageName . '' . $ImageExt;
-
-        move_uploaded_file(
-            $_FILES['fileupload']['tmp_name'],
-            $temp . $NewImageName
-        ); // Menyimpan file
-
-        echo "<script>alert('Berhasil diupload'); location='formulir.php'</script>";
-    }
-}
-?>

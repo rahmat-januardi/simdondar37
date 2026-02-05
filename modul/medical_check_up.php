@@ -16,9 +16,6 @@
     <script src="bootsrap337/datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="bootsrap337/datepicker/locales/bootstrap-datepicker.id.min.js"></script>
     <script type="text/javascript" src="tpk/medical_checkup.js"></script>
-    <!-- Select2 -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <?php
 include('config/dbi_connect.php');
@@ -55,6 +52,11 @@ if (isset($_POST['simpan'])) {
     $v_ptgshb      = $_POST['id_hb'];
     $v_lolos       = $_POST['h_medical'];
     $v_alasan      = $_POST['alasan'];
+
+    $query_dokter = mysqli_query($dbi, "SELECT Nama FROM dokter_periksa WHERE kode='$v_ptgdokter'");
+    $data_dokter = mysqli_fetch_assoc($query_dokter);
+    $nama_dokter = $data_dokter['Nama'];
+
     $v_no1         = $_POST['no1'];
     if ($v_no1 == '0') {
         $av_no1 = "TIDAK";
@@ -476,50 +478,30 @@ if (isset($_POST['simpan'])) {
     }
 
     //UPDATE HTRANSAKSI=====================================================
-// EDIT SHIN yang di hapus $status = "-" dan $status = "1"
     if ($v_lolos == '1') {
         $pengambilan = "1";
+        $status = "-";
         $jumHB = "-";
         $ketbatal = $v_alasan;
     } else {
         $pengambilan = '3';
+        $status = "0";
         $jumHB = '1';
         $ketbatal = '-';
     }
-// EDIT SHIN di tambahkan
-    $dokter = "SELECT Status, jnsperiksa FROM htransaksi WHERE NoTrans = '$v_notransaksi'";
-    $reslut_dokter = mysqli_query($dbi, $dokter);
-    $data = mysqli_fetch_assoc($reslut_dokter);
-
-    $status_HS = $datahb['Status'];
-    if ($status_HS == 0) {
-        $status_HS_baru = 1;
-    } else {
-        $status_HS_baru = $status_HS;
-    }
-
-    // Cek dan ubah nilai jnsperiksa sesuai aturan
-    $jnsperiksa = $data['jnsperiksa'];
-    if ($jnsperiksa == 0) {
-        $jnsperiksa_baru = 1;
-    } elseif ($jnsperiksa == 1) {
-        $jnsperiksa_baru = 2;
-    } else {
-        $jnsperiksa_baru = $jnsperiksa; // tidak berubah jika sudah 2 atau lebih
-    }
-
-    // END EDIT
     $sql_transaksi = "UPDATE `htransaksi` SET
-                    `namadokter`='$v_ptgdokter',
+                    `NamaDokter`='$v_ptgdokter',
                     `petugasHB`='$v_ptgshb',
-                    `petugasTensi`='$v_ptgtensi',
+                    `petugasTensi`='$nama_dokter',
                     `beratbadan`='$v_bb',
                     `tensi`='$v_tensi',
                     `suhu`='$v_suhu',
                     `nadi`='$v_nadi',
+                    `jumHB`='$jumHB',
+                    `Hb`='$v_hemoglobin',
                     `hct`='$v_hematokrit',
                     `status_test`='1',
-                    `Status`='$status_HS_baru',
+                    `Status`='$status',
                     `Pengambilan`='$pengambilan',
                     `ketBatal`='$ketbatal',
                     `mu`='$mu',
@@ -532,8 +514,7 @@ if (isset($_POST['simpan'])) {
                     `sturasi_oksigen`='$v_oksigen',
                     `titer_cov19`='$v_titer_cov',
                     `id_sample`='$v_sample',
-                    `jnsperiksa`='$jnsperiksa_baru', 
-                    `cek_dokter`='1'
+                    `jnsperiksa`='1', `cek_dokter`='1'
                 WHERE (`NoTrans`='$v_notransaksi')";
     $upd_htransaksi = mysqli_query($dbi, $sql_transaksi);
     //UPDATE PENDONOR DGN GOL DARAH=========================================
@@ -717,33 +698,22 @@ if ($ln > 0) {
                                 <div class="table-responsive">
                                     <table class="table borderless table-striped table-hover" id="shadow1">
                                         <tr>
-                                            <!-- edit -->
                                             <td>Berat Badan<sup style="color:red;"><strong>*</strong></sup></td>
-                                            <td><input name="reqberat_badan" id="berat_badan" type="text" style="width:15mm;" onChange="cekBerat()" maxlength="3" required> kg
-                                             <br>
-                                                <span id="warning_berat" style="color:red; font-size: 12px;"></span>
-                                            </td>
+                                            <td><input name="reqberat_badan" id="berat_badan" type="text" style="width:15mm;" onChange="berat(this.value)" maxlength="3" required> kg</td>
                                         </tr>
                                         <tr>
                                             <td>Tinggi Badan<sup style="color:red;"><strong>*</strong></sup></td>
                                             <td><input name="tinggi_badan" type="text" style="width:15mm;" maxlength="3" required> cm</td>
                                         </tr>
                                         <tr>
-                                            <!-- edit -->
                                             <td>Tensi<sup style="color:red;"><strong>*</strong></sup></td>
-                                            <td><input name="reqtensi_sistol" id="tensi_sistol" type="text" style="width:15mm;" onChange="cekTensi()" maxlength="3" required> /
-                                                <input name="reqtensi_diastol" id="tensi_diastol" type="text" style="width:15mm;" onChange="cekTensi()" maxlength="3" required> mmHg
-                                                <br>
-                                                <span id="warning_tensi" style="font-size: 12px; color: red;"></span>
+                                            <td><input name="reqtensi_sistol" id="tensi_sistol" type="text" style="width:15mm;" onChange="sistol(this.value)" maxlength="3" required> /
+                                                <input name="reqtensi_diastol" id="tensi_diastol" type="text" style="width:15mm;" onChange="diastol(this.value)" maxlength="3" required> mmHg
                                             </td>
                                         </tr>
                                         <tr>
-                                            <!-- edit -->
                                             <td>Suhu<sup style="color:red;"><strong>*</strong></sup></td>
-                                            <td><input name="reqtemperatur" id="temperature" type="text" style="width:15mm;" maxlength="5" onChange="cekSuhu()" required>&nbsp;<sup>o</sup>C
-                                                <br>
-                                                <span id="warning_suhu" style="color:red; font-size: 12px;"></span>
-                                            </td>
+                                            <td><input name="reqtemperatur" id="temperature" type="text" style="width:15mm;" maxlength="5" onChange="suhutubuh(this.value)" required>&nbsp;<sup>o</sup>C</td>
                                         </tr>
                                         <tr>
                                             <td>Nadi<sup style="color:red;"><strong>*</strong></sup></td>
@@ -756,7 +726,7 @@ if ($ln > 0) {
                                         <tr>
                                             <td>Ptg Anamnesa</td>
                                             <td>
-                                                <select id="id_dokter" name="id_dokter" style="width:70mm;">
+                                                <select name="id_dokter" style="width:70mm;">
                                                     <?
                                                     $dokter = mysqli_query($dbi, "select * from dokter_periksa where aktif='1' order by nama");
                                                     $tmpdktr = mysqli_fetch_assoc(mysqli_query($dbi, "select dokter from tempudd where modul='MU CHECKUP'"));
@@ -771,48 +741,16 @@ if ($ln > 0) {
                                             </td>
                                         </tr>
                                         <tr></tr>
-                                        <tr>
-                                            <td><b>Lanjutkan HB & Gol. Darah </b></td>
+                                        <!-- <tr>
+                                                <td><b>Lanjutkan HB & Gol. Darah </b></td>
 
-                                            <td>
-                                                <div class="onoffswitch">
-                                                    <input type="hidden" name="lanjuthb" value="0">
-                                                    <input type="checkbox" name="lanjuthb" class="onoffswitch-checkbox" id="lanjuthb" tabindex="1" value="1" disabled>
-                                                    <label class="onoffswitch-label" for="lanjuthb"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!--tr><td>Ptgs Tensi</td>
-                                            <td>
-                                                <select name="id_tensi" style="width:70mm;">
-                                                    <?
-                                                    $usr = mysqli_query($dbi, "select * from `user` where `aktif`='0' order by `nama_lengkap`");
-                                                    $tmpdktr = mysqli_fetch_assoc(mysqli_query($dbi, "select * from tempudd where modul='MU CHECKUP'"));
-                                                    while ($data = mysqli_fetch_array($usr)) {
-                                                        if ($data['id_user'] == $tmpdktr['petugas1']) {
-                                                            echo "<option value=$data[id_user] selected>$data[nama_lengkap]</option>";
-                                                        } else {
-                                                            echo "<option value=$data[id_user]>$data[nama_lengkap]</option>";
-                                                        }
-                                                    } ?>
-                                                </select>
-                                            </td></tr>
-                                        <tr><td>Ptgs HB</td>
-                                            <td>
-                                                <select name="id_hb" style="width:70mm;">
-                                                    <?
-                                                    $usr = mysqli_query($dbi, "select * from `user` where `aktif`='0' order by `nama_lengkap`");
-                                                    $tmpdktr = mysqli_fetch_assoc(mysqli_query($dbi, "select * from tempudd where modul='MU CHECKUP'"));
-                                                    while ($data = mysqli_fetch_array($usr)) {
-                                                        if ($data['id_user'] == $tmpdktr['petugas2']) {
-                                                            echo "<option value=$data[id_user] selected>$data[nama_lengkap]</option>";
-                                                        } else {
-                                                            echo "<option value=$data[id_user]>$data[nama_lengkap]</option>";
-                                                        }
-                                                    } ?>
-                                                </select>
-                                            </td></tr-->
+                                                <td><div class="onoffswitch">
+                                                        <input type="hidden" name="lanjuthb" value="0">
+                                                        <input type="checkbox" name="lanjuthb" class="onoffswitch-checkbox" id="lanjuthb" tabindex="1" value="1">
+                                                        <label class="onoffswitch-label" for="lanjuthb"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                </div></td>
+                                            </tr>
+ -->
                                     </table>
                                 </div>
                             </div>
@@ -838,7 +776,7 @@ if ($ln > 0) {
                                 <div class="table-responsive" id="shadow1">
                                     <table class="table borderless table-striped table-condensed">
                                         <tr>
-                                            <td colspan=3><b>Dalam hari Ini ꞉</b></td>
+                                            <td colspan=3><b>Dalam hari Ini ?</b></td>
                                         <tr>
                                         <tr>
                                             <td>1</td>
@@ -874,7 +812,7 @@ if ($ln > 0) {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan=3><b>Dalam waktu 48 jam terakhir ꞉</b></td>
+                                            <td colspan=3><b>Dalam waktu 48 jam terakhir ?</b></td>
                                         <tr>
                                         <tr>
                                             <td>4</td>
@@ -906,7 +844,7 @@ if ($ln > 0) {
                                         <tr>
                                         <tr>
                                             <td>6</td>
-                                            <td>Jika wanita ꞉ apakah anda saat ini sedang hamil ?</td>
+                                            <td>Jika wanita ? apakah anda saat ini sedang hamil ?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no6" value="0">
@@ -1072,7 +1010,7 @@ if ($ln > 0) {
                                         </tr>
                                         <tr>
                                             <td>20</td>
-                                            <td>Donor wanita ꞉ apakah anda pernah berhubungan seksual dengan laki-laki yang biseksual ?</td>
+                                            <td>Donor wanita ? apakah anda pernah berhubungan seksual dengan laki-laki yang biseksual ?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no20" value="0">
@@ -1131,7 +1069,7 @@ if ($ln > 0) {
                                 </tr>
                                 <tr>
                                     <td>25</td>
-                                    <td>Apakah anda sedang atau pernah mendapat pengobatan siﬁlis atau GO (kencing nanah) ?</td>
+                                    <td>Apakah anda sedang atau pernah mendapat pengobatan si?lis atau GO (kencing nanah) ?</td>
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no25" value="0">
@@ -1231,7 +1169,7 @@ if ($ln > 0) {
                                 </tr>
                                 <tr>
                                     <td>33</td>
-                                    <td>Laki-laki ꞉ Apakah anda pernah berhubungan seksual dengan laki-laki, walaupun sekali? </td>
+                                    <td>Laki-laki ? Apakah anda pernah berhubungan seksual dengan laki-laki, walaupun sekali? </td>
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no33" value="0">
@@ -1785,7 +1723,6 @@ if ($ln > 0) {
 </html>
 <script>
     $(document).ready(function() {
-        $('#id_dokter').select2();
         document.getElementById("kembali").disabled = true;
         document.getElementById("alasan").disabled = true;
 
@@ -1812,104 +1749,6 @@ if ($ln > 0) {
             return confirm('Hasil Seleksi Tidak Lolos?');
         } else {
             alert('Pilih Hasil Seleksi!');
-        }
-    }
-    
-// edit
-        function cekSuhu() {
-        var suhutubuh = parseFloat(document.getElementById("temperature").value);
-        var warning = document.getElementById("warning_suhu");
-
-        if (isNaN(suhutubuh)) {
-            warning.textContent = "Masukkan suhu badan yang valid.";
-            setCheckedValue(document.periksa.elements["h_medical"], "1");
-            return;
-        }
-
-        if (suhutubuh > 37) {
-            warning.textContent = "❌ Suhu badan yang dimasukkan Lebih dari 37 °C.";
-            setCheckedValue(document.periksa.elements["h_medical"], "1");
-        } else {
-            warning.textContent = ""; // hapus pesan jika sudah sesuai
-            setCheckedValue(document.periksa.elements["h_medical"], "0");
-        }
-    }
-    
-    // edit
-        function cekBerat() {
-        var berat = parseFloat(document.getElementById("berat_badan").value);
-        var warning = document.getElementById("warning_berat");
-
-        if (isNaN(berat)) {
-            warning.textContent = "Masukkan berat badan yang valid.";
-            setCheckedValue(document.periksa.elements["h_medical"], "1");
-            return;
-        }
-
-        if (berat < 45) {
-            warning.textContent = "❌ Berat badan yang dimasukkan kurang dari 45 kg.";
-            setCheckedValue(document.periksa.elements["h_medical"], "1");
-        } else {
-            warning.textContent = ""; // hapus pesan jika sudah sesuai
-            setCheckedValue(document.periksa.elements["h_medical"], "0");
-        }
-    }
-
-// edit
-    function cekTensi() {
-        var sistolInput = document.getElementById("tensi_sistol").value.trim();
-        var diastolInput = document.getElementById("tensi_diastol").value.trim();
-
-        var sistol = parseFloat(sistolInput);
-        var diastol = parseFloat(diastolInput);
-
-        var warning = document.getElementById("warning_tensi");
-        let pesan = [];
-        let warna = "red";
-        let statusTidakLolos = false;
-
-        // ✅ Validasi 1 digit tetap ditampilkan walau cuma satu input
-        if (sistolInput.length === 1 && !isNaN(sistol)) {
-            pesan.push(`❌ Nilai TD Atas yang diinput (${sistolInput}) hanya 1 digit. Minimal 2 digit.`);
-            statusTidakLolos = true;
-        }
-
-        if (diastolInput.length === 1 && !isNaN(diastol)) {
-            pesan.push(`❌ Nilai TD Bawah yang diinput (${diastolInput}) hanya 1 digit. Minimal 2 digit.`);
-            statusTidakLolos = true;
-        }
-
-        // ❗ TUNDA validasi rentang sampai KEDUANYA sudah diisi dan bukan 1 digit
-        if (
-            sistolInput.length > 1 &&
-            diastolInput.length > 1 &&
-            !isNaN(sistol) &&
-            !isNaN(diastol)
-        ) {
-            let tdWarning = [];
-
-            if (sistol < 90 || sistol > 160) {
-                tdWarning.push(`TD Atas " ${sistol} "`);
-            }
-            if (diastol < 60 || diastol > 100) {
-                tdWarning.push(`TD Bawah " ${diastol} "`);
-            }
-
-            if (tdWarning.length > 0) {
-                pesan.push(`⚠️ Nilai ${tdWarning.join(" dan ")} di luar batas normal. Pendonor tidak lolos.`);
-                warna = "blue";
-                statusTidakLolos = true;
-            }
-        }
-
-        // Tampilkan hasil
-        if (pesan.length > 0) {
-            warning.innerHTML = pesan.join("<br>");
-            warning.style.color = warna;
-            setCheckedValue(document.periksa.elements["h_medical"], "1");
-        } else {
-            warning.textContent = "";
-            setCheckedValue(document.periksa.elements["h_medical"], "0");
         }
     }
 </script>

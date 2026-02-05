@@ -73,16 +73,41 @@
 
 
   //Shift Petugas
-  $shift  = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama,jam,sampai_jam FROM `shift` WHERE time(now()) between time(jam) AND time(sampai_jam)"));
-  //$shif   = $shift['nama'];
-  if ($shift['nama'] == "I") {
-    $shif   = "1";
-  } else if ($shift['nama'] == "II") {
-    $shif   = "2";
-  } else if ($shift['nama'] == "III") {
-    $shif   = "3";
-  } else {
-    $shif   = "4";
+  $shifts = mysqli_query($dbi, "SELECT nama, jam, sampai_jam FROM `shift` ORDER BY nama");
+  $current_time = date("H:i:s");
+  $shif = "4"; // Default ke Shift IV jika tidak ada kecocokan
+
+  while ($shift = mysqli_fetch_assoc($shifts)) {
+    $jam = $shift['jam'];
+    $sampai_jam = $shift['sampai_jam'];
+
+    // Validasi format waktu
+    if (
+      !preg_match("/^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$/", $jam) ||
+      !preg_match("/^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$/", $sampai_jam)
+    ) {
+      continue; // Lewati jika format waktu tidak valid
+    }
+
+    // Periksa shift normal
+    if ($current_time >= $jam && $current_time <= $sampai_jam) {
+      if ($shift['nama'] == "I") {
+        $shif = "1";
+      } elseif ($shift['nama'] == "II") {
+        $shif = "2";
+      } elseif ($shift['nama'] == "III") {
+        $shif = "3";
+      }
+      break;
+    }
+
+    // Penanganan shift yang melintasi tengah malam
+    if ($shift['nama'] == "III" && $sampai_jam < $jam) {
+      if ($current_time >= $jam || $current_time <= $sampai_jam) {
+        $shif = "3";
+        break;
+      }
+    }
   }
   $today1 = date("Y-m-d H:i:s");
   $today2 = date("Y-m-d");
@@ -375,7 +400,7 @@
             <div class="row">
               <div class="col-lg-12" align="center">
                 <div class="panel-title">
-                  <h4><strong>PENYADAPAN DARAH PENDONOR</strong></h4>
+                  <h4><strong>PENGAMBILAN DARAH PENDONOR</strong></h4>
                 </div>
                 <div class="clearfix"></div>
               </div>
@@ -434,13 +459,13 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="control-label col-lg-4">Menit Mulai</label>
+                    <label class="control-label col-lg-4">Jam Mulai</label>
                     <div class="col-lg-3">
                       <input type="hidden" name="caraambil" value="0" class="form-control" id="caraambil">
                       <input name="ambil" value="" class="form-control" id="jam_ambil" placeholder="mm:dd" autocomplete="off" required>
                     </div>
                     <div class="col-lg-2">
-                      <label class="control-label"> Menit Selesai</label>
+                      <label class="control-label"> Jam Selesai</label>
                     </div>
                     <div class="col-lg-3">
                       <input name="selesai" value="" class="form-control" id="jam_selesai" placeholder="mm:dd" autocomplete="off" required>
@@ -450,14 +475,14 @@
                   <div class="form-group">
                     <label class="control-label col-lg-4">Nomor Kantong</label>
                     <div class="col-lg-8">
-                      <input name="id_kantong11" id="id_kantong11" onkeypress="search(event)" class="form-control" autocomplete="off" placeholder="Nomor Kantong" required>
+                      <input name="id_kantong11" id="id_kantong11" class="form-control" autocomplete="off" placeholder="Klik untuk buka popup verifikasi kantong" readonly required onclick="showKantongPopup()">
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label class="control-label col-lg-4">Nomor Selang</label>
                     <div class="col-lg-8">
-                      <input name="no_selang" id="no_selang" onkeydown="chang(event,this);" class="form-control" autocomplete="off" placeholder="Nomor Selang" required>
+                      <input name="no_selang" id="no_selang" class="form-control" autocomplete="off" placeholder="Nomor Selang" required>
                     </div>
                   </div>
 
@@ -467,7 +492,7 @@
                       <select class="form-control" id="petugas" name="petugas" required>
                         <option class="form-control" value="">-- Pilih Petugas --</option>
                         <?php
-                        $aftaper = mysqli_query($dbi, "SELECT * from user where bagian like '%AFTAP%' order by nama_lengkap ");
+                        $aftaper = mysqli_query($dbi, "SELECT * from user where bagian like '%AFTAP%' or multi_bagian like '%AFTAP%' order by nama_lengkap ");
                         while ($ptgsaft = mysqli_fetch_array($aftaper)) { ?>
                           <option class="form-control" value=<?php echo $ptgsaft['id_user']; ?>><?php echo $ptgsaft['nama_lengkap']; ?></option>
                         <?php } ?>
@@ -547,6 +572,94 @@
     </div>
     <div class="loader" class="tengah"></div>
 
+    <!-- Modal Popup untuk Validasi Kantong -->
+    <div class="modal fade" id="kantongModal" tabindex="-1" role="dialog" aria-labelledby="kantongModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="kantongModalLabel">
+              <i class="fa fa-check-square-o"></i> Verifikasi Kantong Darah
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label><strong>Nomor Kantong (Barcode)</strong></label>
+                  <input type="text" class="form-control input-lg text-center" id="popup_id_kantong" placeholder="Scan atau ketik nomor kantong" autofocus required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label><strong>Nomor Selang</strong></label>
+                  <input type="text" class="form-control input-lg text-center" id="no_selang_display" placeholder="Scan atau ketik nomor selang">
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <table class="table table-bordered table-striped">
+              <thead class="bg-info text-white">
+                <tr>
+                  <th width="5%">No</th>
+                  <th width="25%">Parameter</th>
+                  <th width="70%">Pemeriksaan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td><strong>Kemasan</strong></td>
+                  <td>
+                    <label class="checkbox-inline"><input type="checkbox" id="kemasan_utuh"> Keadaan Utuh</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="kemasan_expired"> Belum Expired</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="kemasan_bocor"> Tidak Bocor</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td><strong>Selang</strong></td>
+                  <td>
+                    <label class="checkbox-inline"><input type="checkbox" id="selang_baik"> Baik</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="selang_tertekuk"> Tertekuk</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><strong>Jarum</strong></td>
+                  <td>
+                    <label class="checkbox-inline"><input type="checkbox" id="jarum_baik"> Baik</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="jarum_bengkok"> Bengkok</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td><strong>Antikoagulan</strong></td>
+                  <td>
+                    <label class="checkbox-inline"><input type="checkbox" id="anti_jernih"> Jernih</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="anti_berubah"> Berubah Warna</label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="alert alert-warning">
+              <strong>Catatan:</strong> Centang hanya kondisi yang benar-benar sesuai dengan keadaan kantong.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-success btn-lg" onclick="submitValidasiKantong()">
+              <i class="fa fa-check"></i> Kantong Valid – Lanjut Aftap
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 </body>
@@ -574,30 +687,110 @@
 </script>
 
 <script>
-  function search(event) {
-    let value = event.which;
-    if (value === 13) {
-      //onkeydown="return event.key != 'Enter';"
-      //call your function or anything else
+  function showKantongPopup() {
+    // Reset semua checkbox
+    $('#kantongModal input[type="checkbox"]').prop('checked', false);
 
-      getkantong = document.getElementById("id_kantong11").value;
+    // Set default kondisi BAIK = checked
+    $('#kemasan_utuh').prop('checked', true);
+    $('#kemasan_expired').prop('checked', true);
+    $('#kemasan_bocor').prop('checked', true);
+    $('#selang_baik').prop('checked', true);
+    $('#jarum_baik').prop('checked', true);
+    $('#anti_jernih').prop('checked', true);
 
+    $('#popup_id_kantong').val('');
+    $('#no_selang_display').val('');
+    $('#kantongModal').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
+    $('#popup_id_kantong').focus();
+  }
 
+  // Saat nomor kantong di-scan/ketik, otomatis ambil no selang
+  $('#popup_id_kantong').on('change', function() {
+    var ktg = $(this).val().trim();
+    if (ktg.length >= 11) {
       $.ajax({
-        method: "POST",
-        url: "carinoselang.php",
+        url: 'carinoselang.php',
+        method: 'POST',
         data: {
-          ktg: getkantong
+          ktg: ktg
         },
-        success: function(server_response) {
-          document.ambildarah.no_selang.value = server_response;
-
+        success: function(res) {
+          $('#no_selang_display').val(res);
         }
       });
-      //alert('Nomor Kantong : ' + getkantong);
-      document.getElementById("no_selang").focus();
     }
+  });
+
+  function submitValidasiKantong() {
+    const kantong = $('#popup_id_kantong').val().trim();
+
+    if (!kantong) {
+      alert('Nomor kantong belum diisi!');
+      return;
+    }
+
+    // Cek jika ada parameter kurang bagus
+    const kemasan_ok = $('#kemasan_utuh').is(':checked') && $('#kemasan_expired').is(':checked') && $('#kemasan_bocor').is(':checked');
+    const selang_ok = $('#selang_baik').is(':checked') && !$('#selang_tertekuk').is(':checked');
+    const jarum_ok = $('#jarum_baik').is(':checked') && !$('#jarum_bengkok').is(':checked');
+    const anti_ok = $('#anti_jernih').is(':checked') && !$('#anti_berubah').is(':checked');
+
+    const is_all_ok = kemasan_ok && selang_ok && jarum_ok && anti_ok;
+
+    if (!is_all_ok) {
+      if (!confirm('Ada parameter yang kurang bagus. Verifikasi akan disimpan, tapi kantong TIDAK DAPAT DIGUNAKAN.\nLanjutkan?')) {
+        return;
+      }
+    }
+
+    // Kirim ke server
+    $.ajax({
+      url: 'modul/simpan_verifikasi_kantong.php',
+      type: 'POST',
+      data: {
+        submit_verif: '1',
+        no_kantong: kantong,
+        kemasan_utuh: $('#kemasan_utuh').is(':checked') ? 1 : 0,
+        kemasan_expired: $('#kemasan_expired').is(':checked') ? 1 : 0,
+        kemasan_bocor: $('#kemasan_bocor').is(':checked') ? 1 : 0,
+        selang_baik: $('#selang_baik').is(':checked') ? 1 : 0,
+        selang_tertekuk: $('#selang_tertekuk').is(':checked') ? 1 : 0,
+        jarum_baik: $('#jarum_baik').is(':checked') ? 1 : 0,
+        jarum_bengkok: $('#jarum_bengkok').is(':checked') ? 1 : 0,
+        anti_jernih: $('#anti_jernih').is(':checked') ? 1 : 0,
+        anti_berubah: $('#anti_berubah').is(':checked') ? 1 : 0
+      },
+      success: function(res) {
+        res = res.trim();
+
+        if (res === 'OK') {
+          $('#id_kantong11').val(kantong);
+          $('#no_selang').val($('#no_selang_display').val());
+          $('#kantongModal').modal('hide');
+          alert('Verifikasi kantong berhasil!\nKantong siap digunakan untuk aftap.');
+        } else if (res.startsWith('INVALID')) {
+          alert(res); // Tampilkan pesan invalid
+          $('#kantongModal').modal('hide'); // Tutup modal, tapi jangan set field (tidak bisa dipakai)
+        } else if (res.indexOf('SUDAH PERNAH diverifikasi') !== -1) {
+          if (confirm(res + "\n\nApakah Anda ingin tetap menggunakan kantong ini?")) {
+            $('#id_kantong11').val(kantong);
+            $('#no_selang').val($('#no_selang_display').val());
+            $('#kantongModal').modal('hide');
+          }
+        } else {
+          alert('Gagal: ' + res);
+        }
+      },
+      error: function() {
+        alert('Koneksi error! Verifikasi tidak tersimpan.');
+      }
+    });
   }
+
   $(document).ready(function() {
     $('#petugas').select2();
     $('#jam_ambil, #jam_selesai').inputmask("99:99", {

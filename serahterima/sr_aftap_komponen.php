@@ -291,7 +291,7 @@ if (isset($_POST['submit2'])) {
             '$dta[dst_kel]','$dta[dst_ptgaftap]','$dta[dst_volambil]')";
             //echo "$q_detail<br>";
             $add_d=mysql_query($q_detail);
-	    $kantongall =substr($dta[dst_nokantong], -1);
+	    $kantongall =substr($dta[dst_nokantong], 0, -1);
             //update stokkantong : sah dan posisi=1 (1=KARANTINA)
 //            $updatektg=mysql_query("update `stokkantong` set `sah`='1',`position`='1'  where `noKantong`='$dta[dst_nokantong]'");
             $updatektg=mysql_query("update `stokkantong` set  `sah`='1',`position`='1'  where `noKantong` like '$kantongall%'");

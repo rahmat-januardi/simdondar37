@@ -384,7 +384,14 @@ if ($_SESSION['leveluser'] == 'kasir2') { ?>
                 include "modul/rekap_darah_terima_udd_new.php";
             } elseif ($_GET['module'] == 'tambah_bdrs') {
                 include "modul/tambah_bdrs_kasir.php";
+            } elseif ($_GET['module'] == 'form_udd') {
+                include "modul/form_udd.php";
+            } elseif ($_GET['module'] == 'terima_dari_utd_lain') {
+                include "modul/terima_dari_utd_lain.php";
+            } elseif ($_GET['module'] == 'form_uddxls') {
+                include "modul/form_uddxls.php";
             }
+
 	//Inoput Stok Manual
 	elseif ($_GET['module']=='inputstok')               {include  "distribusi/stok_inputmanual.php";}
         elseif ($_GET['module']=='inputstokrekap')          {include  "distribusi/stok_inputmanual_rekap.php";}

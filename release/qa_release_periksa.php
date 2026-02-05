@@ -12,7 +12,7 @@ $sq_elisa=mysql_query("SELECT `id`, `noKantong`, `OD`, `COV`, `notrans`,
                           case
                             when `Hasil`='0' then 'Non Reaktif'
                             when `Hasil`='1' then 'Reaktif'
-                            when `Hasil`='2' then 'Grayzone'  End As Hasil,
+                            when `Hasil`='2' then 'Invalid'  End As Hasil,
                           `tglPeriksa`, `dicatatOleh`, `dicekOleh`, `DisahkanOleh`, `noLot`, `Metode`, `ulang`, `up_data`, `insert_on`
                           FROM `hasilelisa` WHERE `noKantong`='$no_kantonga' order by `id`");
 
@@ -39,7 +39,7 @@ $sq_elisa=mysql_query("SELECT `id`, `noKantong`, `OD`, `COV`, `notrans`,
     <?
     $no="0";
     while ($imltd=mysql_fetch_assoc($sq_elisa)){$no++;
-        if (($imltd[Hasil]=="Reaktif") or ($imltd[Hasil]=="Grayzone")){$var_imltd='1';}
+        if (($imltd[Hasil]=="Reaktif") or ($imltd[Hasil]=="Invalid")){$var_imltd='1';}
         $sq_reagen=mysql_fetch_assoc(mysql_query("SELECT `Nama`, `noLot`, `tglKad`  FROM `reagen` WHERE kode='$imltd[noLot]'"));
 	if ($sq_reagen[noLot]==""){
 		$sq_reagen=mysql_fetch_assoc(mysql_query("SELECT `Nama`, `noLot`, `tglKad`  FROM `reagen` WHERE noLot='$imltd[noLot]'"));
@@ -142,9 +142,9 @@ $sq_nat=mysql_query("SELECT *,
                           case
                             when `Hasil`='0' then 'Non Reaktif'
                             when `Hasil`='1' then 'Reaktif'
-                            when `Hasil`='2' then 'Grayzone'  End As Hasil
+                            when `Hasil`='2' then 'Invalid'  End As Hasil
                           
-                          FROM `hasilnat` WHERE `noKantong` = '$no_kantonga' order by `natid`");
+                          FROM `hasilnat` WHERE `noKantong` = '$no_kantonga' order by `id`");
 
 ?>
 <font size="2" color=black><b>Pemeriksaan metode NAT</font></b>
@@ -170,7 +170,7 @@ $sq_nat=mysql_query("SELECT *,
     <?
     $no="0";
     while ($imltdn=mysql_fetch_assoc($sq_nat)){$no++;
-        if (($imltdn[Hasil]=="Reaktif") or ($imltdn[Hasil]=="Grayzone")){$var_imltd='1';}
+        if (($imltdn[Hasil]=="Reaktif") or ($imltdn[Hasil]=="Invalid")){$var_imltd='1';}
         $sq_reagen=mysql_fetch_assoc(mysql_query("SELECT `Nama`, `noLot`, `tglKad`  FROM `reagen` WHERE kode='$imltd[noLot]'"));
 	
         ?>

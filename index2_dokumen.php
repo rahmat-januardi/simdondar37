@@ -1,6 +1,7 @@
 			<font size="1"><a href="../dokumen/akses-user/dokumen-user.php" target="isiadmin" class="fisheyeItem"
-			        title="Document"><img src="dokumen/images/cari.png" />E-DOCUMENT</a></font>
-
+					title="Document"><img src="dokumen/images/cari.png" />E-DOCUMENT</a></font>
+			<font size="1"><a href="../dokumen/panduan_edokumen.php" target="isiadmin" class="fisheyeItem" title="Document"><img
+						src="dokumen/images/panduan_edokumen.png" />Panduan E-Dokumen</a></font>
 			<!-- <font size="1"><a href="../dokumen/akses-user/dokumen-eform-user.php" target="isiadmin" class="fisheyeItem" title="Document"><img src="dokumen/images/eform.png"/>E-FORMULIR</a></font> -->
 			<!--
 <font size="1"><a href="../dokumen/akses-user/kebijakan-user.php" target="isiadmin" class="fisheyeItem" title="Kebijakan"><img src="dokumen/images/kebijakan1.png"/>KEBIJAKAN</a></font>

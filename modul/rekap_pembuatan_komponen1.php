@@ -119,6 +119,7 @@ ini_set('display_errors', 1);
 					<th>Jenis</th>
 					<th>ABO (Rh)</th>
 					<th>Komponen</th>
+					<th>Volume</th>
 					<th>Tgl Aftap</th>
 					<th>Tgl Kedaluwarsa</th>
 					<th>Tgl Periksa</th>
@@ -146,7 +147,7 @@ ini_set('display_errors', 1);
 
 					$no = 1;
 					while ($row = mysqli_fetch_assoc($result)) {
-						$selSK = "SELECT `Status`, `jenis`, `tgl_Aftap`, `kadaluwarsa`, `tglPeriksa` FROM stokkantong WHERE `NoKantong` = '" . $row['noKantong'] . "'";
+						$selSK = "SELECT `Status`, `jenis`, `tgl_Aftap`, `kadaluwarsa`, `tglPeriksa`, `volume` FROM stokkantong WHERE `NoKantong` = '" . $row['noKantong'] . "'";
 						$queSK = mysqli_query($dbi, $selSK);
 						$datSK = mysqli_fetch_assoc($queSK);
 
@@ -207,6 +208,7 @@ ini_set('display_errors', 1);
                                 <td>{$jenis}</td>
 								<td>$row[goldarah] ($row[rhesus])</td>
                                 <td>{$row['Produk']}</td>
+								<td>" . number_format($datSK['volume'], 0) . " ml</td>
                                 <td>{$datSK['tgl_Aftap']}</td>
                                 <td>{$datSK['kadaluwarsa']}</td>
                                 <td>{$datSK['tglPeriksa']}</td>
@@ -225,6 +227,17 @@ ini_set('display_errors', 1);
 		</table>
 	</div>
 
+	<div style="margin: 20px;">
+		<form name=xls method=post action=modul/rincian_pembuatan_komponen_xls.php>
+			<input type=hidden name=tgl_awal value='<?= $tgl_awal ?>'>
+			<input type=hidden name=tgl_akhir value='<?= $tgl_akhir ?>'>
+			<input type=hidden name=shift2 value='<?= $shift ?>'>
+			<input type=hidden name=komponen2 value='<?= $komponen ?>'>
+			<input type=hidden name=petugas2 value='<?= $petugas ?>'>
+			<input type=submit name=submit2 class="btn btn-success" value='Print Rekap Komponen (.XLS)'>
+		</form>
+	</div>
+
 	<div class="scroll-top" onclick="window.scrollTo(0, 0);">
 		<span class="glyphicon glyphicon-chevron-up"></span>
 	</div>
@@ -233,10 +246,10 @@ ini_set('display_errors', 1);
 	</div>
 
 	<script>
-		$(document).ready(function () {
+		$(document).ready(function() {
 			$("#tanggal_awal, #tanggal_akhir").datepicker({
 				dateFormat: "yy-mm-dd",
-				onSelect: function () {
+				onSelect: function() {
 					$(this).blur();
 				}
 			});

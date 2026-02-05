@@ -62,6 +62,8 @@ $("ul.thumb li").hover(function() {
 	<li><a href="pmiadmin.php?module=uploadserverpmi"><img src="images/upload_to_server_pusat.png" alt="" /></a></li>
 	<li><a href="pmiadmin.php?module=settingserver"><img src="images/setting_server_pusat.png" alt="" /></a></li>
 	<li><a href="pmiadmin.php?module=updatepekerjaan"><img src="images/update_pekerjaan.png" alt="" /></a></li>
-    <li><a href="pmiadmin.php?module=changestatus"><img src="images/ubah_status_kantong.png" alt="" /></a></li>
+	<li><a href="pmiadmin.php?module=changestatus"><img src="images/ubah_status_kantong.png" alt="" /></a></li>
+	<li><a href="pmiadmin.php?module=edit_kantong"><img src="images/edit_kantong.png" alt="" /></a></li>
+	<li><a href="pmiadmin.php?module=edit_transaksi"><img src="images/edit_transaksi2.png" alt="" /></a></li>
 </ul></div>
 

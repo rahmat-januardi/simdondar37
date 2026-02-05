@@ -162,7 +162,7 @@ $detail = $_GET['detail'];
                             <td colspan="2">
                                 <div align="left"><strong>
                                         <?php
-                                        $sql = "select * from pks where nama1='$detail'";
+                                        $sql = "select * from pks where nama1='$detail' and aktif='0'";
                                         $proses = mysql_query($sql);
                                         $data = mysql_fetch_array($proses);
                                         ?>

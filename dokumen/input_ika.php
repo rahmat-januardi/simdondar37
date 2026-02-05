@@ -100,7 +100,7 @@ $detail = $_GET['detail'];
 <body>
     <br /><br />
     <p align="center" class="COOPER">
-        <font size="5"><u>INPUT IK BARU</u></font>
+        <font size="5"><u>INPUT IKA BARU</u></font>
     </p>
 
     <form action="exe_ika.php" method="post" enctype="multipart/form-data">
@@ -128,7 +128,7 @@ $detail = $_GET['detail'];
                             <td>
                                 <div align="left"><strong>
                                         <?php
-                    $sql = "select * from pks where nama1='$detail'";
+                    $sql = "select * from pks where nama1='$detail' and aktif='0'";
                     $proses = mysql_query($sql);
                     $data = mysql_fetch_array($proses);
                     ?>

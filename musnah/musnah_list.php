@@ -131,6 +131,8 @@ if ($_POST['pengambilan']!='') {
             <th  style="height: 40px;text-align: center;font-weight: bold">Tanggal</th>
             <th  style="height: 40px;text-align: center;font-weight: bold">Shift</th>
             <th  style="height: 40px;text-align: center;font-weight: bold">Petugas Pemusnahan</th>
+	    <th  style="height: 40px;text-align: center;font-weight: bold">Lampiran Berita Acara</th>
+
             
             <th  style="height: 40px;text-align: center;font-weight: bold">Instansi<br>Pengelola Limbah</th>
             <th  style="height: 40px;text-align: center;font-weight: bold">Petugas<br>Pengelola</th>
@@ -182,6 +184,25 @@ if ($_POST['pengambilan']!='') {
                 <td style="text-align: center"><?=$tmp['tgl']?></td>
                 <td style="text-align: center"><?=$tmp['shift']?></td>
                 <td style="text-align: center"><?=$tmp['ptgs_musnah']?></td>
+		<td style="text-align: center"><?php
+if (empty($tmp['file_berita_acara'])) {
+    echo '-';
+} else {
+    $file = $tmp['file_berita_acara'];
+    $ext  = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+    $url  = 'musnah/file_berita_acara/' . $file;
+
+    echo '<a href="' . $url . '" target="_blank">';
+
+    if (in_array($ext, array('jpg','jpeg','png'))) {
+        echo 'Lihat Gambar';
+    } else {
+        echo 'Lihat PDF';
+    }
+
+    echo '</a>';
+}
+?>
 				
                 <td style="text-align: center"><?=$PT?></td>
                 <td style="text-align: center"><?=$tmp['ptgs_limbah']?></td>
@@ -201,7 +222,7 @@ if ($_POST['pengambilan']!='') {
             <?php
         } ?>
         <tr style="font-size: 12px;height: 40px; text-align: center;">
-            <td style="text-align: right" colspan="9"><b>TOTAL</b></td>
+            <td style="text-align: right" colspan="10"><b>TOTAL</b></td>
             <td style="text-align: right"><b><?=$jmltotal?></b></td>
             <td style="text-align: right"><b><?=$brtotal?></b></td>
         </tr>

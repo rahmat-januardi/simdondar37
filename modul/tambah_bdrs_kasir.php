@@ -9,7 +9,7 @@ if ($_GET[aksi]=='hapus'){
     $hapus=mysql_query("delete from bdrs where kode='$_GET[kode]'");
     if($hapus){
         echo ("Data bdrs telah dihapus !!
-        <meta HTTP-EQUIV=\"REFRESH\" CONTENT=\"2; URL=pmikomponen.php?module=tambah_bdrs\">");
+        <meta HTTP-EQUIV=\"REFRESH\" CONTENT=\"2; URL=$PHP_SELF\">");
     }
 }
 
@@ -26,7 +26,7 @@ if ($_GET[aksi]=='edit'){
     $a_edit=mysql_fetch_assoc($q_edit);
     ?>
     <h1 class="table">FORM BDRS</h1>
-    <form method="post" action="pmikomponen.php?module=tambah_bdrs" >
+    <form method="post" action="<?php $PHP_SELF ?>" >
     <table class="form" cellspacing="1" cellpadding="2">
     <tr>
                 <td>Nama Bdrs</td>
@@ -50,7 +50,7 @@ if ($_GET[aksi]=='edit'){
 	$kode='b'.$kode;
 ?>
     <h1 class="table">FORM BDRS</h1>
-    <form method="post" action="pmikomponen.php?module=tambah_bdrs" >
+    <form method="post" action="<?php $PHP_SELF ?>" >
     <table class="form" cellspacing="1" cellpadding="2">
     <tr>
                 <td>Nama Bdrs</td>

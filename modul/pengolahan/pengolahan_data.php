@@ -299,8 +299,8 @@ if ($result->num_rows > 0) {
                         }
 
                         // Dapat Perhitungan Volume
-                        // Jika Tidak WB : Volume = (Berat kantong (gram) - Berat Kantong Kosong) : berat jenis
-                        // Jika WB : Volume = ((Berat kantong (gram) - Berat Kantong Kosong) : berat jenis) - antikoagulan
+                        // Jika Tidak WB : Volume = (Berat kantong (gram) - Berat Kantong Kosong)�:�berat jenis
+                        // Jika WB : Volume = ((Berat kantong (gram) - Berat Kantong Kosong)�:�berat jenis) - antikoagulan
 
                         $ambilNK = substr($nKA, 0, -1);
                         $nKantong = $ambilNK . $tipe;
@@ -447,7 +447,7 @@ if ($result->num_rows > 0) {
         const noKantongInput = row.querySelector('input[name="nK[]"]');
 
         if (!noKantongInput) {
-            console.warn("⚠️ noKantong input tidak ditemukan di baris ini.");
+            console.warn("?? noKantong input tidak ditemukan di baris ini.");
             return;
         }
 
@@ -473,11 +473,11 @@ if ($result->num_rows > 0) {
                     if (volumeInput) volumeInput.value = data.volume;
 
                 } else {
-                    console.error("❌ Gagal mengambil data produk dari server:", data.produk);
+                    console.error("? Gagal mengambil data produk dari server:", data.produk);
                 }
             },
             error: function(xhr, status, error) {
-                console.error("❌ AJAX Error:", error);
+                console.error("? AJAX Error:", error);
             }
         });
     }
