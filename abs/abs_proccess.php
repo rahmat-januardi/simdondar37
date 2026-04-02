@@ -105,6 +105,28 @@ switch ($modul) {
             $d_no_kantong = $row["no_kantong"];
             $d_pendonor = $row["pendonor"];
 
+            // Tambahan: Cek status di serahterima_detail
+            $query_cek_status = "SELECT dst_stat_receive3 FROM serahterima_detail WHERE dst_nokantong = '$d_no_kantong'";
+            $result_cek = mysqli_query($dbi, $query_cek_status);
+            if ($result_cek && mysqli_num_rows($result_cek) > 0) {
+                $row_cek = mysqli_fetch_assoc($result_cek);
+                if ($row_cek['dst_stat_receive3'] == 0) {
+                    $detail_status++;
+                    $output["datakantong"][] = array(
+                        "kantong" => $d_no_kantong,
+                        "error" => "Belum bisa input karena dst_stat_receive3 = 0"
+                    );
+                    continue; // Skip kantong ini
+                }
+            } else {
+                $detail_status++;
+                $output["datakantong"][] = array(
+                    "kantong" => $d_no_kantong,
+                    "error" => "Data serahterima_detail tidak ditemukan atau query error"
+                );
+                continue; // Skip jika tidak ditemukan
+            }
+
             $d_gol = $row["gol_kgd"];
             $d_rh = $row["rh_kgd"];
 
@@ -203,10 +225,25 @@ switch ($modul) {
     case md5("cekkantong_kgd"):
         $v_kantong = $_POST["kantong"];
         $nomor_kantong_utama = substr($v_kantong, 0, -1) . "A";
-        $query = mysqli_query($dbi, "SELECT `noKantong`, `gol_darah`, `RhesusDrh`, `produk`, `kodePendonor`  
+        // Tambahan: Cek status di serahterima_detail sebelum melanjutkan
+        $query_cek_status = "SELECT dst_stat_receive3 FROM serahterima_detail WHERE dst_nokantong = '$nomor_kantong_utama'";
+        $result_cek = mysqli_query($dbi, $query_cek_status);
+        if ($result_cek && mysqli_num_rows($result_cek) > 0) {
+            $row_cek = mysqli_fetch_assoc($result_cek);
+            if ($row_cek['dst_stat_receive3'] == 0) {
+                echo json_encode(array("status" => "error", "message" => "Belum bisa input karena belum diterima di serah terima KGD & ABS"));
+                exit();
+            }
+        } else {
+            echo json_encode(array("status" => "error", "message" => "Data serah terima tidak ditemukan "));
+            exit();
+        }
+
+        $sql = "SELECT `noKantong`, `gol_darah`, `RhesusDrh`, `produk`, `kodePendonor`  
                                      FROM `stokkantong` 
                                      WHERE `noKantong`='$nomor_kantong_utama' 
-                                     AND `sah`='1' AND `Status` > 0");
+                                     AND `sah`='1' AND `Status` > 0";
+        $query = mysqli_query($dbi, $sql);
         $arr_kantong = array();
         if ($query && mysqli_num_rows($query) > 0) {
             $row = mysqli_fetch_assoc($query);
@@ -262,6 +299,29 @@ switch ($modul) {
         foreach ($tableData as $row) {
             $d_no_kantong = $row["no_kantong"];
             $d_pendonor = $row["pendonor"];
+
+            // Tambahan: Cek status di serahterima_detail
+            $query_cek_status = "SELECT dst_stat_receive3 FROM serahterima_detail WHERE dst_nokantong = '$d_no_kantong'";
+            $result_cek = mysqli_query($dbi, $query_cek_status);
+            if ($result_cek && mysqli_num_rows($result_cek) > 0) {
+                $row_cek = mysqli_fetch_assoc($result_cek);
+                if ($row_cek['dst_stat_receive3'] == 0) {
+                    $dstatusabs = 1;
+                    $output["datakantong"][] = array(
+                        "kantong" => $d_no_kantong,
+                        "error" => "Belum bisa input karena dst_stat_receive3 = 0"
+                    );
+                    continue; // Skip kantong ini
+                }
+            } else {
+                $dstatusabs = 1;
+                $output["datakantong"][] = array(
+                    "kantong" => $d_no_kantong,
+                    "error" => "Data serahterima_detail tidak ditemukan atau query error"
+                );
+                continue; // Skip jika tidak ditemukan
+            }
+
             $d_gol = $row["gol"];
             $d_rh = $row["rh"];
             $d_hasil = $row["hasil"];
@@ -312,6 +372,20 @@ switch ($modul) {
         $arrdata = array();
         $v_kantong = $_POST["kantong"];
         $nomor_kantong_utama = substr($v_kantong, 0, -1) . "A";
+        // Tambahan: Cek status di serahterima_detail sebelum melanjutkan
+        $query_cek_status = "SELECT dst_stat_receive3 FROM serahterima_detail WHERE dst_nokantong = '$nomor_kantong_utama'";
+        $result_cek = mysqli_query($dbi, $query_cek_status);
+        if ($result_cek && mysqli_num_rows($result_cek) > 0) {
+            $row_cek = mysqli_fetch_assoc($result_cek);
+            if ($row_cek['dst_stat_receive3'] == 0) {
+                echo json_encode(array("status" => 1, "message" => "Belum bisa input karena belum diterima di serah terima KGD & ABS"));
+                exit();
+            }
+        } else {
+            echo json_encode(array("status" => 1, "message" => "Data serah terima tidak ditemukan"));
+            exit();
+        }
+
         $query = "SELECT `noKantong`, `Status`, `produk`, `sah`, `StatTempat`, `gol_darah`, `RhesusDrh`, `kodePendonor`, `tgl_Aftap`, `abs`, `tgl_abs` 
                   FROM `stokkantong` 
                   WHERE `noKantong` = '$nomor_kantong_utama' AND `Status` > 0";

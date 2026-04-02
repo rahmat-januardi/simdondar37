@@ -50,8 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $notif = "Status kantong $nkt $caption!";
             $notif_type = "error";
         } else {
-            $upd_ktga = mysql_query("UPDATE stokkantong set hasil_release='0', tgl_release=NULL where NoKantong='$nkt'");
-
+ 	    $upd_ktga=mysql_query("UPDATE stokkantong set hasil_release='0', tgl_release=NULL where NoKantong='$nkt'");
             mysql_query("INSERT INTO release_ulang
              (nokantong, catatan, petugas, created)
              VALUES

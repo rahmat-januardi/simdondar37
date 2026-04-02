@@ -156,111 +156,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $daysToAdd = $produkInfo['umurhari'];
                 $hoursToAdd = $produkInfo['umurjam'];
 
-                // if ($jKantong == "4") {
-                //     $daysToAdd += 7; // Jika jKantong == "4", tambahkan 7 hari
-                // }
-
-                // Modifikasi tanggal kedaluwarsa
                 $tglEd->modify("+$daysToAdd days");
-                if ($hoursToAdd > 0) {
-                    $tglEd->modify("+$hoursToAdd hours");
-                }
+                $tglEd->modify("+$hoursToAdd hours");
 
-                // Cek suhu simpan jika diperlukan
-                // ...
+                $tglEdObject = $tglEd->format('Y-m-d H:i:s');
             } else {
-                // Jika produk tidak ditemukan dalam data produk
-                // Handle default case atau log error
+                $tglEdObject = '0000-00-00 00:00:00';
             }
 
-
-            // merubah string ed produk ke object
-            $tglEdObject = $tglEd->format("Y-m-d H:i:s");
-
-            switch ((int) ($selData['jenis'])) {
-                case 1:
-                case 2:
-                    $pVol = ($selData['nK'] == 'B') ? "150" : "200";
-                    $pCepat = "3000";
-                    $pSuhu = 4;
-                    $bSuhu = "4";
-                    break;
-                case 6:
-                    $pCepat = "3000";
-                    $pSuhu = 4;
-                    $bSuhu = "4";
-                    break;
-                case 3:
-                    if ($selData['nK'] == 'A') {
-                        $pVol = "200";
-                    } elseif ($selData['nK'] == 'B') {
-                        $pVol = "150";
-                    } else {
-                        $pVol = "150";
-                    }
-                    $pCepat = ($selData['nK'] == 'A') ? "2000" : "4000";
-                    $pSuhu = 22;
-                    $bSuhu = "22";
-                    break;
-                case 4:
-                    if ($selData['nK'] == 'A') {
-                        $pVol = "200";
-                        $pCepat = "4000";
-                        $pSuhu = 22;
-                        $bSuhu = "22";
-                    } elseif ($selData['nK'] == 'B') {
-                        $pVol = "150";
-                        $pCepat = "170";
-                        $pSuhu = 22;
-                        $bSuhu = "22";
-                    } elseif ($selData['nK'] == 'C') {
-                        $pVol = "150";
-                        $pCepat = "3000";
-                        $pSuhu = 4;
-                        $bSuhu = "4";
-                    } else {
-                        $pVol = "150";
-                        $pCepat = "4000";
-                        $pSuhu = 22;
-                        $bSuhu = "22";
-                    }
-                    break;
-                default:
-                    $pVol = "200";
-                    $pSuhu = 22;
-                    $bSuhu = "22";
-                    $pCepat = "3000";
-                    break;
-            }
-
-            // Menghitung durasi menjadi Satuan Menit Gess
+            // Fungsi Menghitung durasi menjadi Satuan Menit Gess
             $start = new DateTime($jamMulaiPutar);
             $end = new DateTime($jamSelesaiPutar);
             $interval = $start->diff($end);
             $waktuPutar = ($interval->h * 60) + $interval->i;
 
-            if ($selData['nK'] != 'A') {
-                $resultKantong = mysqli_query($dbi, "SELECT jenis, volume as volLengkap, 
-                                REPLACE(volume, '\xb1', '') AS volume, gol_darah, RhesusDrh, tgl_Aftap, metoda 
-                                FROM stokkantong 
-                                WHERE noKantong = '$jKUtama'");
+            $selTemp = "SELECT * FROM stokkantong WHERE noKantong = '$nK' LIMIT 1";
+            $rTemp = mysqli_query($dbi, $selTemp);
+            $dataSource = mysqli_fetch_assoc($rTemp);
 
-                if (!$resultKantong || mysqli_num_rows($resultKantong) == 0) {
-                    echo json_encode(array('status' => 'error', 'message' => 'Data kantong tidak ditemukan atau query gagal'));
-                    exit;
-                }
+            $pCepat = 5000;
+            $pSuhu = 4;
+            $pisah = 0;
+            $bSuhu = -50;
 
-                $dataSource = mysqli_fetch_assoc($resultKantong);
-                error_log("Fetched Data !A - Produk: $jkomp, Volume: {$dataSource['volume']}, TglPengolahan: $dAllDay, NoKantong: $nK");
-            } else {
-                $dataSource = $selData;
-                error_log("Fetched Data A - Produk: $jkomp, Volume: {$dataSource['volume']}, TglPengolahan: $dAllDay, NoKantong: $nK");
-            }
-
-            $selTemp = "INSERT INTO dpengolahan_temp 
-                        (noTrans, noKantong, tgl, tglAftap, goldarah, rhesus, jenis, metoda, Produk, volume, ed_produk, metode, petugas, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, tglPengerjaan) 
+            $selTemp = "INSERT INTO dpengolahan_temp (NoTrans, noKantong, tgl, tglAftap, goldarah, rhesus, jenis, metoda, Produk, volume, ed_produk, petugas, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, tglPengerjaan) 
                         VALUES 
-                        ('$nT', '$nK', '$dAllDay', '{$dataSource['tgl_Aftap']}', '{$dataSource['gol_darah']}', '{$dataSource['RhesusDrh']}', '{$dataSource['jenis']}', '{$dataSource['metoda']}', '$jkomp', '{$dataSource['volume']}', '$tglEdObject', 1, '$iPetugas', '$alatPutar', '$alatPisah', '$alatPembekuan', '$pCepat', '$pSuhu', '$waktuPutar', 0, '$shift', '$jamMulaiPutar','$jamSelesaiPutar','$jamMulaiPisah','$jamSelesaiPisah', '$jamMulaiBeku', '$jamSelesaiBeku', '$jamMulaiPutar', '$jamSelesaiPisah', 0, '$bSuhu', '$tglPengerjaan')";
+                        ('$nT', '$nK', '$dAllDay', '{$dataSource['tgl_Aftap']}', '{$dataSource['gol_darah']}', '{$dataSource['RhesusDrh']}', '{$dataSource['jenis']}', '{$dataSource['metoda']}', '$jkomp', '{$dataSource['volume']}', '$tglEdObject', '$iPetugas', '$alatPutar', '$alatPisah', '$alatPembekuan', '$pCepat', '$pSuhu', '$waktuPutar', 0, '$shift', '$jamMulaiPutar','$jamSelesaiPutar','$jamMulaiPisah','$jamSelesaiPisah', '$jamMulaiBeku', '$jamSelesaiBeku', '$jamMulaiPutar', '$jamSelesaiPisah', 0, '$bSuhu', '$tglPengerjaan')";
 
 
             if (mysqli_query($dbi, $selTemp)) {
@@ -273,10 +194,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo json_encode(array('status' => 'error', 'message' => 'Error: ' . mysqli_error($dbi) . ', Jam Mulai ' . $jamMulaiPutar));
             }
         } else {
-            // echo "Nomor Kantong tidak valid: " . $valResult;
-            error_log("Nomor Kantong tidak valid: " . $valResult);
-            echo json_encode(array('status' => 'error', 'message' => 'Nomor Kaaaantong tidak valid'));
+            echo json_encode(array('status' => 'error', 'message' => 'Error querying stokkantong: ' . mysqli_error($dbi)));
         }
+    } else {
+        // echo "Nomor Kantong tidak valid: " . $valResult;
+        error_log("Nomor Kantong tidak valid: " . $valResult);
+        echo json_encode(array('status' => 'error', 'message' => 'Nomor Kaaaantong tidak valid'));
     }
 }
 
@@ -343,13 +266,13 @@ function isValidNomorKantong($nK, $dbi)
             exit;
         }
 
-        // if ($sD['nK'] != 'A') {
-        //     // satelit hanya boleh status 2
-        //     if ($sD['Status'] != 2) {
-        //         echo json_encode(array('status' => 'error', 'message' => 'Status <b>Kantong Satelit</b> tidak sesuai. Hanya kantong satelit dengan status 2 yang bisa diproses.'));
-        //         exit;
-        //     }
-        // }
+        if ($sD['nK'] != 'A') {
+            // satelit hanya boleh status 2
+            if ($sD['Status'] != 2) {
+                echo json_encode(array('status' => 'error', 'message' => 'Status <b>Kantong Satelit</b> tidak sesuai. Hanya kantong satelit dengan status 2 yang bisa diproses.'));
+                exit;
+            }
+        }
 
 
         if ($sD['Status'] == 7) {
@@ -357,7 +280,7 @@ function isValidNomorKantong($nK, $dbi)
             exit;
         }
 
-        if ($sD['nK'] == 'A' && ($sD['sah'] == 0 || is_null($sD['sah']))) {
+        if ($sD['sah'] == 0 || is_null($sD['sah'])) {
             echo json_encode(array('status' => 'error', 'message' => 'Kantong darah <b>BELUM DISAHKAN.</b>!'));
             exit;
         }
@@ -383,6 +306,18 @@ function isValidNomorKantong($nK, $dbi)
             echo json_encode(array('status' => 'error', 'message' => 'Darah tidak dapat diproses, karena tidak memenuhi syarat pembuatan komponen. (Durasi Pengambilan <b>' . $sD['lama_pengambilan'] . ' menit)</b>.'));
             exit;
         }
+
+        // TAMBAHAN PENGECEKAN SERAH TERIMA (BARU)
+        $cekSerah = "SELECT dst_stat_receive1 FROM serahterima_detail WHERE dst_nokantong = '$nK' LIMIT 1";
+        $resultCek = mysqli_query($dbi, $cekSerah);
+        if ($resultCek && mysqli_num_rows($resultCek) > 0) {
+            $rowCek = mysqli_fetch_assoc($resultCek);
+            if ($rowCek['dst_stat_receive1'] == 0) {
+                echo json_encode(array('status' => 'error', 'message' => 'Kantong belum diterima. Tidak bisa membuat komponen.'));
+                exit;
+            }
+        }
+        // END TAMBAHAN PENGECEKAN
 
         return true;
     } else {

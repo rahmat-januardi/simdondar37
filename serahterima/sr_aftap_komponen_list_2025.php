@@ -162,13 +162,10 @@ if (isset($_POST['vreset'])) {
             <div class="col-md-12">
                 <div class="panel w3-border-theme shadow">
                     <div class="panel-heading w3-theme-d5 clearfix">
-                        <div class="col-lg-9 col-md-8 col-sm-7 col-xs-8 text-left text-shadow"
-                            style="font-size: 150%;font-weight: bold;">DATA FORMULIR SERAH TERIMA DARAH & SAMPEL</div>
+                        <div class="col-lg-9 col-md-8 col-sm-7 col-xs-8 text-left text-shadow" style="font-size: 150%;font-weight: bold;">DATA FORMULIR SERAH TERIMA DARAH & SAMPEL</div>
                         <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4 text-right">
-                            <a href="" class="w3-btn w3-theme w3-hover-yellow" data-toggle="modal"
-                                data-target="#mFilter">Filter</a>
-                            <a href="" class="w3-btn w3-theme w3-hover-yellow" data-toggle="modal"
-                                data-target="#mImportJson">IMPORT JSON</a>
+                            <a href="" class="w3-btn w3-theme w3-hover-yellow" data-toggle="modal" data-target="#mFilter">Filter</a>
+                            <a href="" class="w3-btn w3-theme w3-hover-yellow" data-toggle="modal" data-target="#mImportJson">IMPORT JSON</a>
                             <a href="?module=serahterima" class="w3-btn w3-theme w3-hover-yellow">Kembali</a>
                         </div>
                     </div>
@@ -177,9 +174,7 @@ if (isset($_POST['vreset'])) {
                             <div class="col-xs-12"><?php echo $msg; ?></div>
                             <div class="col-xs-12">
                                 <div class="table-responsive">
-                                    <table
-                                        class="table table-responsive table-bordered table-striped table-md table-hover table-md display"
-                                        id="dtaudittrail">
+                                    <table class="table table-responsive table-bordered table-striped table-md table-hover table-md display" id="dtaudittrail">
                                         <thead class="w3-theme-d4" style="height: 40px;">
                                             <tr>
                                                 <th class="text-center">No</th>
@@ -248,11 +243,9 @@ if (isset($_POST['vreset'])) {
                             <label class="control-label col-md-3" for="fltTanggal1">Tanggal</label>
                             <div class="col-md-9">
                                 <div class="input-group">
-                                    <input type="text" class="form-control startdate" value="<?php echo $f_tanggal1; ?>"
-                                        name="fltTanggal1" id="fltTanggal1" />
+                                    <input type="text" class="form-control startdate" value="<?php echo $f_tanggal1; ?>" name="fltTanggal1" id="fltTanggal1" />
                                     <span class="input-group-addon input-sm">s/d</span>
-                                    <input type="text" class="form-control enddate" value="<?php echo $f_tanggal2; ?>"
-                                        name="fltTanggal2" id="fltTanggal2" />
+                                    <input type="text" class="form-control enddate" value="<?php echo $f_tanggal2; ?>" name="fltTanggal2" id="fltTanggal2" />
                                 </div>
                             </div>
                         </div>
@@ -275,10 +268,8 @@ if (isset($_POST['vreset'])) {
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" name="vfilter" id="vfilter"
-                        class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">OK</button>
-                    <button type="submit" name="vreset" id="vreset"
-                        class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">Reset</button>
+                    <button type="submit" name="vfilter" id="vfilter" class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">OK</button>
+                    <button type="submit" name="vreset" id="vreset" class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">Reset</button>
                     <button class="w3-btn w3-theme w3-hover-indigo w3-card" data-dismiss="modal">Batal</button>
                 </div>
                 </form>
@@ -298,17 +289,14 @@ if (isset($_POST['vreset'])) {
                         <div class="form-group">
                             <label class="control-label col-md-3" for="InpNomor">No Transaksi</label>
                             <div class="col-md-9">
-                                <input type="text" class="form-control input-sm" name="InpNotransaksi"
-                                    id="InpNotransaksi" readonly>
+                                <input type="text" class="form-control input-sm" name="InpNotransaksi" id="InpNotransaksi" readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3" for="InpDari">Dari</label>
                             <div class="col-md-9">
-                                <input type="hidden" class="form-control" value="<?php echo $id_uddaktif; ?>"
-                                    name="InpDari" id="InpDari">
-                                <input type="text" class="form-control input-sm" value="<?php echo $nama_uddaktif; ?>"
-                                    name="InpDariNama" id="InpDariNama" readonly>
+                                <input type="hidden" class="form-control" value="<?php echo $id_uddaktif; ?>" name="InpDari" id="InpDari">
+                                <input type="text" class="form-control input-sm" value="<?php echo $nama_uddaktif; ?>" name="InpDariNama" id="InpDariNama" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -330,8 +318,7 @@ if (isset($_POST['vreset'])) {
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" name="vKirim" id="vKirim"
-                        class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">Kirim Kantong</button>
+                    <button type="button" name="vKirim" id="vKirim" class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">Kirim Kantong</button>
                     <button class="w3-btn w3-theme w3-hover-indigo w3-card" data-dismiss="modal">Batal</button>
                 </div>
                 </form>
@@ -351,22 +338,18 @@ if (isset($_POST['vreset'])) {
                     <form id="frmImportJson" enctype="multipart/form-data">
                         <div class="form-group">
                             <label class="control-label">Pilih File JSON</label>
-                            <input type="file" class="form-control" id="fileJson" name="fileJson" accept=".json"
-                                required>
+                            <input type="file" class="form-control" id="fileJson" name="fileJson" accept=".json" required>
                             <small class="text-muted">File harus berformat JSON yang diekspor dari sistem ini</small>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Aksi jika nomor transaksi / kantong sudah ada di
-                                sistem:</label>
+                            <label class="control-label">Aksi jika nomor transaksi / kantong sudah ada di sistem:</label>
                             <select class="form-control" name="aksiDuplikat" id="aksiDuplikat">
                                 <option value="skip">Lewati saja (jangan tambah atau ubah data yang sudah ada)</option>
-                                <option value="update">Perbarui data yang sudah ada (pakai info terbaru dari file)
-                                </option>
+                                <option value="update">Perbarui data yang sudah ada (pakai info terbaru dari file)</option>
                                 <option value="replace">Ganti total (hapus data lama, masukkan ulang dari file)</option>
                             </select>
                             <small class="text-muted" style="display:block; margin-top:8px; color:#d9534f;">
-                                <strong>Penting:</strong> Pilih <strong>Lewati saja</strong> jika ingin menghindari
-                                duplikat dan menjaga data lama tetap aman.<br>
+                                <strong>Penting:</strong> Pilih <strong>Lewati saja</strong> jika ingin menghindari duplikat dan menjaga data lama tetap aman.<br>
                                 Mode ini **tidak akan menambah record yang nomor transaksinya sama**.
                             </small>
                         </div>
@@ -374,8 +357,7 @@ if (isset($_POST['vreset'])) {
                     <div id="importResult" style="margin-top:15px;"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="btnProsesImport" class="w3-btn w3-green w3-hover-dark-green">Proses
-                        Import</button>
+                    <button type="button" id="btnProsesImport" class="w3-btn w3-green w3-hover-dark-green">Proses Import</button>
                     <button class="w3-btn w3-theme w3-hover-indigo" data-dismiss="modal">Batal</button>
                 </div>
             </div>
@@ -458,8 +440,7 @@ if (isset($_POST['vreset'])) {
                     } else {
                         Swal.fire({
                             title: "Gagal!",
-                            text: response.message ||
-                                "Terjadi kesalahan saat mengirim data.",
+                            text: response.message || "Terjadi kesalahan saat mengirim data.",
                             icon: "error",
                             confirmButtonText: "Coba Lagi"
                         });
@@ -549,9 +530,7 @@ if (isset($_POST['vreset'])) {
                 if (response.status === 'success') {
                     Swal.fire({
                         title: "Berhasil!",
-                        html: response.message + "<br><br>Total record diproses: " + (response
-                            .detail?.inserted || 0) + " insert, " + (response.detail
-                            ?.updated || 0) + " update",
+                        html: response.message + "<br><br>Total record diproses: " + (response.detail?.inserted || 0) + " insert, " + (response.detail?.updated || 0) + " update",
                         icon: "success"
                     }).then(() => {
                         location.reload();

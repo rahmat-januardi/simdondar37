@@ -520,7 +520,7 @@ $tanggal = date("Y-m-d");
                                 title: "Error",
                                 text: response.message,
                                 icon: "error",
-                                timer: 2000,
+                                timer: 2500,
                                 timerProgressBar: true
                             });
                         } else {
@@ -533,7 +533,7 @@ $tanggal = date("Y-m-d");
                             title: "Error",
                             text: "Ajax Error: " + error,
                             icon: "error",
-                            timer: 2000,
+                            timer: 2500,
                             timerProgressBar: true
                         });
                     },

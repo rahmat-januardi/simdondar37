@@ -144,9 +144,14 @@ $nodokumen = "-";
     $level            = $_SESSION['leveluser'];
     if ($level == "komponen") {
         $trans = 'KP-' . $now;
+    } elseif ($level == "imltd") {
+        $trans = 'IM-' . $now;
+    } elseif ($level == "laboratorium") {
+        $trans = 'LB-' . $now;
     } else {
         $trans = 'PR-' . $now;
     }
+
     $modul            = "KARANTINA";
     $bag_pengirim    = "AFTAP";
     $bag_penerima    = "KOMPONEN, IMLTD & KGD";
@@ -226,8 +231,11 @@ $nodokumen = "-";
             echo "<meta http-equiv='refresh' content='2;url=pmiqa.php?module=musnahlist'";
         } else if ($level == "imltd") {
             echo "<meta http-equiv='refresh' content='2;url=pmiimltd.php?module=musnahlist'";
+        } else {
+            echo "<meta http-equiv='refresh' content='2;url=pmilaboratorium.php?module=musnahlist'";
         }
     }
+
     if (isset($_POST[submit2])) {
         //Generated NoTransaksi===============================================
         $trans = $_POST['trans'];

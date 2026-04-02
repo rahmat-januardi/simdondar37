@@ -56,10 +56,7 @@ $tampil = "0";
     } else {
         if ($stokkantong['hasil_release'] == '1') {
             $statuskantong = 'Sudah di release';
-            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
-        } else if (strtotime($stokkantong['kadaluwarsa']) <= time()) {
-            $statuskantong = 'Kadaluwarsa';
-            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+	    echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
         } else {
             switch ($stokkantong['Status']) {
                 case '0':
@@ -76,9 +73,7 @@ $tampil = "0";
                     }
                     break;
                 case '2':
-                    if (($stokkantong['tgl_release'] == null) or ($stokkantong['tgl_release'] == '0000-00-00') or ($stokkantong['hasil_release'] != '0')) {
-                        $statuskantong = 'Kantong Sudah di Release';
-                    }
+                    $statuskantong = 'Sehat';
                     if (substr($stokkantong[stat2], 0, 1) == 'b') $tempat = " (BDRS)";
                     break;
                 case '3':

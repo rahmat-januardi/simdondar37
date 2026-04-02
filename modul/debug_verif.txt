@@ -1,0 +1,517 @@
+2026-02-10 14:52:07 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 14:52:59 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 14:55:35 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 14:57:48 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 14:59:23 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 14:59:34 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 1
+)
+
+
+2026-02-10 15:13:46 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 15:13:58 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 1
+)
+
+
+2026-02-10 15:27:52 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 15:30:49 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 15:30:53 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 1
+)
+
+
+2026-02-10 15:36:40 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 15:36:43 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 1
+)
+
+
+2026-02-10 15:50:13 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600060A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 15:53:31 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 15:53:34 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 1
+)
+
+
+2026-02-10 16:24:36 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 16:24:37 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P260005FA
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 1
+)
+
+
+2026-02-10 22:15:30 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600060A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 22:15:45 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600060A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 22:17:44 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600060A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 22:18:07 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600060A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 22:27:32 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600060A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 0
+)
+
+
+2026-02-10 22:27:47 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600060A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+    [force_reverif] => 1
+)
+
+
+2026-02-11 11:05:37 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600017A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+)
+
+
+2026-02-11 11:08:26 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600058A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+)
+
+
+2026-02-11 14:36:23 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600056A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+)
+
+
+2026-02-11 14:39:24 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600057A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+)
+
+
+2026-02-11 14:39:31 - DIPANGGIL
+Array
+(
+    [submit_verif] => 1
+    [no_kantong] => 317P2600057A
+    [kemasan_utuh] => 1
+    [kemasan_expired] => 1
+    [kemasan_bocor] => 1
+    [selang_baik] => 1
+    [selang_tertekuk] => 0
+    [jarum_baik] => 1
+    [jarum_bengkok] => 0
+    [anti_jernih] => 1
+    [anti_berubah] => 0
+)
+
+

@@ -248,8 +248,8 @@ if ($result->num_rows > 0) {
                         $resProduk = $dbi->query($qProduk);
                         $umurhari = $umurjam = $volume = '';
 
-                        $pCepat = 3000;
-                        $bSuhu = 22;
+                        $pCepat = 5000;
+                        $bSuhu = 4;
 
                         if ($resProduk && $resProduk->num_rows > 0) {
                             $rowp = $resProduk->fetch_assoc();
@@ -259,41 +259,41 @@ if ($result->num_rows > 0) {
                             $beratjenis = $rowp['beratjenis'] ? $rowp['beratjenis'] : 0;
                             switch ($option) {
                                 case "WE":
-                                    $pCepat = 3000;
+                                    $pCepat = 5000;
                                     $bSuhu = 4;
                                     break;
                                 case "TC":
                                 case "BC":
-                                    $pCepat = ($nKA === 'A') ? 2000 : 4000;
-                                    $bSuhu = 22;
+                                    $pCepat = ($nKA === 'A') ? 5000 : 4000;
+                                    $bSuhu = 4;
                                     break;
                                 case "FFP":
                                 case "FP":
                                 case "FP 72":
                                 case "FFP Leucodepleted":
-                                    $pCepat = 4000;
-                                    $bSuhu = 22;
+                                    $pCepat = 5000;
+                                    $bSuhu = 4;
                                     break;
                                 case "AHF":
                                 case "LP":
                                 case "LPLS":
                                 case "LP Apheresis":
-                                    $pCepat = 3000;
-                                    $bSuhu = 22;
+                                    $pCepat = 5000;
+                                    $bSuhu = 4;
                                     break;
                                 case "PRCLR":
                                 case "PCLS": // Plasma Kaya Trombosit (Platet Rich Plasma)
                                 case "WB Leucodepletet":
-                                    $pCepat = 3000;
-                                    $bSuhu = 22;
+                                    $pCepat = 5000;
+                                    $bSuhu = 4;
                                     break;
                                 case "PRC Apheresis":
-                                    $pCepat = 4000;
-                                    $bSuhu = 22;
+                                    $pCepat = 5000;
+                                    $bSuhu = 4;
                                     break;
                                 default:
-                                    $pCepat = 3000;
-                                    $bSuhu = 22;
+                                    $pCepat = 5000;
+                                    $bSuhu = 4;
                                     break;
                             }
                         }

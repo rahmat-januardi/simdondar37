@@ -218,7 +218,7 @@ if (isset($_POST['simpan'])) {
     }
 
     //UPDATE HTRANSAKSI=====================================================
-// EDIT SHIN yang di hapus $status = "-" dan $status = "1"
+    // EDIT SHIN yang di hapus $status = "-" dan $status = "1"
     if ($v_lolos == '1') {
         $pengambilan = "1";
         $jumHB = "-";
@@ -228,8 +228,8 @@ if (isset($_POST['simpan'])) {
         $jumHB = '1';
         $ketbatal = '-';
     }
-// EDIT SHIN di tambahkan
-$query_hb = "SELECT Status, jnsperiksa FROM htransaksi WHERE NoTrans = '$v_notransaksi'";
+    // EDIT SHIN di tambahkan
+    $query_hb = "SELECT Status, jnsperiksa FROM htransaksi WHERE NoTrans = '$v_notransaksi'";
     $reslut_hb = mysqli_query($dbi, $query_hb);
     $datahb = mysqli_fetch_assoc($reslut_hb);
 
@@ -269,7 +269,6 @@ $query_hb = "SELECT Status, jnsperiksa FROM htransaksi WHERE NoTrans = '$v_notra
                     `hemoglobin`='$v_hemoglobin',
                     `leukosit`='$v_leukosit',
                     `trombosit`='$v_trombosit',
-                    `sturasi_oksigen`='$v_oksigen',
                     `titer_cov19`='$v_titer_cov',
                     `id_sample`='$v_sample',
                     `jnsperiksa`='$jnsperiksa_baru',
@@ -499,25 +498,25 @@ if ($ln > 0) {
                                         <tr>
                                             <td colspan="2"><b>Pemeriksaan Hemoglobin</b><i> ( Pilih Salah Satu )</i></td>
                                         </tr>
-                                                <!-- EDIT SHIN MENDISABLE RADIO DAN MENAMBAH ONCHANGE HB METER-->
+                                        <!-- EDIT SHIN MENDISABLE RADIO DAN MENAMBAH ONCHANGE HB METER-->
                                         <tr>
                                             <td>1. BJ1053</sub></td>
                                             <td class="input">
-                                                <input type="radio" name="cuso4" value="1" onclick="chb(this.value)"disabled>Tenggelam
-                                                <input type="radio" name="cuso4" value="2" onclick="chb(this.value)"disabled>Melayang
-                                                <input type="radio" name="cuso4" value="3" onclick="chb(this.value)"disabled>Mengapung
+                                                <input type="radio" name="cuso4" value="1" onclick="chb(this.value)" disabled>Tenggelam
+                                                <input type="radio" name="cuso4" value="2" onclick="chb(this.value)" disabled>Melayang
+                                                <input type="radio" name="cuso4" value="3" onclick="chb(this.value)" disabled>Mengapung
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>2. BJ1062</sub></td>
                                             <td class="input">
-                                                <input type="radio" name="cuso41" value="1" onclick="chb1(this.value)"disabled>Tenggelam
-                                                <input type="radio" name="cuso41" value="2" onclick="chb1(this.value)"disabled>Melayang
-                                                <input type="radio" name="cuso41" value="3" onclick="chb1(this.value)"disabled>Mengapung
+                                                <input type="radio" name="cuso41" value="1" onclick="chb1(this.value)" disabled>Tenggelam
+                                                <input type="radio" name="cuso41" value="2" onclick="chb1(this.value)" disabled>Melayang
+                                                <input type="radio" name="cuso41" value="3" onclick="chb1(this.value)" disabled>Mengapung
                                             </td>
                                         </tr>
                                         <tr>
-                                           <td>3. HB Meter</td>
+                                            <td>3. HB Meter</td>
                                             <td class="input">
                                                 <input type="text" name="hb" id="hb" size="6" onChange="hbmeter()" required> g/dL <br>
                                                 <span id="warning_hb" style="font-size: 12px; color: red;"></span>
@@ -661,7 +660,7 @@ if ($ln > 0) {
                                         </tr>
                                         <tr>
                                             <td>6</td>
-                                            <td>Jika wanita ꞉ apakah anda saat ini sedang hamil ?</td>
+                                            <td>Jika wanita ? apakah anda saat ini sedang hamil ?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no6" value="0">
@@ -815,7 +814,7 @@ if ($ln > 0) {
                                         </tr>
                                         <tr>
                                             <td>20</td>
-                                            <td>Donor wanita ꞉ apakah anda pernah berhubungan seksual dengan laki-laki yang biseksual ?</td>
+                                            <td>Donor wanita ? apakah anda pernah berhubungan seksual dengan laki-laki yang biseksual ?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no20" value="0">
@@ -874,7 +873,7 @@ if ($ln > 0) {
                                 </tr>
                                 <tr>
                                     <td>25</td>
-                                    <td>Apakah anda sedang atau pernah mendapat pengobatan siﬁlis atau GO (kencing nanah) ?</td>
+                                    <td>Apakah anda sedang atau pernah mendapat pengobatan si?lis atau GO (kencing nanah) ?</td>
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no25" value="0">
@@ -962,7 +961,7 @@ if ($ln > 0) {
                                 </tr>
                                 <tr>
                                     <td>33</td>
-                                    <td>Laki-laki ꞉ Apakah anda pernah berhubungan seksual dengan laki-laki, walaupun sekali? </td>
+                                    <td>Laki-laki ? Apakah anda pernah berhubungan seksual dengan laki-laki, walaupun sekali? </td>
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no33" value="0">
@@ -1480,8 +1479,8 @@ if ($ln > 0) {
                                         <option value="">Pilih Jika Tidak Lolos</option>
                                         <option value="0">Tensi Rendah</option>
                                         <option value="1">Tensi Tinggi</option>
-                                        <option value="2">HB Mengapung</option>
-                                        <option value="3">HB Melayang</option>
+                                        <option value="2">HB Rendah</option>
+                                        <!-- <option value="3">HB Melayang</option> -->
                                         <option value="4">HB Tinggi</option>
                                         <option value="5">BB Kurang</option>
                                         <option value="6">Habis Minum Obat</option>
@@ -1624,12 +1623,12 @@ if ($ln > 0) {
 
         // Cek panjang hanya 1 digit
         if (hbInput.length === 1) {
-            pesan.push(`❌ Nilai Hemoglobin (${hbInput}) hanya 1 digit. Tidak valid.`);
+            pesan.push(`? Nilai Hemoglobin (${hbInput}) hanya 1 digit. Tidak valid.`);
             setCheckedValue(document.periksa.elements["h_medical"], "1");
         }
         // Validasi rentang normal
         else if (hb < 12.5 || hb > 17.0) {
-            pesan.push(`⚠️ Nilai Hemoglobin (${hb}) di luar batas normal 12.5 – 17.0 g/dL. Pendonor tidak lolos.`);
+            pesan.push(`?? Nilai Hemoglobin (${hb}) di luar batas normal 12.5 � 17.0 g/dL. Pendonor tidak lolos.`);
             warna = "blue";
             setCheckedValue(document.periksa.elements["h_medical"], "1");
         } else {

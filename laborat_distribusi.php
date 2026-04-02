@@ -54,7 +54,7 @@ $today=date("Y-m-d");
 	<li><a href="pmilaboratorium.php?module=pindah_stok"><img src="images/kembali_incom.png" alt="" /></a></li>
 
 	<li><a href="pmilaboratorium.php?module=pindah_stok_salahbuang"><img src="images/salah_buang.png" alt="" /></a></li>
-	<li><a href="pmilaboratorium.php?module=musnah"><img src="images/pemusnahan_kantong.png" alt="" /></a></li>
+	<!--<li><a href="pmilaboratorium.php?module=musnah"><img src="images/pemusnahan_kantong.png" alt="" /></a></li>-->
 	<!--li><a href="pmilaboratorium.php?module=form_bdrs"><img src="images/pindah_bdrs.png" alt=""/></a></li>
 	<!--li><a href="pmilaboratorium.php?module=update_dari_bdrs"><img src="images/update_d_bdrs.png" alt=""/></a></li>
 	<li><a href="pmilaboratorium.php?module=kembali"><img src="images/darah_kembali1.png" alt="" /></a></li>

@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include '../config/dbi_connect.php';
 header("Content-Type: application/json");

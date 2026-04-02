@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include '../config/dbi_connect.php';
 
@@ -62,7 +61,7 @@ try {
         if ($aksi === 'skip') {
             // skip header & semua detailnya
             throw new Exception("Data dengan nomor transaksi $noTrans sudah ada. Lewati.");
-        } elseif ($aksi === 'update' || $aksi === 'replace') {
+        } else if ($aksi === 'update' || $aksi === 'replace') {
             // update header
             $set = array();
             foreach ($head as $k => $v) {
@@ -131,7 +130,7 @@ try {
                         if (!empty($setPd)) {
                             mysqli_query($dbi, "UPDATE pendonor SET " . implode(', ', $setPd) . " WHERE Kode='$kodedonor'");
                         }
-                    } elseif (!$existsPd) {
+                    } else if (!$existsPd) {
                         $fieldsPd = implode('`,`', array_keys($pd));
 
                         // PHP 5.3 compatible
@@ -165,7 +164,7 @@ try {
                         if (!empty($setHt)) {
                             mysqli_query($dbi, "UPDATE htransaksi SET " . implode(', ', $setHt) . " WHERE NoTrans='$no_aftap'");
                         }
-                    } elseif (!$existsHt) {
+                    } else if (!$existsHt) {
                         $fieldsHt = implode('`,`', array_keys($ht));
 
                         // PHP 5.3 compatible
@@ -199,7 +198,7 @@ try {
                     if (!empty($setK)) {
                         mysqli_query($dbi, "UPDATE stokkantong SET " . implode(', ', $setK) . " WHERE noKantong='$noKantong'");
                     }
-                } elseif (!$existsKantong) {
+                } else if (!$existsKantong) {
                     $fieldsK = implode('`,`', array_keys($kantong));
 
                     // PHP 5.3 compatible
@@ -229,7 +228,7 @@ try {
                 }
                 $updated++;
             }
-        } elseif (!$existsDetail || $aksi === 'replace') {
+        } else if (!$existsDetail || $aksi === 'replace') {
             // DELETE dulu data lama
             if (!mysqli_query($dbi, "DELETE FROM serahterima_detail 
                        WHERE dst_notrans='$noTrans' AND dst_nokantong='$nokantong'")) {

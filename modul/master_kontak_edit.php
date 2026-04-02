@@ -170,13 +170,13 @@ function generateKode(jenisBaru) {
     var kodeAwal = document.getElementById("KodeAwal").value;
     var inputKode = document.querySelector('input[name="Kode"]');
 
-    // Jika kembali ke jenis awal → kembalikan kode awal
+    // Jika kembali ke jenis awal ? kembalikan kode awal
     if (jenisBaru == jenisAwal) {
         inputKode.value = kodeAwal;
         return;
     }
 
-    // Jika jenis berubah → generate kode baru
+    // Jika jenis berubah ? generate kode baru
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "modul/ajax_kode_supplier.php?jenis=" + jenisBaru, true);
     xhr.onreadystatechange = function() {

@@ -257,8 +257,7 @@ if ($_GET[aksi] == 'edit') {
 				<tr>
 					<td>Tgl Survei</td>
 					<td class="input">
-						<input name="tanggal2" id="datepicker1" type="text" size="10" placeholder="Klik disini"
-							value="<?= $a_edit[tglsurvei] ?>">
+						<input name="tanggal2" id="datepicker1" type="text" size="10" placeholder="Klik disini" value="<?= $a_edit[tglsurvei] ?>">
 					</td>
 				</tr>
 				<tr>
@@ -268,10 +267,9 @@ if ($_GET[aksi] == 'edit') {
 							$do1 = mysql_query($user1);
 							while ($data1 = mysql_fetch_assoc($do1)) {
 								if ($data1[id_user] == $a_edit[surveyor]) $select = 'selected'; ?>
-								<option value="<?= $data1[id_user] ?>" <?= $select ?>><?= $data1[id_user] ?></option>
-							<?
-								$select = "";
-							} ?>
+								<option value="<?= $data1[id_user] ?>" <?= $select ?>><?= $data1[id_user] ?></option><?
+																																																			$select = "";
+																																																		} ?>
 						</select></td>
 		</td>
 		</tr>
@@ -279,18 +277,15 @@ if ($_GET[aksi] == 'edit') {
 		?>
 		<tr>
 			<td>Tempat Acara</td>
-			<td><input type='text' placeholder='tempat acara ini' name='tempat' id='tempat'
-					value="<?= $tempatacara[nama] ?>"></td>
+			<td><input type='text' placeholder='tempat acara ini' name='tempat' id='tempat' value="<?= $tempatacara[nama] ?>"></td>
 		</tr>
 		<tr>
 			<td>Nama CP</td>
-			<td><input type='text' placeholder='Koordinator Kegiatan ini' disabled="disabled" name='cp' id='cp'
-					value="<?= $a_edit[cp] ?>"></td>
+			<td><input type='text' placeholder='Koordinator Kegiatan ini' disabled="disabled" name='cp' id='cp' value="<?= $a_edit[cp] ?>"></td>
 		</tr>
 		<tr>
 			<td>No HP</td>
-			<td><input type='text' placeholder='NO Telp CP' disabled="disabled" name='hpcp' id='hpcp'
-					value="<?= $a_edit[hpcp] ?>"></td>
+			<td><input type='text' placeholder='NO Telp CP' disabled="disabled" name='hpcp' id='hpcp' value="<?= $a_edit[hpcp] ?>"></td>
 		</tr>
 		</tr>
 		</table>
@@ -337,8 +332,7 @@ if ($_GET[aksi] == 'edit') {
 				<tr>
 					<td>Tanggal</td>
 					<td class="input">
-						<input name="tanggal1" id="datepicker" type="text" size="10"
-							value="<?= substr($a_edit[TglPenjadwalan], 0, 10) ?>">
+						<input name="tanggal1" id="datepicker" type="text" size="10" value="<?= substr($a_edit[TglPenjadwalan], 0, 10) ?>">
 					</td>
 				</tr>
 				<tr>
@@ -351,15 +345,13 @@ if ($_GET[aksi] == 'edit') {
 
 					<td> Jam Selesai</td>
 					<td class="input">
-						<input name="jam1" id='jam1' disabled="disabled" type="text" size="7"
-							value="<?= $a_edit[jamselesai] ?>">
+						<input name="jam1" id='jam1' disabled="disabled" type="text" size="7" value="<?= $a_edit[jamselesai] ?>">
 					</td>
 				</tr>
 				<tr>
 					<td>Jumlah</td>
 					<td class="input">
-						<input name="jumlah" id='jumlah' disabled="disabled" type="text" size="5"
-							value="<?= $a_edit[jumlah] ?>">
+						<input name="jumlah" id='jumlah' disabled="disabled" type="text" size="5" value="<?= $a_edit[jumlah] ?>">
 					</td>
 				</tr>
 			</table>
@@ -553,8 +545,7 @@ if ($_GET[aksi] == 'edit') {
 					"<td>" . $a_dr[ket] . "</td>";
 			?>
 
-				<td><a href=pmip2d2s.php?module=delpetugas&NoTrans=<? echo $_GET[id] ?>&petugas=<? echo $a_ptgs[nama] ?>>Hapus
-					</a></td>
+				<td><a href=pmip2d2s.php?module=delpetugas&NoTrans=<? echo $_GET[id] ?>&petugas=<? echo $a_ptgs[nama] ?>>Hapus</a></td>
 
 			<?
 
@@ -586,13 +577,11 @@ if ($_GET[aksi] == 'edit') {
 		<table class="ui-widget ui-widget-content">
 			<tr class="ui-widget-header">
 				<td class="input">Tanggal</td>
-				<td class="input"><input name=tanggal id=butuh type=text onchange="submit()" placeholder="YYYY-MM-DD"
-						autocomplete="off"></td>
+				<td class="input"><input name=tanggal id=butuh type=text onchange="submit()" placeholder="YYYY-MM-DD" autocomplete="off"></td>
 			</tr>
 			<tr class="ui-widget-header">
 				<td class="input">Instansi</td>
-				<td class="input"><input name=cariinstansi id=cariinstansi type=text placeholder="Nama Instansi"
-						autocomplete="off"></td>
+				<td class="input"><input name=cariinstansi id=cariinstansi type=text placeholder="Nama Instansi" autocomplete="off"></td>
 			</tr>
 		</table>
 	</form>

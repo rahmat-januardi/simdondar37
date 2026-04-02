@@ -19,7 +19,7 @@ $qrylevel = "qrylevel";
 // Output HTML awal
 echo '<link rel="shortcut icon" href="images/index.ico" type="image/x-icon"/>
 <title>SIMDONDAR 3.7</title>
-<link rel="stylesheet" href="bootstrap337/css/bootstrap.min.css">
+<link rel="stylesheet" href="bootsrap337/css/bootstrap.min.css">
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js1/interface.js"></script>
 <link type="text/css" href="css/interface-fisheye.css" rel="stylesheet">

@@ -64,9 +64,9 @@ $hariini = date("Y-m-d");
                         }
                         break;
                     case '2':
-                        if (($stokkantong['tgl_release'] == null) or ($stokkantong['tgl_release'] == '0000-00-00') or ($stokkantong['hasil_release'] != '0')) {
-                            $statuskantong = 'Kantong Sudah di Release';
-                        }
+                        if(($stokkantong['tgl_release'] == null) or ($stokkantong['tgl_release'] == '0000-00-00') or ($stokkantong['hasil_release'] != '0')){
+				$statuskantong = 'Kantong Sudah di Release';
+			 }
                         if (substr($stokkantong[stat2], 0, 1) == 'b') $tempat = " (BDRS)";
                         break;
                     case '3':

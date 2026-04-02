@@ -485,20 +485,18 @@ if (isset($_POST['simpan'])) {
         $ketbatal = $v_alasan;
     } else {
         $pengambilan = '3';
-        $status = "0";
+        $status = "1";
         $jumHB = '1';
         $ketbatal = '-';
     }
     $sql_transaksi = "UPDATE `htransaksi` SET
-                    `NamaDokter`='$v_ptgdokter',
-                    `petugasHB`='$v_ptgshb',
+                    `namadokter`='$v_ptgdokter',
                     `petugasTensi`='$nama_dokter',
                     `beratbadan`='$v_bb',
                     `tensi`='$v_tensi',
                     `suhu`='$v_suhu',
                     `nadi`='$v_nadi',
                     `jumHB`='$jumHB',
-                    `Hb`='$v_hemoglobin',
                     `hct`='$v_hematokrit',
                     `status_test`='1',
                     `Status`='$status',
@@ -514,7 +512,8 @@ if (isset($_POST['simpan'])) {
                     `sturasi_oksigen`='$v_oksigen',
                     `titer_cov19`='$v_titer_cov',
                     `id_sample`='$v_sample',
-                    `jnsperiksa`='1', `cek_dokter`='1'
+                    `jnsperiksa`='1', 
+                    `cek_dokter`='1'
                 WHERE (`NoTrans`='$v_notransaksi')";
     $upd_htransaksi = mysqli_query($dbi, $sql_transaksi);
     //UPDATE PENDONOR DGN GOL DARAH=========================================
@@ -1687,8 +1686,8 @@ if ($ln > 0) {
                                         <option value="">Pilih Jika Tidak Lolos</option>
                                         <option value="0">Tensi Rendah</option>
                                         <option value="1">Tensi Tinggi</option>
-                                        <option value="2">HB Mengapung</option>
-                                        <option value="3">HB Melayang</option>
+                                        <option value="2">HB Rendah</option>
+                                        <!-- <option value="3">HB Melayang</option> -->
                                         <option value="4">HB Tinggi</option>
                                         <option value="5">BB Kurang</option>
                                         <option value="6">Habis Minum Obat</option>
