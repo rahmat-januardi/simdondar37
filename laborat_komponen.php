@@ -67,6 +67,7 @@ if (!$tabel1) {
 	<ul class="thumb">
 		<!--<li><a href="pmikomponen.php?module=komponen"><img src="images/pembuatan_komponen.png" alt=""/></a></li>-->
 		<li><a href="pmikomponen.php?module=pengolahan"><img src="images/pembuatan_komponen.png" alt="" /></a></li>
+		<li><a href="pmikomponen.php?module=pembekuan"><img src="images/pembekuan.png" alt="" /></a></li>
 		<li><a href="pmikomponen.php?module=komponen_split"><img src="images/split_komponen.png" alt="" /></a></li>
 		<!--<li><a href="pmikomponen.php?module=shasil_labl"><img src="images/cetak_label.png" alt=""/></a></li>-->
 		<li><a href="pmikomponen.php?module=rincian_komponen"><img src="images/rincian_komponen.png" alt="" /></a></li>

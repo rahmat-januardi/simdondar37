@@ -82,7 +82,7 @@ try {
         SELECT NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah
         FROM dpengolahan_temp";
 
-        // $selDTemp = "SELECT NoTrans, noKantong, Produk, petugas, tgl, aPutar, aPisah, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulai, selesai, bstatus, bsuhu, verifikator, musnah, CONCAT(DATE(tgl), ' ', TIME(selesai)) AS tglPengolahan  FROM dpengolahan_temp WHERE noKantong = '$noKantong'";
+        // $selDTemp = "SELECT NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah, CONCAT(DATE(tgl), ' ', TIME(selesai)) AS tglPengolahan  FROM dpengolahan_temp WHERE noKantong = '$noKantong'";
 
 
         $selDTemp = "SELECT substring(noKantong, -1) as nK, NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, tglAftap, ed_produk, goldarah, rhesus, jenis, volume, shift, mulai, selesai, bstatus, bsuhu, verifikator, musnah, CONCAT(DATE(tgl), ' ', TIME(selesai)) AS tglPengolahan 
@@ -93,88 +93,112 @@ try {
             $upStokAll = "UPDATE stokkantong SET tgl_Aftap = ?, kadaluwarsa = ?, produk = ?, volume = ?, tglpengolahan = ? WHERE noKantong = ?";
             $upStokNoAftap = "UPDATE stokkantong SET kadaluwarsa = ?, produk = ?, volume = ?, tglpengolahan = ? WHERE noKantong = ?";
 
-            foreach ($noKantong as $vKantong) {
-                $stmtSelect->bind_param('s', $vKantong);
-                $stmtSelect->execute();
+            // Query to insert a log entry into the user_log table
+            $logq = "INSERT INTO `user_log`(`time_aksi`,`komputer`, `user`, `modul`, `aksi_user`, `keterangan`, `tempat`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            session_start();
+            if ($insLog = $dbi->prepare($logq)) {
+                $time_aksi = date('Y-m-d H:i:s');
+                $clip = isset($_SESSION['client_ip']) ? $_SESSION['client_ip'] : '';
+                $nmus = isset($_SESSION['namauser']) ? $_SESSION['namauser'] : '';
+                $log_mdl = 'PENGOLAHAN';
+                $logUnix = $noKantongRes; // Ini akan di-overwrite per loop, tapi tidak digunakan di bind
+                $kett = "-";
+                $tempat = "DG";
 
-                $stmtSelect->store_result();
+                foreach ($noKantong as $vKantong) {
+                    $stmtSelect->bind_param('s', $vKantong);
+                    $stmtSelect->execute();
 
-                // Bind the result
-                $stmtSelect->bind_result(
-                    $nkSatelite,
-                    $noTrans,
-                    $noKantongRes,
-                    $produk,
-                    $petugas,
-                    $tgl,
-                    $tglPengerjaan,
-                    $tglAftap,
-                    $ed_produk,
-                    $goldarah,
-                    $rhesus,
-                    $jenis,
-                    $volume,
-                    $shift,
-                    $mulai,
-                    $selesai,
-                    $bstatus,
-                    $bsuhu,
-                    $verifikator,
-                    $musnah,
-                    $tglPengolahan
-                );
+                    $stmtSelect->store_result();
 
-                // Fetch data
-                while ($stmtSelect->fetch()) {
-                    // Ambil nilai produk dari stokkantong
-                    $produkStok = null;
-                    $cekProdukSql = "SELECT produk FROM stokkantong WHERE noKantong = ?";
-                    if ($cekProdukStmt = $dbi->prepare($cekProdukSql)) {
-                        $cekProdukStmt->bind_param('s', $noKantongRes);
-                        $cekProdukStmt->execute();
-                        $cekProdukStmt->bind_result($produkStok);
-                        $cekProdukStmt->fetch();
-                        $cekProdukStmt->close();
-                    }
+                    // Bind the result
+                    $stmtSelect->bind_result(
+                        $nkSatelite,
+                        $noTrans,
+                        $noKantongRes,
+                        $produk,
+                        $petugas,
+                        $tgl,
+                        $tglPengerjaan,
+                        $tglAftap,
+                        $ed_produk,
+                        $goldarah,
+                        $rhesus,
+                        $jenis,
+                        $volume,
+                        $shift,
+                        $mulai,
+                        $selesai,
+                        $bstatus,
+                        $bsuhu,
+                        $verifikator,
+                        $musnah,
+                        $tglPengolahan
+                    );
 
-                    // Validasi: jika produk di stokkantong sudah ada (tidak kosong/tidak null)
-                    // dan produk hasil ($produk) kosong/null, skip update
-                    if (
-                        !empty($produkStok) &&
-                        (is_null($produk) || $produk === '')
-                    ) {
-                        // Tidak perlu update, skip ke berikutnya
-                        continue;
-                    }
-
-                    $volum = $volume;
-
-                    if ($nkSatelite === 'A') {
-                        // Tidak update tgl_Aftap
-                        if ($stmtUpdate = $dbi->prepare($upStokNoAftap)) {
-                            $stmtUpdate->bind_param('sssss', $ed_produk, $produk, $volum, $tglPengerjaan, $noKantongRes);
-                            if (!$stmtUpdate->execute()) {
-                                error_log("Failed to execute update (no tgl_Aftap): " . $stmtUpdate->error);
-                            }
-                            $stmtUpdate->close();
-                        } else {
-                            error_log('Failed to prepare update statement for stokkantong (no tgl_Aftap): ' . $dbi->error);
-                            throw new Exception('Statement gagal untuk prepared update stokkantong (no tgl_Aftap): ' . $dbi->error);
+                    // Fetch data
+                    while ($stmtSelect->fetch()) {
+                        // Ambil nilai produk dari stokkantong
+                        $produkStok = null;
+                        $cekProdukSql = "SELECT produk FROM stokkantong WHERE noKantong = ?";
+                        if ($cekProdukStmt = $dbi->prepare($cekProdukSql)) {
+                            $cekProdukStmt->bind_param('s', $noKantongRes);
+                            $cekProdukStmt->execute();
+                            $cekProdukStmt->bind_result($produkStok);
+                            $cekProdukStmt->fetch();
+                            $cekProdukStmt->close();
                         }
-                    } else {
-                        // Update semua field termasuk tgl_Aftap
-                        if ($stmtUpdate = $dbi->prepare($upStokAll)) {
-                            $stmtUpdate->bind_param('ssssss', $tglAftap, $ed_produk, $produk, $volum, $tglPengerjaan, $noKantongRes);
-                            if (!$stmtUpdate->execute()) {
-                                error_log("Failed to execute update: " . $stmtUpdate->error);
+
+                        // Validasi: jika produk di stokkantong sudah ada (tidak kosong/tidak null)
+                        // dan produk hasil ($produk) kosong/null, skip update
+                        if (
+                            !empty($produkStok) &&
+                            (is_null($produk) || $produk === '')
+                        ) {
+                            // Tidak perlu update, skip ke berikutnya
+                            continue;
+                        }
+
+                        $volum = $volume;
+
+                        if ($nkSatelite === 'A') {
+                            // Tidak update tgl_Aftap
+                            if ($stmtUpdate = $dbi->prepare($upStokNoAftap)) {
+                                $stmtUpdate->bind_param('sssss', $ed_produk, $produk, $volum, $tglPengerjaan, $noKantongRes);
+                                if (!$stmtUpdate->execute()) {
+                                    error_log("Failed to execute update (no tgl_Aftap): " . $stmtUpdate->error);
+                                }
+                                $stmtUpdate->close();
+                            } else {
+                                error_log('Failed to prepare update statement for stokkantong (no tgl_Aftap): ' . $dbi->error);
+                                throw new Exception('Statement gagal untuk prepared update stokkantong (no tgl_Aftap): ' . $dbi->error);
                             }
-                            $stmtUpdate->close();
                         } else {
-                            error_log('Failed to prepare update statement for stokkantong: ' . $dbi->error);
-                            throw new Exception('Statement gagal untuk prepared update stokkantong: ' . $dbi->error);
+                            // Update semua field termasuk tgl_Aftap
+                            if ($stmtUpdate = $dbi->prepare($upStokAll)) {
+                                $stmtUpdate->bind_param('ssssss', $tglAftap, $ed_produk, $produk, $volum, $tglPengerjaan, $noKantongRes);
+                                if (!$stmtUpdate->execute()) {
+                                    error_log("Failed to execute update: " . $stmtUpdate->error);
+                                }
+                                $stmtUpdate->close();
+                            } else {
+                                error_log('Failed to prepare update statement for stokkantong: ' . $dbi->error);
+                                throw new Exception('Statement gagal untuk prepared update stokkantong: ' . $dbi->error);
+                            }
+                        }
+
+                        // Logging per item (dipindah ke dalam loop ini)
+                        $log_aksi = 'Pengolahan (Konvensional), dengan No.Transaksi ' . $noTrans . ', Nomor Kantong: ' . $noKantongRes . ', menjadi Produk: ' . $produk;
+                        $insLog->bind_param('sssssss', $time_aksi, $clip, $nmus, $log_mdl, $log_aksi, $kett, $tempat); // Gunakan $time_aksi, bukan $tglPengerjaan (sesuaikan jika perlu)
+                        if (!$insLog->execute()) {
+                            throw new Exception('Gagal menyimpan log pengolahan untuk kantong: ' . $noKantongRes);
                         }
                     }
                 }
+
+                $insLog->close(); // Tutup statement log setelah loop
+            } else {
+                throw new Exception('Failed to prepare log statement: ' . $dbi->error);
             }
 
             $stmtSelect->close();
@@ -199,26 +223,6 @@ try {
                 throw new Exception('Failed to prepare delete pengolahan_temp statement: ' . $dbi->error);
             }
 
-            // Query to insert a log entry into the user_log table
-            $logq = "INSERT INTO `user_log`(`time_aksi`,`komputer`, `user`, `modul`, `aksi_user`, `keterangan`, `tempat`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            session_start();
-            if ($insLog = $dbi->prepare($logq)) {
-                $time_aksi = date('Y-m-d H:i:s');
-                $clip = isset($_SESSION['client_ip']) ? $_SESSION['client_ip'] : '';
-                $nmus = isset($_SESSION['namauser']) ? $_SESSION['namauser'] : '';
-                $log_mdl = 'PENGOLAHAN';
-                $logUnix = $noKantongRes;
-                $kett = "-";
-                $tempat = "DG";
-                $log_aksi = 'Pengolahan (Konvensional), dengan No.Transaksi ' . $noTrans . ', Nomor Kantong: ' . $noKantongRes . ', menjadi Produk: ' . $produk;
-                $insLog->bind_param('sssssss', $tglPengerjaan, $clip, $nmus, $log_mdl, $log_aksi, $kett, $tempat);
-                if (!$insLog->execute()) {
-                    throw new Exception('Gagal menyimpan log pengolahan.');
-                }
-            } else {
-                throw new Exception('Failed to prepare log statement: ' . $dbi->error);
-            }
-
             // Commit transaksi
             //$dbi->commit();
             $dbi->query("COMMIT");
@@ -229,7 +233,7 @@ try {
             $response['noTrans'] = $noTrans;
 
             //======= Audit Trial =================================================================================
-            $time_aksi = 'PENGOLAHAN';
+            $time_aksi = 'PENGOLAHAN'; // Ini tampaknya salah, seharusnya date, tapi sesuai asli
             $log_mdl = 'PENGOLAHAN';
             $logUnix = $noKantongRes;
             $tempat = "DG";
@@ -243,6 +247,7 @@ try {
                 include_once $logFile;
             }
             //=====================================================================================================
+            // Catatan: Bagian audit trial ini masih menggunakan nilai terakhir. Jika ingin per item, pindah ke loop juga atau hapus jika duplikat.
 
         } else {
             throw new Exception('Gagal menyimpan data ke tabel pengolahan.' . $dbi->error);

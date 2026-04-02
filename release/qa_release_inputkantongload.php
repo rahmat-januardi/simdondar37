@@ -17,13 +17,13 @@ $tampil = "0";
 
 <head>
     <style>
-        body {
-            font-family: "Lato", sans-serif;
-        }
+    body {
+        font-family: "Lato", sans-serif;
+    }
     </style>
 
     <script type="text/javascript" language="JavaScript">
-        document.forms['prolis'].elements['noktg'].focus();
+    document.forms['prolis'].elements['noktg'].focus();
     </script>
 
 </head>
@@ -31,7 +31,8 @@ $tampil = "0";
 <body OnLoad="document.prolis.noktg.focus();">
     <form name="prolis" method=post>
         <font size="4" color=00008B>PELULUSAN <br> </font>
-        <INPUT type="text" name="noktg" value="<?php echo $nkt; ?>" style="text-transform:uppercase" minlength="5" required="">
+        <INPUT type="text" name="noktg" value="<?php echo $nkt; ?>" style="text-transform:uppercase" minlength="5"
+            required="">
         <input type=submit name=cari value=OK class="swn_button_blue">
         <a href="pmiqa.php?module=input_qa" class="swn_button_blue">Kembali</a>
     </form>
@@ -49,31 +50,54 @@ $tampil = "0";
     //$nkt=$_POST[noktg];
     $sql = "select * from stokkantong where upper(nokantong)=upper('$nkt')";
     $stokkantong = mysql_fetch_assoc(mysql_query($sql));
-    if (($stokkantong['Status']=='2') and ($stokkantong['sah']=='1')){
-        $URL="pmiqa.php?module=release_proses&nokantong=$nkt&mode=2";
+    if (($stokkantong['Status'] == '2') and ($stokkantong['sah'] == '1') and ($stokkantong['statKonfirmasi'] == '1') and (strtotime($stokkantong['kadaluwarsa']) >= time()) and ($stokkantong['hasil_release'] == '0')) {
+        $URL = "pmiqa.php?module=release_proses&nokantong=$nkt&mode=2";
         header("Location: $URL");
-    }else {
-        switch ($stokkantong['Status']) {
-            case '0' :  $statuskantong='Kosong';
-                        if ($stokkantong[StatTempat]==NULL) $statuskantong='Kosong - di Logistik';
-                        if ($stokkantong[StatTempat]=='0')  $statuskantong='Kosong - di Logistik';
-                        if ($stokkantong[StatTempat]=='1')  $statuskantong='Kosong - di Aftap';
-                        break;
-            case '1' :  if ($stokkantong['sah']=="1"){
-                            $statuskantong='Karantina';
-                        } else{
-                            $statuskantong='Belum disahkan';
-                        }
-                        break;
-            case '2' :  $statuskantong='Sehat';
-                        if (substr($stokkantong[stat2],0,1)=='b') $tempat=" (BDRS)";
-                        break;
-            case '3' : $statuskantong='Keluar';break;
-            case '4' : $statuskantong='Rusak';break;
-            case '5' : $statuskantong='Rusak-Gagal';break;
-            case '6' : $statuskantong='Dimusnahkan';break;
-            default  : $statuskantong='-';        }
-        echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+    } else {
+        if ($stokkantong['hasil_release'] == '1') {
+            $statuskantong = 'Sudah di release';
+            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+        } else if (strtotime($stokkantong['kadaluwarsa']) <= time()) {
+            $statuskantong = 'Kadaluwarsa';
+            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+        } else {
+            switch ($stokkantong['Status']) {
+                case '0':
+                    $statuskantong = 'Kosong';
+                    if ($stokkantong[StatTempat] == NULL) $statuskantong = 'Kosong - di Logistik';
+                    if ($stokkantong[StatTempat] == '0')  $statuskantong = 'Kosong - di Logistik';
+                    if ($stokkantong[StatTempat] == '1')  $statuskantong = 'Kosong - di Aftap';
+                    break;
+                case '1':
+                    if ($stokkantong['sah'] == "1") {
+                        $statuskantong = 'Karantina';
+                    } else {
+                        $statuskantong = 'Belum disahkan';
+                    }
+                    break;
+                case '2':
+                    if (($stokkantong['tgl_release'] == null) or ($stokkantong['tgl_release'] == '0000-00-00') or ($stokkantong['hasil_release'] != '0')) {
+                        $statuskantong = 'Kantong Sudah di Release';
+                    }
+                    if (substr($stokkantong[stat2], 0, 1) == 'b') $tempat = " (BDRS)";
+                    break;
+                case '3':
+                    $statuskantong = 'Keluar';
+                    break;
+                case '4':
+                    $statuskantong = 'Rusak';
+                    break;
+                case '5':
+                    $statuskantong = 'Rusak-Gagal';
+                    break;
+                case '6':
+                    $statuskantong = 'Dimusnahkan';
+                    break;
+                default:
+                    $statuskantong = '-';
+            }
+            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+        }
     }
     ?>
 </body>
