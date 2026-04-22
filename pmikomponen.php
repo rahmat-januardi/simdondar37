@@ -9,13 +9,13 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
 if (($_SESSION['leveluser']) == 'komponen') {
     ?>
 
-    <head>
-        <title>SIMDONDAR</title>
-        <script language=javascript src="idcard.js" type="text/javascript"> </script>
-        <script language=javascript src="util.js" type="text/javascript"> </script>
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
-    </head>
-    <?php
+<head>
+    <title>SIMDONDAR</title>
+    <script language=javascript src="idcard.js" type="text/javascript"> </script>
+    <script language=javascript src="util.js" type="text/javascript"> </script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<?php
 
     $act = isset($_GET['act']) ? $_GET['act'] : '';
     $rstock = isset($_GET['rstock']) ? $_GET['rstock'] : '';
@@ -28,7 +28,8 @@ if (($_SESSION['leveluser']) == 'komponen') {
                 include "modul/stock.php";
             if ($rstock == '3')
                 // include "modul/stock1.php";
-		include "release/qa_check_kantong.php";
+            include "modul/cek_kantong_new.php";
+		// include "release/qa_check_kantong.php";
             include "config/koneksi.php";
             include "config/fungsi_combobox.php";
             include "config/library.php";

@@ -15,7 +15,8 @@ if (($_SESSION['leveluser']) == 'konfirmasi') {
             if ($rstock == '1')
                 include "modul/stock.php";
             if ($rstock == '2')
-                include "modul/stock2.php";
+                // include "modul/stock2.php";
+                include "modul/cek_kantong_new.php";
             include "config/koneksi.php";
             include "config/dbi_connect.php";
             include "config/fungsi_combobox.php";
@@ -201,4 +202,3 @@ if (($_SESSION['leveluser']) == 'konfirmasi') {
             }
     }
 }
-?>

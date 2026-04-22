@@ -6,7 +6,7 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
     echo "<a href=index.php target=\"_top\"><b>LOGIN</b></a></center>";
 }
 if (($_SESSION['leveluser']) == 'logistik') {
-    ?>
+?>
     <!doctype html>
     <html>
 
@@ -15,7 +15,7 @@ if (($_SESSION['leveluser']) == 'logistik') {
         <script language=javascript src="util.js" type="text/javascript"> </script>
         <link href="css/style.css" rel="stylesheet" type="text/css" />
     </head>
-    <?php
+<?php
     switch (@$_GET['act']) {
         default:
             if (@$_GET['rstock'] == '1')
@@ -23,7 +23,8 @@ if (($_SESSION['leveluser']) == 'logistik') {
             if (@$_GET['rstock'] == '2')
                 include "modul/stock2.php";
             if (@$_GET['rstock'] == '3')
-                include "modul/stock1.php";
+                // include "modul/stock1.php";
+                include "modul/cek_kantong_new.php";
             include "config/koneksi.php";
             include "config/fungsi_combobox.php";
             include "config/library.php";

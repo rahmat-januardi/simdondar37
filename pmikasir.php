@@ -22,7 +22,8 @@ if ($_SESSION['leveluser'] == 'kasir' or $_SESSION['leveluser'] == 'bdrs') { ?>
             if (@$_GET['rstock'] == '1')
                 include "modul/stock.php";
             if (@$_GET['rstock'] == '3')
-                include "modul/stock1.php";
+                // include "modul/stock1.php";
+                include "modul/cek_kantong_new.php";
             // include "config/koneksi.php";
             include "config/fungsi_combobox.php";
             include "config/library.php";
@@ -212,24 +213,20 @@ if ($_SESSION['leveluser'] == 'kasir' or $_SESSION['leveluser'] == 'bdrs') { ?>
                 include "modul/editpasien.php";
             } elseif ($_GET['module'] == 'edit_datapasien') {
                 include "modul/edit_permintaan.php";
-
             }
             //cetak formulir
             elseif ($_GET['module'] == 'form_donor') {
                 include "modul/data_pendonor2.php";
-
             }
 
             //history donor
             elseif ($_GET['module'] == 'history') {
                 include "modul/sejarah_donor.php";
-
             }
 
             //input transaksi  donor
             elseif ($_GET['module'] == 'transaksi_donor_lama') {
                 include "modul/input_transaksi_donor.php";
-
             }
             //Cari Pendonor
             elseif ($_GET['module'] == 'sahkan_kantong') {
@@ -271,7 +268,7 @@ if ($_SESSION['leveluser'] == 'kasir' or $_SESSION['leveluser'] == 'bdrs') { ?>
                 include "modul/sejarah_donor_luar.php";
             }
             //MOBILE APP
-//17-08-2020
+            //17-08-2020
             elseif ($_GET['module'] == 'mobile_app') {
                 include "p2d2s_mobileapp.php";
             } elseif ($_GET['module'] == 'mobile_antrean') {
@@ -291,7 +288,7 @@ if ($_SESSION['leveluser'] == 'kasir' or $_SESSION['leveluser'] == 'bdrs') { ?>
             }
 
             //UPDATE MEDICAL CEHCK UP, APHERESIS
-//23-08-2020
+            //23-08-2020
             elseif ($_GET['module'] == 'labelsampel') {
                 require_once('color.inc');
                 include "modul/label_sample.php";
@@ -361,11 +358,11 @@ if ($_SESSION['leveluser'] == 'kasir' or $_SESSION['leveluser'] == 'bdrs') { ?>
             } elseif ($_GET['module'] == 'historynas') {
                 include "modul/sejarah_donornas.php";
             }
-        //EDIT PMF 2023 ----END
+            //EDIT PMF 2023 ----END
     }
 
     ?>
 
-    <?php
+<?php
 }
 ?>
