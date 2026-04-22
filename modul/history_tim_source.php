@@ -1,2 +1,201 @@
-<?php ${"\x47\x4c\x4fB\x41\x4c\x53"}["s\x62\x65\x69d\x76s"]="\x6e\x6f\x6do\x72";${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x61\x78\x7a\x6d\x6fk\x66"]="\x64a\x74\x61";${"G\x4c\x4f\x42\x41\x4cS"}["bg\x78fj\x79t\x69\x61\x7a\x6f"]="\x6a\x6d\x6c\x75pd\x61te";${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x75\x6e\x69e\x6e\x64\x67\x72"]="\x70\x65\x6d\x69\x73\x61\x68";${"\x47L\x4fBAL\x53"}["\x7aj\x73f\x6e\x66\x65\x62\x64"]="\x6d\x75\x6c\x61\x69";${"\x47\x4c\x4f\x42A\x4c\x53"}["\x74\x6e\x77o\x64\x6d\x70xm"]="\x66il\x65\x6ea\x6de";$oxpshmxy="\x64\x61\x74a";${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x64wcnr\x6d\x72j\x79\x67"]="dat\x61\x63\x73v";${"\x47L\x4f\x42\x41\x4cS"}["r\x73\x70\x6e\x62\x7a\x67\x6f\x68\x70\x74"]="sam\x70\x61i";${"G\x4c\x4fBA\x4cS"}["\x65\x66\x79\x68\x65\x67\x67\x75\x63k\x6c"]="v\x5f\x63\x61\x72i";${"\x47\x4c\x4f\x42ALS"}["\x69dz\x63\x69r\x6b\x68gym"]="\x76\x5f\x63\x61\x72\x69";echo "\x3c\x6cink\x20\x68\x72ef=\x22bo\x6f\x74\x73r\x61\x70\x33\x337/\x63s\x73/bo\x6fts\x74\x72a\x70.\x6d\x69\x6e\x2ec\x73s\"\x20r\x65\x6c=\"\x73tyl\x65\x73\x68eet\x22>\n<\x73\x63r\x69\x70t\x20\x73r\x63\x3d\x22b\x6f\x6ftsr\x61p\x33\x33\x37/j\x73/\x72\x65\x73pond.\x6di\x6e.js\x22></\x73cri\x70t\x3e\n<\x6c\x69n\x6b \x68\x72\x65\x66=\"\x62o\x6fts\x72ap\x33\x337/b\x73\x70m\x69\x2e\x63\x73\x73\x22\x20\x72\x65l=\"sty\x6c\x65s\x68ee\x74\"\x3e\n<\x73\x63ri\x70\x74 s\x72\x63\x3d\x22\x62o\x6fts\x72ap\x3337/j\x73/\x6aque\x72y.min\x2ejs\x22></s\x63\x72i\x70\x74\x3e\n\x3c\x73\x63\x72i\x70\x74\x20src\x3d\"b\x6fot\x73\x72ap\x3337/\x6a\x73/boo\x74\x73\x74\x72ap.min\x2e\x6a\x73\x22></\x73cr\x69\x70t\x3e\n<\x73t\x79\x6c\x65>\n\t\x74abl\x65\x2et\x61ble-\x62or\x64e\x72\x65\x64{b\x6fr\x64\x65r:1\x70\x78\x20so\x6cid\x20\x72e\x64\x3b}\n\t\x74a\x62le.tab\x6c\x65-b\x6f\x72d\x65\x72\x65\x64\x20\x3e\x20\x74h\x65\x61\x64\x20\x3e \x74r >\x20\x74h{bord\x65\x72:\x31p\x78\x20\x73oli\x64\x20\x72e\x64;}\n\tta\x62l\x65.\x74a\x62l\x65-\x62\x6f\x72de\x72ed > tb\x6fdy >\x20\x74\x72 \x3e \x74d{\x62\x6fr\x64\x65\x72:\x31\x70\x78 \x73o\x6cid\x20\x72e\x64;}\n</s\x74\x79\x6c\x65>\n";$gqetbvuhc="\x64\x61ta\x63\x73\x76";$suaeitxg="\x66\x69l\x65\x6e\x61\x6d\x65";if(isset($_POST["\x63a\x72i"])){${"\x47L\x4f\x42\x41\x4c\x53"}["k\x6ep\x6f\x6f\x67\x6e"]="\x76\x5f\x63a\x72\x69";${${"\x47\x4c\x4f\x42\x41LS"}["\x6b\x6e\x70\x6f\x6f\x67n"]}=$_POST["ca\x72\x69"];}else{${${"\x47\x4c\x4f\x42\x41L\x53"}["\x65\x66\x79\x68e\x67\x67\x75\x63k\x6c"]}="";}$kwhqhrjplb="\x6d\x75\x6c\x61i";${$kwhqhrjplb}=${${"\x47\x4cO\x42\x41\x4cS"}["\x72s\x70\x6ebz\x67o\x68\x70\x74"]}="";$ejwctat="\x6e\x6f\x6d\x6f\x72";${$suaeitxg}="modul/history\x5fup\x64a\x74e\x2ecs\x76";${"\x47\x4c\x4f\x42\x41\x4c\x53"}["c\x75\x74\x6ed\x7a\x66"]="\x6a\x6d\x6c\x75\x70\x64\x61t\x65";${"\x47\x4cO\x42\x41L\x53"}["\x6f\x75\x74\x66\x66\x76\x76"]="\x64\x61\x74\x61";${${"\x47\x4cO\x42\x41\x4cS"}["dw\x63\x6e\x72m\x72j\x79\x67"]}=fopen(${${"\x47\x4cOB\x41\x4c\x53"}["t\x6ew\x6f\x64\x6dp\x78m"]},"r");${${"\x47\x4c\x4fBA\x4cS"}["\x75\x6ei\x65\x6e\x64\x67r"]}="|";$cqdyyfmlpt="\x64\x61\x74\x61c\x73\x76";${${"\x47L\x4f\x42A\x4c\x53"}["\x62\x67\x78\x66\x6a\x79\x74\x69az\x6f"]}=0;while((${$oxpshmxy}=fgetcsv(${$gqetbvuhc},10000,${${"\x47\x4c\x4f\x42AL\x53"}["\x75ni\x65\x6e\x64\x67r"]}))!==FALSE){$fymduavfmocc="m\x75\x6ca\x69";${"\x47L\x4f\x42\x41L\x53"}["m\x7ah\x72\x66lwilv"]="\x6am\x6cu\x70\x64\x61\x74\x65";${${"\x47LO\x42A\x4c\x53"}["\x6d\x7ahr\x66\x6c\x77\x69\x6cv"]}++;$rvmxehuv="d\x61\x74\x61";if(${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x62\x67\x78\x66\x6a\x79ti\x61z\x6f"]}=="1"){${${"\x47L\x4f\x42A\x4c\x53"}["\x72\x73p\x6e\x62z\x67\x6fh\x70t"]}=${${"G\x4c\x4fB\x41\x4cS"}["\x61\x78\x7a\x6d\x6fk\x66"]}[0];}${$fymduavfmocc}=${$rvmxehuv}[0];}${${"\x47LO\x42\x41\x4c\x53"}["d\x77\x63\x6e\x72mrjyg"]}=fopen(${${"\x47LOB\x41\x4cS"}["\x74\x6ew\x6f\x64\x6d\x70xm"]},"\x72");echo "\x3c\x62o\x64y\x20o\x6e\x4co\x61d\x3d\"doc\x75\x6dent.\x66r\x6d\x63ari.\x63a\x72\x69\x2e\x73\x65le\x63\x74()\x22;\x3e\n\t\x3cd\x69v\x20\x63\x6ca\x73s\x3d\"\x63\x6f\x6etain\x65r-\x66lui\x64\" \x73\x74yl\x65\x3d\"mar\x67\x69\x6e: 3\x30p\x78;\x22\x3e\n\t\t\x3cd\x69v c\x6ca\x73s=\x22row\x22>\n\t\t\t<\x64\x69\x76\x20c\x6c\x61\x73s\x3d\"\x63ol-\x6cg-\x312\">\n\t\t\t\t<di\x76 c\x6c\x61ss=\"p\x61\x6ee\x6c\x20\x70\x61n\x65l-pri\x6d\x61\x72\x79 ba\x79an\x67an\x22\x3e\n\t\t\t\t\t<di\x76\x20c\x6ca\x73s\x3d\x22p\x61\x6e\x65\x6c-\x68ea\x64\x69\x6eg\x22\x20\x73\x74\x79\x6ce=\"\x62\x61ck\x67\x72ou\x6ed-\x63\x6f\x6cor:\x20#0d\x36e\x66d;\x63ol\x6f\x72:\x77hites\x6do\x6be\"\x3e\n\t\t\t\t\t\t\x3c\x64\x69\x76\x20c\x6cas\x73=\x22\x70\x61n\x65\x6c-\x74\x69tle\x22\x3e\n  \x20\x20\x20 \x20        \x20\x20\x20\x20\x20\x20\x20\x20 \x20\x20\x20\x20<\x73\x70\x61n\x20styl\x65\x3d\x22f\x6f\x6et-\x73\x69ze:\x3120%;\" \x63las\x73=\x22t\x65\x78t-s\x68ado\x77\"\x3eC\x41\x54ATA\x4e P\x45\x52B\x41I\x4b\x41\x4e\x20\x44A\x4e\x20\x50EN\x47E\x4dBA\x4eGAN S\x49M\x44ON\x44\x41R</sp\x61\x6e>\n \x20\x20\x20\x20 \x20  \x20\x20\x20\x20   \x20 \x20 \x20  \x20  \x20 <\x73\x70\x61\x6e cl\x61ss\x3d\x22\x70ull-ri\x67h\x74\x22\x3e\n\t\t\t\t\t\t\t\t<fo\x72m\x20n\x61\x6d\x65=\x22f\x72m\x63ar\x69\x22 \x6d\x65t\x68od=\x22PO\x53\x54\" acti\x6f\x6e\x3d\"\"\x3e\n\t\t\t\t\t\t\t\t\t<in\x70ut\x20\x74\x79pe\x3d\"\x74\x65xt\x22\x20na\x6de\x3d\x22\x63a\x72\x69\x22\x20\x63la\x73s\x3d\x22fo\x72\x6d-con\x74\x72\x6f\x6c\x20\x69n\x70ut-s\x6d\x22 \x70lace\x68o\x6cd\x65\x72=\"\x43\x61r\x69 c\x61t\x61\x74an\x22 aut\x6ff\x6fc\x75\x73\x20\x76a\x6c\x75e\x3d\"";echo${${"\x47L\x4fBALS"}["id\x7a\x63i\x72kh\x67\x79\x6d"]};echo "\x22>\n\t\t\t\t\t\t\t\t</\x66o\x72\x6d>\n\x20\x20\x20\x20\x20\x20\x20   \x20\x20    \x20 \x20 \x20\x20 \x20    \x3c/sp\x61n\x3e\n \x20\x20  \x20\x20\x20\x20\x20\x20\x20   \x20   \x20    </d\x69\x76\x3e\n\t\t\t\t\t</div\x3e\n\t\t\t\t\t<div\x20c\x6c\x61s\x73=\"pa\x6e\x65\x6c-\x62o\x64\x79\">\n\t\t\t\t\t<\x73\x70\x61\x6e>\x44\x69u\x72utka\x6e\x20dar\x69\x20hi\x73\x74\x6fry \x74e\x72kini\x2e Terd\x61p\x61\x74<b>\x20";echo${${"\x47L\x4fB\x41\x4c\x53"}["\x62\x67\x78f\x6a\x79t\x69\x61\x7ao"]};echo " </\x62>\x63\x61t\x61\x74\x61n s\x65j\x61\x6b\x20";echo${${"\x47LOB\x41\x4cS"}["zj\x73\x66\x6e\x66\x65bd"]}." \x73/\x64\x20".${${"\x47L\x4f\x42\x41\x4c\x53"}["\x72s\x70\x6e\x62\x7ag\x6f\x68\x70\x74"]};echo "\x3c/s\x70\x61n\x3e\n\t\t\t\t\t\t<\x74a\x62l\x65 c\x6c\x61\x73s=\x22\x74\x61bl\x65\x20t\x61ble-\x62or\x64e\x72ed\x20\x74\x61\x62l\x65-s\x74\x72iped\x20\x74ab\x6ce-h\x6f\x76\x65\x72\x22\x3e\n\t\t\t\t\t\t\t\x3c\x74\x68\x65ad\x20cl\x61ss=\"\x70mi\x22\x20st\x79\x6c\x65\x3d\x22\x68eig\x68t:\x203\x30\x70\x78\x3b\x22\x3e\n\t\t\t\t\t\t\t\t<th \x73tyl\x65\x3d\"\x77i\x64\x74h:\x20\x350\x70x\x3b\">No\x3c/\x74\x68>\n\t\t\t\t\t\t\t\t<\x74h\x20st\x79l\x65=\x22\x77id\x74\x68: \x390p\x78\x3b\x22\x3e\x54ang\x67\x61l\x3c/th>\n\t\t\t\t\t\t\t\t\x3c\x74\x68\x3e\x43\x61t\x61\x74a\x6e</\x74\x68\x3e\n\t\t\t\t\t\t\t</\x74\x68\x65\x61\x64\x3e\n\t\t\t\t\t\t\t\x3c\x74b\x6fd\x79>\n\t\t\t\t\t\t\t\t";${$ejwctat}=${${"G\x4cO\x42\x41L\x53"}["\x63ut\x6e\x64zf"]}+1;$dpnuifl="\x70e\x6di\x73\x61\x68";while((${${"\x47\x4cO\x42\x41\x4cS"}["\x6f\x75\x74\x66fv\x76"]}=fgetcsv(${$cqdyyfmlpt},10000,${$dpnuifl}))!==FALSE){$exfxyqaqb="no\x6d\x6f\x72";${$exfxyqaqb}=${${"\x47L\x4fB\x41L\x53"}["\x73\x62ei\x64v\x73"]}-1;if(${${"\x47L\x4f\x42\x41LS"}["\x65f\x79h\x65\x67g\x75\x63\x6b\x6c"]}!==""){if(strpos(${${"\x47\x4cO\x42ALS"}["\x61x\x7a\x6dokf"]}[1],${${"G\x4cO\x42A\x4cS"}["\x65\x66\x79\x68e\x67\x67uc\x6bl"]})!==false){$studktp="\x64\x61\x74a";$nnhkpchuqld="nom\x6f\x72";echo"\n\t\t\t\t\t\t\t\t\t\t<\x74r>\n\t\t\t\t\t\t\t\t\t\t\t\x3c\x74\x64 \x76a\x6ci\x67\x6e=\x22to\x70\" a\x6cign\x3d\"\x72i\x67\x68t\">".${$nnhkpchuqld}.". \x3c/\x74\x64\x3e\x20\n\t\t\t\t\t\t\t\t\t\t\t<t\x64 class=\"\x74\x65x\x74-c\x65n\x74\x65\x72\"\x20\x6eo\x77r\x61p>".${${"\x47\x4c\x4fB\x41\x4c\x53"}["\x61\x78z\x6do\x6b\x66"]}[0]."\x3c/td\x3e\n\t\t\t\t\t\t\t\t\t\t\t\x3ctd\x20 s\x74\x79\x6ce\x3d\x22pad\x64i\x6eg-\x6ceft:\x315\x70x\x3b\x22\x3e".${$studktp}[1]."</t\x64>\n\t\t\t\t\t\t\t\t\t\t</tr\x3e ";}}else{$nipgjtyt="\x6e\x6fmor";${"\x47L\x4f\x42A\x4c\x53"}["\x62s\x6d\x6aso\x64\x62\x63\x61m"]="\x64\x61\x74\x61";echo"\n\t\t\t\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t\t\t\t<t\x64 \x76\x61\x6c\x69gn=\x22t\x6f\x70\" \x61l\x69\x67\x6e=\"\x72\x69\x67\x68\x74\x22>".${$nipgjtyt}."\x2e\x20</\x74d>\x20\n\t\t\t\t\t\t\t\t\t\t\t\x3c\x74d\x20\x63l\x61\x73\x73\x3d\"\x74\x65x\x74-\x63\x65n\x74\x65r\" \x6eo\x77\x72\x61\x70>".${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["ax\x7a\x6do\x6b\x66"]}[0]."\x3c/\x74d>\n\t\t\t\t\t\t\t\t\t\t\t\x3c\x74\x64\x20\x20\x73ty\x6ce=\x22\x70ad\x64in\x67-l\x65f\x74:\x31\x35\x70x;\"\x3e".${${"GLOB\x41LS"}["b\x73\x6d\x6a\x73\x6f\x64\x62\x63\x61\x6d"]}[1]."\x3c/td\x3e\n\t\t\t\t\t\t\t\t\t\t\x3c/\x74\x72> ";}}echo "\t\t\t\t\t\t\t</\x74b\x6fdy>\n\t\t\t\t\t\t</\x74\x61\x62le>\n\t\t\t\t\t</d\x69\x76>\n\t\t\t\t\x3c/\x64iv\x3e\n\t\t\t</di\x76\x3e\n\t\t</\x64iv>\n\t</\x64\x69\x76>\n</bod\x79\x3e\n";
+<?php
+$filename = "modul/history_update.csv";
+$pemisah  = "|";
+$v_cari   = "";
+
+// ====================== PROSES TAMBAH DATA ======================
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tambah'])) {
+    $tanggal_input = trim($_POST['tanggal']);           // ini masih YYYY-MM-DD dari form
+    $catatan       = trim($_POST['catatan']);
+
+    if (!empty($tanggal_input) && !empty($catatan)) {
+
+        // Ubah dari YYYY-MM-DD menjadi DD-MM-YYYY
+        $tanggal = date('d-m-Y', strtotime($tanggal_input));
+
+        $new_line = $tanggal . $pemisah . $catatan . PHP_EOL;
+
+        // Tambahkan di paling atas file
+        if (file_exists($filename)) {
+            $existing = file_get_contents($filename);
+            file_put_contents($filename, $new_line . $existing);
+        } else {
+            file_put_contents($filename, $new_line);
+        }
+
+        // Refresh halaman
+        header("Location: " . $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING']);
+        exit;
+    }
+}
+// ====================== PROSES PENCARIAN ======================
+if (isset($_POST['cari'])) {
+    $v_cari = trim($_POST['cari']);
+}
+
+// Baca file untuk menghitung jumlah dan ambil tanggal pertama & terakhir
+$jmlupdate = 0;
+$mulai = "";
+$sampai = "";
+
+if (file_exists($filename)) {
+    $datacsv = fopen($filename, "r");
+    while (($data = fgetcsv($datacsv, 10000, $pemisah)) !== FALSE) {
+        $jmlupdate++;
+        if ($jmlupdate == 1) {
+            $sampai = $data[0];
+        }
+        $mulai = $data[0];
+    }
+    fclose($datacsv);
+}
+
+// Buka lagi untuk ditampilkan
+$datacsv = file_exists($filename) ? fopen($filename, "r") : false;
+$nomor = $jmlupdate + 1;
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Catatan Perbaikan dan Pengembangan SIMDONDAR</title>
+    <link href="bootsrap337/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootsrap337/bspmi.css" rel="stylesheet">
+    <script src="bootsrap337/js/jquery.min.js"></script>
+    <script src="bootsrap337/js/bootstrap.min.js"></script>
+    <script src="bootsrap337/js/respond.min.js"></script>
+
+    <style>
+    table.table-bordered {
+        border: 1px solid red;
+    }
+
+    table.table-bordered>thead>tr>th,
+    table.table-bordered>tbody>tr>td {
+        border: 1px solid red;
+    }
+
+    .modal-header {
+        background-color: #0d6efd;
+        color: white;
+    }
+    </style>
+</head>
+
+<body onload="document.frmcari.cari.select();">
+
+    <div class="container-fluid" style="margin: 30px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-primary bayangan">
+                    <div class="panel-heading" style="background-color: #0d6efd; color: whitesmoke;">
+                        <div class="panel-title clearfix">
+                            <span style="font-size:120%;" class="text-shadow pull-left">
+                                CATATAN PERBAIKAN DAN PENGEMBANGAN SIMDONDAR
+                            </span>
+                            <span class="pull-right">
+                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                    data-target="#modalTambah">
+                                    <i class="glyphicon glyphicon-plus"></i> Tambah Catatan Baru
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+
+                            <p style="margin:0;">
+                                Diurutkan dari history terkini. Terdapat
+                                <b><?= $jmlupdate ?></b> catatan
+                                sejak <?= $mulai ?> s/d <?= $sampai ?>
+                            </p>
+
+                            <!-- Form Pencarian -->
+                            <form name="frmcari" method="POST" action="" class="form-inline" style="margin:0;">
+                                <div class="form-group">
+                                    <input type="text" name="cari" class="form-control input-sm"
+                                        placeholder="Cari catatan..." autofocus
+                                        value="<?= htmlspecialchars($v_cari) ?>">
+                                    <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead class="pmi" style="height: 30px;">
+                                <tr>
+                                    <th style="width: 50px;">No</th>
+                                    <th style="width: 90px;">Tanggal</th>
+                                    <th>Catatan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if ($datacsv): ?>
+                                <?php while (($data = fgetcsv($datacsv, 10000, $pemisah)) !== FALSE): ?>
+                                <?php
+                                        $nomor--;
+                                        if ($v_cari !== "" && stripos($data[1], $v_cari) === false) {
+                                            continue;
+                                        }
+                                        ?>
+                                <tr>
+                                    <td valign="top" align="right"><?= $nomor ?>. </td>
+                                    <td class="text-center" nowrap><?= htmlspecialchars($data[0]) ?></td>
+                                    <td style="padding-left:15px;"><?= nl2br(htmlspecialchars($data[1])) ?></td>
+                                </tr>
+                                <?php endwhile; ?>
+                                <?php else: ?>
+                                <tr>
+                                    <td colspan="3" class="text-center">Belum ada catatan.</td>
+                                </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================== MODAL TAMBAH CATATAN ====================== -->
+    <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Tambah Catatan Baru</h4>
+                </div>
+                <form method="POST" action="">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Tanggal</label>
+                            <input type="date" name="tanggal" class="form-control" value="<?= date('Y-m-d') ?>"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label>Catatan / Keterangan Perbaikan</label>
+                            <textarea name="catatan" class="form-control" rows="5"
+                                placeholder="Masukkan catatan perbaikan atau pengembangan..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                        <button type="submit" name="tambah" class="btn btn-primary">Simpan Catatan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<?php
+if ($datacsv) fclose($datacsv);
 ?>
