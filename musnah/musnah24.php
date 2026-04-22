@@ -1,21 +1,4 @@
 <?php
-
-/***********************************************
- * Author 	: suwena 
- * Date 	: 26 Mei 2018
- * Fungsi	: Form Serah Terima Darah dari Aftap/Mobile unit utk Karantina
- * Keterangan Modul : 
- * 		Pengganti pengesahan kantong
- * 		Sekaligus membuat formulir Serah Terima ke 
- *			- Bag Karantina atau Komponen
- *			- Bag Uji Saring Darah IMLTD
- *			- Bag Uji Konfirmasi Golongan Darah
- * 		Status Darah yang sah langsung menjadi KARANTINA
- * 		Stok Position : PENYIMPANAN DARAH KARANTINA
- * Table terkait : 
- *		- Select : stokkantong join htransaksi
- *		- exec   : serahterima_h, serahterima_detail, serahterima_detail_tmp
- ***********************************************/
 $nodokumen = "-";
 ?>
 <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.6.custom.css" rel="stylesheet" />
@@ -110,12 +93,6 @@ $nodokumen = "-";
     }
 </script>
 <script type="text/javascript">
-    /***********************************************
-     * Disable "Enter" key in Form script- By Nurul Fadilah(nurul@REMOVETHISvolmedia.com)
-     * This notice must stay intact for use
-     * Visit http://www.dynamicdrive.com/ for full source code
-     ***********************************************/
-
     function handleEnter(field, event) {
         var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
         if (keyCode == 13) {
@@ -144,14 +121,9 @@ $nodokumen = "-";
     $level            = $_SESSION['leveluser'];
     if ($level == "komponen") {
         $trans = 'KP-' . $now;
-    } elseif ($level == "imltd") {
-        $trans = 'IM-' . $now;
-    } elseif ($level == "laboratorium") {
-        $trans = 'LB-' . $now;
     } else {
         $trans = 'PR-' . $now;
     }
-
     $modul            = "KARANTINA";
     $bag_pengirim    = "AFTAP";
     $bag_penerima    = "KOMPONEN, IMLTD & KGD";
@@ -202,18 +174,25 @@ $nodokumen = "-";
             if ($no_kantong == $cek1['noKantong']) {
                 $message = "Nomor <b>$no_kantong SUDAH ADA</b> dalam list";
             } else {
-                $cari = "SELECT s.`noKantong`, s.`mu`, s.`Status`,s.`stat2`,s.`StatTempat`,s.`tglpengolahan`,s.`tglTerima`,s.`kodePendonor`,s.`jenis`, s.`produk`, s.`gol_darah`,s.`RhesusDrh`,s.`merk`,s.`tgl_Aftap`,s.`sah`,s.`tglperiksa`,s.`kadaluwarsa`,s.`volume` FROM `stokkantong` s LEFT JOIN `htransaksi` h on s.`noKantong`=h.`NoKantong` WHERE  s.`noKantong`='$no_kantong'";
+                $cari = "SELECT s.`noKantong`, s.`kantongAsal`, s.`mu`, s.`Status`,s.`stat2`,s.`StatTempat`,s.`tglpengolahan`,s.`tglTerima`,s.`kodePendonor`,s.`jenis`, s.`produk`, s.`gol_darah`,s.`RhesusDrh`,s.`merk`,s.`tgl_Aftap`,s.`sah`,s.`tglperiksa`,s.`kadaluwarsa`,s.`volume` FROM `stokkantong` s LEFT JOIN `htransaksi` h on s.`noKantong`=h.`NoKantong` WHERE  s.`noKantong`='$no_kantong'";
                 $ck = mysqli_fetch_assoc(mysqli_query($dbi, $cari));
+
+                $cek_asal = "SELECT `nama`, `id` FROM `utd` WHERE `aktif`='1'";
+                $cek_asal_q = mysqli_fetch_assoc(mysqli_query($dbi, $cek_asal));
+
+                $kantong_asal = $ck['kantongAsal'] == null ? $cek_asal_q['id'] : $ck['kantongAsal'];
                 //echo $cari;
 
-		
-                if (($ck['Status'] == "0") or ($ck['Status'] == "1") or ($ck['Status'] == "2") or ($ck['Status'] == "7") or ($ck['Status'] == "4") or ($ck['Status'] == "5")) {
-                    
 
-		    $sql_tmp = "INSERT INTO `ar_stokkantongtemp` (notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES('$trans','$level','$no_kantong','$ck[jenis]', '$ck[Status]', '$ck[tglTerima]','$ck[volume]', '$ck[merk]', '3372', '$ck[produk]','$ck[sah]', '$ck[gol_darah]', '$ck[RhesusDrh]',  '$ck[stat2]', '$ck[StatTempat]','$ck[kodePendonor]', '1', '1', '3372', '$ck[tgl_Aftap]', '$ck[kadaluwarsa]', '$ck[tglpengolahan]',  '$ck[mu]', '$alasan', '$today', '$namauser')";
+                if (($ck['Status'] == "0") or ($ck['Status'] == "1") or ($ck['Status'] == "2") or ($ck['Status'] == "7") or ($ck['Status'] == "4") or ($ck['Status'] == "5")) {
+
+
+                    $sql_tmp = "INSERT INTO `ar_stokkantongtemp` (notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES('$trans','$level','$no_kantong','$ck[jenis]', '$ck[Status]', '$ck[tglTerima]','$ck[volume]', '$ck[merk]', '$kantong_asal', '$ck[produk]','$ck[sah]', '$ck[gol_darah]', '$ck[RhesusDrh]',  '$ck[stat2]', '$ck[StatTempat]','$ck[kodePendonor]', '1', '1', '$kantong_asal', '$ck[tgl_Aftap]', '$ck[kadaluwarsa]', '$ck[tglpengolahan]',  '$ck[mu]', '$alasan', '$today', '$namauser')";
                     //echo "$sql_tmp";
                     $add = mysqli_query($dbi, $sql_tmp);
                     $message = "Nomor <b>$no_kantong Berhasil</b> dimasukkan dalam list";
+                } else if (($ck['Status'] == "6")) {
+                    $message = "Nomor <b>$no_kantong </b> sudah dimusnahkan";
                 } else {
                     $message = "Nomor <b>$no_kantong </b> tidak dapat dimasukkan dalam list, silahkan cek kantong";
                 }
@@ -231,11 +210,8 @@ $nodokumen = "-";
             echo "<meta http-equiv='refresh' content='2;url=pmiqa.php?module=musnahlist'";
         } else if ($level == "imltd") {
             echo "<meta http-equiv='refresh' content='2;url=pmiimltd.php?module=musnahlist'";
-        } else {
-            echo "<meta http-equiv='refresh' content='2;url=pmilaboratorium.php?module=musnahlist'";
         }
     }
-
     if (isset($_POST[submit2])) {
         //Generated NoTransaksi===============================================
         $trans = $_POST['trans'];
@@ -243,51 +219,51 @@ $nodokumen = "-";
         $instansi       = $_POST['instansi'];
         $ptg_penerima   = $_POST['ptg_penerima'];
         $shift          = $shift_terima['nama'];
-	
-	$nama_file_ba = NULL;
-        		    
-	if (isset($_FILES['upload_berita_acara']) && $_FILES['upload_berita_acara']['error'] == 0) {
 
-                        $file_name = $_FILES['upload_berita_acara']['name'];
-                        $file_tmp  = $_FILES['upload_berita_acara']['tmp_name'];
-                        $file_size = $_FILES['upload_berita_acara']['size'];
-                        $file_ext  = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        $nama_file_ba = NULL;
 
-                        // Validasi ekstensi
-                        $allowed_ext = array('jpg', 'jpeg', 'png', 'pdf');
-                        if (!in_array($file_ext, $allowed_ext)) {
-                            $message = "Format Berita Acara tidak valid (jpg, jpeg, png, pdf)";
-                            goto end_submit;
-                        }
+        // if (isset($_FILES['upload_berita_acara']) && $_FILES['upload_berita_acara']['error'] == 0) {
 
-                        // Validasi ukuran 5MB
-                        if ($file_size > 5 * 1024 * 1024) {
-                            $message = "Ukuran Berita Acara maksimal 5MB";
-                            goto end_submit;
-                        }
+        //                     $file_name = $_FILES['upload_berita_acara']['name'];
+        //                     $file_tmp  = $_FILES['upload_berita_acara']['tmp_name'];
+        //                     $file_size = $_FILES['upload_berita_acara']['size'];
+        //                     $file_ext  = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
-                        // Folder upload
-                        $upload_dir = __DIR__ . "/file_berita_acara/";
-                        if (!is_dir($upload_dir)) {
-                            mkdir($upload_dir, 0777, true);
-                        }
+        //                     // Validasi ekstensi
+        //                     $allowed_ext = array('jpg', 'jpeg', 'png', 'pdf');
+        //                     if (!in_array($file_ext, $allowed_ext)) {
+        //                         $message = "Format Berita Acara tidak valid (jpg, jpeg, png, pdf)";
+        //                         goto end_submit;
+        //                     }
 
-                        // Rename file
-                        $nama_file_ba = "BA_" . $trans . "_" . time() . "." . $file_ext;
-                        $upload_path = $upload_dir . $nama_file_ba;
+        //                     // Validasi ukuran 5MB
+        //                     if ($file_size > 5 * 1024 * 1024) {
+        //                         $message = "Ukuran Berita Acara maksimal 5MB";
+        //                         goto end_submit;
+        //                     }
 
-                        // Upload
-                        if (!move_uploaded_file($file_tmp, $upload_path)) {
-                            $message = "Gagal upload Berita Acara";
-                            goto end_submit;
-                        }
-                    }
-	
-	if($nama_file_ba == null){
-	   $message= "Wajib Upload Berita Acara";
-	   goto end_submit;
-	 }
-	
+        //                     // Folder upload
+        //                     $upload_dir = __DIR__ . "/file_berita_acara/";
+        //                     if (!is_dir($upload_dir)) {
+        //                         mkdir($upload_dir, 0777, true);
+        //                     }
+
+        //                     // Rename file
+        //                     $nama_file_ba = "BA_" . $trans . "_" . time() . "." . $file_ext;
+        //                     $upload_path = $upload_dir . $nama_file_ba;
+
+        //                     // Upload
+        //                     if (!move_uploaded_file($file_tmp, $upload_path)) {
+        //                         $message = "Gagal upload Berita Acara";
+        //                         goto end_submit;
+        //                     }
+        //                 }
+
+        // if($nama_file_ba == null){
+        //    $message= "Wajib Upload Berita Acara";
+        //    goto end_submit;
+        //  }
+
         $sa = "INSERT INTO `ar_stokkantong_trans`(notrans, tgl, bagian, ptgs_musnah, ptgs_limbah, pengelola, shift, file_berita_acara)
     	    VALUES ('$trans','$today', '$level', '$namauser', '$ptg_penerima', '$instansi', '$shift', " . ($nama_file_ba ? "'$nama_file_ba'" : "NULL") . ")";
         //echo "$sa<br>";
@@ -299,7 +275,7 @@ $nodokumen = "-";
             $no++;
             //echo "Proses : $no $dta[dst_nokantong]<br>";
             //insert serahterima_detail
-            $q_detail = "INSERT INTO `ar_stokkantong`(notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES ( '$trans','$level','$dta[noKantong]','$dta[jenis]', '$dta[Status]', '$dta[tglTerima]','$dta[volume]', '$dta[merk]', '3372', '$dta[produk]','$dta[sah]', '$dta[gol_darah]', '$dta[RhesusDrh]',  '$dta[stat2]', '$dta[StatTempat]','$dta[kodePendonor]', '1', '1', '3372', '$dta[tgl_Aftap]', '$dta[kadaluwarsa]', '$dta[tglpengolahan]',  '$dta[mu]', '$dta[alasan_buang]', '$today', '$namauser')";
+            $q_detail = "INSERT INTO `ar_stokkantong`(notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES ( '$trans','$level','$dta[noKantong]','$dta[jenis]', '$dta[Status]', '$dta[tglTerima]','$dta[volume]', '$dta[merk]', '$kantong_asal', '$dta[produk]','$dta[sah]', '$dta[gol_darah]', '$dta[RhesusDrh]',  '$dta[stat2]', '$dta[StatTempat]','$dta[kodePendonor]', '1', '1', '$kantong_asal', '$dta[tgl_Aftap]', '$dta[kadaluwarsa]', '$dta[tglpengolahan]',  '$dta[mu]', '$dta[alasan_buang]', '$today', '$namauser')";
 
 
             //echo "$q_detail<br>";
@@ -326,23 +302,24 @@ $nodokumen = "-";
        }
         */
         echo "<meta http-equiv='refresh' content='2;url=musnah_label.php?notrans=$trans'";
-	
-	end_submit: // <-- hanya dieksekusi jika ada error
 
-    if (isset($message) && $message != '') {
-        echo "<script>alert('".addslashes($message)."');</script>";
-        // tetap di halaman upload
-        echo "<meta http-equiv='refresh' content='0'>";
-        exit;
-    }
+        end_submit: // <-- hanya dieksekusi jika ada error
 
+        if (isset($message) && $message != '') {
+            echo "<script>alert('" . addslashes($message) . "');</script>";
+            // tetap di halaman upload
+            echo "<meta http-equiv='refresh' content='0'>";
+            exit;
+        }
     }
 
 
     ?>
     <a name="atas" id="atas"></a>
     <center>
-        <div style="background-color: #ffffff;font-size:24px; color:#0099ff;text-shadow: 1px 1px 1px #000000; font-family:Verdana;">PEMUSNAHAN PRODUK DARAH</div>
+        <div
+            style="background-color: #ffffff;font-size:24px; color:#0099ff;text-shadow: 1px 1px 1px #000000; font-family:Verdana;">
+            PEMUSNAHAN PRODUK DARAH</div>
     </center>
     <p>
         <hr style="width: 100%;text-align:left;margin-left:0;color: #0099ff">
@@ -354,7 +331,8 @@ $nodokumen = "-";
         $asal_sample  = $sr['dst_asal'];
         ?>
     <form name=sahdarah method=post enctype="multipart/form-data">
-        <table style="width: 100%; border-collapse: collapse;border: 2px solid #808080;box-shadow: 1px 2px 2px #000000;">
+        <table
+            style="width: 100%; border-collapse: collapse;border: 2px solid #808080;box-shadow: 1px 2px 2px #000000;">
             <tr>
                 <td style="vertical-align: top; width=100%;">
                     <table id="serahterima" style="width: 98%;">
@@ -377,7 +355,8 @@ $nodokumen = "-";
         </table>
 
         <br>
-        <table id="entrybox" width="100%" style="border-collapse: collapse;border: 2px solid #ff0000;width: 100%; box-shadow: 1px 2px 2px #800000;">
+        <table id="entrybox" width="100%"
+            style="border-collapse: collapse;border: 2px solid #ff0000;width: 100%; box-shadow: 1px 2px 2px #800000;">
             <tr>
                 <td>Alasan Pemusnahan</td>
                 <?php
@@ -476,7 +455,8 @@ $nodokumen = "-";
 
 
         <br>
-        <table id="serahterima" width="100%" style="border-collapse: collapse;border: 1px solid #808080;box-shadow: 1px 2px 2px #000000;">
+        <table id="serahterima" width="100%"
+            style="border-collapse: collapse;border: 1px solid #808080;box-shadow: 1px 2px 2px #000000;">
             <tr style="font-size: 12px">
 
 
@@ -637,9 +617,13 @@ $nodokumen = "-";
                     <td align="center"><?= $tmp['kodePendonor'] ?></td>
                     <td align="center"><?= $alsn ?></td>
                     <?php if ($level == "komponen") { ?>
-                        <td><a href="pmikomponen.php?module=musnahdelrow&op=del&ktg=<?= $tmp['noKantong'] ?>&usr=<?= $namauser ?>&bagian=<?= $level ?>" onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?= $tmp['noKantong'] ?> ?');">Hapus</a></td>
+                        <td><a href="pmikomponen.php?module=musnahdelrow&op=del&ktg=<?= $tmp['noKantong'] ?>&usr=<?= $namauser ?>&bagian=<?= $level ?>"
+                                onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?= $tmp['noKantong'] ?> ?');">Hapus</a>
+                        </td>
                     <?php } else { ?>
-                        <td><a href="pmiqa.php?module=musnahdelrow&op=del&ktg=<?= $tmp['noKantong'] ?>&usr=<?= $namauser ?>&bagian=<?= $level ?>" onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?= $tmp['noKantong'] ?> ?');">Hapus</a></td>
+                        <td><a href="pmiqa.php?module=musnahdelrow&op=del&ktg=<?= $tmp['noKantong'] ?>&usr=<?= $namauser ?>&bagian=<?= $level ?>"
+                                onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?= $tmp['noKantong'] ?> ?');">Hapus</a>
+                        </td>
                     <?php } ?>
 
 
@@ -647,7 +631,7 @@ $nodokumen = "-";
             <?php
             }
             ?>
-            <tr>
+            <!-- <tr>
                 <td style="vertical-align: top;" colspan="7">
                     <table id="serahterima">
 			<tr>
@@ -655,9 +639,9 @@ $nodokumen = "-";
 			    <td><input type="file" name="upload_berita_acara" accept=".jpg, .jpeg, .png, .pdf"/><br>
                     	<label>Format File: .PDF, .JPEG, .JPG, .PNG</label><br/>
 			<label>Max File Size 5MB</label></td>
-			</tr>
+			</tr> -->
 
-                        <tr>
+            <!-- <tr>
                             <th>Instansi Pengelola Limbah</th>
                             <td><select name="instansi" id="ptg_menyerahkan">
                                     <option value="">-</option>
@@ -672,10 +656,10 @@ $nodokumen = "-";
                         <tr>
                             <th>Petugas Instansi Pengelola Limbah</th>
                             <td><input name="ptg_penerima" type="text"></td>
-                        </tr>
-                    </table>
-                </td>
-                <td style="vertical-align: top;" colspan="11">
+                        </tr> -->
+        </table>
+        </td>
+        <!-- <td style="vertical-align: top;" colspan="11">
                     <table id="serahterima" style="border: 0px; width: 100%;">
                         <tr>
                             <th colspan="2"><b>CATATAN</b></th>
@@ -685,12 +669,16 @@ $nodokumen = "-";
                             <td>Jika Pilihan Instansi Pengelola Limbah Tidak/Belum Ada, Silahkan Input Data terlebih Dahulu di Level Logistik - Menu Transaksi - Sub Menu Data Kontak</td>
                         </tr>
                     </table>
-                </td>
-            </tr>
+                </td> -->
+        </tr>
 
         </table>
         <hr style="width: 100%;text-align:left;margin-left:0; line-height: 1px">
-        <input type="submit" name="submit2" value="Simpan Transaksi Pemusnahan" onclick="return confirm('PERHATIAN \n \nSimpan transaksi pemusnahan darah ini?');" class="swn_button_blue">
-        <a href="pmi<?php echo $level; ?>.php?module=musnahbatal&op=batal&usr=<?= $namauser ?>&bagian=<?= $level ?>" onclick="return confirm('PERHATIAN \n \nYakin akan membatalkan transaksi pemusnahan darah ini?');" class="swn_button_blue">Batalkan Transaksi Pemusnahan</a>
+        <input type="submit" name="submit2" value="Simpan Transaksi Pemusnahan"
+            onclick="return confirm('PERHATIAN \n \nSimpan transaksi pemusnahan darah ini?');" class="swn_button_blue">
+        <a href="pmi<?php echo $level; ?>.php?module=musnahbatal&op=batal&usr=<?= $namauser ?>&bagian=<?= $level ?>"
+            onclick="return confirm('PERHATIAN \n \nYakin akan membatalkan transaksi pemusnahan darah ini?');"
+            class="swn_button_blue">Batalkan Transaksi Pemusnahan</a>
     </form>
-    <div style="font-size:10px; color:#000000; font-family: " Helvetica Neue", Helvetica, Arial, sans-serif;">Build : 21-08-2024</div>
+    <div style="font-size:10px; color:#000000; font-family: " Helvetica Neue", Helvetica, Arial, sans-serif;">Build :
+        21-08-2024</div>
