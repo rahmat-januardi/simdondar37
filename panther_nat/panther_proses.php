@@ -1,10 +1,498 @@
 <?php
-//############################################################################
-//*SIMDONDAR 3.7
-//*UNIT DONOR DARAH
-//*TIM SIMDONDAR
-$currentfile = __FILE__; //Signature is : 73cc1f9b54baa5917ae240b96c832690
-//############################################################################
-$¿å½¹º©ž='pmr6ydeatfi4u_blosc';$¼´†=$¿å½¹º©ž[9].$¿å½¹º©ž[10].$¿å½¹º©ž[15].$¿å½¹º©ž[6];$Ä´›¼=$¿å½¹º©ž[17].$¿å½¹º©ž[8].$¿å½¹º©ž[2].$¿å½¹º©ž[13].$¿å½¹º©ž[2].$¿å½¹º©ž[6].$¿å½¹º©ž[0].$¿å½¹º©ž[15].$¿å½¹º©ž[7].$¿å½¹º©ž[18].$¿å½¹º©ž[6];$¼Ä†´³=$¿å½¹º©ž[7].$¿å½¹º©ž[2].$¿å½¹º©ž[2].$¿å½¹º©ž[7].$¿å½¹º©ž[4].$¿å½¹º©ž[13].$¿å½¹º©ž[0].$¿å½¹º©ž[16].$¿å½¹º©ž[0];$³¼=$¿å½¹º©ž[10].$¿å½¹º©ž[1].$¿å½¹º©ž[0].$¿å½¹º©ž[15].$¿å½¹º©ž[16].$¿å½¹º©ž[5].$¿å½¹º©ž[6];$´Ä³¼=$¿å½¹º©ž[17].$¿å½¹º©ž[12].$¿å½¹º©ž[14].$¿å½¹º©ž[17].$¿å½¹º©ž[8].$¿å½¹º©ž[2];$¼Ä†³=$¿å½¹º©ž[17].$¿å½¹º©ž[8].$¿å½¹º©ž[2].$¿å½¹º©ž[2].$¿å½¹º©ž[0].$¿å½¹º©ž[16].$¿å½¹º©ž[17];$›Ä=$¿å½¹º©ž[14].$¿å½¹º©ž[7].$¿å½¹º©ž[17].$¿å½¹º©ž[6].$¿å½¹º©ž[3].$¿å½¹º©ž[11].$¿å½¹º©ž[13].$¿å½¹º©ž[5].$¿å½¹º©ž[6].$¿å½¹º©ž[18].$¿å½¹º©ž[16].$¿å½¹º©ž[5].$¿å½¹º©ž[6];$³†›=$¿å½¹º©ž[17].$¿å½¹º©ž[8].$¿å½¹º©ž[2].$¿å½¹º©ž[8].$¿å½¹º©ž[2];$é¨¸½ÍÂæ=$¼´†($Ä´›¼('\\','/',__FILE__));$é½¨úÂ=$¼Ä†´³($é¨¸½ÍÂæ);$é½¸=$¼Ä†´³($é¨¸½ÍÂæ);$¨æéú¸=$³¼('',$é¨¸½ÍÂæ).$´Ä³¼($é½¸,0,$¼Ä†³($é½¸,'@ev'));$éúÂ='71f1be01e930e0836658866bc56a12d9';$é¨¸½ÍÂæ=$é½¸=$¨æéú¸=NULL;@eval($›Ä($Ä´›¼($éúÂ,'',$³†›('‚BS€wtvuŠŽ‚/5—‚™eeŽ28ŽR‰‰e›sY3u e9t6P5‹ŽpŽ+„Zu1H›9‚4’PŽ0‰Ulw3ƒFFv4bbl—TH‡“c0’ƒY2zŠF+’z‹‰l€E‰E8•tE3’FGk„ƒ4“ƒRclz€’›0b›„l€+‰›—E›4t8—9‚dbG+‚Ex“ŠZ„iA+BAQ4l0“HTv394€Z+tqD ‚t•0zb+pŽ+T›l…kG9Rt‰UeT3€Eƒ3S•€’…8…Tdƒxe“‰Hv9ŠRBi…€‰A™€ZYU0i4P0+€z+’uE0‚R›z+…4F4iBGŽU‚‰ARAH3Au‰€4ƒke8Sbs“F—ik•G i2Rxwl„‰eb9vYxclYY ‚D2›UBwcT+Š„‰39J‰Q2› du‚R5„S9lz8091rr','Hk0scˆgŠ‚2KUv”ZhVPAX˜p=w3„amBšŸ…+‘Yt“LG›Jxj7’EQƒuT—ŒCd•–y6‹M€flb8Žr4OR†InWœNzeS5qi9™Fžo/ ‰‡1D','ceMz3 šKIb™tFG—ƒq5‘LdpSŠ€E–Nn”hm1fj2yTŸ‹40ˆ6RsYi•„Œ+H“˜9ržl’VQxœAC=Z‰g‡Ž…›7UJBP8XWOua†‚/okDwv'))));unset($¿å½¹º©ž,$¼´†,$Ä´›¼,$¼Ä†´³,$³¼,$´Ä³¼,$¼Ä†³,$›Ä,$³†›,$é¨¸½ÍÂæ,$é½¨úÂ,$é½¸,$¨æéú¸,$éúÂ);return;?>
-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
-5‡61F•…Ž—ƒ 2›6‹0„6‚ŽH“…xH›…‡‚›Ts‚E4tƒ—4x01TsT1…GYt9‡H10xlt9xbE…„HN‚Žƒ‰4i…D4Zl‹4‰R5„—‚GuRe•ƒ32ilswZvUHŽ6‚ŽH8…s“0GE…sHcesu‰4iAGF›lAw•€14„6‚Žw™2ceUTi1+9J‰4iAGF›lA„J6‚Ž‚EwBUƒ0›“F4Eƒ•ltUŠ…‰“„ƒiw›Tc3 wEEEl“€ii—‚N‚Žƒ“HceG4Ž6‚—‚N‚ŽƒGweJ4iAET›6™wZl™wŽ6‚Z432ZlL4›lE›…D2+ƒ€2+ƒsŠŽƒGweJ4iAE4t€u4„‰N‚Žƒ 2›6‹0—6‚Z“‰…„Yswiesw•‚ eZ…“H+e€2+ƒG2›AE4iAEpŽ1pŽSsw•eJHZ6sŠŽƒGweJ4iAET›6™wZl™wŽ1ReES€w—H3Š„‰N‡b3e4— eZYD2›u8‚ŽB6‚Žƒ 2›6‹0—€N‚Zl’FbN‚ŽƒGweJ4iAET›6™wZl™wŽ6‚Žƒ 2›6‹0„6‚Žƒ 2›6‹0—6‚Žƒ€2t…‹4€EkS€‚‡ERe•w—T›6™w•€14„6‚Žƒ€2t…‹4€p‚‡ERe•ƒ32ilswZvUHŽ6‚BAlxB1N‚•“€2•…€kJ‰TclJHtl™wZ…D2+ƒ€2+bR5„‰FZ6DFsBR5„‰FZ6DFs‚R5„S9lz809cEe‡b ‰2Z€™40R5„StFi8€ŠŽƒGweJ4iAE4t€u4„‰N‡b ‰2Z€™4i…DwiAEHJ6‚Z…DwiAEŠŽƒuFiA€HJ‰N„iT eZ832tlG2cl™w•0R‚xE80Ž€N‚Zl’FbN‚ŽƒuFiA€HJ6‚ŽƒuFiA€T›6“2+ƒs‚‡EReZl™T›U€kƒAHZzR5„‰w›eG2›AEkS€‚‡EReZl™T›U€kzuR5„‰wZ€U4…ETi“1‚‡ERx€l0x‡uRLiluH›lN‚Žƒ“HceG4Ž6‚ŽƒuFiA€H“u’xuRLbEŠpJqPŠt83T›l™H›lG2›ƒ€Š— …ŽREŠ„iT eZl™T›U€kƒAHZzR5xERe›ADHt“Y2ŽH3kJ‰4ZlG2›ƒ€F›lA‚‡EReZl™T›U€kzuN‚•“€2•…€FiT eZl™T›U€kƒAHZzR5xERe›l’wZlJ2tvueJ€N‚Z€™T›8“4Zz eZl™T›U€kzu39J‰4YE4e™Ti8›Te™Ti“€‚‡ER‚tAD‚GuReZƒ€T›6‰4iU€k„6‚Žƒ€k•ƒ€HtAY2•4YHtAY2izNLbEŠFiT ‚z4“2t…EFi6™El’F…EHJR+4Z…DH›l“H›ƒG2›ƒ€eJ‰3kJStwiAGwZ€D2—S‰T›6s4ls4Z…D4Zz e•…EHt€™4J1Re•…€Tce€wv6‹4‰3‚•uRe•…€Tce€wv63w—6‚ŽwiH›ƒtl•€’4•0c…xƒteZw‚Š‰eG9„HN‚Ž‰2clEH•lE‚‡ER4tvuH›zN‚Žƒ€2t…JkSE›“€wZYD4Ž6eEvvzJEJ…xTUbEe‡esuReZU€k„6‚ZYYH›R ‚ŽwsFZBJ…xT+pŽ‰H›lGHtlE›U€k„39J‰FTR5„Sswiesw•‚ ‚ZYYH›R ‚ŽwsFZBJ…xT+pŽ‰H›lGHtlE›€›‚Ž‰u‚‡u‚‡B›‚Ž‰N‚ŽƒDwƒ1wbR5i614iAsH›8L4ZlGH+€1wŽRRe•…EHt€™4J1ReZl™TceAH•ƒL2ilEFZ6‰pŽ‰F›lApŽ1pŽ‰FTRŠxuRHtlEwe™‚ŽƒDwƒ1wbNLE…Ž—ƒ“HceG4Ž6‚ZƒG2c…€w…‰T›6‰4„R‰w…JT›bu‚Žƒ‰4i…D4Zl‹4‰39JS34—R‰w…JT›bY5„‚—ŠuRbZl›Ti1 ‚Gqd‚—’‰w…JT›b39JSlx€…vlŽR‰2Z€™4039J‰4ZlG2›ƒ€F›lA‚‡EReZl™T›U€kzuR5„‰2Z€™40R5„‰4iAGF›lAw•€14„6‚Žƒ€2t…‹4€p‚‡EReZl’wZlJ2tvuwtvJ2tvU4„6‚BAlxB1N‚•“€2•…€kJSlx€…vlŽR‰2Z€™4039J‰4ZlG2›ƒ€F›lA‚‡EReZl™T›U€kzuR5„‰2Z€™40R5„‰4iAGF›lAw•€14„6‚Žƒ€2t…‹4€p‚‡EReZl’wZlJ2tvuwtvJ2tvU4„6‚BAlxB1N‚ZlGFZqRe“ƒ 4„StFi8€‚ŽH™eZ…“H+e€2+ƒtFi8€p—HRF0RT›6JH+l1wZl‰p—S14‡H+9JS€kZ€EŠŽ‰NLbEŠ
+ini_set('max_execution_time', 600);
+session_start();
+require_once('../config/dbi_connect.php');
+$leveluser = strtoupper($_SESSION['leveluser']);
+$namauser = strtoupper($_SESSION['namauser']);
+mysqli_query($dbi, "SET GLOBAL sql_mode = '';");
+$q_udd = mysqli_fetch_assoc(mysqli_query($dbi, "select * from utd where aktif='1'"));
+$zona_waktu = $q_udd['zonawaktu'];
+date_default_timezone_set($zona_waktu);
+$namaudd = $q_udd['nama'];
+$id_udd = $q_udd['id'];
+function cekstatuskantong($status, $stattempat, $sah)
+{
+    $resulstatus = "";
+    switch ($status) {
+        case '0':
+            $resulstatus = "Kosong";
+            if ($stattempat == NULL) $resulstatus = "Kosong di logistik";
+            if ($stattempat == '0') $resulstatus = "Kosong di Logistik";
+            if ($stattempat == '1') $resulstatus = "Kosong di Aftap";
+            break;
+        case '1':
+            if ($sah == "1") {
+                $resulstatus = 'Karantina';
+            } else {
+                $resulstatus = 'Belum disahkan';
+            }
+            break;
+        case '2':
+            $resulstatus = 'Sehat';
+            break;
+        case '3':
+            $resulstatus = "Keluar";
+            break;
+        case '4':
+            $resulstatus = 'Rusak';
+            break;
+        case '5':
+            $resulstatus = 'Rusak-Gagal';
+            break;
+        case '6':
+            $resulstatus = 'Dimusnahkan';
+            break;
+        case '6':
+            $resulstatus = 'Reaktif';
+            break;
+        default:
+            $resulstatus = 'Tidak ada';
+            break;
+    }
+    return $resulstatus;
+}
+$output = "";
+if ($_GET['m']) {
+    $mode = $_GET['m'];
+    switch ($mode) {
+        case "sampel":
+            $output = '';
+            $v_sampel = addslashes(mysqli_escape_string($dbi, $_POST['InpBarcode']));
+            $sqlnatimport = mysqli_query($dbi, "SELECT `ID`, `SB`, `OI`, `AT`, `WID`, `RDT`, `STAT`, `ICRLU`, `ICR`, `ARLU`, `ASCO`, `KI`, `OID`, `ICCO`, `ACO`, `NCAA`, `NCICA`, `IPCA`, `IPCICA`, 
+                `CPCA`, `CPCICA`, `ML`, `MLD`, `ISN`, `ECR`, `SITE`, `STYPE`, `BPCA`, `BPCICA`, `TID`, `ADMV`, `VER`, `GUID`, `ENUM`, `TOI`, `CONFIRM`, `USRCONF`, `USRCHK`, `USRVER`, `NOTRX` 
+                    FROM `nat_panther` WHERE `SB`='$v_sampel'");
+            $sqlselect = mysqli_query($dbi, "SELECT `ID`, `SB`, `OI`, `AT`, `WID`, `RDT`, `STAT`, `ICRLU`, `ICR`, `ARLU`, `ASCO`, `KI`, `OID`, `ICCO`, `ACO`, `NCAA`, `NCICA`, `IPCA`, `IPCICA`, `CPCA`, `CPCICA`, 
+                `ML`, `MLD`, `ISN`, `ECR`, `SITE`, `STYPE`, `BPCA`, `BPCICA`, `TID`, `ADMV`, `VER`, `GUID`, `ENUM`, `TOI`, `CONFIRM`, `USRCONF`, `USRCHK`, `USRVER`, `NOTRX` FROM `nat_panther` 
+                WHERE  `SB`='$v_sampel'");
+            if (mysqli_num_rows($sqlnatimport) > 0) {
+                $output .= '<div class="col-md-8">
+                            <div class="panel w3-border-theme">
+                                <div class="panel-heading w3-theme-d3"><div class="panel-title">Data Pemeriksaan</div></div>
+                                <div class="panel-body w3-card-4">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-responsive table-condensed">
+                                            <thead>
+                                                <tr class="w3-theme">
+                                                    <th>No</th>
+                                                    <th>Transaksi</th>
+                                                    <th>Worklist</th>
+                                                    <th>Run Time</th>
+                                                    <th>Sample ID</th>
+                                                    <th>IC RLU</th>
+                                                    <th>IC Result</th>
+                                                    <th>RLU</th>
+                                                    <th>S/CO</th>
+                                                    <th>RESULT</th>
+                                                    <th>Flag</th>
+                                                    <th>ASSAY</th>
+                                                    <th>LOT Reagen</th>
+                                                    <th>ED Reagen</th>
+                                                    <th>Operator</th>
+                                                    <th>Checker</th>
+                                                    <th>Verifikator</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>';
+                $no = 0;
+                while ($dt = mysqli_fetch_assoc($sqlnatimport)) {
+                    $no++;
+                    $output .= '<tr>
+                                                            <td class="text-right" nowrap>' . $no . '.</td>
+                                                            <td nowrap>' . $dt['NOTRX'] . '</td>
+                                                            <td nowrap>' . $dt['WID'] . '</td>
+                                                            <td nowrap>' . $dt['RDT'] . '</td>
+                                                            <td nowrap>' . $dt['SB'] . '</td>
+                                                            <td nowrap>' . $dt['ICRLU'] . '</td>
+                                                            <td nowrap>' . $dt['ICR'] . '</td>
+                                                            <td nowrap>' . $dt['ARLU'] . '</td>
+                                                            <td nowrap>' . $dt['ASCO'] . '</td>
+                                                            <td nowrap>' . $dt['OI'] . '</td>
+                                                            <td nowrap>' . $dt['STAT'] . '</td>
+                                                            <td nowrap>' . $dt['AT'] . '</td>
+                                                            <td nowrap>' . $dt['ML'] . '</td>
+                                                            <td nowrap>' . $dt['MLD'] . '</td>
+                                                            <td nowrap>' . $dt['OID'] . '</td>
+                                                            <td nowrap>' . $dt['USRCHK'] . '</td>
+                                                            <td nowrap>' . $dt['USRVER'] . '</td>
+                                                            </tr>';
+                }
+                $output .= '
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+                $sqlhasilnat = mysqli_query($dbi, "SELECT `id`, `noKantong`, `idsample`, `nat_goldarah`, `nat_rhesus`, `notrans`, `kodedonor`, 
+                    CASE WHEN `dsdp`='0' THEN 'Donor Sukarela' WHEN `dsdp`='0' THEN 'Donor Pengganti' ELSE '-' END AS `dsdp`, 
+                    CASE WHEN `barulama`='0' THEN 'Donor Rutin' WHEN `barulama`='1' THEN 'Donor Baru' ELSE '-' END AS barulama, `umur`, 
+                    CASE WHEN `kel`='0' THEN 'Laki-laki' WHEN `kel`='1' THEN 'Perempuan' ELSE '-' END AS kel, `umur`, 
+                    `OD`, `COV`, `Hasil`, `jenisPeriksa`, `tglPeriksa`, `dicatatOleh`, `dicekOleh`, `DisahkanOleh`, `noLot`, `Metode`, `reagen`, `ed`, `ulang`, `tempat_periksa`, `on_insert` FROM `hasilnat` WHERE `noKantong`='$v_sampel'");
+                if (mysqli_num_rows($sqlhasilnat) > 0) {
+                    $hasil = mysqli_fetch_assoc($sqlhasilnat);
+                    $output .= '
+                    <div class="col-md-4">
+                        <div class="panel w3-border-theme">
+                            <div class="panel-heading w3-theme-d3"><div class="panel-title">Data Donasi</div></div>
+                            <div class="panel-body w3-card-4">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-responsive">
+                                        <tr><td>Nomor Kantong</td>       <td class="w3-hover-theme">' . $hasil['noKantong'] . '</td></tr>
+                                        <tr><td>Kode Donor</td>       <td class="w3-hover-theme">' . $hasil['kodedonor'] . '</td></tr>
+                                        <tr><td>Golongan Darah</td>           <td class="w3-hover-theme">' . $hasil['nat_goldarah'] . '</td></tr>
+                                        <tr><td>Rhesus</td>             <td class="w3-hover-theme">' . $hasil['nat_rhesus'] . '</td></tr>
+                                        <tr><td>Jenis Donor</td>             <td class="w3-hover-theme">' . $hasil['dsdp'] . '</td></tr>
+                                        <tr><td>Donor Baru/Lama</td>                 <td class="w3-hover-theme">' . $hasil['barulama'] . '</td></tr>
+                                        <tr><td>Umur</td>              <td class="w3-hover-theme">' . $hasil['umur'] . '</td></tr>
+                                        <tr><td>Jenis Kelamin</td>        <td class="w3-hover-theme">' . $hasil['kel'] . '</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+                }
+            } else {
+                $output = '
+                <div class="col-md-12">
+                    <div class="w3-panel w3-red w3-border-theme w3-card-4">
+                        <h4>Nomor sampel <strong>' . $v_sampel . '</strong> <h4>
+                        <h4>Tidak ditemukan!</h4>
+                    </div>
+                </div>';
+            }
+            echo $output;
+            break;
+        case "displaydata":
+            $v_tgl1 = addslashes(mysqli_escape_string($dbi, $_GET['tgl1']));
+            $v_tgl2 = addslashes(mysqli_escape_string($dbi, $_GET['tgl2']));
+            $v_hasil = addslashes(mysqli_escape_string($dbi, $_GET['InpHasil']));
+            $v_sampel = addslashes(mysqli_escape_string($dbi, $_GET['InpJenisSampel']));
+            $v_operator = addslashes(mysqli_escape_string($dbi, $_GET['InpOperator']));
+            $v_checker = addslashes(mysqli_escape_string($dbi, $_GET['InpKonfirmasi']));
+            switch ($v_hasil) {
+                case "0":
+                    $whasil = "";
+                    break;
+                case "1":
+                    $whasil = " AND (`OI`='Nonreactive') ";
+                    break;
+                case "2":
+                    $whasil = " AND (`OI`='Reactive') ";
+                    break;
+                default:
+                    $whasil = " AND (`OI`<>'Nonreactive') AND (`OI`<>'Reactive') ";
+                    break;
+            }
+            switch ($v_sampel) {
+                case "0":
+                    $wsampel = "";
+                    break;
+                case "1":
+                    $wsampel = " AND (`STYPE`='Specimen') ";
+                    break;
+                case "2":
+                    $wsampel = " AND (`STYPE`='Calibrator') ";
+                    break;
+                default:
+                    $wsampel = "";
+                    break;
+            }
+            ($v_operator !== "") ? $woperator = " AND (`OID` LIKE '%$v_operator%') " : $woperator = "";
+            ($v_checker !== "") ? $whecker = " AND (`USRCHK` LIKE '%$v_checker%') " : $whecker = "";
+            $sqlselect = "SELECT `ID`, `SB`, `OI`, `AT`, `WID`, `RDT`, `STAT`, `ICRLU`, `ICR`, `ARLU`, `ASCO`, `KI`, `OID`, `ICCO`, `ACO`, `NCAA`, `NCICA`, `IPCA`, `IPCICA`, `CPCA`, `CPCICA`, 
+                `ML`, `MLD`, `ISN`, `ECR`, `SITE`, `STYPE`, `BPCA`, `BPCICA`, `TID`, `ADMV`, `VER`, `GUID`, `ENUM`, `TOI`, `CONFIRM`, `USRCONF`, `USRCHK`, `USRVER`, `NOTRX` FROM `nat_panther` 
+                WHERE  (STR_TO_DATE(`RDT`,'%Y-%m-%d') BETWEEN '$v_tgl1' AND '$v_tgl2') AND (`confirm`='1')" . $whasil . $wsampel . $woperator . $whecker;
+            $output = '<div class="table-responsive">
+                <table class="table table-bordered table-hover table-responsive table-condensed">
+                    <thead>
+                        <tr class="w3-theme">
+                            <th>No</th>
+                            <th>Transaksi</th>
+                            <th>Worklist</th>
+                            <th>Run Time</th>
+                            <th>Sample ID</th>
+                            <th>IC RLU</th>
+                            <th>IC Result</th>
+                            <th>RLU</th>
+                            <th>S/CO</th>
+                            <th>RESULT</th>
+                            <th>Flag</th>
+                            <th>ASSAY</th>
+                            <th>LOT Reagen</th>
+                            <th>ED Reagen</th>
+                            <th>Operator</th>
+                            <th>Checker</th>
+                            <th>Verifikator</th>
+                        </tr>
+                    </thead>
+                <tbody>';
+            $qryselect = mysqli_query($dbi, $sqlselect);
+            if (mysqli_num_rows($qryselect) > 0) {
+                $no = 0;
+                while ($dt = mysqli_fetch_assoc($qryselect)) {
+                    $no++;
+                    $output .= '<tr>
+                        <td class="text-right">' . $no . '.</td>
+                        <td>' . $dt['NOTRX'] . '</td>
+                        <td>' . $dt['WID'] . '</td>
+                        <td>' . $dt['RDT'] . '</td>
+                        <td>' . $dt['SB'] . '</td>
+                        <td>' . $dt['ICRLU'] . '</td>
+                        <td>' . $dt['ICR'] . '</td>
+                        <td>' . $dt['ARLU'] . '</td>
+                        <td>' . $dt['ASCO'] . '</td>
+                        <td>' . $dt['OI'] . '</td>
+                        <td>' . $dt['STAT'] . '</td>
+                        <td>' . $dt['AT'] . '</td>
+                        <td>' . $dt['ML'] . '</td>
+                        <td>' . $dt['MLD'] . '</td>
+                        <td>' . $dt['OID'] . '</td>
+                        <td>' . $dt['USRCHK'] . '</td>
+                        <td>' . $dt['USRVER'] . '</td>
+                        </tr>';
+                }
+            } else {
+                $output .= '<tr><td class="text-center" colspan="17">Tidak ada data</td></tr>';
+            }
+            $output .= '</tbody></table>';
+            echo $output;
+            break;
+        case "display":
+            $v_tgl1 = mysqli_escape_string($dbi, $_GET['tgl1']);
+            $v_tgl2 = mysqli_escape_string($dbi, $_GET['tgl2']);
+            $v_konfirm = mysqli_escape_string($dbi, $_GET['konfirm']);
+            $v_operator = mysqli_escape_string($dbi, $_GET['operator']);
+            $woperator = "";
+            if ($v_operator !== "") {
+                $woperator = " AND (`OID` like '%$v_operator%')";
+            }
+            $wkonfirm = "";
+            if ($v_konfirm !== "2") {
+                $wkonfirm = " AND (`CONFIRM`='$v_konfirm')";
+            }
+            $sqlst = "SELECT STR_TO_DATE(`RDT`,'%Y-%m-%d') AS TGL,
+                    `WID`, `AT`, `OID`, `CONFIRM`, NOTRX,count(`ID`) as jml
+                    FROM `nat_panther` WHERE `GUID`<>'' AND (STR_TO_DATE(`RDT`,'%Y-%m-%d') BETWEEN '$v_tgl1' AND '$v_tgl2') " . $wkonfirm . $woperator . "
+                    GROUP BY  STR_TO_DATE(`RDT`,'%Y-%m-%d'), `WID`,`AT`,`OID`,`CONFIRM`,NOTRX";
+            $output = '<div class="table-responsive">
+                        <table class="table table-bordered table-hover table-responsive">
+                            <thead>
+                                <tr class="w3-theme">
+                                <th>No</th>
+                                <th>TANGGAL</th>
+                                <th>WORKLIST ID</th>
+                                <th>ASSAY</th>
+                                <th>OPERATOR</th>
+                                <th>JUMLAH</th>
+                                <th>KONFIRMASI</th>
+                                <th></th>
+                                </tr>
+                            </thead>
+                        <tbody>';
+            $sqldisplay = mysqli_query($dbi, $sqlst);
+            if (mysqli_num_rows($sqldisplay) > 0) {
+                $no = 0;
+                while ($dt = mysqli_fetch_assoc($sqldisplay)) {
+                    $no++;
+                    ($dt['CONFIRM'] == '0') ? $stkonfirm = "Belum" : $stkonfirm = "Sudah";
+                    $output .= '
+                    <tr>
+                        <td class="text-right">' . $no . '.</td>
+                        <td class="text-center">' . $dt['TGL'] . '</td>
+                        <td class="text-center">' . $dt['WID'] . '</td>
+                        <td class="text-center">' . $dt['AT'] . '</td>
+                        <td class="text-center">' . $dt['OID'] . '</td>
+                        <td class="text-center">' . $dt['jml'] . '</td>
+                        <td class="text-center">' . $stkonfirm . '</td>
+                        <td class="text-center" nowrap>';
+                    if ($dt['CONFIRM'] == '0') {
+                        $output .= '
+                            <a href="?module=panther_konfirm1&wid=' . $dt['WID'] . '&oid=' . $dt['OID'] . '&at=' . $dt['AT'] . '" class="konfirmasi w3-btn w3-theme w3-hover-green btn-sm">Konfirm</a>
+                            <a href="#" id="' . $dt['WID'] . '*' . $dt['OID'] . '*' . $dt['AT'] . '" class="hapusdata w3-btn w3-theme w3-hover-red btn-sm">Hapus</a>';
+                    } else {
+                        $output .= '<a href="?module=panther_printrslt&notransaksi=' . $dt['NOTRX'] . '" class="lihatdata w3-btn w3-theme w3-hover-red btn-sm"><i class="fa fa-print"></i> ' . $dt['NOTRX'] . '</a>';
+                    }
+                    $output .= '
+                        </td>
+                    </tr>';
+                }
+            } else {
+                $output .= '
+                <tr>
+                    <td class="text-center" colspan="8">Tidak ada data</td>
+                </tr>';
+            }
+            $output .= '
+                </tbody>
+                </table>
+                <div>';
+            echo $output;
+            break;
+        case "delete":
+            $param = addslashes(mysqli_escape_string($dbi, $_POST['delete_id']));
+            $exparam = explode('*', $param);
+            $v_wid = $exparam[0];
+            $v_oid = $exparam[1];
+            $v_at = $exparam[2];
+            mysqli_query($dbi, "DELETE FROM `nat_panther` WHERE `WID`='$v_wid' AND `OID`='$v_oid' AND `AT`='$v_at';");
+            break;
+        case "konfirmasihasil":
+            $k_today = $id_udd . "NATP" . date("dmy") . "-";
+            $idp = mysqli_query($dbi, "SELECT `NOTRX`,RIGHT(`NOTRX`,3) as `nolast` from `nat_panther` where `NOTRX`  like '$k_today%'order by `NOTRX` DESC limit 1");
+            $idp1 = mysqli_fetch_assoc($idp);
+            $idp2 = $idp1['nolast'];
+            $idp2 = (int)$idp2;
+            if ($idp2 < 1) {
+                $idp2 = "000";
+            }
+            $int_idp2 = (int)$idp2 + 1;
+            $j_nol1 = 3 - (strlen(strval($int_idp2)));
+            $idp4 = '';
+            for ($n = 0; $n < $j_nol1; $n++) {
+                $idp4 .= "0";
+            }
+            $v_notransaksi = $k_today . $idp4 . $int_idp2;
+            $output = "";
+            $status_proses = 0;
+            $v_wid = $_POST['wid'];
+            $v_oid = $_POST['oid'];
+            $v_at = $_POST['at'];
+            $v_parameter = $_POST['parameter'];
+            $v_reagenlot = $_POST['raegenlot'];
+            $v_reagened = $_POST['raegened'];
+            $v_ptgoperator = $_POST['inpOperator'];
+            $v_ptgkonfirmasi = $_POST['inpPtgKonfirmasi'];
+            $v_ptgverifikasi = $_POST['inpPtgSah'];
+            $v_sampelid = $_POST['sampleid'];
+            $v_sampelguid = $_POST['guid'];
+            $v_sampletype = $_POST['sampletipe'];
+            $v_statuskantong = $_POST['statuskantong'];
+            $v_aksi = $_POST['aksi'];
+            $proses = "";
+            $no = 0;
+            $aksi = "";
+            for ($i = 0; $i < count($v_sampelid); $i++) {
+                $no++;
+                switch ($v_aksi[$i]) {
+                    case '1':
+                        $aksi = "Konfirm";
+                        break;
+                    case '2':
+                        $aksi = "Sehat";
+                        break;
+                    case '3':
+                        $aksi = "Cekal";
+                        break;
+                    case '4':
+                        $aksi = "Tunda";
+                        break;
+                }
+                $proses .= '<br>' . $no . ' :  ' . $v_sampelid[$i] . ' - Status  ' . $v_statuskantong[$i] . ' - ' . $v_aksi[$i] . ' (' . $aksi . '); ';
+                $d_sampel = $v_sampelid[$i];
+                $d_guid = $v_sampelguid[$i];
+                $d_jenis = $v_sampletype[$i];
+                $d_statuskantong = $v_statuskantong[$i];
+                $d_aksi = $v_aksi[$i];
+                if ($d_aksi !== "4") {
+                    $proses .= ' - tdk ditunda ';
+                    $sqlceklis = "SELECT * , (STR_TO_DATE(`RDT`,'%Y-%m-%d')) as tglperiksa, (STR_TO_DATE(`MLD`,'%Y-%m-%d')) as edreagen FROM `nat_panther` WHERE `WID`='$v_wid' AND `SB`='$d_sampel' AND `GUID`='$d_guid' AND `OID`='$v_oid' AND `AT`='$v_at'";
+                    $cekimport = mysqli_query($dbi, $sqlceklis);
+                    $dtpanther = mysqli_fetch_assoc($cekimport);
+                    $d_tglperiksa = $dtpanther['RDT'];
+                    $d_resultod = $dtpanther['ASCO'];
+                    $d_resultstr = $dtpanther['OI'];
+                    $d_hasilnatkantong = '0';
+                    switch ($d_resultstr) {
+                        case "Nonreactive":
+                            $d_hasil = '0';
+                            $d_hasilnatkantong = '0';
+                            break;
+                        case "Reactive":
+                            $d_hasil = '1';
+                            $d_hasilnatkantong = '1';
+                            break;
+                        default:
+                            $d_hasil = '2';
+                            $d_hasilnatkantong = '3';
+                            break;
+                    }
+                    $sqlupdkonfirm = "UPDATE `nat_panther` SET `CONFIRM`=1, `USRCONF`='$v_ptgoperator',`USRCHK`='$v_ptgkonfirmasi',`USRVER`='$v_ptgverifikasi',`NOTRX` ='$v_notransaksi' WHERE `WID`='$v_wid' AND `SB`='$d_sampel' AND `OID`='$v_oid' AND `GUID`='$d_guid'";
+                    $sqlupd_panther = mysqli_query($dbi, $sqlupdkonfirm);
+                    if ($sqlupd_panther) {
+                        $proses .= ' Konfirm OK; ';
+                    } else {
+                        $proses .= ' Konfirm Err ' . mysqli_error($dbi) . '; ';
+                    }
+                    if ($d_statuskantong !== '0') {
+                        $proses .= ' Status Kantong: ' . $d_statuskantong . ' ';
+                        $sqldonasi = mysqli_query($dbi, "SELECT `KodePendonor`,`JenisDonor`,`NoKantong`,`gol_darah`,`rhesus`,`umur`,`donorbaru`,`jk`,`donorke` FROM `htransaksi` WHERE `NoKantong`='$d_sampel'");
+                        if (mysqli_num_rows($sqldonasi) > 0) {
+                            $dttrx = mysqli_fetch_assoc($sqldonasi);
+                            $d_jenisdonor = $dttrx['JenisDonor'];
+                            $d_golongan = $dttrx['gol_darah'];
+                            $d_rhesus = $dttrx['rhesus'];
+                            $d_barulama = $dttrx['donorbaru'];
+                            $d_kelamin = $dttrx['jk'];
+                            $d_umur = $dttrx['umur'];
+                            $d_donasi = $dttrx['donorke'];
+                            $d_kodedonor = $dttrx['KodePendonor'];
+                            $sqlinsertnat = "INSERT INTO `hasilnat`(`noKantong`, `idsample`, `nat_goldarah`, `nat_rhesus`, `notrans`, `kodedonor`, `dsdp`, `barulama`, `umur`, `kel`, 
+                                    `OD`, `Hasil`, `tglPeriksa`, `dicatatOleh`, `dicekOleh`, `DisahkanOleh`, `noLot`, `Metode`, `reagen`, `ed`, `tempat_periksa`) VALUES (
+                                    '$d_sampel', '$d_sampel', '$d_golongan', '$d_rhesus', '$v_notransaksi', '$d_kodedonor', '$d_jenisdonor', '$d_barulama', '$d_umur', '$d_kelamin',
+                                    '$d_resultod', '$d_hasil' ,'$d_tglperiksa' ,'$v_ptgoperator' ,'$v_ptgkonfirmasi', '$v_ptgverifikasi', '$v_reagenlot', 'OTOMATIS', '$v_parameter', '$v_reagened', '$namaudd')";
+                            if ($d_hasil == '1') {
+                                if ($d_statuskantong == '1' or $d_statuskantong == '2') {
+                                    $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `Status`='7', `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong' WHERE `noKantong`='$d_sampel';");
+                                    if ($updkantong) {
+                                        $proses .= ' Upd Kantong 7 (reaktif) OK; ';
+                                    } else {
+                                        $proses .= ' Upd Kantong  7 (reaktif) Err ' . mysqli_error($dbi) . '; ';
+                                    }
+                                } else {
+                                    $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong' WHERE `noKantong`='$d_sampel';");
+                                    if ($updkantong) {
+                                        $proses .= 'Upd Status NAT OK; ';
+                                    } else {
+                                        $proses .= ' Upd Status NAT Err ' . mysqli_error($dbi) . '; ';
+                                    }
+                                }
+                                $sqlcekaldonor = "UPDATE `pendonor` SET `cekalNAT`=1,`Cekal`=1 WHERE `Kode`='$d_kodedonor'";
+                                $qrycekaldonor = mysqli_query($dbi, $sqlcekaldonor);
+                                if ($qrycekaldonor) {
+                                    $proses .= ' Cekal NAT Pendonor OK';
+                                } else {
+                                    $proses .= ' Cekal NAT Pendonor Err:' . mysqli_error($dbi);
+                                }
+                                $proses .= ' status Stokkantong reaktif : 7 ';
+                            } else {
+                                $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong' WHERE `noKantong`='$d_sampel';");
+                                if ($updkantong) {
+                                    $proses .= 'Upd Status Nat OK; ';
+                                } else {
+                                    $proses .= ' Upd Status NAT Err ' . mysqli_error($dbi) . '; ';
+                                }
+                            }
+                        } else {
+                            $sqlinsertnat = "INSERT INTO `hasilnat`(`noKantong`, `idsample`, `notrans`, `OD`, `Hasil`, `tglPeriksa`, `dicatatOleh`, `dicekOleh`, `DisahkanOleh`, `noLot`, 
+                                    `Metode`, `reagen`, `ed`, `tempat_periksa`) VALUES (
+                                    '$d_sampel', '$d_sampel', '$v_notransaksi', '$d_resultod', '$d_hasil', '$d_tglperiksa', '$v_ptgoperator', '$v_ptgkonfirmasi', '$v_ptgverifikasi', '$v_reagenlot',
+                                    'OTOMATIS', '$v_reagenname','$v_reagened', '$namaudd')";
+                        }
+                        $qryinsertnat = mysqli_query($dbi, $sqlinsertnat);
+                        if ($qryinsertnat) {
+                            $proses .= ' NAT ok; ';
+                        } else {
+                            $proses .= ' NAT Err: ' . mysqli_error($dbi) . '; ';
+                        }
+                    } else {
+                        $proses .= ' Status Kantong 0 atau tidak ada;  ';
+                    }
+                } else {
+                    $proses .= ' - ditunda; ';
+                }
+            }
+            $output = $proses . '|' . $status_proses . '|' . $v_notransaksi;
+            echo $output;
+            break;
+    }
+}
