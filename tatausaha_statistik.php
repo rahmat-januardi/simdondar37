@@ -36,10 +36,12 @@ $("ul.thumb li").hover(function() {
 
 <div class="container">
 <ul class="thumb">
-	<li><a href="pmitatausaha.php?module=graphdonor"><img src="images/graph_donor.png" alt="" /></a></li>
-	<li><a href="pmitatausaha.php?module=graphdonasi"><img src="images/graph_donasi_pie.png" alt="" /></a></li>
-	<li><a href="pmitatausaha.php?module=graphtrendbulanan"><img src="images/graph_trend_bulanan.png" alt="" /></a></li>
-</ul>
+	<li><a href="pmitatausaha.php?module=graphdonor"><img src="images/statistik_ppdds.png" alt="" /></a></li>
+	<li><a href="pmitatausaha.php?module=graphdonasi"><img src="images/statistik_donasi.png" alt="" /></a></li>
+	<li><a href="pmitatausaha.php?module=graphtrendbulanan"><img src="images/statistik_trend_donasi.png" alt="" /></a></li>
+    	<li><a href="pmitatausaha.php?module=graphpengujian"><img src="images/statistik_pengujian.png" alt="" /></a></li>
+	<li><a href="pmitatausaha.php?module=graphkomponen"><img src="images/statistik_pengolahan.png" alt="" /></a></li>
+    	<li><a href="pmitatausaha.php?module=graphdistribusi"><img src="images/statistik_distribusi.png" alt="" /></a></li></ul>
 </ul>
 </ul>
 </div>

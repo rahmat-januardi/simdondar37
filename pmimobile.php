@@ -6,7 +6,7 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
   echo "<a href=index.php target=\"_top\"><b>LOGIN</b></a></center>";
 }
 if (($_SESSION['leveluser']) == 'mobile') {
-?>
+  ?>
   <!doctype html>
   <html>
 
@@ -16,7 +16,7 @@ if (($_SESSION['leveluser']) == 'mobile') {
     <script language=javascript src="util.js" type="text/javascript"> </script>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
   </head>
-<?php
+  <?php
   //require_once('color.inc');
   switch ($_GET['act']) {
     default:
@@ -51,6 +51,7 @@ if (($_SESSION['leveluser']) == 'mobile') {
         include "modul/registrasi.php";
       } elseif ($_GET['module'] == 'spendonor') {
         include "modul/search_pendonor_edit.php";
+
       } elseif ($_GET['module'] == 'eregistrasi') {
         include "modul/edit_registrasi.php";
       } elseif ($_GET['module'] == 'eregistrasiluar') {
@@ -75,8 +76,10 @@ if (($_SESSION['leveluser']) == 'mobile') {
         include "modul/upload_mu_server.php";
       } elseif ($_GET['module'] == 'aturuser') {
         include "modul/mod_user.php";
+
       } elseif ($_GET['module'] == 'rtransaksi') {
         include "modul/rtransaksi.php";
+
       } elseif ($_GET['module'] == 'stock') {
         include "modul/stock.php";
       } elseif ($_GET['module'] == 'tambah_instansi') {
@@ -91,8 +94,10 @@ if (($_SESSION['leveluser']) == 'mobile') {
         include "modul/add_load_edit.php";
       } elseif ($_GET['module'] == 'jadwal_mobile') {
         include "mobile_jadwal.php";
+
       } elseif ($_GET['module'] == 'mobile_transfer') {
         include "mobile_transfer.php";
+
       } elseif ($_GET['module'] == 'mobile_pendonor') {
         include "mobile_pendonor.php";
       } elseif ($_GET['module'] == 'mobile_transaksi') {
@@ -158,6 +163,7 @@ if (($_SESSION['leveluser']) == 'mobile') {
       } elseif ($_GET['module'] == 'smsidi') {
         //include  "modul/sms2/sms2.php";
         include "sms.php";
+
       } elseif ($_GET['module'] == 'mobile_sms') {
         include "mobile_sms.php";
       } elseif ($_GET['module'] == 'sms_broadcast_ultah') {
@@ -214,6 +220,7 @@ if (($_SESSION['leveluser']) == 'mobile') {
       //cetakformdonor
       elseif ($_GET['module'] == 'form_donor') {
         include "modul/data_pendonor2.php";
+
       }
       //history donor
       elseif ($_GET['module'] == 'history') {

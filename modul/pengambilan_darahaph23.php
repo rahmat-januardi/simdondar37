@@ -290,7 +290,7 @@ if (isset($_POST['simpan'])){
         $ono_kantong0 = substr($id_kantong, 0, -1);
 
         
-        $tambah2    = "UPDATE stokkantong SET `Status`='2', tgl_Aftap='$tglp1',tglperiksa='$tglp1',noSelang='$no_selang',gol_darah='$GolDarah',RhesusDrh='$Rhesus',produk='$prd',sah='1',kodePendonor='$kodependonor',statKonfirmasi='1', tglpengolahan='$tglp1',kadaluwarsa=(tgl_aftap + interval 5 day),mu='$mu',lama_pengambilan='$lama_pengambilan' WHERE noKantong='$id_kantong'";
+        $tambah2    = "UPDATE stokkantong SET `Status`='1', tgl_Aftap='$tglp1',tglperiksa='$tglp1',noSelang='$no_selang',gol_darah='$GolDarah',RhesusDrh='$Rhesus',produk='$prd',sah='0',kodePendonor='$kodependonor',statKonfirmasi='1', tglpengolahan='$tglp1',kadaluwarsa=(tgl_aftap + interval 5 day),mu='$mu',lama_pengambilan='$lama_pengambilan' WHERE noKantong='$id_kantong'";
         //echo $tambah2."<br>";
         $skquery    = mysqli_query($dbi, $tambah2);
 

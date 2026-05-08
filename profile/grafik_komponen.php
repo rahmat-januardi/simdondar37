@@ -30,8 +30,18 @@ if (empty($tglakhir)){$tglakhir=$hariini;}
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/js/rgbcolor.js"></script>
     <script type="text/javascript" src="/js/canvg.js"></script>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootsrap337/datepicker/css/bootstrap-datepicker.css" >
+    <script type="text/javascript" src="bootsrap337/datepicker/js/bootstrap-datepicker.min.js"></script>
 
+    <script type="text/javascript">
+        $(function(){
+            $(".datepicker").datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+            });
+        });
+    </script>
     <script>
       function getImgData(chartContainer) {
         var chartArea = chartContainer.getElementsByTagName('svg')[0].parentNode;
@@ -73,7 +83,7 @@ if (empty($tglakhir)){$tglakhir=$hariini;}
         imgContainer.appendChild(img);
       }
     </script>
-    <script type="text/javascript" src="/js/jsapi.js"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 </head>
 <body>
@@ -103,8 +113,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
             <script type="text/javascript">
-                //google.load('visualization', '1.0', {'packages':['corechart']});
-                google.charts.load('current', {packages: ['columnchart']});
+                google.load('visualization', '1.0', {'packages':['corechart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = new google.visualization.DataTable();
@@ -167,8 +176,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
             <script type="text/javascript">
-                //google.load('visualization', '1.0', {'packages':['corechart']});
-                google.charts.load('current', {packages: ['columnchart']});
+                google.load('visualization', '1.0', {'packages':['corechart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = new google.visualization.DataTable();
@@ -216,8 +224,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['columnchart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -271,8 +278,7 @@ if (isset($_POST['submit'])) {
         $data = substr($data,0,(strlen($data)-1));
         ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['columnchart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -333,8 +339,8 @@ if (isset($_POST['submit'])) {
                                 <option value="2" <?=$s2?>>Pie Chart Alasan Darah dimusnahkan</option>
                                 <option value="3" <?=$s3?>>Pie Chart Jenis Komponen dimusnahkan</option>
                             </select>
-                            <input class="form-control" name="tgl1" id="datepicker" value="<?=$tglawal?>" type=date size=10>
-                            <input class="form-control" name="tgl2" id="datepicker1" value="<?=$tglakhir?>" type=date size=10>
+                            <input class="form-control datepicker" name="tgl1" id="datepicker" value="<?=$tglawal?>" type=date size=10>
+                            <input class="form-control datepicker" name="tgl2" id="datepicker1" value="<?=$tglakhir?>" type=date size=10>
                         </div>
                     </div>
 

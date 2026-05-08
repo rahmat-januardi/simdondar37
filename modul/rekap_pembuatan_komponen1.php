@@ -110,7 +110,7 @@ ini_set('display_errors', 1);
 			<thead>
 				<tr>
 					<th rowspan="2" class="text-center align-middle">No</th>
-					<th colspan="11" class="text-center align-middle">Data Pengolahan</th>
+					<th colspan="12" class="text-center align-middle">Data Pengolahan</th>
 					<th colspan="3" class="text-center align-middle">Metode</th>
 				</tr>
 				<tr>
@@ -203,7 +203,7 @@ ini_set('display_errors', 1);
 						}
 						echo "<tr class='text-center'>
                                 <td>{$no}</td>
-                                <td>{$row['tgl']}</td>
+                                <td>{$row['tglPengerjaan']}</td>
                                 <td>{$row['noKantong']}</td>
                                 <td>{$jenis}</td>
 								<td>$row[goldarah] ($row[rhesus])</td>

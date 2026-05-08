@@ -118,7 +118,7 @@ $pdf->Cell(0, 0, ': ' . $kantong1['volume'] . ' cc', 0);
 $pdf->SetFont('helvetica', '', 8);
 $pdf->SetXY(3, 90);
 $pdf->Cell(23, 0, 'Suhu Simpan', 0);
-if ($cleanedProduct == 'FFP') {
+if ($cleanedProduct == 'FFP' OR $cleanedProduct == 'FP 24' OR $cleanedProduct == 'FP 72') {
     $pdf->Cell(0, 0, ': <= -20°C', 0);
 } elseif ($cleanedProduct == 'PRP' || $cleanedProduct == 'TC') {
     $pdf->Cell(0, 0, ': 20-24°C', 0);

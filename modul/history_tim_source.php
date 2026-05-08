@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tambah'])) {
     $catatan       = trim($_POST['catatan']);
 
     if (!empty($tanggal_input) && !empty($catatan)) {
-
+        
         // Ubah dari YYYY-MM-DD menjadi DD-MM-YYYY
         $tanggal = date('d-m-Y', strtotime($tanggal_input));
 
@@ -68,19 +68,19 @@ $nomor = $jmlupdate + 1;
     <script src="bootsrap337/js/respond.min.js"></script>
 
     <style>
-    table.table-bordered {
-        border: 1px solid red;
-    }
+        table.table-bordered {
+            border: 1px solid red;
+        }
 
-    table.table-bordered>thead>tr>th,
-    table.table-bordered>tbody>tr>td {
-        border: 1px solid red;
-    }
+        table.table-bordered>thead>tr>th,
+        table.table-bordered>tbody>tr>td {
+            border: 1px solid red;
+        }
 
-    .modal-header {
-        background-color: #0d6efd;
-        color: white;
-    }
+        .modal-header {
+            background-color: #0d6efd;
+            color: white;
+        }
     </style>
 </head>
 
@@ -96,8 +96,7 @@ $nomor = $jmlupdate + 1;
                                 CATATAN PERBAIKAN DAN PENGEMBANGAN SIMDONDAR
                             </span>
                             <span class="pull-right">
-                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
-                                    data-target="#modalTambah">
+                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalTambah">
                                     <i class="glyphicon glyphicon-plus"></i> Tambah Catatan Baru
                                 </button>
                             </span>
@@ -105,8 +104,7 @@ $nomor = $jmlupdate + 1;
                     </div>
 
                     <div class="panel-body">
-                        <div
-                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
 
                             <p style="margin:0;">
                                 Diurutkan dari history terkini. Terdapat
@@ -136,23 +134,23 @@ $nomor = $jmlupdate + 1;
                             </thead>
                             <tbody>
                                 <?php if ($datacsv): ?>
-                                <?php while (($data = fgetcsv($datacsv, 10000, $pemisah)) !== FALSE): ?>
-                                <?php
+                                    <?php while (($data = fgetcsv($datacsv, 10000, $pemisah)) !== FALSE): ?>
+                                        <?php
                                         $nomor--;
                                         if ($v_cari !== "" && stripos($data[1], $v_cari) === false) {
                                             continue;
                                         }
                                         ?>
-                                <tr>
-                                    <td valign="top" align="right"><?= $nomor ?>. </td>
-                                    <td class="text-center" nowrap><?= htmlspecialchars($data[0]) ?></td>
-                                    <td style="padding-left:15px;"><?= nl2br(htmlspecialchars($data[1])) ?></td>
-                                </tr>
-                                <?php endwhile; ?>
+                                        <tr>
+                                            <td valign="top" align="right"><?= $nomor ?>. </td>
+                                            <td class="text-center" nowrap><?= htmlspecialchars($data[0]) ?></td>
+                                            <td style="padding-left:15px;"><?= nl2br(htmlspecialchars($data[1])) ?></td>
+                                        </tr>
+                                    <?php endwhile; ?>
                                 <?php else: ?>
-                                <tr>
-                                    <td colspan="3" class="text-center">Belum ada catatan.</td>
-                                </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-center">Belum ada catatan.</td>
+                                    </tr>
                                 <?php endif; ?>
                             </tbody>
                         </table>
@@ -174,13 +172,14 @@ $nomor = $jmlupdate + 1;
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Tanggal</label>
-                            <input type="date" name="tanggal" class="form-control" value="<?= date('Y-m-d') ?>"
-                                required>
+                            <input type="date" name="tanggal" class="form-control"
+                                value="<?= date('Y-m-d') ?>" required>
                         </div>
                         <div class="form-group">
                             <label>Catatan / Keterangan Perbaikan</label>
                             <textarea name="catatan" class="form-control" rows="5"
-                                placeholder="Masukkan catatan perbaikan atau pengembangan..." required></textarea>
+                                placeholder="Masukkan catatan perbaikan atau pengembangan..."
+                                required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

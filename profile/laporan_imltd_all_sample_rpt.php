@@ -108,7 +108,7 @@ $r_tot="SELECT
                                     COUNT(DISTINCT(CASE WHEN `jenisperiksa`='3'  THEN `noKantong` END )) AS syp
                                     from `drapidtest`
                                     where
-                                    month(`tglPeriksa`)='$v_bulan' and year(`tglPeriksa`)='$v_tahun'";
+                                    month(`tgl_tes`)='$v_bulan' and year(`tgl_tes`)='$v_tahun'";
 $r_tot=mysql_fetch_assoc(mysql_query($r_tot));
 
 $e_ir="SELECT
@@ -236,10 +236,10 @@ $r_rr_syp = mysql_num_rows(mysql_query($r_rr_s));
 </div>
 <?php
 $reag_elisa="select
-                                    COUNT(DISTINCT(CASE WHEN `Metode`='chlia' and `jenisPeriksa`='0' THEN `noKantong` end)) as chl_b,
-                                    COUNT(DISTINCT(CASE WHEN `Metode`='chlia' and `jenisPeriksa`='1' THEN `noKantong` end)) as chl_c,
-                                    COUNT(DISTINCT(CASE WHEN `Metode`='chlia' and `jenisPeriksa`='2' THEN `noKantong` end)) as chl_i,
-                                    COUNT(DISTINCT(CASE WHEN `Metode`='chlia' and `jenisPeriksa`='3' THEN `noKantong` end)) as chl_s,
+                                    COUNT(DISTINCT(CASE WHEN `Metode`='clia' and `jenisPeriksa`='0' THEN `noKantong` end)) as chl_b,
+                                    COUNT(DISTINCT(CASE WHEN `Metode`='clia' and `jenisPeriksa`='1' THEN `noKantong` end)) as chl_c,
+                                    COUNT(DISTINCT(CASE WHEN `Metode`='clia' and `jenisPeriksa`='2' THEN `noKantong` end)) as chl_i,
+                                    COUNT(DISTINCT(CASE WHEN `Metode`='clia' and `jenisPeriksa`='3' THEN `noKantong` end)) as chl_s,
 
                                     COUNT(DISTINCT(CASE WHEN `Metode`='elisa' and `jenisPeriksa`='0' THEN `noKantong` end)) as eia_b,
                                     COUNT(DISTINCT(CASE WHEN `Metode`='elisa' and `jenisPeriksa`='1' THEN `noKantong` end)) as eia_c,
@@ -291,7 +291,7 @@ $nat=mysql_fetch_assoc(mysql_query($nat));
 <?php
 $nm_chl="select e.`Metode`, e.`jenisPeriksa`, r.`Nama`,
                                  count(e.`noKantong`) as jml
-                                 from hasilelisa e inner join `reagen` r on r.`kode`=e.`noLot`
+                                 from hasilelisa e inner join `reagen` r on r.`noLot`=e.`noLot`
                                  where
                                  year(e.`tglPeriksa`)='$v_tahun' and
                                  month(e.`tglPeriksa`)='$v_bulan'
@@ -301,7 +301,7 @@ $reag_eia_hbv='';$reag_eia_hcv='';$reag_eia_hiv='';$reag_eia_syp='';
 $result=mysql_query($nm_chl);
 while ($row=mysql_fetch_assoc($result)){
     switch ($row['Metode']){
-        case 'chlia' :
+        case 'clia' :
             switch($row['jenisPeriksa']){
                 case '0': if (strlen($reag_chl_hbv)==0){$reag_chl_hbv = $row['Nama'];}else{$reag_chl_hbv = $reag_chl_hbv.'; '.$row['Nama'];}break;
                 case '1': if (strlen($reag_chl_hcv)==0){$reag_chl_hcv = $row['Nama'];}else{$reag_chl_hcv = $reag_chl_hcv.'; '.$row['Nama'];}break;
@@ -331,7 +331,7 @@ while ($row=mysql_fetch_assoc($nm_nat)){
 }
 $nm_rapid="select e.`jenisperiksa`, r.`Nama`,
                                     count(e.`noKantong`) as jml
-                                    from `drapidtest` e inner join `reagen` r on r.`kode`=e.`nolot`
+                                    from `drapidtest` e inner join `reagen` r on r.`noLot`=e.`nolot`
                                     where
                                     year(e.`tgl_tes`)='$v_tahun' AND MONTH(e.`tgl_tes`)='$v_bulan'
                                     group by e.`jenisperiksa`,r.`Nama`";

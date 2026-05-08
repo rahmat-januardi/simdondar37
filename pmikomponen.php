@@ -4,10 +4,9 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
     echo "<link href='config/adminstyle.css' rel='stylesheet' type='text/css'>
  <center>Untuk mengakses modul, Anda harus login <br>";
     echo "<a href=index.php target=\"_top\"><b>LOGIN</b></a></center>";
-
 }
 if (($_SESSION['leveluser']) == 'komponen') {
-    ?>
+?>
 
 <head>
     <title>SIMDONDAR</title>
@@ -28,8 +27,8 @@ if (($_SESSION['leveluser']) == 'komponen') {
                 include "modul/stock.php";
             if ($rstock == '3')
                 // include "modul/stock1.php";
-            include "modul/cek_kantong_new.php";
-		// include "release/qa_check_kantong.php";
+                include "modul/cek_kantong_new.php";
+            // include "release/qa_check_kantong.php";
             include "config/koneksi.php";
             include "config/fungsi_combobox.php";
             include "config/library.php";
@@ -92,14 +91,11 @@ if (($_SESSION['leveluser']) == 'komponen') {
                 include "modul/entry_suplier.php";
             } elseif ($_GET['module'] == 'permintaan') {
                 include "modul/mod_permintaan.php";
-
             } elseif ($_GET['module'] == 'hasil_lab') {
                 include "modul/hasil_lab.php";
-
             } elseif ($_GET['module'] == 'cetak_label_komponen') {
                 require_once('color.inc');
                 include "modul/cetakLabelPengolahan.php";
-
             } elseif ($_GET['module'] == 'shasil_labl') {
                 require_once('color.inc');
                 include "modul/label_komponen.php";
@@ -123,15 +119,13 @@ if (($_SESSION['leveluser']) == 'komponen') {
                 //include "konfirmasi.php";
             } elseif ($_GET['module'] == 'hlab_bonus') {
                 include "modul/lab_bonus.php";
-
             } elseif ($_GET['module'] == 'pengesahan') {
                 include "modul/pengesahan_rapidtest.php";
-
             }
 
             //elseif ($_GET['module']=='scrossmatch'){
-//                 include "modul/search_crossmatch.php";
-//}
+            //                 include "modul/search_crossmatch.php";
+            //}
             elseif ($_GET['module'] == 'label_cross') {
                 require_once('color.inc');
                 include "modul/label_cross.php";
@@ -144,22 +138,16 @@ if (($_SESSION['leveluser']) == 'komponen') {
             } elseif ($_GET['module'] == 'cetakulang_barcode') {
                 require_once('color.inc');
                 include "modul/cetakulang_barcode.php";
-
             } elseif ($_GET['module'] == 'crossmatch') {
                 include "modul/mod_crossmatch.php";
-
             } elseif ($_GET['module'] == 'user') {
                 include "modul/registrasi.php";
-
             } elseif ($_GET['module'] == 'cetak_id') {
                 include "modul/cetak_id.php";
-
             } elseif ($_GET['module'] == 'transaksi') {
                 include "modul/search_pendonor.php";
-
             } elseif ($_GET['module'] == 'eregistrasi') {
                 include "modul/edit_registrasi.php";
-
             } elseif ($_GET['module'] == 'transaksi_donor') {
                 include "transaksi_donor.php";
             } elseif ($_GET['module'] == 'spengambilan') {
@@ -170,43 +158,30 @@ if (($_SESSION['leveluser']) == 'komponen') {
                 include "modul/pengesahan_ambil_darah.php";
             } elseif ($_GET['module'] == 'aturuser') {
                 include "modul/mod_user.php";
-
             } elseif ($_GET['module'] == 'aturagenda') {
                 include "modul/mod_agendamn.php";
-
             } elseif ($_GET['module'] == 'agendaedit') {
                 include "modul/mod_agendamn1.php";
-
             } elseif ($_GET['module'] == 'updateagenda') {
                 include "modul/mod_updateagenda.php";
-
             } elseif ($_GET['module'] == 'tambahagenda') {
                 include "modul/mod_agendamn2.php";
-
             } elseif ($_GET['module'] == 'entryagenda') {
                 include "modul/mod_insertagenda.php";
-
             } elseif ($_GET['module'] == 'agendahapus') {
                 include "modul/mod_hapusagenda.php";
-
             } elseif ($_GET['module'] == 'agendalist') {
                 include "modul/mod_agendalist.php";
-
             } elseif ($_GET['module'] == 'smsgroup') {
                 include "modul/sms2/sms2.php";
-
             } elseif ($_GET['module'] == 'smsidi') {
                 include "modul/sms2/sms2.php";
-
             } elseif ($_GET['module'] == 'rtransaksi') {
                 include "modul/rtransaksi.php";
-
             } elseif ($_GET['module'] == 'stock') {
                 include "modul/stock.php";
-
             } elseif ($_GET['module'] == 'chek_imltd') {
                 include "modul/chek_imltd.php";
-
             } elseif ($_GET['module'] == 'pindah_titipan') {
                 include "modul/pindah_titipan.php";
             } elseif ($_GET['module'] == 'laborat_konfirmasi') {
@@ -219,7 +194,6 @@ if (($_SESSION['leveluser']) == 'komponen') {
                 include "laborat_distribusi.php";
             } elseif ($_GET['module'] == 'laborat_ujisaring') {
                 include "laborat_ujisaring.php";
-
             } elseif ($_GET['module'] == 'komponen_permintaan') {
                 include "komponen_permintaan.php";
             } elseif ($_GET['module'] == 'laborat_cetak') {
@@ -435,7 +409,6 @@ if (($_SESSION['leveluser']) == 'komponen') {
             //LAPORAN LTTTD BARU & ULANG dari tanggal pengmbilan
             elseif ($_GET['module'] == 'lap_lttd33') {
                 include "laporan/lttd3_aftap_baruulang.php";
-
             } elseif ($_GET['module'] == 'lap_lttd4') {
                 include "laporan/lttd4.php";
             } elseif ($_GET['module'] == 'lap_lttd5') {
@@ -549,19 +522,22 @@ if (($_SESSION['leveluser']) == 'komponen') {
 
 
             /** 29 Maret 2025 */
-            else if ($_GET['module'] == 'permintaan_bdrs_list'){
+            else if ($_GET['module'] == 'permintaan_bdrs_list') {
                 include "modul/permintaan_bdrs_ol_list.php";
                 #include "modul/permintaan_bdrs_ol_list_OLDMETHOD.php";
-            }
-            else if ($_GET['module'] == 'rincian_permintaan_bdrs_ol'){
+            } else if ($_GET['module'] == 'rincian_permintaan_bdrs_ol') {
                 include "modul/rincian_pbol.php";
-            }
-            elseif ($_GET['module']=='form_bdrs_ol'){
-           //include  "modul/form_bdrs_ol.php";
+            } elseif ($_GET['module'] == 'form_bdrs_ol') {
+                //include  "modul/form_bdrs_ol.php";
                 include  "modul/dropping/droppingBdrs.php";
             }
 
-
+            // Sample Panel
+            elseif ($_GET['module'] == 'menu_sampel_panel') {
+                include "imltd/menu_sampel_panel.php";
+            } elseif ($_GET['module'] == 'proses_permintaan_sampel_panel') {
+                include "imltd/proses_permintaan_sampel_panel.php";
+            }
     }
 }
 ?>

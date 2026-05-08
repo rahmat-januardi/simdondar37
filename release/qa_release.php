@@ -135,6 +135,11 @@ if(isset($_POST['Button']))  {
     $id_timbang=$_GET['id'];
     $nkt=$_GET['nokantong'];
     $mode_kembali=$_GET['mode'];
+
+    // ====================== SIAPKAN UPDATE NO SELANG KE STOKKANTONG ======================
+    $noKantongA   = preg_replace('/.$/', 'A', $nkt);
+    $new_noselang = isset($_POST['noselang']) ? trim($_POST['noselang']) : '';
+
     $v_rstatus=$_POST['prolis'];
     $v_rtgl = date("Y-m-d H:i:s");
     $v_rberattimbang  =$_POST['berat'];
@@ -282,6 +287,16 @@ if(isset($_POST['Button']))  {
         $qupd1=mysql_query($qupd);
         echo "PROSES RELEASE PRODUK BERHASIL";
     }
+
+        // ====================== UPDATE NO SELANG KE STOKKANTONG ======================
+        if ($new_noselang !== '') {
+            $sql_selang = "UPDATE stokkantong 
+                           SET noSelang = '" . mysql_real_escape_string($new_noselang) . "' 
+                           WHERE noKantong = '" . mysql_real_escape_string($noKantongA) . "' 
+                           LIMIT 1";
+            mysql_query($sql_selang);
+        }
+        // =============================================================================
 
     //If ($cetak=='1'){
     //    echo "<br> MENCETAK<br>";
@@ -484,6 +499,32 @@ if(isset($_POST['Button']))  {
                 <td valign="top">
                     <table width="100%" cellpadding="1" cellspacing="1">
                         <tr><td style="background-color: mistyrose" colspan="2">Nomor Kantong</td><td><?=$nkt?></td></tr>
+			<tr>
+                                <?php
+                                // ====================== AMBIL NO SELANG DARI KANTONG YANG BERAKHIRAN A (PHP 5.3 Compatible) ======================
+                                $noKantongA = preg_replace('/.$/', 'A', $nkt);   // contoh: 123456B jadi 123456A
+
+                                $no_selang = '';
+
+                                $query_selang = "SELECT noSelang FROM stokkantong 
+                 WHERE noKantong = '" . mysql_real_escape_string($noKantongA) . "' 
+                 LIMIT 1";
+
+                                $result_selang = mysql_query($query_selang);
+
+                                if ($result_selang && mysql_num_rows($result_selang) > 0) {
+                                    $data = mysql_fetch_assoc($result_selang);
+                                    $no_selang = trim($data['noSelang']);   // trim agar bersih
+                                }
+                                ?>
+                                <td style="background-color: mistyrose" colspan="2">Nomor Selang</td>
+                                <td><input type="text"
+                                        name="noselang"
+                                        value="<?php echo htmlspecialchars($no_selang); ?>"
+                                        size="25"
+                                        style="font-family:monospace; font-size:16px;"
+                                        placeholder="Masukkan nomor selang"></td>
+                            </tr>
                         <tr><td style="background-color: mistyrose" colspan="2">Status kantong</td><td><?=$posisikantong.' - '.$statuskantong?> </td></tr>
                         <tr><td style="background-color: mistyrose" colspan="2">Nama Produk</td><td><?=$jeniskomponen.' - '.$namakomponen?></td></tr>
                             <input type='hidden' name='nama_produk' value='<?=$jeniskomponen?>'>

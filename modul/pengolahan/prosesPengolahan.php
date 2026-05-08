@@ -75,12 +75,79 @@ try {
         // logging pada error log php
         // error_log("POST Data: " . print_r($_POST, true));
 
+        // amankan input
+        $value = mysqli_real_escape_string($dbi, $value);
 
-        // Statement untuk insert ke dpengolahan
-        $insert_sql = "INSERT INTO dpengolahan 
-        (NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, SelesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah)
-        SELECT NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah
-        FROM dpengolahan_temp";
+        // ================= CEK DATA =================
+        $cekKantong = "SELECT id FROM dpengolahan WHERE noKantong = '$value' LIMIT 1";
+        $resultCek = $dbi->query($cekKantong);
+
+        if (!$resultCek) {
+            throw new Exception("Query cek gagal: " . $dbi->error);
+        }
+
+        if ($resultCek->num_rows > 0) {
+
+            // ================= UPDATE =================
+            $update_sql = "
+        UPDATE dpengolahan d
+        JOIN dpengolahan_temp t ON d.noKantong = t.noKantong
+        SET 
+            d.NoTrans = t.NoTrans,
+            d.Produk = t.Produk,
+            d.petugas = t.petugas,
+            d.tgl = t.tgl,
+            d.tglPengerjaan = t.tglPengerjaan,
+            d.aPutar = t.aPutar,
+            d.aPisah = t.aPisah,
+            d.aBeku = t.aBeku,
+            d.pcepat = t.pcepat,
+            d.psuhu = t.psuhu,
+            d.pwaktu = t.pwaktu,
+            d.pisah = t.pisah,
+            d.metode = t.metode,
+            d.noseri = t.noseri,
+            d.goldarah = t.goldarah,
+            d.rhesus = t.rhesus,
+            d.jenis = t.jenis,
+            d.up_data = t.up_data,
+            d.shift = t.shift,
+            d.mulaiPutar = t.mulaiPutar,
+            d.selesaiPutar = t.selesaiPutar,
+            d.mulaiPisah = t.mulaiPisah,
+            d.selesaiPisah = t.selesaiPisah,
+            d.mulaiBeku = t.mulaiBeku,
+            d.selesaiBeku = t.selesaiBeku,
+            d.mulai = t.mulai,
+            d.selesai = t.selesai,
+            d.bstatus = t.bstatus,
+            d.bsuhu = t.bsuhu,
+            d.verifikator = t.verifikator,
+            d.musnah = t.musnah
+        WHERE d.noKantong = '$value'
+        LIMIT 1
+    ";
+
+            if (!$dbi->query($update_sql)) {
+                throw new Exception("Gagal UPDATE dpengolahan: " . $dbi->error);
+            }
+        } else {
+
+            // ================= INSERT =================
+            $insert_sql = "
+        INSERT INTO dpengolahan 
+        (NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah)
+        SELECT 
+            NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah
+        FROM dpengolahan_temp
+        WHERE noKantong = '$value'
+        LIMIT 1
+    ";
+
+            if (!$dbi->query($insert_sql)) {
+                throw new Exception("Gagal INSERT dpengolahan: " . $dbi->error);
+            }
+        }
 
         // $selDTemp = "SELECT NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah, CONCAT(DATE(tgl), ' ', TIME(selesai)) AS tglPengolahan  FROM dpengolahan_temp WHERE noKantong = '$noKantong'";
 
@@ -163,8 +230,9 @@ try {
 
                         if ($nkSatelite === 'A') {
                             // Tidak update tgl_Aftap
+                            $cekTglPengerjaan = (empty($tglPengerjaan) || substr($tglPengerjaan, 0, 10) == '0000-00-00') ? $tgl : $tglPengerjaan;
                             if ($stmtUpdate = $dbi->prepare($upStokNoAftap)) {
-                                $stmtUpdate->bind_param('sssss', $ed_produk, $produk, $volum, $tglPengerjaan, $noKantongRes);
+                                $stmtUpdate->bind_param('sssss', $ed_produk, $produk, $volum, $cekTglPengerjaan, $noKantongRes);
                                 if (!$stmtUpdate->execute()) {
                                     error_log("Failed to execute update (no tgl_Aftap): " . $stmtUpdate->error);
                                 }
@@ -176,7 +244,7 @@ try {
                         } else {
                             // Update semua field termasuk tgl_Aftap
                             if ($stmtUpdate = $dbi->prepare($upStokAll)) {
-                                $stmtUpdate->bind_param('ssssss', $tglAftap, $ed_produk, $produk, $volum, $tglPengerjaan, $noKantongRes);
+                                $stmtUpdate->bind_param('ssssss', $tglAftap, $ed_produk, $produk, $volum, $cekTglPengerjaan, $noKantongRes);
                                 if (!$stmtUpdate->execute()) {
                                     error_log("Failed to execute update: " . $stmtUpdate->error);
                                 }

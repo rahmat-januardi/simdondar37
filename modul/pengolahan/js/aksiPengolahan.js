@@ -59,7 +59,7 @@ function handleKeyPress(event) {
           jSPisah,
           jMBeku,
           jSBeku,
-          shift
+          shift,
         );
       } else {
         // showAlert("Nomor Kantong tidak valid. Harap periksa kembali.");
@@ -87,7 +87,8 @@ function insertData(
   jSPisah,
   jMBeku,
   jSBeku,
-  shift
+  shift,
+  force = 0,
 ) {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "modul/pengolahan/pengolahan_temp.php", true);
@@ -99,9 +100,37 @@ function insertData(
       try {
         const response = JSON.parse(xhr.responseText);
         if (response.status === "error") {
-          showModal(response.message); // Tampilkan modal dengan pesan error
+          showModal(response.message);
+        } else if (response.status === "confirm") {
+          // tampilkan modal confirm
+          $("#confirmModalBody").html(response.message);
+          $("#confirmModal").modal("show");
+
+          // tombol YA
+          $("#confirmModalYa")
+            .off("click")
+            .on("click", function () {
+              $("#confirmModal").modal("hide");
+
+              // kirim ulang dengan force=1
+              insertData(
+                nomorKantong,
+                tglPengerjaan,
+                alatPemutaran,
+                alatPemisahan,
+                alatPembekuan,
+                jMPutar,
+                jSPutar,
+                jMPisah,
+                jSPisah,
+                jMBeku,
+                jSBeku,
+                shift,
+                1, // force
+              );
+            });
         } else if (response.status === "success") {
-          window.location.reload(); // Refresh halaman jika sukses
+          window.location.reload();
         }
       } catch (e) {
         console.error("JSON Parse error:", e);
@@ -141,7 +170,9 @@ function insertData(
       "&jamSelesaiBeku=" +
       encodeURIComponent(jSBeku) +
       "&shift=" +
-      encodeURIComponent(shift)
+      encodeURIComponent(shift) +
+      "&force=" +
+      encodeURIComponent(force),
   ); // Pastikan untuk encode parameter
 }
 

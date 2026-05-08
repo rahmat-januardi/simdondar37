@@ -420,6 +420,11 @@ if ($_GET['m']) {
                     $sqlupd_panther = mysqli_query($dbi, $sqlupdkonfirm);
                     if ($sqlupd_panther) {
                         $proses .= ' Konfirm OK; ';
+                        //=======Audit Trail====================================================================================
+                        $log_mdl = 'NAT';
+                        $log_aksi = 'NAT Panther :' . $v_notransaksi . '; ID:' . $d_sampel . '; Parameter:' . $v_parameter . '; Hasil:' . $d_resultstr . '; S/CO:' . $d_resultod;
+                        include('../user_log.php');
+                        //======================================================================================================
                     } else {
                         $proses .= ' Konfirm Err ' . mysqli_error($dbi) . '; ';
                     }
@@ -442,14 +447,14 @@ if ($_GET['m']) {
                                     '$d_resultod', '$d_hasil' ,'$d_tglperiksa' ,'$v_ptgoperator' ,'$v_ptgkonfirmasi', '$v_ptgverifikasi', '$v_reagenlot', 'OTOMATIS', '$v_parameter', '$v_reagened', '$namaudd')";
                             if ($d_hasil == '1') {
                                 if ($d_statuskantong == '1' or $d_statuskantong == '2') {
-                                    $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `Status`='7', `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong' WHERE `noKantong`='$d_sampel';");
+                                    $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `Status`='7', `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong', `nat_di`='$id_udd' WHERE `noKantong`='$d_sampel';");
                                     if ($updkantong) {
                                         $proses .= ' Upd Kantong 7 (reaktif) OK; ';
                                     } else {
                                         $proses .= ' Upd Kantong  7 (reaktif) Err ' . mysqli_error($dbi) . '; ';
                                     }
                                 } else {
-                                    $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong' WHERE `noKantong`='$d_sampel';");
+                                    $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong', `nat_di`='$id_udd' WHERE `noKantong`='$d_sampel';");
                                     if ($updkantong) {
                                         $proses .= 'Upd Status NAT OK; ';
                                     } else {
@@ -465,7 +470,7 @@ if ($_GET['m']) {
                                 }
                                 $proses .= ' status Stokkantong reaktif : 7 ';
                             } else {
-                                $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong' WHERE `noKantong`='$d_sampel';");
+                                $updkantong = mysqli_query($dbi, "UPDATE `stokkantong` SET `tgl_nat`='$d_tglperiksa',`hasilNAT` ='$d_hasilnatkantong', `nat_di`='$id_udd' WHERE `noKantong`='$d_sampel';");
                                 if ($updkantong) {
                                     $proses .= 'Upd Status Nat OK; ';
                                 } else {

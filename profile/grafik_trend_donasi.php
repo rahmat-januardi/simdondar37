@@ -27,7 +27,6 @@ if (empty($v_tahun)){$v_tahun=$tahunini;}
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/js/rgbcolor.js"></script>
     <script type="text/javascript" src="/js/canvg.js"></script>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script>
       function getImgData(chartContainer) {
@@ -70,7 +69,7 @@ if (empty($v_tahun)){$v_tahun=$tahunini;}
         imgContainer.appendChild(img);
       }
     </script>
-    <script type="text/javascript" src="/js/jsapi.js"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 </head>
 <body>
@@ -97,15 +96,14 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
             <script type="text/javascript">
-                //google.load('visualization', '1.0', {packages:['columnchart']});
-                google.charts.load('current', {packages: ['columnchart']});
+                google.load('visualization', '1.0', {packages:['columnchart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = google.visualization.arrayToDataTable([['Bulan', 'Donor Sukarela','Donor Pengganti'],<?php echo $data;?>]);
                     var options = {'title':'',
                         width:750,height:300,
                         left:0,
-                        annotations: {alwaysOutside: true},
+
                         is3D: true,
                         legend:'bottom',
                         titleY:'Jumlah Donor',
@@ -148,8 +146,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
             <script type="text/javascript">
-                //google.load('visualization', '1.0', {packages:['columnchart']});
-                google.charts.load('current', {packages: ['columnchart']});
+                google.load('visualization', '1.0', {packages:['columnchart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = google.visualization.arrayToDataTable([['Bulan', 'Mobile Unt','UDD'],<?php echo $data;?>]);
@@ -200,8 +197,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
             <script type="text/javascript">
-                //google.load('visualization', '1.0', {packages:['columnchart']});
-                google.charts.load('current', {packages: ['columnchart']});
+                google.load('visualization', '1.0', {packages:['columnchart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = google.visualization.arrayToDataTable([['Bulan', 'Donor Lama','Donor Baru'],<?php echo $data;?>]);
@@ -234,54 +230,6 @@ if (isset($_POST['submit'])) {
             </script>
             <?php
             break;
-        case '4';
-            $s4='selected';
-            $title  = "GRAFIK PENYUMBANGAN DARAH PER BULAN TAHUN ".$v_tahun;
-            $query  = mysql_query("SELECT ELT(MONTH(Tgl), 'Januari','Februari','Maret', 'April','Mei','Juni', 'Juli', 'Agustus', 'September','Oktober','November','Desember') As Bulan,
-            COUNT(KodePendonor) As `jml`
-            from htransaksi where year(Tgl)='$v_tahun' and (Pengambilan='0' or Pengambilan='2') group by month(Tgl)");
-            while($res = mysql_fetch_array($query)){
-                $bulan = $res['Bulan'];
-                $jml= $res['jml'];
-                $data .= '["'.$bulan.'",'.$jml.'],';
-            }
-            $data = substr($data,0,(strlen($data)-1));
-            ?>
-            <script type="text/javascript">
-                //google.load('visualization', '1.0', {packages:['columnchart']});
-                google.charts.load('current', {packages: ['columnchart']});
-                google.setOnLoadCallback(drawChart);
-                function drawChart() {
-                    var data = google.visualization.arrayToDataTable([['Bulan', 'Jumlah Donor'],<?php echo $data;?>]);
-                    var options = {'title':'',
-                        width:750,height:300,
-                        left:0,
-                        annotations: {alwaysOutside: true},
-                        bar: {groupWidth: '50%'},
-                        is3D: true,
-                        legend:'bottom',
-                        titleY:'Jumlah Donor',
-                        titleX:'Bulan'
-                    };
-                    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-                    chart.draw(data, options);
-                };
-                google.load('visualization', '1', {packages:['table']});
-                google.setOnLoadCallback(drawTable);
-                function drawTable() {
-                    var data = new google.visualization.DataTable();
-                    data.addColumn('string', 'Bulan');
-                    data.addColumn('number', 'Jumlah');
-                    data.addRows([<?php echo $data; ?>]);
-                    var options = {'title':''};
-                    var table = new google.visualization.Table(document.getElementById('table_div'));
-                    var formatter = new google.visualization.NumberFormat({prefix: '', negativeColor: 'red', negativeParens: true,fractionDigits:0,groupingSymbol:'.'});
-                    formatter.format(data, 1);
-                    table.draw(data, {allowHtml: true, showRowNumber: true});
-                };
-            </script>
-            <?php
-            break;
 
     }
 }
@@ -303,10 +251,9 @@ if (isset($_POST['submit'])) {
                                 <option value="1" <?=$s1?>>Donor Sukarela/Pengganti</option>
                                 <option value="2" <?=$s2?>>Lokasi penyumbangan</option>
                                 <option value="3" <?=$s3?>>Donor Lama/Baru</option>
-                                <option value="4" <?=$s4?>>Total Donasi Bulanan</option>
                             </select>
                             Tahun
-                                <input class="form-control" name="tahun" value="<?=$v_tahun?>" type=text size=10>
+                                <input class="form-control" name="tahun" id="datepicker" value="<?=$v_tahun?>" type=date size=10>
                             </td>
                         </div>
                     </div>

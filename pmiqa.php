@@ -4,9 +4,10 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
    echo "<link href='config/adminstyle.css' rel='stylesheet' type='text/css'>
  <center>Untuk mengakses modul, Anda harus login <br>";
    echo "<a href=index.php target=\"_top\"><b>LOGIN</b></a></center>";
+
 }
 if (($_SESSION['leveluser']) == 'qa') {
-?>
+   ?>
 
    <head>
       <title>SIMDONDAR</title>
@@ -151,20 +152,20 @@ if (($_SESSION['leveluser']) == 'qa') {
             require_once('color.inc');
             include "release/qa_label.php";
 
-            //2025-04-12
-            //include "release/qa_release_label_2025.php";
+//2025-04-12
+	 //include "release/qa_release_label_2025.php";
          } elseif ($module == 'releaseload') {
             include "release/qa_release_inputkantongload.php";
          }
-         //==============================================
+      //==============================================
 
-         elseif ($module == 'ubahstatus_qa') {
+	elseif ($module == 'ubahstatus_qa') {
             include  "release/status_qa.php";
          }
    }
 
    ?>
 
-<?php
+   <?php
 }
 ?>

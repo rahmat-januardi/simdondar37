@@ -187,7 +187,7 @@ $nodokumen = "-";
                 if (($ck['Status'] == "0") or ($ck['Status'] == "1") or ($ck['Status'] == "2") or ($ck['Status'] == "7") or ($ck['Status'] == "4") or ($ck['Status'] == "5")) {
 
 
-                    $sql_tmp = "INSERT INTO `ar_stokkantongtemp` (notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES('$trans','$level','$no_kantong','$ck[jenis]', '$ck[Status]', '$ck[tglTerima]','$ck[volume]', '$ck[merk]', '$kantong_asal', '$ck[produk]','$ck[sah]', '$ck[gol_darah]', '$ck[RhesusDrh]',  '$ck[stat2]', '$ck[StatTempat]','$ck[kodePendonor]', '1', '1', '$kantong_asal', '$ck[tgl_Aftap]', '$ck[kadaluwarsa]', '$ck[tglpengolahan]',  '$ck[mu]', '$alasan', '$today', '$namauser')";
+                    $sql_tmp = "INSERT INTO `ar_stokkantongtemp` (notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES('$trans','$level','$no_kantong','$ck[jenis]', '$ck[Status]', '$ck[tglTerima]','$ck[volume]', '$ck[merk]', '$kantong_asal', '$ck[produk]','$ck[sah]', '$ck[gol_darah]', '$ck[RhesusDrh]',  '$ck[stat2]', '$ck[StatTempat]','$ck[kodePendonor]', '1', '1', '3372', '$ck[tgl_Aftap]', '$ck[kadaluwarsa]', '$ck[tglpengolahan]',  '$ck[mu]', '$alasan', '$today', '$namauser')";
                     //echo "$sql_tmp";
                     $add = mysqli_query($dbi, $sql_tmp);
                     $message = "Nomor <b>$no_kantong Berhasil</b> dimasukkan dalam list";
@@ -275,7 +275,7 @@ $nodokumen = "-";
             $no++;
             //echo "Proses : $no $dta[dst_nokantong]<br>";
             //insert serahterima_detail
-            $q_detail = "INSERT INTO `ar_stokkantong`(notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES ( '$trans','$level','$dta[noKantong]','$dta[jenis]', '$dta[Status]', '$dta[tglTerima]','$dta[volume]', '$dta[merk]', '$kantong_asal', '$dta[produk]','$dta[sah]', '$dta[gol_darah]', '$dta[RhesusDrh]',  '$dta[stat2]', '$dta[StatTempat]','$dta[kodePendonor]', '1', '1', '$kantong_asal', '$dta[tgl_Aftap]', '$dta[kadaluwarsa]', '$dta[tglpengolahan]',  '$dta[mu]', '$dta[alasan_buang]', '$today', '$namauser')";
+            $q_detail = "INSERT INTO `ar_stokkantong`(notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES ( '$trans','$level','$dta[noKantong]','$dta[jenis]', '$dta[Status]', '$dta[tglTerima]','$dta[volume]', '$dta[merk]', '3372', '$dta[produk]','$dta[sah]', '$dta[gol_darah]', '$dta[RhesusDrh]',  '$dta[stat2]', '$dta[StatTempat]','$dta[kodePendonor]', '1', '1', '3372', '$dta[tgl_Aftap]', '$dta[kadaluwarsa]', '$dta[tglpengolahan]',  '$dta[mu]', '$dta[alasan_buang]', '$today', '$namauser')";
 
 
             //echo "$q_detail<br>";

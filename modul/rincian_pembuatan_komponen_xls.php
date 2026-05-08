@@ -114,7 +114,7 @@ $result = mysql_query($query);
             }
             echo "<tr class='text-center'>
                         <td>{$no}</td>
-                        <td>{$row['tgl']}</td>
+                        <td>{$row['tglPengerjaan']}</td>
                         <td>{$row['noKantong']}</td>
                         <td>{$jenis}</td>
                         <td>$row[goldarah] ($row[rhesus])</td>

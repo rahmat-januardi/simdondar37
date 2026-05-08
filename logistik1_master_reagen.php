@@ -42,7 +42,7 @@ $(document).ready(function(){
 		<li><a href="pmilogistik.php?module=penghapusan_kantong"><img src="images/penghapusan_kantong.png" alt=""/></a></li>
 		<li><a href="pmilogistik.php?module=pindah_ke_lab"><img src="images/pindahan_reagen.png" alt=""/></a></li>
 		<!-- <li><a href="pmilogistik.php?module=cetakulang_barcode"><img src="images/cetak_ulang_barcode.png" alt=""/></a></li> -->
-		<li><a href="pmilogistik.php?module=penambahan_kantong_apheresis"><img src="images/kantong_apheresis.png" alt=""/></a></li>
+		<!-- <li><a href="pmilogistik.php?module=penambahan_kantong_apheresis"><img src="images/kantong_apheresis.png" alt=""/></a></li> -->
 		<li><a href="pmilogistik.php?module=kantong_kosong"><img src="images/qa_kantongkosong.png" alt=""/></a></li>
 		<li><a href="pmilogistik.php?module=samplerekap"><img src="images/spuitnew.png" alt=""/></a></li>
 		<li><a href="pmilogistik.php?module=manual_logistik"><img src="images/manual_logistik.png" alt=""/></a></li>

@@ -13,7 +13,7 @@ if ($_SESSION['leveluser'] == 'tatausaha') { ?>
     <title>SIMDONDAR</title>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
   </head>
-  <?php
+<?php
   switch (@$_GET['act']) {
     default:
       if (@$_GET['rstock'] == '1')
@@ -110,24 +110,38 @@ if ($_SESSION['leveluser'] == 'tatausaha') { ?>
       } elseif ($_GET['module'] == 'ganti_passwd') {
         include "modul/ganti_passwd.php";
       } elseif ($_GET['module'] == 'graphdonor') {
-        include "laporan/graph_donor.php";
+        include  "profile/grafik_pendonor.php";
       } elseif ($_GET['module'] == 'graphdonasi') {
-        include "laporan/graph_penyumbangan.php";
+        include  "profile/grafik_donasi.php";
       } elseif ($_GET['module'] == 'graphtrendbulanan') {
-        include "laporan/graph_bulanan.php";
-      } elseif ($_GET['module'] == 'graphtrendbulanan_dsdp') {
-        include "laporan/graph_bulanan_dsdp.php";
-      } elseif ($_GET['module'] == 'graphtrendbulanan_kel') {
-        include "laporan/graph_bulanan_kel.php";
-      } elseif ($_GET['module'] == 'graphtrendbulanan_lokasi') {
-        include "laporan/graph_bulanan_lokasi.php";
-      } elseif ($_GET['module'] == 'graphtrendbulanan_lamabaru') {
-        include "laporan/graph_bulanan_lamabaru.php";
-      } elseif ($_GET['module'] == 'graphtrendbulanan_golabo') {
-        include "laporan/graph_bulanan_golabo.php";
-      } elseif ($_GET['module'] == 'graphtrendbulanan_rh') {
-        include "laporan/graph_bulanan_rh.php";
-      } elseif ($_GET['module'] == 'komponen_musnah') {
+        include  "profile/grafik_trend_donasi.php";
+      } elseif ($_GET['module'] == 'graphpengujian') {
+        include  "profile/grafik_pengujian.php";
+      } elseif ($_GET['module'] == 'graphkomponen') {
+        include  "profile/grafik_komponen.php";
+      } elseif ($_GET['module'] == 'graphdistribusi') {
+        include  "profile/grafik_distribusi.php";
+      }
+      // elseif ($_GET['module'] == 'graphdonor') {
+      //   include "laporan/graph_donor.php";
+      // } elseif ($_GET['module'] == 'graphdonasi') {
+      //   include "laporan/graph_penyumbangan.php";
+      // } elseif ($_GET['module'] == 'graphtrendbulanan') {
+      //   include "laporan/graph_bulanan.php";
+      // } elseif ($_GET['module'] == 'graphtrendbulanan_dsdp') {
+      //   include "laporan/graph_bulanan_dsdp.php";
+      // } elseif ($_GET['module'] == 'graphtrendbulanan_kel') {
+      //   include "laporan/graph_bulanan_kel.php";
+      // } elseif ($_GET['module'] == 'graphtrendbulanan_lokasi') {
+      //   include "laporan/graph_bulanan_lokasi.php";
+      // } elseif ($_GET['module'] == 'graphtrendbulanan_lamabaru') {
+      //   include "laporan/graph_bulanan_lamabaru.php";
+      // } elseif ($_GET['module'] == 'graphtrendbulanan_golabo') {
+      //   include "laporan/graph_bulanan_golabo.php";
+      // } elseif ($_GET['module'] == 'graphtrendbulanan_rh') {
+      //   include "laporan/graph_bulanan_rh.php";
+      // } 
+      elseif ($_GET['module'] == 'komponen_musnah') {
         include "laborat_musnah.php";
       }
 

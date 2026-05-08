@@ -4,18 +4,17 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
     echo "<link href='config/adminstyle.css' rel='stylesheet' type='text/css'>
  <center>Untuk mengakses modul, Anda harus login <br>";
     echo "<a href=index.php target=\"_top\"><b>LOGIN</b></a></center>";
-
 }
 if (($_SESSION['leveluser']) == 'qc') {
-    ?>
+?>
 
-    <head>
-        <title>SIMDONDAR</title>
-        <script language=javascript src="idcard.js" type="text/javascript"> </script>
-        <script language=javascript src="util.js" type="text/javascript"> </script>
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
-    </head>
-    <?php
+<head>
+    <title>SIMDONDAR</title>
+    <script language=javascript src="idcard.js" type="text/javascript"> </script>
+    <script language=javascript src="util.js" type="text/javascript"> </script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<?php
 
     //require_once('color.inc');
     switch ($_GET['act']) {
@@ -81,14 +80,11 @@ if (($_SESSION['leveluser']) == 'qc') {
                 include "modul/entry_suplier.php";
             } elseif ($_GET['module'] == 'permintaan') {
                 include "modul/mod_permintaan.php";
-
             } elseif ($_GET['module'] == 'hasil_lab') {
                 include "modul/hasil_lab.php";
-
             } elseif ($_GET['module'] == 'shasil_labl') {
                 require_once('color.inc');
                 include "modul/label_lab.php";
-
             } elseif ($_GET['module'] == 'shasil_lab') {
                 include "modul/shasil_lab.php";
             } elseif ($_GET['module'] == 'elisa') {
@@ -106,15 +102,13 @@ if (($_SESSION['leveluser']) == 'qc') {
                 //include "konfirmasi.php";
             } elseif ($_GET['module'] == 'hlab_bonus') {
                 include "modul/lab_bonus.php";
-
             } elseif ($_GET['module'] == 'pengesahan') {
                 include "modul/pengesahan_rapidtest.php";
-
             }
 
             //elseif ($_GET['module']=='scrossmatch'){
-//                 include "modul/search_crossmatch.php";
-//}
+            //                 include "modul/search_crossmatch.php";
+            //}
             elseif ($_GET['module'] == 'label_cross') {
                 require_once('color.inc');
                 include "modul/label_cross.php";
@@ -124,22 +118,16 @@ if (($_SESSION['leveluser']) == 'qc') {
                 include "modul/reagen_aktif.php";
             } elseif ($_GET['module'] == 'sarancrossmatch') {
                 include "modul/mod_sarancross.php";
-
             } elseif ($_GET['module'] == 'crossmatch') {
                 include "modul/mod_crossmatch.php";
-
             } elseif ($_GET['module'] == 'user') {
                 include "modul/registrasi.php";
-
             } elseif ($_GET['module'] == 'cetak_id') {
                 include "modul/cetak_id.php";
-
             } elseif ($_GET['module'] == 'transaksi') {
                 include "modul/search_pendonor.php";
-
             } elseif ($_GET['module'] == 'eregistrasi') {
                 include "modul/edit_registrasi.php";
-
             } elseif ($_GET['module'] == 'transaksi_donor') {
                 include "transaksi_donor.php";
             } elseif ($_GET['module'] == 'spengambilan') {
@@ -150,43 +138,30 @@ if (($_SESSION['leveluser']) == 'qc') {
                 include "modul/pengesahan_ambil_darah.php";
             } elseif ($_GET['module'] == 'aturuser') {
                 include "modul/mod_user.php";
-
             } elseif ($_GET['module'] == 'aturagenda') {
                 include "modul/mod_agendamn.php";
-
             } elseif ($_GET['module'] == 'agendaedit') {
                 include "modul/mod_agendamn1.php";
-
             } elseif ($_GET['module'] == 'updateagenda') {
                 include "modul/mod_updateagenda.php";
-
             } elseif ($_GET['module'] == 'tambahagenda') {
                 include "modul/mod_agendamn2.php";
-
             } elseif ($_GET['module'] == 'entryagenda') {
                 include "modul/mod_insertagenda.php";
-
             } elseif ($_GET['module'] == 'agendahapus') {
                 include "modul/mod_hapusagenda.php";
-
             } elseif ($_GET['module'] == 'agendalist') {
                 include "modul/mod_agendalist.php";
-
             } elseif ($_GET['module'] == 'smsgroup') {
                 include "modul/sms2/sms2.php";
-
             } elseif ($_GET['module'] == 'smsidi') {
                 include "modul/sms2/sms2.php";
-
             } elseif ($_GET['module'] == 'rtransaksi') {
                 include "modul/rtransaksi.php";
-
             } elseif ($_GET['module'] == 'stock') {
                 include "modul/stock.php";
-
             } elseif ($_GET['module'] == 'chek_imltd') {
                 include "modul/chek_imltd.php";
-
             } elseif ($_GET['module'] == 'pindah_titipan') {
                 include "modul/pindah_titipan.php";
             } elseif ($_GET['module'] == 'laborat_konfirmasi') {
@@ -197,7 +172,6 @@ if (($_SESSION['leveluser']) == 'qc') {
                 include "laborat_distribusi.php";
             } elseif ($_GET['module'] == 'laborat_ujisaring') {
                 include "laborat_ujisaring.php";
-
             } elseif ($_GET['module'] == 'komponen_permintaan') {
                 include "komponen_permintaan.php";
             } elseif ($_GET['module'] == 'laborat_cetak') {
@@ -406,7 +380,6 @@ if (($_SESSION['leveluser']) == 'qc') {
             //LAPORAN LTTTD BARU & ULANG dari tanggal pengmbilan
             elseif ($_GET['module'] == 'lap_lttd33') {
                 include "laporan/lttd3_aftap_baruulang.php";
-
             } elseif ($_GET['module'] == 'lap_lttd4') {
                 include "laporan/lttd4.php";
             } elseif ($_GET['module'] == 'lap_lttd5') {
@@ -469,7 +442,6 @@ if (($_SESSION['leveluser']) == 'qc') {
                 include "modul/qcffp.php";
             } elseif ($_GET['module'] == 'qctc') {
                 include "modul/qctc.php";
-
             } elseif ($_GET['module'] == 'laborat_qc') {
                 include "modul/laborat_qc.php";
             }
@@ -623,8 +595,12 @@ if (($_SESSION['leveluser']) == 'qc') {
             } elseif ($_GET['module'] == 'density1') {
                 include "QC/qc_beratjenis.php";
             }
-        //==============================================
-
+            //==============================================
+            elseif ($_GET['module'] == 'qc_produk') {
+                include "QC/qc_input_produk.php";
+            } elseif ($_GET['module'] == 'qc_produk_proses') {
+                include "QC/qc_produk_proses.php";
+            }
     }
 }
 ?>

@@ -30,7 +30,18 @@ if (empty($tglakhir)){$tglakhir=$hariini;}
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/js/rgbcolor.js"></script>
     <script type="text/javascript" src="/js/canvg.js"></script>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootsrap337/datepicker/css/bootstrap-datepicker.css" >
+    <script type="text/javascript" src="bootsrap337/datepicker/js/bootstrap-datepicker.min.js"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            $(".datepicker").datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+            });
+        });
+    </script>
 
     <script>
       function getImgData(chartContainer) {
@@ -73,7 +84,7 @@ if (empty($tglakhir)){$tglakhir=$hariini;}
         imgContainer.appendChild(img);
       }
     </script>
-    <script type="text/javascript" src="/js/jsapi.js"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 </head>
 <body>
@@ -104,8 +115,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
             <script type="text/javascript">
-                //google.load('visualization', '1.0', {packages:['columnchart']});
-                google.charts.load('current', {packages: ['columnchart']});
+                google.load('visualization', '1.0', {packages:['columnchart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = google.visualization.arrayToDataTable([['Bulan', 'Sesuai/Cocok','Tidak Sesuai/Tidak Cocok'],<?php echo $data;?>]);
@@ -157,8 +167,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
             <script type="text/javascript">
-                //google.load('visualization', '1.0', {'packages':['corechart']});
-                google.charts.load('current', {packages: ['columnchart']});
+                google.load('visualization', '1.0', {'packages':['corechart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = new google.visualization.DataTable();
@@ -213,8 +222,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));
             ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['columnchart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -269,8 +277,7 @@ if (isset($_POST['submit'])) {
         $data = substr($data,0,(strlen($data)-1));
         ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['columnchart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -325,8 +332,7 @@ if (isset($_POST['submit'])) {
         $data = substr($data,0,(strlen($data)-1));
         ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['columnchart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -381,8 +387,7 @@ if (isset($_POST['submit'])) {
         $data = substr($data,0,(strlen($data)-1));
         ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['columnchart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -437,8 +442,7 @@ if (isset($_POST['submit'])) {
         $data = substr($data,0,(strlen($data)-1));
         ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['corechart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -493,8 +497,7 @@ if (isset($_POST['submit'])) {
         $data = substr($data,0,(strlen($data)-1));
         ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['corechart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -549,8 +552,7 @@ if (isset($_POST['submit'])) {
         $data = substr($data,0,(strlen($data)-1));
         ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['corechart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -605,8 +607,7 @@ if (isset($_POST['submit'])) {
         $data = substr($data,0,(strlen($data)-1));
         ?>
         <script type="text/javascript">
-            //google.load('visualization', '1.0', {'packages':['corechart']});
-            google.charts.load('current', {packages: ['corechart']});
+            google.load('visualization', '1.0', {'packages':['corechart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = new google.visualization.DataTable();
@@ -644,7 +645,7 @@ if (isset($_POST['submit'])) {
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-12 col-sm-12 col-xs-12">
+        <div class="col-lg-12">
             <br>
             <div class="panel with-nav-tabs panel-primary" id="shadow1">
                 <div class="panel-heading">
@@ -667,8 +668,8 @@ if (isset($_POST['submit'])) {
                                 <option value="9" <?=$s9?>>Grafik Reaktif ANTI-HIV</option>
                                 <option value="10" <?=$s10?>>Grafik Reaktif Sifilis</option>
                             </select>
-                            <input class="form-control" name="tgl1" id="datepicker" value="<?=$tglawal?>" type=date size=10>
-                            <input class="form-control" name="tgl2" id="datepicker1" value="<?=$tglakhir?>" type=date size=10>
+                            <input class="form-control datepicker" name="tgl1" id="datepicker" value="<?=$tglawal?>" type=date size=10>
+                            <input class="form-control datepicker" name="tgl2" id="datepicker1" value="<?=$tglakhir?>" type=date size=10>
                             <br><small>Grafik Reaktif memerlukan waktu lama untuk proses query</small>
                         </div>
                     </div>
@@ -677,8 +678,8 @@ if (isset($_POST['submit'])) {
                         <div class="col-lg-12"><h4 style="color: red;font-weight: bold;"><?php echo $title.' '.$title2;?></h4></div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-8 col-sm-8 col-xs-12" id="chart_div"></div>
-                        <div class="col-lg-4 col-sm-4 col-xs-12" id="table_div"></div>
+                        <div class="col-lg-8" id="chart_div"></div>
+                        <div class="col-lg-4" id="table_div"></div>
                     </div>
                 </div>
                 <div class="panel-footer">

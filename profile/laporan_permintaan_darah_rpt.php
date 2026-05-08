@@ -54,10 +54,12 @@ $sql="SELECT
                                 h.`rs` as rskode,
                                 SUM(CASE WHEN h.`bagian`='ANAK' THEN t.`Jumlah` ELSE  0 END ) as anak,
                                 SUM(CASE WHEN h.`bagian`='BEDAH' THEN t.`Jumlah` ELSE  0 END ) as bedah,
-                                SUM(CASE WHEN h.`bagian`='INTERNA' THEN t.`Jumlah` ELSE  0 END ) as interna,
-                                SUM(CASE WHEN h.`bagian`='KEBIDANAN' THEN t.`Jumlah` ELSE  0 END ) as keb,
-                                SUM(CASE WHEN h.`bagian`='THT' THEN t.`Jumlah` ELSE  0 END ) as tht,
-                                SUM(CASE WHEN h.`bagian`='LAIN-LAIN' THEN t.`Jumlah` ELSE  0 END ) as ll
+                                SUM(CASE WHEN h.`bagian`='DALAM' THEN t.`Jumlah` ELSE  0 END ) as interna,
+                                SUM(CASE WHEN h.`bagian`='KANDUNGAN' THEN t.`Jumlah` ELSE  0 END ) as keb,
+                                SUM(CASE WHEN h.`bagian`='HD' THEN t.`Jumlah` ELSE  0 END ) as tht,
+				SUM(CASE WHEN h.`bagian`='HND' THEN t.`Jumlah` ELSE  0 END ) as hnd,
+				SUM(CASE WHEN h.`bagian`='ICU' THEN t.`Jumlah` ELSE  0 END ) as icu,
+                                SUM(CASE WHEN h.`bagian`='Lain - lain' THEN t.`Jumlah` ELSE  0 END ) as ll
                                 FROM `htranspermintaan` h
                                 left join `pasien` p on p.`no_rm`=h.`no_rm`
                                 left join `dtranspermintaan` t on t.`NoForm`=h.`noform` WHERE
@@ -65,13 +67,15 @@ $sql="SELECT
 
 //echo "$sql";
 $qraw=mysql_query($sql);
-$jml_anak=0;
-$jml_bedah=0;
-$jml_interna=0;
-$jml_keb=0;
-$jml_tht=0;
-$jml_ll=0;
-$jml_row=0;
+			$jml_anak=0;
+                        $jml_bedah=0;
+                        $jml_interna=0;
+                        $jml_keb=0;
+                        $jml_tht=0;
+			$jml_hnd=0;
+			$jml_icu=0;
+                        $jml_ll=0;
+                        $jml_row=0;
 
 $qraw1=mysql_fetch_assoc($qraw);
 $jml_anak=$jml_anak + $qraw1['anak'];
@@ -79,70 +83,83 @@ $jml_bedah=$jml_bedah + $qraw1['bedah'];
 $jml_interna=$jml_interna + $qraw1['interna'];
 $jml_keb=$jml_keb + $qraw1['keb'];
 $jml_tht=$jml_tht + $qraw1['tht'];
-$jml_ll=$jml_ll + $qraw1['ll'] + $qraw1['tht'];
-$row_ttl= $jml_anak + $jml_bedah + $jml_interna + $jml_keb + $jml_tht + $jml_ll;
+$jml_hnd=$jml_hnd + $qraw1['hnd'];
+$jml_icu=$jml_icu + $qraw1['icu'];
+$jml_ll=$jml_ll + $qraw1['ll'] + $qraw1['tht'] + $qraw1['hnd'] + $qraw1['icu'];
+$row_ttl= $jml_anak + $jml_bedah + $jml_interna + $jml_keb + $jml_ll;
 //=========================jumlah terpenuhi==============================================
 
 $sql1="SELECT
                                 h.`rs` as rskode,
                                 SUM(CASE WHEN h.`bagian`='ANAK' THEN 1 ELSE  0 END ) as anak1,
                                 SUM(CASE WHEN h.`bagian`='BEDAH' THEN 1 ELSE  0 END ) as bedah1,
-                                SUM(CASE WHEN h.`bagian`='INTERNA' THEN 1 ELSE  0 END ) as interna1,
-                                SUM(CASE WHEN h.`bagian`='KEBIDANAN' THEN 1 ELSE  0 END ) as keb1,
-                                SUM(CASE WHEN h.`bagian`='THT' THEN 1 ELSE  0 END ) as tht1,
-                                SUM(CASE WHEN h.`bagian`='LAIN-LAIN' THEN 1 ELSE  0 END ) as ll1
+                                SUM(CASE WHEN h.`bagian`='DALAM' THEN 1 ELSE  0 END ) as interna1,
+                                SUM(CASE WHEN h.`bagian`='KANDUNGAN' THEN 1 ELSE  0 END ) as keb1,
+                                SUM(CASE WHEN h.`bagian`='HD' THEN 1 ELSE  0 END ) as tht1,
+				SUM(CASE WHEN h.`bagian`='HND' THEN 1 ELSE  0 END ) as hnd1,
+				SUM(CASE WHEN h.`bagian`='ICU' THEN 1 ELSE  0 END ) as icu1,
+                                SUM(CASE WHEN h.`bagian`='Lain - lain' THEN 1 ELSE  0 END ) as ll1
                                 FROM `htranspermintaan` h
                                 inner join `pasien` p on p.`no_rm`=h.`no_rm`
                                 inner join `dtransaksipermintaan` d on d.`NoForm`=h.`noform` WHERE
                                 month(d.`tgl`)='$v_bulan' and year(d.`tgl`)='$v_tahun'";
 //echo "$sql";
 $qraw1=mysql_query($sql1);
-$jml_anak1=0;
-$jml_bedah1=0;
-$jml_interna1=0;
-$jml_keb1=0;
-$jml_tht1=0;
-$jml_ll1=0;
-
+			$jml_anak1=0;
+                        $jml_bedah1=0;
+                        $jml_interna1=0;
+                        $jml_keb1=0;
+                        $jml_tht1=0;
+			$jml_hnd1=0;
+			$jml_icu1=0;
+                        $jml_ll1=0;
 $qraw4=mysql_fetch_assoc($qraw1);
 $jml_anak1=$jml_anak1 + $qraw4['anak1'];
-$jml_bedah1=$jml_bedah1 + $qraw4['bedah1'];
-$jml_interna1=$jml_interna1 + $qraw4['interna1'];
-$jml_keb1=$jml_keb1 + $qraw4['keb1'];
-$jml_tht1=$jml_tht1 + $qraw4['tht1'];
-$jml_ll1=$jml_ll1 + $qraw4['ll1'] + $qraw4['tht1'];
-$row_ttl1 = $jml_anak1 + $jml_bedah1 + $jml_interna1 + $jml_keb1 + $jml_tht1 + $jml_ll1;
+                        $jml_bedah1=$jml_bedah1 + $qraw4['bedah1'];
+                        $jml_interna1=$jml_interna1 + $qraw4['interna1'];
+                        $jml_keb1=$jml_keb1 + $qraw4['keb1'];
+                        $jml_tht1=$jml_tht1 + $qraw4['tht1'];
+			$jml_hnd1=$jml_hnd1 + $qraw4['hnd1'];
+			$jml_icu1=$jml_icu1 + $qraw4['icu1'];
+                        $jml_ll1=$jml_ll1 + $qraw4['ll1'] + $qraw4['tht1'] + $qraw4['hnd1'] + $qraw4['icu1'];
+                        $row_ttl1 = $jml_anak1 + $jml_bedah1 + $jml_interna1 + $jml_keb1 + $jml_ll1;
 //==========================JUMLAH TERPAKAI==================================================
 
 $sql2="SELECT
                             h.`rs` as rskode,
                             SUM(CASE WHEN h.`bagian`='ANAK' THEN 1 ELSE  0 END ) as anak2,
                             SUM(CASE WHEN h.`bagian`='BEDAH' THEN 1 ELSE  0 END ) as bedah2,
-                            SUM(CASE WHEN h.`bagian`='INTERNA' THEN 1 ELSE  0 END ) as interna2,
-                            SUM(CASE WHEN h.`bagian`='KEBIDANAN' THEN 1 ELSE  0 END ) as keb2,
-                            SUM(CASE WHEN h.`bagian`='THT' THEN 1 ELSE  0 END ) as tht2,
-                            SUM(CASE WHEN h.`bagian`='LAIN-LAIN' THEN 1 ELSE  0 END ) as ll2
+                            SUM(CASE WHEN h.`bagian`='DALAM' THEN 1 ELSE  0 END ) as interna2,
+                            SUM(CASE WHEN h.`bagian`='KANDUNGAN' THEN 1 ELSE  0 END ) as keb2,
+                            SUM(CASE WHEN h.`bagian`='HD' THEN 1 ELSE  0 END ) as tht2,
+			    SUM(CASE WHEN h.`bagian`='HND' THEN 1 ELSE  0 END ) as hnd2,
+			    SUM(CASE WHEN h.`bagian`='ICU' THEN 1 ELSE  0 END ) as icu2,
+                            SUM(CASE WHEN h.`bagian`='Lain - lain' THEN 1 ELSE  0 END ) as ll2
                             FROM `htranspermintaan` h
                             inner join `pasien` p on p.`no_rm`=h.`no_rm`
                             inner join `dtransaksipermintaan` d on d.`NoForm`=h.`noform` WHERE
                             month(d.`tgl_keluar`)='$v_bulan' and year(d.`tgl_keluar`)='$v_tahun' AND d.`Status`='0'";
 //echo "$sql";
 $qraw2=mysql_query($sql2);
-$jml_anak2=0;
-$jml_bedah2=0;
-$jml_interna2=0;
-$jml_keb2=0;
-$jml_tht2=0;
-$jml_ll2=0;
+			$jml_anak2=0;
+                        $jml_bedah2=0;
+                        $jml_interna2=0;
+                        $jml_keb2=0;
+                        $jml_tht2=0;
+			$jml_hnd2=0;
+			$jml_icu2=0;
+                        $jml_ll2=0;
 
 $qraw3=mysql_fetch_assoc($qraw2);
 $jml_anak2=$jml_anak2 + $qraw3['anak2'];
-$jml_bedah2=$jml_bedah2 + $qraw3['bedah2'];
-$jml_interna2=$jml_interna2 + $qraw3['interna2'];
-$jml_keb2=$jml_keb2 + $qraw3['keb2'];
-$jml_tht2=$jml_tht2 + $qraw3['tht2'];
-$jml_ll2=$jml_ll2 + $qraw3['ll2'] + $qraw3['tht2'];
-$row_ttl2 = $jml_anak2 + $jml_bedah2 + $jml_interna2 + $jml_keb2 + $jml_tht2 + $jml_ll2;
+                        $jml_bedah2=$jml_bedah2 + $qraw3['bedah2'];
+                        $jml_interna2=$jml_interna2 + $qraw3['interna2'];
+                        $jml_keb2=$jml_keb2 + $qraw3['keb2'];
+                        $jml_tht2=$jml_tht2 + $qraw3['tht2'];
+			$jml_hnd2=$jml_hnd2 + $qraw3['hnd2'];
+			$jml_icu2=$jml_icu2 + $qraw3['icu2'];
+                        $jml_ll2=$jml_ll2 + $qraw3['ll2'] + $qraw3['tht2'] + $qraw3['hnd2'] + $qraw3['icu2'];
+                        $row_ttl2 = $jml_anak2 + $jml_bedah2 + $jml_interna2 + $jml_keb2 + $jml_ll2;
 //PEMENUHAN
 $penuhi_anak=$jml_anak1/$jml_anak*100;
 $penuhi_bedah=$jml_bedah1/$jml_bedah*100;

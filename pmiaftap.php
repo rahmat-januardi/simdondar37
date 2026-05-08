@@ -17,7 +17,7 @@ if (($_SESSION['leveluser']) == 'aftap') { ?>
         <link href="css/style.css" rel="stylesheet" type="text/css" />
     </head>
 
-<?php
+    <?php
     $act = isset($_GET['act']) ? $_GET['act'] : '';
     $rstock = isset($_GET['rstock']) ? $_GET['rstock'] : '';
     switch ($act) {
@@ -64,6 +64,7 @@ if (($_SESSION['leveluser']) == 'aftap') { ?>
             } elseif ($_GET['module'] == 'cetakulang_barcode') {
                 require_once('color.inc');
                 include "modul/cetakulang_barcode.php";
+
             }
             //
             elseif ($_GET['module'] == 'aftap1') {
@@ -76,7 +77,7 @@ if (($_SESSION['leveluser']) == 'aftap') { ?>
                 include "ganti_menu.php";
             } elseif ($_GET['module'] == 'ganti_passwd') {
                 include "modul/ganti_passwd.php";
-            } elseif ($_GET['module'] == 'rekap_minta') {
+             } elseif ($_GET['module'] == 'rekap_minta') {
                 include "logistik/rekap_minta_barang.php";
             } elseif ($_GET['module'] == 'aftap_permintaan') {
                 include "aftap_permintaan.php";
@@ -156,6 +157,7 @@ if (($_SESSION['leveluser']) == 'aftap') { ?>
             //history donor
             elseif ($_GET['module'] == 'history') {
                 include "modul/sejarah_donor.php";
+
             }
             //input transaksi  donor
             elseif ($_GET['module'] == 'transaksi_donor_lama') {
@@ -360,6 +362,8 @@ if (($_SESSION['leveluser']) == 'aftap') { ?>
             } elseif ($_GET['module'] == 'edit_status_kantong') {
                 include "modul/edit_status_kantong.php";
             }
+
+
     }
 }
 ?>

@@ -1,3 +1,194 @@
+06-05-2026|modul/rekap_darah_terima_udd_new.php -> tambah file
+06-05-2026|receptionis_distribusi.php -> update untuk rekap terima darah udd lain
+30-04-2026|penambah tabel sampel_panel pada database
+30-04-2026|mobileonline/view/editdonorlokal.php -> ubah update htransaksi.tempat dari 0 jadi M
+30-04-2026|modul/cek_kantong_new -> update cek kantong baru, update bagian audit trail imltd
+30-04-2026|pmiimltd.php -> penambahan routing ke sampel panel
+30-04-2026|index2_imltd -> penambahan routing ke sampel panel
+30-04-2026|images/sampel_panel.php -> penambahan gambar icon sampel panel
+30-04-2026|imltd/sampel_panel.php -> penambahan modul sampel panel
+30-04-2026|modul/pengolahan/prosesPengolahan.php -> menambahkan update pengolahan_di
+30-04-2026|panther_nat/panther_proses.php -> menambahkan update nat_di
+30-04-2026|architec/imltd_import_arc2000_konfirmasi.php -> menambahkan update periksa_di
+30-04-2026|abs/abs_proccess.php -> menambahkan update konfirmasi_di dan abs_di
+30-04-2026|menambahkan kolom konfirmasi_di, pengolahan_di, periksa_di, nat_di, abs_di pada tabel stokkantong
+29-04-2026|modul/rekap_reaktif.php -> menambahkan rekap imltd reaktif pada level komponen
+29-04-2026|laborat_musnah -> menambahkan rekap imltd pada level komponen
+29-04-2026|modul/pengolahan/pengolahan_temp.php -> menambahkan batas durasi waktu untuk kantong Haemonetics
+28-04-2026|modul/pengolahan/pengolahan.php -> menambahkan opsi beku saja untuk apheresis
+28-04-2026|modul/pengambilan_darahaph23.php -> memperbaiki inputan apheresis (status kantong dan pengesahan)
+27-04-2026|prosesPengolahan.php -> update cek isi tgl pengerjaan, jika tidak ada maka pakai tanggal created pada tglpengolahan
+27-04-2026|pmikasir.php -> update agar histori donor muncul dipencarian seleksi
+23-04-2026|Tambah kolom insp_nosertifikat pada db pmf_inspection
+22-04-2026|logistik1_master_reagen.php -> comment fitur kantong apheresis
+21-04-2026|mobileonline/view/pengambilan.php -> menambahkan Status pada kantong satelit yang berhasil
+21-04-2026|panther_nat/panther_konfirmasi1.php -> update validasi operator, petugas konfirmasi dan pengesah tidak boleh sama
+21-04-2026|panther_nat/panther_proses.php -> memperbaiki hasilNat yang hasil reaktif dan non reaktif terbalik pada penyimpnanan table stokkantong
+20-04-2026|release/qa_release_komponen.php -> update hitung selisih total waktu pada informasi komponen pada release
+20-04-2026|pmikasir2.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|pmiqa.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|pmikomponen.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|pmikonfirmasi.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|pmimobile.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|pmiaftap.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|pmikasir.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|pmip2d2s.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|pmilogistik.php -> update route cek kantong ke modul/cek_kantong_new.php
+20-04-2026|modul/cek_kantong_new.php -> buat modul cek kantong baru
+16-04-2026|musnah/musnah_serah.php -> menambahkan form lampiran berita acara dan lampiran dari instansi limbah
+16-04-2026|musnah/musnah24.php -> take out lampirakan berita acara, instansi dan petugas limbah
+14-04-2026|release/qa_release_komponen.php -> Update Case sensitive nomor kantong jadi kecil semua untuk mengatasi data muncul pada kolom beku, jika menggunakan kantong utama
+14-04-2026|modul/pengolahan/pengolahan_temp.php -> mengubah pengambilan Status pada kantong satelit
+14-04-2026|profile/ -> ganti semua isi folder profile untuk statistik tatausaha
+14-04-2026|images/statistik_trend_donasi.png -> tambah gambar untuk statistik
+14-04-2026|images/statistik_ppdds.png -> tambah gambar untuk statistik
+14-04-2026|images/statistik_pengujian.png -> tambah gambar untuk statistik
+14-04-2026|images/statistik_pengolahan.png -> tambah gambar untuk statistik
+14-04-2026|images/statistik_pendonor.png -> tambah gambar untuk statistik
+14-04-2026|images/statistik_donasi.png -> tambah gambar untuk statistik
+14-04-2026|images/statistik_distribusi.png -> tambah gambar untuk statistik
+14-04-2026|tatausaha_statistik.php -> menambahkan beberapa fitur statistik tatausaha
+14-04-2026|pmitatausaha.php -> menambahkan modul untuk statistik level tatausaha
+10-04-2026|release/qa_release.php -> penambahan textbox noselang pada saat rilis produk
+08-04-2026|modul/history_tim_source.php => decrypt file dan menambahkan tombol tambah catatan baru
+08-04-2026|pmf/images/loop_back_01.png => ubah ikon dari Loop Back jadi Look Back
+07-04-2026| modul/pengolahan/pengolahan_temp.php -> mengatur tglAftap kantong satelit yg diambil dari kantong utama
+06-04-2026| modul/rekap_pembuatan_komponen1.php -> mengubah tanggal input sistem menjadi tanggal pengerjaan
+06-04-2026| modul/rincian_pembuatan_komponen_xls.php -> mengubah tanggal input sistem menjadi tanggal pengerjaan 
+06-04-2026| architec/imltd_import_arc2000_konfirmasi.php -> menambahkan input reagen menjadi 2
+17-03-2026| carinoselang_1.php -> penambahan cari verifikasi_kantong.tanggal_buka 
+17-03-2026| modul/cek_verifikasi_kantong.php -> tambah file php cek verifikasi 
+17-03-2026| modul/simpan_verifikasi_kantong.php -> penambahan simpan tanggal_buka 
+17-03-2026| modul/pengambilan_darah23.php -> penambahan tanggal buka kemasan kantong 
+17-03-2026| mobileonline/carinoselang_1.php -> tambah file php carinoselang_1 
+17-03-2026| mobileonline/view/pengambilan.php -> merubah sistem verifikasi kantong dengan format baru 
+17-03-2026| modul/medical_hbgol.php -> mengganti alasan tolak donor 
+17-03-2026| modul/medical_check_up.php -> mengganti alasan tolak donor
+11-03-2026| modul/pengolahan/pengolahan_temp.php -> mengubah nilai default suhu dan kecepatan alat 
+11-03-2026| modul/pengolahan/pengolahan_data.php -> mengubah nilai default suhu dan kecepatan alat 
+11-03-2026| cari_transaksi.php -> penambahan file pencarian baru untuk edit transaksi pada menu utility
+05-03-2026| abs/abs_proccess.php -> penambahan pengecekan serahterima_detail 
+05-03-2026| abs/abd_manualinput.php -> mengubah waktu berapa lama alert muncul 
+05-03-2026| abs/abs_manualinput.php -> diganti dengan script yg sudah didecrypt 
+05-03-2026| modul/pengolahan/pengolahan_temp.php -> penambahan pengecekan serahterima_detail 
+05-03-2026| modul/pengambilan_darah23.php -> menambahkan idudd untuk disimpan kedalam stokkantong.AsalUTD
+04-03-2026| modul/cari_pendonor2023.php -> memperbaiki pendaftaran donor baru
+02-03-2026| modul/pengolahan/prosesPengolahan.php -> membuat log yg sebelumnya hanya tercatat untuk satu kantong menjadi untuk semua kantong
+26-02-2026| serahterima/sr_aftap_komponen_list_2025.php -> penambahan import dan export json 
+26-02-2026| serahterima/sr_aftap_import_json.php -> tambah file untuk import json 
+26-02-2026| serahterima/sr_aftap_export_json.php -> tambah file untuk export json
+18-02-2026| laborat_distribusi.php -> hide untuk pemusnahan lama, dan diganti yg baru 
+18-02-2026| index2_laborat.php -> menambahkan modul pemusnahan model baru
+18-02-2026| pmilaboratorium.php -> mendecrypt dan menambahkan untuk modul pemusnahan baru 
+18-02-2026| musnah/musnah24.php -> menambahkan parameter untuk level uji silang serasi (laboratorium)
+14-02-2026| ubah struktur db tabel serahterima_detail_tmp kolom dst_suhu dari varchar(3) jadi varchar(6)
+13-02-2026| tambah table release_ulang.sql di db untuk proses pencatatan perubahan status kantong untuk release ulang 
+13-02-2026| release/status_qa.php -> untuk proses update status menjadi bisa release ulang serta membatasi hanya kantong status :1,3,5,6 yang tidak bisa release ulang 
+13-02-2026| release/qa_list_release.php -> update filter pada rekap release 
+13-02-2026| pmiqa.php -> tambah route ubah status 
+13-02-2026| qa_release.php -> tambah route ubah status | release/qa_release_inputkantong.php -> penambahan alert pembatasan release ulang jika status keluar, musnah, dan masih di aftap, serta kadaluwarsa
+11-02-2026| modul/entry_barang.php -> update generate kode otomatis untuk kode barang
+11-02-2026| modul/master_kontak_entry.php -> update generate kode kontak berdasarkan pilihan jenis 
+11-02-2026| modul/master_kontak_edit.php -> update pada edit master kontak dan menggunakan generate kode kontak 
+11-02-2026| modul/ajax_kode_supplier.php -> ajax untuk generate kode otomatis kontak 
+11-02-2026| carinoselang_1.php -> tambah file untuk pencarian noselang 
+11-02-2026| modul/pengambilan_darah23.php -> update untuk verifikasi kantong 
+11-02-2026| modul/simpan_verifikasi_kantong.php -> update untuk verifikasi kantong 
+11-02-2026| modul/medical_hbgol.php -> update untuk Status jadi 1 jika alur fleksibel 
+11-02-2026| modul/medical_check_up.php -> update Status jadi 1 jika alur fleksibel
+11-02-2026| modul/entry_barang.php -> update generate kode otomatis untuk kode barang | modul/master_kontak_entry.php -> update generate kode kontak berdasarkan pilihan jenis | modul/master_kontak_edit.php -> update pada edit master kontak dan menggunakan generate kode kontak | modul/ajax_kode_supplier.php -> ajax untuk generate kode otomatis kontak | carinoselang_1.php -> tambah file untuk pencarian noselang | modul/pengambilan_darah23.php -> update untuk verifikasi kantong | modul/simpan_verifikasi_kantong.php -> update untuk verifikasi kantong | modul/medical_hbgol.php -> update untuk Status jadi 1 jika alur fleksibel | modul/medical_check_up.php -> update Status jadi 1 jika alur fleksibel
+28-01-2026| pmiaftap.php -> menambahkan route modul spengambilan_alat dan pengambilan alat 
+28-01-2026| aftap1.php -> menambahkan route spengambilan_alat 
+28-01-2026| modul/pengambilan_darah_alat.php -> Menampilkan informasi pengambilan darah dari alat 
+28-01-2026| modul/search_transaksi_alat.php -> menampilkan antrian pengambilan darah menggunakan alat
+22-01-2026| release/qa_release_donasi.php -> menambahkan informasi awal dan selesai pengambilan aftap pada halaman kantong dan donasi 
+22-01-2026| release/qa_release_komponen.php -> menambahkan informasi tanggal pengerjaan komponen, informasi alat, waktu mulai dan selesai pemutaran, pemisahan dan pembekuan
+21-01-2026| release/qa_list_berat_kantong_kosong.php -> Menambahkan tombol hapus master berat kantong kosong
+15-01-2026| release/qa_beratjenis.php -> memperbaiki agar bisa dicetak 
+15-01-2026| musnah/musnah24.php -> menambahkan upload berita acara pada pemusnahan kantong 
+15-01-2026| musnah/musnah_list.php -> menambahkan kolom lihat lampiran berita acara pemusnahan 
+15-01-2026| musnah/file_berita_acara -> menambahkan folder untuk menampung upload file berita acara
+14-01-2026| serahterima/sr_aftap_komponen.php -> memperbaiki substr kantongall
+13-01-2026| mobileonline/carinoselang.php -> tambah file 
+13-01-2026| mobileonline/formulir_donor_PDF2.php -> tambah file 
+13-01-2026| mobileonline/idcard_barcode.php -> tambah file 
+13-01-2026| mobileonline/view/rekap_verifikasi_kantong.php -> tambah file 
+13-01-2026| mobileonline/index.php -> menambahkan untuk verifikasi kantong 
+13-01-2026| mobileonline/view/dashboard.php -> menambahkan untuk verifikasi kantong 
+13-01-2026| mobileonline/view/pengambilan.php -> menambahkan untuk verifikasi kantong
+07-01-2026| musnah/musnah_rincian.php -> menambahkan rekap berdasarkan goldar dan jenis kantong
+23-12-2025| serahterima/sr_list.php -> menambah parameter sudah/belum proses pada bagian kgd dan imltd
+19-12-2025| tambah edit_status_kantong.php untuk reset kantong
+9-12-2025| mobileonline/view/medicalmcu.php -> mengganti parameter agar nama dokter tersimpan dan mekanisme tidak lolos agar tidak lanjut ke halaman pengambilan
+03-12-2025| rekap_pembuatan_komponen1.php -> menambahkan volume pada rekap
+02-12-2025| tambah modul/simpan_verifikasi_kantong.php 
+02-12-2025| tambah modul/rekap_verifikasi_kantong.php 
+02-12-2025| tambah images/verifikasiktg.png 
+02-12-2025| pmiaftap.php -> mengganti module rekap_validktg 
+02-12-2025| aftap_rekap.php -> mengganti images dari valid kantong ke verif kantong 
+02-12-2025| modul/pengambilan_darah23.php -> menambah popup untuk verifikasi kantong 
+02-12-2025| tambah verifikasi_kantong.sql pada database 
+02-12-2025| pmiadmin.php -> tambah edit kantong dan edit transaksi 
+02-12-2025| admin_utility.php -> tambah edit kantong dan edit transaksi 
+02-12-2025| tambah cari_kantong.php 
+02-12-2025| tambah modul/cari_donor2.php 
+02-12-2025| tambah modul/cari_kantong2.php 
+02-12-2025| tambah modul/cari_kantong3.php 
+02-12-2025| tambah modul/cari_transaksi2.php 
+02-12-2025| tambah modul/cari_transaksi3.php
+01-12-2025| tpk/cek_sampel.php -> menambahkan lvl aftap agar dapat digunakan di lvl aftap 
+01-12-2025| tpk/jadwalpengambilan.php -> menambahkan lvl aftap agar dapat digunakan di lvl aftap 
+01-12-2025| tpk/rekap_hasilsampel.php -> menambahkan lvl aftap agar dapat digunakan di lvl aftap 
+01-12-2025| tpk/verif_hasilsampel.php -> menambahkan lvl aftap agar dapat digunakan di lvl aftap 
+01-12-2025| release/qa_check_kantong.php -> mengganti bagian NAT dari Greyzone jadi Invalid untuk hasil 2 
+01-12-2025| release/qa_release_periksa.php -> mengganti bagian NAT dari Greyzone jadi Invalid untuk hasil 2
+30-11-2025| pmikasir2.php -> menambahkan tulisan module untuk form_udd, form_uddxls, dan terima_dari_utd_lain
+28-11-2025| nat_manualrekap.php -> mengganti dengan yg baru, karena pada saat hasil Invalid tertulis Grey Zone
+25-11-2025| download-user.php -> menambahkan keterangan user ketika preview dokumen 
+25-11-2025| download-eform -> menambahkan keterangan user ketika download dokumen 
+25-11-2025| lacakdokumen.php -> menambahkan print excel pada halaman lacak dokumen dan memperbaharui tabel dan style 
+25-11-2025| lacakdokumen-excel.php -> membuat generate excel untuk rekap lacak dokumen 
+25-11-2025| Table DB lacakdokumen -> menambahkan kolom keterangan dengan type Varchar(255) 
+25-11-2025| dokumen/download.php -> memperbaharui download dokumen ketika file tidak ada 
+25-11-2025| eksternal.php -> memperbaharui dan menambahkan CRUD di halaman L5 - Eksternal
+21-11-2025| qa_label_cetak.php -> mengubah status NAT yg sebelumnya hardcode jadi membaca dari DB hasilnat
+18-11-2025| abs/abs_proccess.php -> diganti dengan yg baru, menyesuaikan agar dapat save semua data termasuk rhesus dan update data ke stokkantong 
+18-11-2025| abs/abd_manualinput.php -> diganti dengan yg baru, menyesuaikan agar rhesus terbaca 
+18-11-2025| abs/abd_manualrekap.php -> diganti dengan yg baru,
+14-11-2025| rekap_pembuatan_komponen1.php -> menambahkan export excel pada rincian pembuatan komponen 
+14-11-2025| rincian_pembuatan_komponen_xls.php -> menambahkan file baru buat excel di folder modul
+08-11-2025| notifikasi_dokumen.php -> menambahkan menu notifikasi pada Menu MK 
+08-11-2025| pmimk.php -> menambahkan path modul notifikasi_dokumen 
+08-11-2025| index2.php -> mengganti index2 encrypt dengan yang udah di decrypt dan menambahkan iframe notifikasi_dokumen untuk menu MK
+07-11-2025| ubah struktur panjang nokantong pada arstokkantong_temp dari 11 jadi 12 
+07-11-2025| musnah24.php -> menambahkan parameter pemusnahan yg belum ada
+06-11-2025| form_bdrs.php -> menambahkan input status 0 kedalam table kirimbdrs 
+06-11-2025| darahkeluarrs_rincian.php -> mengubah koneksi database dari mysqli_* menjadi mysql_* 
+06-11-2025| terima_bdrs.php -> diperbaiki agar dapat digunakan 
+06-11-2025| lacakdokumen.php -> filter dan hapus data jika pada lacak dokumen tidak ada nama bidang nya 
+06-11-2025| detail_formulir.php -> update query tampilkan data berdasarkan yang aktif 
+06-11-2025| edit_formulir.php -> memperbaharui query update formulir dan insert riwayat perubahan dan bisa update tanpa upload ulang file
+28-10-2025| pengolahan_temp.php -> menghilangkan batasan pada kantong satelit yang belum disahkan oleh IMLTD agar dapat di proses.
+08-10-2025| tambah_bdrs_kasir.php -> membuat agar dapat diakses oleh bagian lain yang terdapat master bdrs
+07-10-2025| qa_label_cetak.php -> pada tgl pengolahan WB dibuat "-" dan yang lainnya sesuai tgl pengolahan
+01-10-2025| pengolahan.php, aksiPengolahan.js, pengolahan_temp.php, pengolahan_data.php, prosesPengolahan.php -> update pengolahan konvensional dan penambahan tanggal pengerjaan serta inputan pembekuan
+22-09-2025| modul/stock.php perubahan wilayah waktu dari Asia/Makassar ke Asia/Jakarta 
+22-09-2025| perbaikan timbang_darah.php agar tampil hasil timbang darahnya
+19-09-2025| pengolahan.php -> Menambahkan inputan Pembekuan dan inputan waktu pengerjaan 
+19-09-2025| aksiPengolahan.js -> menambahkan element beku dan tanggal pengerjaan 
+19-09-2025| pengolahan_temp.php -> menambahkan variabel beku dan waktu pengerjaan pada queri dan membuat kantong B bisa di input meski kantong A sudah keluar 
+19-09-2025| pengolahan_data.php -> menambahkan rumus volume serta inputan beku dan tanggal pengerjaan 
+19-09-2025| prosesPengolahan.php -> menyimpan tanggal pengerjaan ke tanggal pengolahan di stokkantong dan time_aksi pada table user_log 
+19-09-2025| table logbook_f -> menambahkan field "Pembekuan Komponen" 
+19-09-2025| table dpengolahan_temp -> menambahkan field: "aBeku, mulaiBeku, selesaiBeku, tglPengerjaan" 
+19-09-2025| table dpengolahan -> menambahkan field: "tglPengerjaan, aBeku, mulaiBeku, selesaiBeku" 
+19-09-2025| mobileonline/view/pengambilan.php -> Menambahkan save noSelang kedalam stokkantong
+18-09-2025| Comment untuk kantong selain A pada modul/pengolahan/pengolahan_temp.php 
+18-09-2025| release/qa_release.php tambah logika jika user Putri maka tersimpan dr. Srihartaty
+10-09-2025| input_ik.php, input_ika.php, input_formulir, dan detail_pks2.php (Menambahkan Where Aktif pada detail SPO dan penginputan)
+04-09-2025| Penambahan struktur database pada tabel ar_stokkantongtemp dan ar_stokkantong_trans (Untuk Pemusnahan Darah) 
+04-09-2025| Penambahan struktur database pada kolom bagian dan notrans pada ar_stokkantong (Untuk Pemusnahan Darah)
+10-07-2025| ====================== MIGRASI SISTEM KE SIMDONDAR 3.7 ======================
 15-05-2025| BARCODE : penambahan digit HEXA dari 4 ke 5 digit
 10-05-2025| RELEASE : Perubahan label Release.
 19-04-2025| KOMPONEN : UPDATE Penambahan Cetak Label Komponen (pada Pengolahan dan Cetak Label Manual).

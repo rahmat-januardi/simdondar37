@@ -255,7 +255,8 @@ if ($unit == "" || $id === "") {
                                                                           //echo $tambah4."<br>";
 
 
-                                                                          $tambah5    = "UPDATE stokkantong set lama_pengambilan='$lama_pengambilan' WHERE noKantong like '$ono_kantong0%'";
+									  $tambah5    = "UPDATE stokkantong set `lama_pengambilan`='$lama_pengambilan', `Status`='1', `tgl_Aftap`='$tglp1', `gol_darah`='$GolDarah',`RhesusDrh`='$Rhesus'  WHERE noKantong like '$ono_kantong0%'";
+                                                                          //$tambah5    = "UPDATE stokkantong set lama_pengambilan='$lama_pengambilan', Status='1' WHERE noKantong like '$ono_kantong0%'";
                                                                           $sk2query    = mysqli_query($con, $tambah5);
 
 

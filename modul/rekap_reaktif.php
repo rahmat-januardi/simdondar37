@@ -97,26 +97,44 @@ ORDER BY
 
   <br>
   <table class="list border-table-color" id="box-table-b">
-    <tr class="field border-table-color">
-      <th rowspan=2 class="border-table-color"><b>No</b></th>
-      <th rowspan=2 class="border-table-color"><b>Asal Darah</b></th>
-      <th rowspan=2 class="border-table-color"><b>No Donor</b></th>
-      <th rowspan=2 class="border-table-color"><b>No Kantong</b></th>
-      <th rowspan=2 class="border-table-color"><b>Jns Kantong</b></th>
-      <th colspan=5 class="border-table-color"><b>Hasil Periksa</b></th>
-      <th rowspan=2 class="border-table-color"><b>Tgl Aftap</b></th>
-      <th rowspan=2 class="border-table-color"><b>GD</b></th>
-      <th rowspan=2 class="border-table-color"><b>Rh</b></th>
-      <th rowspan=2 class="border-table-color"><b>KGD</b></th>
-    </tr>
-    <tr class="field border-table-color">
-      <th class="border-table-color"><b>HBsAg</b></th>
-      <th class="border-table-color"><b>HCV</b></th>
-      <th class="border-table-color"><b>HIV</b></th>
-      <th class="border-table-color"><b>Syp</b></th>
-      <th class="border-table-color"><b>NAT</b></th>
-    </tr>
-    <?
+    <? if ($_SESSION['leveluser'] == "komponen") { ?>
+      <tr class="field border-table-color">
+        <th rowspan=2 class="border-table-color"><b>No</b></th>
+        <th rowspan=2 class="border-table-color"><b>Asal Darah</b></th>
+        <th rowspan=2 class="border-table-color"><b>No Donor</b></th>
+        <th rowspan=2 class="border-table-color"><b>No Kantong</b></th>
+        <th rowspan=2 class="border-table-color"><b>Jns Kantong</b></th>
+        <th colspan=2 class="border-table-color"><b>Hasil Periksa</b></th>
+        <th rowspan=2 class="border-table-color"><b>Tgl Aftap</b></th>
+        <th rowspan=2 class="border-table-color"><b>GD</b></th>
+        <th rowspan=2 class="border-table-color"><b>Rh</b></th>
+        <th rowspan=2 class="border-table-color"><b>KGD</b></th>
+      </tr>
+      <tr class="field border-table-color">
+        <th class="border-table-color"><b>IMLTD</b></th>
+        <th class="border-table-color"><b>NAT</b></th>
+      </tr>
+    <? } else { ?>
+      <tr class="field border-table-color">
+        <th rowspan=2 class="border-table-color"><b>No</b></th>
+        <th rowspan=2 class="border-table-color"><b>Asal Darah</b></th>
+        <th rowspan=2 class="border-table-color"><b>No Donor</b></th>
+        <th rowspan=2 class="border-table-color"><b>No Kantong</b></th>
+        <th rowspan=2 class="border-table-color"><b>Jns Kantong</b></th>
+        <th colspan=5 class="border-table-color"><b>Hasil Periksa</b></th>
+        <th rowspan=2 class="border-table-color"><b>Tgl Aftap</b></th>
+        <th rowspan=2 class="border-table-color"><b>GD</b></th>
+        <th rowspan=2 class="border-table-color"><b>Rh</b></th>
+        <th rowspan=2 class="border-table-color"><b>KGD</b></th>
+      </tr>
+      <tr class="field border-table-color">
+        <th class="border-table-color"><b>HBsAg</b></th>
+        <th class="border-table-color"><b>HCV</b></th>
+        <th class="border-table-color"><b>HIV</b></th>
+        <th class="border-table-color"><b>Syp</b></th>
+        <th class="border-table-color"><b>NAT</b></th>
+      </tr>
+      <? }
     $no = 1;
     while ($baris = mysql_fetch_assoc($hasil)) {
       $kon = 'Belum';
@@ -165,14 +183,31 @@ ORDER BY
       }
 
       $hNAT = "-";
+      $hNAT_komponen = "-";
       $reak1 = mysql_query("select Hasil,tglPeriksa,OD from hasilnat where noKantong='$baris[nk]' ORDER BY id DESC limit 1");
       if (mysql_num_rows($reak1) == '1') {
         $reak = mysql_fetch_assoc($reak1);
         $hNAT = 'NonReaktif<br>' . $reak[OD];
+        $hNAT_komponen = 'NonReaktif';
         if ($reak[Hasil] == '1') {
           $reaktif = true;
           $hNAT = '<b style="color: #ff0000;">Reaktif<br>' . $reak[OD] . '</b>';
+          $hNAT_komponen = '<b style="color: #ff0000;">Reaktif</b>';
         }
+      }
+
+      // Kesimpulan IMLTD gabungan (HBsAg+HCV+HIV+Syp) tanpa rasio, untuk level komponen
+      $imltdAnyReaktif = ($hHBsAg !== "" && strpos($hHBsAg, 'Reaktif<br>') !== false)
+        || ($hHCV   !== "" && strpos($hHCV,   'Reaktif<br>') !== false)
+        || ($hHIV   !== "" && strpos($hHIV,   'Reaktif<br>') !== false)
+        || ($hSyp   !== "" && strpos($hSyp,   'Reaktif<br>') !== false);
+      $imltdAda = ($hHBsAg !== "" || $hHCV !== "" || $hHIV !== "" || $hSyp !== "");
+      if (!$imltdAda) {
+        $hIMTLD_komponen = "-";
+      } elseif ($imltdAnyReaktif) {
+        $hIMTLD_komponen = '<b style="color: #ff0000;">Reaktif</b>';
+      } else {
+        $hIMTLD_komponen = 'NonReaktif';
       }
 
       switch ($ckt[jenis]) {
@@ -223,32 +258,56 @@ ORDER BY
         }
       }
       if ($reaktif && $found) {
-    ?>
-        <tr class="record border-table-color">
-          <td class="border-table-color">
-            <div align="center">
-              <font size="2">
-                <?= $no ?>
-              </font>
-            </div>
-          </td>
-          <td class="border-table-color" style="text-align: left;"><?= $instansi ?></td>
-          <td class="border-table-color" style="text-align: left;"><?= $cpd[Kode] ?></td>
-          <td class="border-table-color">
-            <a href="modul/detail_nonreaktif.php?nokan=<?= $baris[nk] ?>&width=430&height=250" class="thickbox"><?= $baris[nk] ?></a>
-          </td>
-          <td class="border-table-color"><?= $jenis . ' ' . $ckt[metoda] ?></td>
-          <td class="border-table-color"><?= $hHBsAg ?></td>
-          <td class="border-table-color"><?= $hHCV ?></td>
-          <td class="border-table-color"><?= $hHIV ?></td>
-          <td class="border-table-color"><?= $hSyp ?></td>
-          <td class="border-table-color"><?= $hNAT ?></td>
-          <td class="border-table-color"><?= $baris[ta] ?></td>
-          <td class="border-table-color"><?= $baris[gd] ?></td>
-          <td class="border-table-color"><?= $baris[rh] ?></td>
-          <td class="border-table-color"><?= $kon ?></td>
-        </tr>
-    <? $no++;
+        if ($_SESSION['leveluser'] == "komponen") {
+      ?>
+          <tr class="record border-table-color">
+            <td class="border-table-color">
+              <div align="center">
+                <font size="2">
+                  <?= $no ?>
+                </font>
+              </div>
+            </td>
+            <td class="border-table-color" style="text-align: left;"><?= $instansi ?></td>
+            <td class="border-table-color" style="text-align: left;"><?= $cpd[Kode] ?></td>
+            <td class="border-table-color">
+              <a href="modul/detail_nonreaktif.php?nokan=<?= $baris[nk] ?>&width=430&height=250" class="thickbox"><?= $baris[nk] ?></a>
+            </td>
+            <td class="border-table-color"><?= $jenis . ' ' . $ckt[metoda] ?></td>
+            <td class="border-table-color"><?= $hIMTLD_komponen ?></td>
+            <td class="border-table-color"><?= $hNAT_komponen ?></td>
+            <td class="border-table-color"><?= $baris[ta] ?></td>
+            <td class="border-table-color"><?= $baris[gd] ?></td>
+            <td class="border-table-color"><?= $baris[rh] ?></td>
+            <td class="border-table-color"><?= $kon ?></td>
+          </tr>
+        <? } else { ?>
+          <tr class="record border-table-color">
+            <td class="border-table-color">
+              <div align="center">
+                <font size="2">
+                  <?= $no ?>
+                </font>
+              </div>
+            </td>
+            <td class="border-table-color" style="text-align: left;"><?= $instansi ?></td>
+            <td class="border-table-color" style="text-align: left;"><?= $cpd[Kode] ?></td>
+            <td class="border-table-color">
+              <a href="modul/detail_nonreaktif.php?nokan=<?= $baris[nk] ?>&width=430&height=250" class="thickbox"><?= $baris[nk] ?></a>
+            </td>
+            <td class="border-table-color"><?= $jenis . ' ' . $ckt[metoda] ?></td>
+            <td class="border-table-color"><?= $hHBsAg ?></td>
+            <td class="border-table-color"><?= $hHCV ?></td>
+            <td class="border-table-color"><?= $hHIV ?></td>
+            <td class="border-table-color"><?= $hSyp ?></td>
+            <td class="border-table-color"><?= $hNAT ?></td>
+            <td class="border-table-color"><?= $baris[ta] ?></td>
+            <td class="border-table-color"><?= $baris[gd] ?></td>
+            <td class="border-table-color"><?= $baris[rh] ?></td>
+            <td class="border-table-color"><?= $kon ?></td>
+          </tr>
+    <? }
+        $no++;  // dipindah ke luar if/else agar nomor naik untuk semua level
       }
     } ?>
   </table>

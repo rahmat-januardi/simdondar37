@@ -134,7 +134,7 @@ switch ($v_bulan){
                                     COUNT(DISTINCT(CASE WHEN `jenisperiksa`='3'  THEN `noKantong` END )) AS syp
                                     from `drapidtest`
                                     where
-                                    month(`tglPeriksa`)='$v_bulan' and year(`tglPeriksa`)='$v_tahun'";
+                                    month(`tgl_tes`)='$v_bulan' and year(`tgl_tes`)='$v_tahun'";
                         $r_tot=mysql_fetch_assoc(mysql_query($r_tot));
 
                         $e_ir="SELECT
@@ -153,7 +153,7 @@ switch ($v_bulan){
                                     COUNT(DISTINCT(CASE WHEN `jenisperiksa`='3'  THEN `noKantong` END )) AS syp
                                     from `drapidtest`
                                     where
-                                    `Hasil`='0' AND month(`tglPeriksa`)='$v_bulan' AND year(`tglPeriksa`)='$v_tahun'";
+                                    `Hasil`='0' AND month(`tgl_tes`)='$v_bulan' AND year(`tgl_tes`)='$v_tahun'";
                         $r_ir=mysql_fetch_assoc(mysql_query($r_ir));
                         $e_rr_b ="SELECT `noKantong`, COUNT(*) as Pengulangan FROM `hasilelisa`
                                 WHERE `jenisPeriksa`='0' AND  `Hasil`='1' AND month(`tglPeriksa`)='$v_bulan' AND year(`tglPeriksa`)='$v_tahun'
@@ -263,10 +263,10 @@ switch ($v_bulan){
                     <div class="col-lg-8">
                         <?php
                         $reag_elisa="select
-                                    COUNT(DISTINCT(CASE WHEN `Metode`='chlia' and `jenisPeriksa`='0' THEN `noKantong` end)) as chl_b,
-                                    COUNT(DISTINCT(CASE WHEN `Metode`='chlia' and `jenisPeriksa`='1' THEN `noKantong` end)) as chl_c,
-                                    COUNT(DISTINCT(CASE WHEN `Metode`='chlia' and `jenisPeriksa`='2' THEN `noKantong` end)) as chl_i,
-                                    COUNT(DISTINCT(CASE WHEN `Metode`='chlia' and `jenisPeriksa`='3' THEN `noKantong` end)) as chl_s,
+                                    COUNT(DISTINCT(CASE WHEN `Metode`='clia' and `jenisPeriksa`='0' THEN `noKantong` end)) as chl_b,
+                                    COUNT(DISTINCT(CASE WHEN `Metode`='clia' and `jenisPeriksa`='1' THEN `noKantong` end)) as chl_c,
+                                    COUNT(DISTINCT(CASE WHEN `Metode`='clia' and `jenisPeriksa`='2' THEN `noKantong` end)) as chl_i,
+                                    COUNT(DISTINCT(CASE WHEN `Metode`='clia' and `jenisPeriksa`='3' THEN `noKantong` end)) as chl_s,
 
                                     COUNT(DISTINCT(CASE WHEN `Metode`='elisa' and `jenisPeriksa`='0' THEN `noKantong` end)) as eia_b,
                                     COUNT(DISTINCT(CASE WHEN `Metode`='elisa' and `jenisPeriksa`='1' THEN `noKantong` end)) as eia_c,
@@ -318,7 +318,7 @@ switch ($v_bulan){
                         <?php
                         $nm_chl="select e.`Metode`, e.`jenisPeriksa`, r.`Nama`,
                                  count(e.`noKantong`) as jml
-                                 from hasilelisa e inner join `reagen` r on r.`kode`=e.`noLot`
+                                 from hasilelisa e inner join `reagen` r on r.`noLot`=e.`noLot`
                                  where
                                  year(e.`tglPeriksa`)='$v_tahun' and
                                  month(e.`tglPeriksa`)='$v_bulan'
@@ -328,7 +328,7 @@ switch ($v_bulan){
                         $result=mysql_query($nm_chl);
                         while ($row=mysql_fetch_assoc($result)){
                             switch ($row['Metode']){
-                                case 'chlia' :
+                                case 'clia' :
                                     switch($row['jenisPeriksa']){
                                         case '0': if (strlen($reag_chl_hbv)==0){$reag_chl_hbv = $row['Nama'];}else{$reag_chl_hbv = $reag_chl_hbv.'; '.$row['Nama'];}break;
                                         case '1': if (strlen($reag_chl_hcv)==0){$reag_chl_hcv = $row['Nama'];}else{$reag_chl_hcv = $reag_chl_hcv.'; '.$row['Nama'];}break;
@@ -358,7 +358,7 @@ switch ($v_bulan){
                         }
                         $nm_rapid="select e.`jenisperiksa`, r.`Nama`,
                                     count(e.`noKantong`) as jml
-                                    from `drapidtest` e inner join `reagen` r on r.`kode`=e.`nolot`
+                                    from `drapidtest` e inner join `reagen` r on r.`noLot`=e.`nolot`
                                     where
                                     year(e.`tgl_tes`)='$v_tahun' AND MONTH(e.`tgl_tes`)='$v_bulan'
                                     group by e.`jenisperiksa`,r.`Nama`";

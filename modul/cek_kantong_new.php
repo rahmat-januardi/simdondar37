@@ -2526,7 +2526,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                   user_log.modul, user_log.aksi_user, `user`.nama_lengkap
                            FROM user_log
                            LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND user_log.aksi_user LIKE '%IMLTD%' AND user_log.modul='IMLTD'
+                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND (user_log.aksi_user LIKE '%IMLTD%' OR user_log.modul='IMLTD')
                            ORDER BY time_aksi ASC";
                                 $a = mysqli_query($dbi, $a1);
                                 while ($komp = mysqli_fetch_assoc($a)) {

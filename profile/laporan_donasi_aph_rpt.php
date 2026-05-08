@@ -116,7 +116,7 @@ $q_dnr="SELECT
                                 sum(case when (LENGTH(h.`KodePendonor`)>0) then 1 else 0 end ) as total
                                 FROM `htransaksi` h inner join `pendonor` p on p.`Kode`=h.`KodePendonor`
                                 WHERE
-                                year(h.`Tgl`)='$v_tahun' and month(h.`Tgl`)='$v_bulan' and h.`pengambilan`='0' and h.`caraAmbil` in ('1','2','3','4')";
+                                year(h.`Tgl`)='$v_tahun' and month(h.`Tgl`)='$v_bulan' and h.`pengambilan`='0' and h.`caraAmbil` in ('1','2','3','4','5')";
 $q_dnr=mysql_fetch_assoc(mysql_query($q_dnr));
 ?>
 <table class="list" border="1" cellpadding="2" cellspacing="2" width="100%" style="border-collapse:collapse">
@@ -193,7 +193,7 @@ $q_dnr=mysql_fetch_assoc(mysql_query($q_dnr));
 </div>
 <?php
 $$q_btl="SELECT
-                                count(case when (h.`pengambilan`='2') then 1 END) AS a7_gagal_aftap,
+                                count(case when (h.`pengambilan`='2' and h.`ketBatal`='12') then 1 END) AS a7_gagal_aftap,
                                 count(case when (h.`pengambilan`='1' and h.`ketBatal`='0') then 1 END) AS a4_tensi_rendah,
                                 count(case when (h.`pengambilan`='1' and h.`ketBatal`='1') then 1 END) AS a4_tensi_tinggi,
                                 count(case when (h.`pengambilan`='1' and (h.`ketBatal`='2' or h.`ketBatal`='3')) then 1 END) AS a3_hb_rendah,
@@ -289,8 +289,10 @@ $terima=mysql_query($terima);
     <tbody>
     <?php
     $no=0;
+    $total=0;
     while ($t_udd=mysql_fetch_assoc($terima)){
         $no++;
+	$total1=$total+$t_udd['jumlah'];
         echo '<tr>';
         echo '<td align="right">'.$no.'.</td>';
         echo '<td align="left">'.$t_udd[nama].'</td>';
@@ -310,7 +312,7 @@ $terima=mysql_query($terima);
     <tr>
         <td></td>
         <td align="center">Jumlah</td>
-        <td align="center">0</td>
+        <td align="center"><?php echo $total1;?></td>
     </tr>
     </tfoot>
 </table>

@@ -193,7 +193,7 @@ $q_dnr=mysql_fetch_assoc(mysql_query($q_dnr));
 </div>
 <?php
 $q_btl="SELECT
-                                count(case when (h.`pengambilan`='2') then 1 END) AS a7_gagal_aftap,
+				count(case when (h.`pengambilan`='2' and h.`ketBatal`='12') then 1 END) AS a7_gagal_aftap,
                                 count(case when (h.`pengambilan`='1' and h.`ketBatal`='0') then 1 END) AS a4_tensi_rendah,
                                 count(case when (h.`pengambilan`='1' and h.`ketBatal`='1') then 1 END) AS a4_tensi_tinggi,
                                 count(case when (h.`pengambilan`='1' and (h.`ketBatal`='2' or h.`ketBatal`='3')) then 1 END) AS a3_hb_rendah,
@@ -289,8 +289,10 @@ $terima=mysql_query($terima0);
     <tbody>
     <?php
     $no=0;
+    $total=0;
     while ($t_udd=mysql_fetch_assoc($terima)){
         $no++;
+	$total1=$total+$t_udd['jumlah'];
         echo '<tr>';
         echo '<td align="right">'.$no.'.</td>';
         echo '<td align="left">'.$t_udd[nama].'</td>';
@@ -310,7 +312,7 @@ $terima=mysql_query($terima0);
     <tr>
         <td></td>
         <td align="center">Jumlah</td>
-        <td align="center">0</td>
+        <td align="center"><?php echo $total1;?></td>
     </tr>
     </tfoot>
 </table>

@@ -28,6 +28,18 @@ if (empty($tglakhir)){$tglakhir=$hariini;}
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/js/rgbcolor.js"></script>
     <script type="text/javascript" src="/js/canvg.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootsrap337/datepicker/css/bootstrap-datepicker.css" >
+    <script type="text/javascript" src="bootsrap337/datepicker/js/bootstrap-datepicker.min.js"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            $(".datepicker").datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+            });
+        });
+    </script>
 
     <script>
       function getImgData(chartContainer) {
@@ -70,7 +82,7 @@ if (empty($tglakhir)){$tglakhir=$hariini;}
         imgContainer.appendChild(img);
       }
     </script>
-    <script type="text/javascript" src="/js/jsapi.js"></script>
+   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
 </head>
 <body>
@@ -190,11 +202,8 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));$s7="selected";break;
     }
     ?>
-        <script src="https://www.gstatic.com/charts/loader.js"></script>
         <script type="text/javascript">
-          //google.load('visualization', '1.0', {'packages':['corechart']});
-          google.charts.load('current', {packages: ['corechart']});
-
+          google.load('visualization', '1.0', {'packages':['corechart']});
           google.setOnLoadCallback(drawChart);
           function drawChart() {
             var data = new google.visualization.DataTable();
@@ -206,8 +215,7 @@ if (isset($_POST['submit'])) {
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                 chart.draw(data, options);
           };
-          //google.load('visualization', '1', {packages:['table']});
-          google.charts.load('current', {packages: ['table']});
+          google.load('visualization', '1', {packages:['table']});
           google.setOnLoadCallback(drawTable);
           function drawTable() {
             var data = new google.visualization.DataTable();
@@ -247,8 +255,8 @@ if (isset($_POST['submit'])) {
                                 <option value="9" <?=$s9?>>Pie Chart Alasan Penolakan Donor</option>
                             </select>
                             Dari tanggal:
-                                <input class="form-control" name="tgl1" id="datepicker" value="<?=$tglawal?>" type=date size=10>
-                                <input class="form-control" name="tgl2" id="datepicker1" value="<?=$tglakhir?>" type=date size=10>
+                                <input class="form-control datepicker" name="tgl1" id="datepicker" value="<?=$tglawal?>" type=date size=10>
+                                <input class="form-control datepicker" name="tgl2" id="datepicker1" value="<?=$tglakhir?>" type=date size=10>
                         </div>
                     </div>
 

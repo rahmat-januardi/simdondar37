@@ -124,12 +124,14 @@ switch ($v_bulan){
                                         </thead>
                                         <tbody>
                                         <?php
+                                        //lisis masuk pada masalah pada penyimpanan
                                             $rkp="SELECT
                                                     COUNT( CASE WHEN `alasan_buang`='0' THEN 1 ELSE NULL END) AS  'Gagal_Pengambilan_Darah',
-                                                    COUNT( CASE WHEN `alasan_buang` in ('4','6','11') THEN 1 ELSE NULL END) AS  'IMLTD_Reaktif',
+                                                    COUNT( CASE WHEN `alasan_buang` in ('4','6','11','20','21') THEN 1 ELSE NULL END) AS  'IMLTD_Reaktif',
                                                     COUNT( CASE WHEN `alasan_buang`='2' THEN 1 ELSE NULL END) AS  'Kedaluwarsa',
-                                                    COUNT( CASE WHEN `alasan_buang`='15' THEN 1 ELSE NULL END) AS  'Masalah_dalam_proses_produksi',
-                                                    COUNT( CASE WHEN `alasan_buang` in ('1','3','5','7','8','9','10','12','13','14','16') THEN 1 ELSE NULL END) AS  'Penyebab_Lain'
+                                                    COUNT( CASE WHEN `alasan_buang` in ('10','13','9','15') THEN 1 ELSE NULL END) AS  'Masalah_dalam_proses_produksi',
+                                                    COUNT( CASE WHEN `alasan_buang`='1' THEN 1 ELSE NULL END) AS  'Masalah_dalam_proses_penyimpanan',
+                                                    COUNT( CASE WHEN `alasan_buang` in ('3','5','7','8','12','14','16','17','18','19') THEN 1 ELSE NULL END) AS  'Penyebab_Lain'
                                                     FROM `ar_stokkantong`
                                                     WHERE
                                                     month(`tgl_buang`)='$v_bulan' and year(`tgl_buang`)='$v_tahun'";

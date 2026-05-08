@@ -50,13 +50,31 @@ $tampil = "0";
     //$nkt=$_POST[noktg];
     $sql = "select * from stokkantong where upper(nokantong)=upper('$nkt')";
     $stokkantong = mysql_fetch_assoc(mysql_query($sql));
-    if (($stokkantong['Status'] == '2') and ($stokkantong['sah'] == '1') and ($stokkantong['statKonfirmasi'] == '1') and (strtotime($stokkantong['kadaluwarsa']) >= time()) and ($stokkantong['hasil_release'] == '0')) {
+
+    $tglPengolahan = strtotime($stokkantong['tglpengolahan']);
+    $tglAftap      = strtotime($stokkantong['tgl_Aftap']);
+    $tglExp        = strtotime($stokkantong['kadaluwarsa']);
+    if (
+        $stokkantong['Status'] == '2' &&
+        $stokkantong['sah'] == '1' &&
+        $stokkantong['statKonfirmasi'] == '1' &&
+        $tglExp !== false && $tglExp >= time() &&
+        $tglPengolahan !== false &&
+        $tglAftap !== false &&
+        $tglPengolahan >= $tglAftap
+    ) {
         $URL = "pmiqa.php?module=release_proses&nokantong=$nkt&mode=2";
         header("Location: $URL");
     } else {
         if ($stokkantong['hasil_release'] == '1') {
             $statuskantong = 'Sudah di release';
-	    echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+        } else if ($stokkantong['statKonfirmasi'] != '1') {
+            $statuskantong = 'kantong belum dikonfirmasi';
+            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+        } else if ($tglPengolahan <= $tglAftap) {
+            $statuskantong = 'Tanggal Pengolahan Masih belum benar';
+            echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
         } else {
             switch ($stokkantong['Status']) {
                 case '0':

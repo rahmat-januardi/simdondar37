@@ -3,7 +3,12 @@ require_once('clogin.php');
 require_once('config/db_connect.php');
 $namauser = $_SESSION[namauser];
 $namalengkap = $_SESSION[nama_lengkap];
+
+$utd = mysql_fetch_array(mysql_query("SELECT * FROM utd WHERE `aktif`=1"));
+$idudd = $utd['id'];
+
 ?>
+
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
 <link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
 <script type="text/javascript" language="javascript" src="js/jquery-1.5.2.min.js"></script>
@@ -53,6 +58,15 @@ $namalengkap = $_SESSION[nama_lengkap];
 			}
 		}
 
+		function show1b(idreag) {
+			var campur = document.getElementById('reagen1b').value;
+			var reag1b = campur.split('*');
+			document.getElementById('nama1b').innerHTML = reag1b[0] ? reag1b[0] : '-';
+			document.getElementById('nolot1b').innerHTML = reag1b[1] ? reag1b[1] : '-';
+			document.getElementById('kode1b').innerHTML = reag1b[2] ? reag1b[2] : '-';
+			document.getElementById('sisa_test1b').innerHTML = reag1b[3] ? reag1b[3] : '-';
+		}
+
 		function show2(idreag) {
 			var campur = document.getElementById('reagen2').value;
 			var reag2 = campur.split('*');
@@ -63,6 +77,15 @@ $namalengkap = $_SESSION[nama_lengkap];
 			if (reag2[0] === "") {
 				alert("Reagen HCV harus dipilih");
 			}
+		}
+
+		function show2b(idreag) {
+			var campur = document.getElementById('reagen2b').value;
+			var reag2b = campur.split('*');
+			document.getElementById('nama2b').innerHTML = reag2b[0] ? reag2b[0] : '-';
+			document.getElementById('nolot2b').innerHTML = reag2b[1] ? reag2b[1] : '-';
+			document.getElementById('kode2b').innerHTML = reag2b[2] ? reag2b[2] : '-';
+			document.getElementById('sisa_test2b').innerHTML = reag2b[3] ? reag2b[3] : '-';
 		}
 
 		function show3(idreag) {
@@ -77,6 +100,15 @@ $namalengkap = $_SESSION[nama_lengkap];
 			}
 		}
 
+		function show3b(idreag) {
+			var campur = document.getElementById('reagen3b').value;
+			var reag3b = campur.split('*');
+			document.getElementById('nama3b').innerHTML = reag3b[0] ? reag3b[0] : '-';
+			document.getElementById('nolot3b').innerHTML = reag3b[1] ? reag3b[1] : '-';
+			document.getElementById('kode3b').innerHTML = reag3b[2] ? reag3b[2] : '-';
+			document.getElementById('sisa_test3b').innerHTML = reag3b[3] ? reag3b[3] : '-';
+		}
+
 		function show4(idreag) {
 			var campur = document.getElementById('reagen4').value;
 			var reag4 = campur.split('*');
@@ -87,6 +119,15 @@ $namalengkap = $_SESSION[nama_lengkap];
 			if (reag4[0] === "") {
 				alert("Reagen Trep harus dipilih");
 			}
+		}
+
+		function show4b(idreag) {
+			var campur = document.getElementById('reagen4b').value;
+			var reag4b = campur.split('*');
+			document.getElementById('nama4b').innerHTML = reag4b[0] ? reag4b[0] : '-';
+			document.getElementById('nolot4b').innerHTML = reag4b[1] ? reag4b[1] : '-';
+			document.getElementById('kode4b').innerHTML = reag4b[2] ? reag4b[2] : '-';
+			document.getElementById('sisa_test4b').innerHTML = reag4b[3] ? reag4b[3] : '-';
 		}
 
 		function nextproses(jmlperiksa) {
@@ -165,6 +206,15 @@ $namalengkap = $_SESSION[nama_lengkap];
 		$reag1_kode = $reag1_ex[2];
 		$reag1_tes = $reag1_ex[3];
 		$reag1_ed = $reag1_ex[4];
+
+		// Reagen 1b (opsional ke-2 HBsAg)
+		$reagen1b = $_POST['reagen1b'];
+		$reag1b_ex = explode('*', $reagen1b);
+		$reag1b_kode = isset($reag1b_ex[2]) ? $reag1b_ex[2] : '';
+		$reag1b_tes  = isset($reag1b_ex[3]) ? intval($reag1b_ex[3]) : 0;
+		$reag1b_ed   = isset($reag1b_ex[4]) ? $reag1b_ex[4] : '';
+		$reag1_tes_total = intval($reag1_tes) + ($reagen1b !== '-' ? $reag1b_tes : 0);
+
 		$reagen2 = $_POST[reagen2];
 		$reag2_ex = explode('*', $reagen2);
 		$reag2_nama = $reag2_ex[0];
@@ -172,6 +222,15 @@ $namalengkap = $_SESSION[nama_lengkap];
 		$reag2_kode = $reag2_ex[2];
 		$reag2_tes = $reag2_ex[3];
 		$reag2_ed = $reag2_ex[4];
+
+		// Reagen 2b (opsional ke-2 HCV)
+		$reagen2b = $_POST['reagen2b'];
+		$reag2b_ex = explode('*', $reagen2b);
+		$reag2b_kode = isset($reag2b_ex[2]) ? $reag2b_ex[2] : '';
+		$reag2b_tes  = isset($reag2b_ex[3]) ? intval($reag2b_ex[3]) : 0;
+		$reag2b_ed   = isset($reag2b_ex[4]) ? $reag2b_ex[4] : '';
+		$reag2_tes_total = intval($reag2_tes) + ($reagen2b !== '-' ? $reag2b_tes : 0);
+
 		$reagen3 = $_POST[reagen3];
 		$reag3_ex = explode('*', $reagen3);
 		$reag3_nama = $reag3_ex[0];
@@ -179,6 +238,15 @@ $namalengkap = $_SESSION[nama_lengkap];
 		$reag3_kode = $reag3_ex[2];
 		$reag3_tes = $reag3_ex[3];
 		$reag3_ed = $reag3_ex[4];
+
+		// Reagen 3b (opsional ke-2 HIV)
+		$reagen3b = $_POST['reagen3b'];
+		$reag3b_ex = explode('*', $reagen3b);
+		$reag3b_kode = isset($reag3b_ex[2]) ? $reag3b_ex[2] : '';
+		$reag3b_tes  = isset($reag3b_ex[3]) ? intval($reag3b_ex[3]) : 0;
+		$reag3b_ed   = isset($reag3b_ex[4]) ? $reag3b_ex[4] : '';
+		$reag3_tes_total = intval($reag3_tes) + ($reagen3b !== '-' ? $reag3b_tes : 0);
+
 		$reagen4 = $_POST[reagen4];
 		$reag4_ex = explode('*', $reagen4);
 		$reag4_nama = $reag4_ex[0];
@@ -186,22 +254,30 @@ $namalengkap = $_SESSION[nama_lengkap];
 		$reag4_kode = $reag4_ex[2];
 		$reag4_tes = $reag4_ex[3];
 		$reag4_ed = $reag4_ex[4];
+
+		// Reagen 4b (opsional ke-2 Syphilis)
+		$reagen4b = $_POST['reagen4b'];
+		$reag4b_ex = explode('*', $reagen4b);
+		$reag4b_kode = isset($reag4b_ex[2]) ? $reag4b_ex[2] : '';
+		$reag4b_tes  = isset($reag4b_ex[3]) ? intval($reag4b_ex[3]) : 0;
+		$reag4b_ed   = isset($reag4b_ex[4]) ? $reag4b_ex[4] : '';
+		$reag4_tes_total = intval($reag4_tes) + ($reagen4b !== '-' ? $reag4b_tes : 0);
 		//END OF PREPARE REAGENSIA
 
 		//Cek Reagen dan pilihan Petugas
-		if (intval($reag1_tes) < $jml_test_b) {
+		if (intval($reag1_tes_total) < $jml_test_b) {
 			$lanjut = 1;
 			echo "<SCRIPT>alert('Konfirmasi tidak bisa dilanjutkan. Jumlah test reagensia HBsAg tidak mencukupi.');</SCRIPT>";
 		}
-		if (intVal($reag2_tes) < $jml_test_c) {
+		if (intVal($reag2_tes_total) < $jml_test_c) {
 			$lanjut = 2;
 			echo "<SCRIPT>alert('Konfirmasi tidak bisa dilanjutkan. Jumlah test reagensia HCV tidak mencukupi');</SCRIPT>";
 		}
-		if (intval($reag3_tes) < $jml_test_i) {
+		if (intval($reag3_tes_total) < $jml_test_i) {
 			$lanjut = 3;
 			echo "<SCRIPT>alert('Konfirmasi tidak bisa dilanjutkan. Jumlah test reagensia HIV tidak mencukupi');</SCRIPT>";
 		}
-		if (intval($reag4_tes) < $jml_test_s) {
+		if (intval($reag4_tes_total) < $jml_test_s) {
 			$lanjut = 4;
 			echo "<SCRIPT>alert('Konfirmasi tidak bisa dilanjutkan. Jumlah test reagensia Treponema tidak mencukupi');</SCRIPT>";
 		}
@@ -443,14 +519,14 @@ $namalengkap = $_SESSION[nama_lengkap];
 					if ($aksi_konfirm == "1") {
 						echo "-sehat-";
 						//UPDATE KANTONG A-F
-						$cek = "UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong='$nkantong_a'";
-						$upd_ktga = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong='$nkantong_a'");
-						$upd_ktgb = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong='$nkantong_b'");
-						$upd_ktgc = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong='$nkantong_c'");
-						$upd_ktgd = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong='$nkantong_d'");
-						$upd_ktge = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong='$nkantong_e'");
-						$upd_ktgf = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong='$nkantong_f'");
-						$upd_ktgg = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong='$nkantong_g'");
+						$cek = "UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong='$nkantong_a'";
+						$upd_ktga = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong='$nkantong_a'");
+						$upd_ktgb = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong='$nkantong_b'");
+						$upd_ktgc = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong='$nkantong_c'");
+						$upd_ktgd = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong='$nkantong_d'");
+						$upd_ktge = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong='$nkantong_e'");
+						$upd_ktgf = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong='$nkantong_f'");
+						$upd_ktgg = mysql_query("UPDATE stokkantong set Status='2',hasil='2',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong='$nkantong_g'");
 						//=======Audit Trial====================================================================================
 						$log_mdl = 'IMLTD';
 						$log_aksi = 'IMLTD Architech :' . $notrans . '; ID:' . $nkantong_a . '- Sehat';
@@ -513,7 +589,7 @@ $namalengkap = $_SESSION[nama_lengkap];
 						$sq_htransaksi = mysql_query("UPDATE htransaksi SET `status_test`='0', `hasil_hbsag`='$ckl_b', `hasil_hcv`='$ckl_c', `hasil_hiv`='$ckl_i', `hasil_syp`='$ckl_s', `tglperiksa`='$today' where NoKantong='$sample'");
 						echo "- Htrans -";
 						//6.4 Update Stok kantong
-						$tambah3s = mysql_query("UPDATE stokkantong set Status='7',hasil='4',sah='1',StatTempat='1', tglperiksa='$today1' where NoKantong like '$kantong_0%'");
+						$tambah3s = mysql_query("UPDATE stokkantong set Status='7',hasil='4',sah='1',StatTempat='1', tglperiksa='$today1', periksa_di='$idudd' where NoKantong like '$kantong_0%'");
 						//=======Audit Trial====================================================================================
 						$log_mdl = 'IMLTD';
 						$log_aksi = 'IMLTD Architech :' . $notrans . '; Kantong Rusak Reaktif dimusnahkan:' . $kantong_0 . '(A,B,....';
@@ -600,15 +676,38 @@ $namalengkap = $_SESSION[nama_lengkap];
 			echo "PENGGUNAAN REAGAN TERGANTUNG JUMLAH SAMPLE YANG DIKONFIRMASI (TIDAK DITUNDA)<br>";
 			echo "Penggunaan Reagan Hbsag : $jmlreag_b ; Reagan HCV : $jmlreag_c ;Reagan HIV : $jmlreag_i ;Reagan Trep : $jmlreag_s<br>";
 
-			$sq_rb = mysql_query("update reagen set jumTest=jumTest-$jmlreag_b where kode='$reag1_kode'");
-			//echo "update reagen set jumTest=jumTest-$jmlreag_b where kode='$koder_b'<br>";
-			$sq_rc = mysql_query("update reagen set jumTest=jumTest-$jmlreag_c where kode='$reag2_kode'");
-			//echo "update reagen set jumTest=jumTest-$jmlreag_b where kode='$koder_c'<br>";
-			$sq_ri = mysql_query("update reagen set jumTest=jumTest-$jmlreag_i where kode='$reag3_kode'");
-			//echo "update reagen set jumTest=jumTest-$jmlreag_b where kode='$koder_i'<br>";
-			$sq_rs = mysql_query("update reagen set jumTest=jumTest-$jmlreag_s where kode='$reag4_kode'");
-			//echo "update reagen set jumTest=jumTest-$jmlreag_b where kode='$koder_s'<br>";
-			echo "<meta http-equiv='refresh' content='2;url=architec/imltd_rpt_konfirm1?notrans=$notrans'>";
+			// Deduct HBsAg: reagen1 habis dulu, sisa ke reagen1b
+			$pakai_b1 = min($jmlreag_b, intval($reag1_tes));
+			$pakai_b1b = ($reagen1b !== '-') ? max(0, $jmlreag_b - $pakai_b1) : 0;
+			$sq_rb = mysql_query("update reagen set jumTest=jumTest-$pakai_b1 where kode='$reag1_kode'");
+			if ($reagen1b !== '-' && $pakai_b1b > 0) {
+				mysql_query("update reagen set jumTest=jumTest-$pakai_b1b where kode='$reag1b_kode'");
+			}
+
+			// Deduct HCV: reagen2 habis dulu, sisa ke reagen2b
+			$pakai_c2 = min($jmlreag_c, intval($reag2_tes));
+			$pakai_c2b = ($reagen2b !== '-') ? max(0, $jmlreag_c - $pakai_c2) : 0;
+			$sq_rc = mysql_query("update reagen set jumTest=jumTest-$pakai_c2 where kode='$reag2_kode'");
+			if ($reagen2b !== '-' && $pakai_c2b > 0) {
+				mysql_query("update reagen set jumTest=jumTest-$pakai_c2b where kode='$reag2b_kode'");
+			}
+
+			// Deduct HIV: reagen3 habis dulu, sisa ke reagen3b
+			$pakai_i3 = min($jmlreag_i, intval($reag3_tes));
+			$pakai_i3b = ($reagen3b !== '-') ? max(0, $jmlreag_i - $pakai_i3) : 0;
+			$sq_ri = mysql_query("update reagen set jumTest=jumTest-$pakai_i3 where kode='$reag3_kode'");
+			if ($reagen3b !== '-' && $pakai_i3b > 0) {
+				mysql_query("update reagen set jumTest=jumTest-$pakai_i3b where kode='$reag3b_kode'");
+			}
+
+			// Deduct Syphilis: reagen4 habis dulu, sisa ke reagen4b
+			$pakai_s4 = min($jmlreag_s, intval($reag4_tes));
+			$pakai_s4b = ($reagen4b !== '-') ? max(0, $jmlreag_s - $pakai_s4) : 0;
+			$sq_rs = mysql_query("update reagen set jumTest=jumTest-$pakai_s4 where kode='$reag4_kode'");
+			if ($reagen4b !== '-' && $pakai_s4b > 0) {
+				mysql_query("update reagen set jumTest=jumTest-$pakai_s4b where kode='$reag4b_kode'");
+			}
+			echo "<meta http-equiv='refresh' content='2;url=architec/imltd_rpt_konfirm1.php?notrans=$notrans'>";
 		}
 	}
 
@@ -658,6 +757,7 @@ $namalengkap = $_SESSION[nama_lengkap];
 			</tr>
 			<tr class="field">
 				<td align="left" colspan=4>
+					<small style="color:#888">Reagen 1:</small><br>
 					<select name="reagen1" id="reagen1" onChange="show1(1)">
 						<option value="-">-</option>
 						<?
@@ -668,8 +768,20 @@ $namalengkap = $_SESSION[nama_lengkap];
 							</option><?
 									} ?>
 					</select>
+					<br><small style="color:#888">Reagen 2 (opsional):</small><br>
+					<select name="reagen1b" id="reagen1b" onChange="show1b(1)">
+						<option value="-">- (tidak digunakan) -</option>
+						<?
+						$jreagen1b = mysql_query("select * from reagen where Nama like '%Architect%Hbsag%' and aktif='1' and jumTest>0");
+						while ($jreagen11b = mysql_fetch_assoc($jreagen1b)) { ?>
+							<option value="<?= $jreagen11b[Nama] ?>*<?= $jreagen11b[noLot] ?>*<?= $jreagen11b[kode] ?>*<?= $jreagen11b[jumTest] ?>*<?= $jreagen11b[tglKad] ?>">
+								<?= $jreagen11b[Nama] ?>-<?= $jreagen11b[noLot] ?>-<?= $jreagen11b[jumTest] ?> T
+							</option><?
+									} ?>
+					</select>
 				</td>
 				<td align="left" colspan=4>
+					<small style="color:#888">Reagen 1:</small><br>
 					<select name="reagen2" id="reagen2" onChange="show2(2)">
 						<option value="-">-</option>
 						<?
@@ -680,8 +792,20 @@ $namalengkap = $_SESSION[nama_lengkap];
 							</option><?
 									} ?>
 					</select>
+					<br><small style="color:#888">Reagen 2 (opsional):</small><br>
+					<select name="reagen2b" id="reagen2b" onChange="show2b(2)">
+						<option value="-">- (tidak digunakan) -</option>
+						<?
+						$jreagen2b = mysql_query("select * from reagen where Nama like '%Architect%hcv%' and aktif='1' and jumTest>0");
+						while ($jreagen22b = mysql_fetch_assoc($jreagen2b)) { ?>
+							<option value="<?= $jreagen22b[Nama] ?>*<?= $jreagen22b[noLot] ?>*<?= $jreagen22b[kode] ?>*<?= $jreagen22b[jumTest] ?>*<?= $jreagen22b[tglKad] ?>">
+								<?= $jreagen22b[Nama] ?>-<?= $jreagen22b[noLot] ?>-<?= $jreagen22b[jumTest] ?> T
+							</option><?
+									} ?>
+					</select>
 				</td>
 				<td align="left" colspan=4>
+					<small style="color:#888">Reagen 1:</small><br>
 					<select name="reagen3" id="reagen3" onChange="show3(3)">
 						<option value="-">-</option>
 						<?
@@ -692,8 +816,20 @@ $namalengkap = $_SESSION[nama_lengkap];
 							</option><?
 									} ?>
 					</select>
+					<br><small style="color:#888">Reagen 2 (opsional):</small><br>
+					<select name="reagen3b" id="reagen3b" onChange="show3b(3)">
+						<option value="-">- (tidak digunakan) -</option>
+						<?
+						$jreagen3b = mysql_query("select * from reagen where Nama like '%Architect%HIV%' and aktif='1' and jumTest>0");
+						while ($jreagen33b = mysql_fetch_assoc($jreagen3b)) { ?>
+							<option value="<?= $jreagen33b[Nama] ?>*<?= $jreagen33b[noLot] ?>*<?= $jreagen33b[kode] ?>*<?= $jreagen33b[jumTest] ?>*<?= $jreagen33b[tglKad] ?>">
+								<?= $jreagen33b[Nama] ?>-<?= $jreagen33b[noLot] ?>-<?= $jreagen33b[jumTest] ?> T
+							</option><?
+									} ?>
+					</select>
 				</td>
 				<td align="left" colspan=4>
+					<small style="color:#888">Reagen 1:</small><br>
 					<select name="reagen4" id="reagen4" onChange="show4(4)">
 						<option value="-">-</option>
 						<?
@@ -701,6 +837,17 @@ $namalengkap = $_SESSION[nama_lengkap];
 						while ($jreagen11 = mysql_fetch_assoc($jreagen1)) { ?>
 							<option value="<?= $jreagen11[Nama] ?>*<?= $jreagen11[noLot] ?>*<?= $jreagen11[kode] ?>*<?= $jreagen11[jumTest] ?>*<?= $jreagen11[tglKad] ?>">
 								<?= $jreagen11[Nama] ?>-<?= $jreagen11[noLot] ?>-<?= $jreagen11[jumTest] ?> T
+							</option><?
+									} ?>
+					</select>
+					<br><small style="color:#888">Reagen 2 (opsional):</small><br>
+					<select name="reagen4b" id="reagen4b" onChange="show4b(4)">
+						<option value="-">- (tidak digunakan) -</option>
+						<?
+						$jreagen4b = mysql_query("select * from reagen where Nama like '%Architect%Syphilis%' and aktif='1' and jumTest>0");
+						while ($jreagen44b = mysql_fetch_assoc($jreagen4b)) { ?>
+							<option value="<?= $jreagen44b[Nama] ?>*<?= $jreagen44b[noLot] ?>*<?= $jreagen44b[kode] ?>*<?= $jreagen44b[jumTest] ?>*<?= $jreagen44b[tglKad] ?>">
+								<?= $jreagen44b[Nama] ?>-<?= $jreagen44b[noLot] ?>-<?= $jreagen44b[jumTest] ?> T
 							</option><?
 									} ?>
 					</select>
@@ -754,6 +901,56 @@ $namalengkap = $_SESSION[nama_lengkap];
 				</td>
 				<td>
 					<div id="sisa_test4"></div>
+				</td>
+			</tr>
+			<tr class="record" style="font-size:11px; color:#666;">
+				<td><small>Reagen 2:</small>
+					<div id="nama1b"></div>
+				</td>
+				<td>
+					<div id="kode1b"></div>
+				</td>
+				<td>
+					<div id="nolot1b"></div>
+				</td>
+				<td>
+					<div id="sisa_test1b"></div>
+				</td>
+				<td><small>Reagen 2:</small>
+					<div id="nama2b"></div>
+				</td>
+				<td>
+					<div id="kode2b"></div>
+				</td>
+				<td>
+					<div id="nolot2b"></div>
+				</td>
+				<td>
+					<div id="sisa_test2b"></div>
+				</td>
+				<td><small>Reagen 2:</small>
+					<div id="nama3b"></div>
+				</td>
+				<td>
+					<div id="kode3b"></div>
+				</td>
+				<td>
+					<div id="nolot3b"></div>
+				</td>
+				<td>
+					<div id="sisa_test3b"></div>
+				</td>
+				<td><small>Reagen 2:</small>
+					<div id="nama4b"></div>
+				</td>
+				<td>
+					<div id="kode4b"></div>
+				</td>
+				<td>
+					<div id="nolot4b"></div>
+				</td>
+				<td>
+					<div id="sisa_test4b"></div>
 				</td>
 			</tr>
 		</table>

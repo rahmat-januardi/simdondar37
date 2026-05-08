@@ -1,380 +1,501 @@
-<HEAD>
-<script language=javascript src="./js/terimakantong_luar.js" type="text/javascript"> </script>
-<script language=javascript src="./js/util.js" type="text/javascript"> </script>
-<script language="javascript" src="./js/AjaxRequest.js" type="text/javascript"></script>
-<link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
-<style type="text/css">
-@import url("css/stok_darah.css");
-</style>
- <script language="javascript">
-function setFocus(){document.tambahkantong.nokantong.focus();}
-</script>
-<SCRIPT LANGUAGE="JavaScript" SRC="CalendarPopup.js"></SCRIPT>
-
-<!-- This javascript is only used for the show/hide source on my example page.
-     It is not used by the Calendar Popup script -->
-<SCRIPT LANGUAGE="JavaScript" SRC="common.js"></SCRIPT>
-
-<!-- This prints out the default stylehseets used by the DIV style calendar.
-     Only needed if you are using the DIV style popup -->
-<SCRIPT LANGUAGE="JavaScript">document.write(getCalendarStyles());</SCRIPT>
-
-<!-- These styles are here only as an example of how you can over-ride the default
-     styles that are included in the script itself. -->
-<SCRIPT LANGUAGE="JavaScript" ID="jscal1xx">
-var cal1xx = new CalendarPopup("testdiv1");
-cal1xx.showNavigationDropdowns();
-</SCRIPT>
-<link href="modul/thickbox/thickbox.css" rel="stylesheet" type="text/css" />
- <script language="javascript" src="js/jquery.js"></script>
- <script language="javascript" src="modul/thickbox/thickbox.js"></script>
-	
-<script language="javascript">
-function selectutd(id){
-	  $('input[@name=kodeSup]').val(id);
-		tb_remove(); 
-}
-</script>
-<STYLE>
-        .TESTcpYearNavigation,
-        .TESTcpMonthNavigation
-                        {
-                        background-color:#6677DD;
-                        text-align:center;
-                        vertical-align:center;
-                        text-decoration:none;
-                        color:#FFFFFF;
-                        font-weight:bold;
-                        }
-        .TESTcpDayColumnHeader,
-        .TESTcpYearNavigation,
-        .TESTcpMonthNavigation,
-        .TESTcpCurrentMonthDate,
-        .TESTcpCurrentMonthDateDisabled,
- .TESTcpOtherMonthDate,
-        .TESTcpOtherMonthDateDisabled,
-        .TESTcpCurrentDate,
-        .TESTcpCurrentDateDisabled,
-        .TESTcpTodayText,
-        .TESTcpTodayTextDisabled,
-        .TESTcpText
-                        {
-                        font-family:arial;
-                        font-size:8pt;
-                        }
-        TD.TESTcpDayColumnHeader
-                        {
-                        text-align:right;
-                        border:solid thin #6677DD;
-                        border-width:0 0 1 0;
-                        }
-        .TESTcpCurrentMonthDate,
-        .TESTcpOtherMonthDate,
-        .TESTcpCurrentDate
-                        {
-                        text-align:right;
-                        text-decoration:none;
-                        }
-        .TESTcpCurrentMonthDateDisabled,
-        .TESTcpOtherMonthDateDisabled,
-        .TESTcpCurrentDateDisabled
-                        {
-                        color:#D0D0D0;
-       text-align:right;
-                        text-decoration:line-through;
-                        }
-        .TESTcpCurrentMonthDate
-                        {
-                        color:#6677DD;
-                        font-weight:bold;
-                        }
-        .TESTcpCurrentDate
-                        {
-                        color: #FFFFFF;
-                        font-weight:bold;
-                        }
-        .TESTcpOtherMonthDate
-                        {
-                        color:#808080;
-                        }
-        TD.TESTcpCurrentDate
-                        {
-                        color:#FFFFFF;
-                        background-color: #6677DD;
-                        border-width:1;
-                        border:solid thin #000000;
-                        }
-        TD.TESTcpCurrentDateDisabled
-                        {
-                        border-width:1;
-                        border:solid thin #FFAAAA;
-                        }
-TD.TESTcpTodayText,
-        TD.TESTcpTodayTextDisabled
-                        {
-                        border:solid thin #6677DD;
-                        border-width:1 0 0 0;
-                        }
-        A.TESTcpTodayText,
-        SPAN.TESTcpTodayTextDisabled
-                        {
-                        height:20px;
-                        }
-        A.TESTcpTodayText
-                        {
-                        color:#6677DD;
-                        font-weight:bold;
-                        }
-        SPAN.TESTcpTodayTextDisabled
-                        {
-                        color:#D0D0D0;
-                        }
-        .TESTcpBorder
-                        {
-                        border:solid thin #6677DD;
-                        }
-</STYLE>
-<style>
-   body,table,input{
-   	font-size:12px
-   }
- </style>
-</HEAD>
-<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.6.custom.css" rel="stylesheet" />
-
-<?
+<?php
 include('clogin.php');
 include('config/db_connect.php');
-$namauser=$_SESSION[namauser];
-$nkt1="";
 
-if (isset($_POST[submit])) {
-	for ($i=0; $i<sizeof($_POST[merk1]); $i++) {
-		$nmr=$_POST[merk1][$i]; 				$njn=$_POST[jenis];	
-		$nst=$_POST[status]; 					$nvo=$_POST[volume1][$i];
-		$nkt=$_POST[no_kantong][$i];				$nkt1 .=$nkt.",";
-		$nkt=ereg_replace("[^A-Za-z0-9]", "",strtoupper($nkt));	$prod=$_POST[produk1][$i];
-		$today=date("Y-m-d");				        $utd=$_POST[kodeSup];
-		$gol=$_POST[gol1][$i];					$tglaftap=$_POST[tglaftap1][$i];
-		$exp=$_POST[tglkad1][$i];				$rh=$_POST[rh1][$i];
-		$olah=$_POST[tglolah1][$i];				$pengirim=$_POST[pengirim1][$i];
-		$njn2=$_POST[jenis2];
-$tambah=mysql_query("insert into registrasi_qc (nokantong,produk,volume,goldarah,rhesus,tgl,tglaftap,tgl_pengolahan,kadaluwarsa,petugas_terima,petugas_serah,merk,jenis,asal_utd) values ('$nkt','$prod','$nvo','$gol','$rh','$today','$tglaftap','$olah','$exp','$namauser','$pengirim','$nmr','$njn2','$utd') ");
+$namauser = $_SESSION['namauser'];
 
-$tambah_stok=mysql_query("insert into stokkantong (noKantong,produk,gol_darah,RhesusDrh,tgl_Aftap,tglpengolahan,kadaluwarsa,merk,jenis,AsalUTD,volume,StatTempat,statQC,Status,statKonfirmasi,
-sah,stat2) values ('$nkt','$prod','$gol','$rh','$tglaftap','$olah','$exp','$nmr','$njn2','$utd','$nvo','-','0','2','1',
-'1','QC') ");
-	
+function getJenisLabel($jenis)
+{
+	$map = array(
+		'1' => 'Single',
+		'2' => 'Double',
+		'3' => 'Triple',
+		'4' => 'Quadruple',
+		'6' => 'Pediatrik'
+	);
+
+	$jenis = trim((string)$jenis);
+	return isset($map[$jenis]) ? $map[$jenis] : $jenis;
+}
+
+function renderTempRows($namauser)
+{
+	$namauser = mysql_real_escape_string($namauser);
+	$no = 1;
+	$html = '';
+
+	$q = mysql_query("
+        SELECT t.*, u.nama AS nama_utd
+        FROM registrasi_luarqc_temp t
+        LEFT JOIN utd u ON u.id = t.asal_utd
+        WHERE t.user_input='$namauser'
+        ORDER BY t.id ASC
+    ");
+
+	while ($d = mysql_fetch_assoc($q)) {
+		$asalDisplay = !empty($d['nama_utd']) ? $d['nama_utd'] : $d['asal_utd'];
+
+		$html .= "<tr>
+            <td><input type='checkbox' name='pilih[]' value='" . htmlspecialchars($d['id']) . "'></td>
+            <td>" . $no++ . "</td>
+            <td>" . htmlspecialchars($d['nokantong']) . "</td>
+            <td>" . htmlspecialchars($d['volume']) . "</td>
+            <td>" . htmlspecialchars($d['merk']) . "</td>
+            <td>" . htmlspecialchars(getJenisLabel($d['jenis'])) . "</td>
+            <td>" . htmlspecialchars($asalDisplay) . "</td>
+            <td>" . htmlspecialchars($d['produk']) . "</td>
+            <td>" . htmlspecialchars($d['tglaftap']) . "</td>
+            <td>" . htmlspecialchars($d['kadaluwarsa']) . "</td>
+            <td>" . htmlspecialchars($d['tgl_pengolahan']) . "</td>
+            <td>" . htmlspecialchars($d['goldarah']) . "</td>
+            <td>" . htmlspecialchars($d['rhesus']) . "</td>
+            <td>" . htmlspecialchars($d['pengirim']) . "</td>
+        </tr>";
 	}
-	if ($tambah) {
-        echo "Data Telah berhasil dimasukkan. ";?>
-	<?}
-} ?>
-	<body onLoad=setFocus()>
-	<form name="tambahkantong" onsubmit="return ok()" method="POST" action="<?=$PHPSELF?>">
-	<table align=top>
-	<tr>
-			<td>
 
-<input name="submit" type="submit" value="Simpan" class="swn_button_blue">
-<INPUT type="button" value="Delete Row" onclick="deleteRow('box-table-b')" class="swn_button_red"/>
-<a href="pmiqc.php?module=register_qc" class="swn_button_green">Kembali</a></td>
+	return $html;
+}
+?>
+<!DOCTYPE html>
+<html>
 
-<!--input type="button" value="Add" onclick="addRow('box-table-b');"-->
-			</td>
-			<td> </td>
-		</tr>
-		<tr>
-			<td valign=top>
-				<table class="form" border="0" align=top>
+<head>
+    <meta charset="utf-8">
+    <title>QC Dari Luar UTD</title>
 
-						<tr style="visibility:hidden";  >
-						<td >Jenis Kantong</td>
-						<td class="input">
-							<select name="jenis">
-							<?
-							$select1=''; 	$select2='';
-							$select3='';	$select4='';
-							$select6='';
-							if ($_POST[jenis]=='1') $select1='selected';
-							if ($_POST[jenis]=='2') $select2='selected';
-							if ($_POST[jenis]=='3') $select3='selected';
-							if ($_POST[jenis]=='4') $select4='selected';
-							if ($_POST[jenis]=='6') $select6='selected';
-							?>
-							<option value="1" <?=$select1?>>Single</option>
-							<option value="2" <?=$select2?>>Double</option>
-							<option value="3" <?=$select3?>>Triple</option>
-							<option value="4" <?=$select4?>>Quadruple</option>
-							<option value="6" <?=$select6?>>Pediatrik</option>
-							</select>
-						</td>
-					</tr>
+    <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.6.custom.css" rel="stylesheet" />
+    <link type="text/css" href="css/terima_qc_luar.css" rel="stylesheet" />
 
-					<tr>
-						<td>Merk</td>
-						<td class="input">
-							<select name="merk">
-							<?
-							$select1='';	$select2='';
-							$select3='';	$select4='';
-							if ($_POST[merk]=='KARMI') $select1='selected';
-							if ($_POST[merk]=='TERUMO') $select2='selected';
-							if ($_POST[merk]=='JMS') $select3='selected';
-							if ($_POST[merk]=='JML') $select4='selected';
-							if ($_POST[merk]=='HLHAEMOPACK') $select5='selected';
-							if ($_POST[merk]=='GREENCROSS') $selected6='selected';
-							if ($_POST[merk]=='Produk DEMO') $select7='selected';
-							?>
-							<option value="KARMI" <?=$select1?>>KARMI</option>
-							<option value="TERUMO" <?=$select2?>>TERUMO</option>
-							<option value="JMS" <?=$select3?>>JMS</option>
-							<option value="JML" <?=$select4?>>JML</option>
-							<option value="HLHAEMOPACK" <?=$select5?>>HLHAEMOPACK</option>
-							<option value="GREENCROSS" <?=$select6?>>GREENCROSS</option>
-							<option value="Produk DEMO" <?=$select7?>>Produk DEMO</option>
-							</select>
-						</td>
-					</tr>
-			<tr>
-			<td>Jenis Kantong</td>
-			<td class="input">
-				<select name="jenis2">
-					<option value="1">Single</option>
-					<option value="2">Double</option>
-					<option value="3">Triple</option>
-					<option value="4">Quadruple</option>
-					<option value="6">Pediatrik</option>
-					</select>
-			</td>
-			</tr>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-					
-			<tr> 
-			<td>Jenis Produk</font></td>
-			<td class="input">
-				<select name="produk" >
-					<option selected>--Pilih Produk--</option>
-					<?php
-						$permintaan1="select * from produk order by Nama DESC";
-						$do1=mysql_query($permintaan1);
-						while($data1=mysql_fetch_assoc($do1)){
-							$select1="";?>
-					<option value="<?=$data1[Nama]?>"<?=$select1?>>
-						<?=$data1[Nama]?>
-					</option>
-						<?}?>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>Golongan Darah</td>
-			<td class="input">
-				<select name="goldarah">
-					<option value="A">A</option>
-					<option value="B">B</option>
-					<option value="O">O</option>
-					<option value="AB">AB</option>
-					</select>
-			</td>
-		</tr>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-		<tr>
-			<td>Rhesus</td>
-			<td class="input">
-				<select name="rh">
-					<option value="+">Positif</option>
-					<option value="-">Negatif</option>
-					</select>
-			</td>
-		</tr>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-					<tr>
-						<td>Volume</td>	
-						
-						<td class="input"><INPUT type="text" size="5" name="volume" id="volume">									</td>
-					</tr>
+    <script type="text/javascript">
+    function setFocus() {
+        document.tambahkantong.nokantong.focus();
+    }
+    </script>
+</head>
 
-	
-<tr> 
-<td>Asal Sampel</font></td>
-<td class="input">
-<select name="kodeSup" >
-<option value="" selected>--Pilih UDD--</option>
-            <?php
-            $ql= mysql_query("select * from utd order by daerah ASC");
-            while ($rowl1 = mysql_fetch_array($ql)){
-                echo "<option value='$rowl1[id]'>$rowl1[nama]</option>";
+<body onload="setFocus()">
+    <div class="page-wrap">
+        <div class="page-card">
+            <div class="page-header">
+                <div class="header-flex">
+                    <div>
+                        <h1>QC Dari Luar UTD</h1>
+                        <p>Input data lalu tekan Enter pada No Kantong untuk masuk ke tabel sementara.</p>
+                    </div>
+                    <div>
+                        <a href="pmiqc.php?module=register_qc" class="swn_button_green">Kembali</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-body">
+                <div id="notif" class="notif"></div>
+
+                <form name="tambahkantong" id="form-qc" method="POST" action="javascript:void(0);">
+                    <div class="main-grid">
+                        <div class="form-box">
+                            <div class="form-title">Data Input</div>
+
+                            <div class="input-grid">
+                                <div class="input-col">
+                                    <div class="input-field">
+                                        <label>Merk</label>
+                                        <select name="merk" id="merk" class="select2 control">
+                                            <option value="" selected>--Pilih Merk--</option>
+                                            <?php
+											$permintaan1 = "SELECT * FROM merk_kantong";
+											$do1 = mysql_query($permintaan1);
+											while ($data1 = mysql_fetch_assoc($do1)) {
+											?>
+                                            <option value="<?= htmlspecialchars($data1['mk_merk']) ?>">
+                                                <?= htmlspecialchars($data1['mk_merk']) ?>
+                                            </option>
+                                            <?php } ?>
+                                            <option value="lainnya">Lainnya...</option>
+                                        </select>
+                                        <input type="text" name="merk_lainnya" id="merk_lainnya"
+                                            placeholder="Masukkan merk lainnya" style="display:none;"
+                                            class="control sub-input">
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Jenis Kantong</label>
+                                        <select name="jenis2" id="jenis2" class="control">
+                                            <option value="1">Single</option>
+                                            <option value="2">Double</option>
+                                            <option value="3">Triple</option>
+                                            <option value="4">Quadruple</option>
+                                            <option value="6">Pediatrik</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Jenis Produk</label>
+                                        <select name="produk" id="produk" class="select2 control">
+                                            <option value="" selected>--Pilih Produk--</option>
+                                            <?php
+											$permintaan1 = "SELECT * FROM produk ORDER BY Nama DESC";
+											$do1 = mysql_query($permintaan1);
+											while ($data1 = mysql_fetch_assoc($do1)) {
+											?>
+                                            <option value="<?= htmlspecialchars($data1['Nama']) ?>">
+                                                <?= htmlspecialchars($data1['Nama']) ?>
+                                            </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="row-two">
+                                        <div class="input-field">
+                                            <label>Golongan Darah</label>
+                                            <select name="goldarah" id="goldarah" class="control">
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="O">O</option>
+                                                <option value="AB">AB</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="input-field">
+                                            <label>Rhesus</label>
+                                            <select name="rh" id="rh" class="control">
+                                                <option value="+">Positif</option>
+                                                <option value="-">Negatif</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-col">
+                                    <div class="input-field">
+                                        <label>Volume</label>
+                                        <input type="text" name="volume" id="volume" class="control">
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Tgl Aftap</label>
+                                        <input type="text" name="tglaftap" id="tglaftap" class="datetime control">
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Tgl Pengolahan</label>
+                                        <input type="text" name="tglolah" id="tglolah" class="datetime control">
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Tgl Kadaluarsa</label>
+                                        <input type="text" name="tglkad" id="tglkad" class="datetime control">
+                                    </div>
+                                </div>
+
+                                <div class="input-col">
+                                    <div class="input-field">
+                                        <label>Asal Sampel</label>
+                                        <select name="asal_sampel" id="asal_sampel" class="select2 control">
+                                            <option value="" selected>--Pilih UDD--</option>
+                                            <?php
+											$ql = mysql_query("SELECT * FROM utd ORDER BY daerah ASC");
+											while ($rowl1 = mysql_fetch_array($ql)) {
+												echo "<option value='" . htmlspecialchars($rowl1['id']) . "'>" . htmlspecialchars($rowl1['nama']) . "</option>";
+											}
+											?>
+                                            <option value="lainnya">Lainnya...</option>
+                                        </select>
+                                        <input type="text" name="asal_sampel_lainnya" id="asal_sampel_lainnya"
+                                            placeholder="Masukkan asal sampel lainnya" style="display:none;"
+                                            class="control sub-input">
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>Nama Pengirim</label>
+                                        <input type="text" name="pengirim" id="pengirim" class="control">
+                                    </div>
+
+                                    <div class="input-field" style="display: none;">
+                                        <label>Jumlah Cetak Barcode</label>
+                                        <input type="text" name="cetakkantong" id="cetakkantong" value="2"
+                                            class="control">
+                                    </div>
+
+                                    <div class="input-field">
+                                        <label>No Kantong</label>
+                                        <input type="text" name="nokantong" id="nokantong"
+                                            placeholder="Masukkan No.Kantong" class="control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-box">
+                            <div class="table-title">Daftar Kantong</div>
+                            <div class="table-wrap">
+                                <table class="list" id="list-kantong">
+                                    <thead>
+                                        <tr class="field">
+                                            <th></th>
+                                            <th>No</th>
+                                            <th>No Kantong</th>
+                                            <th>Volume</th>
+                                            <th>Merk</th>
+                                            <th>Jenis</th>
+                                            <th>Asal UTD</th>
+                                            <th>Produk</th>
+                                            <th>Tgl Aftap</th>
+                                            <th>Tgl Kadaluarsa</th>
+                                            <th>Tgl Pengolahan</th>
+                                            <th>Gol Darah</th>
+                                            <th>Rhesus</th>
+                                            <th>Nama Pengirim</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-kantong">
+                                        <?= renderTempRows($namauser); ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="actions" id="table-actions"
+                                style="display:none; width:100%; justify-content:flex-end;">
+                                <input type="button" value="Simpan" onclick="simpanFinal()" class="swn_button_blue">
+                                <input type="button" value="Delete Row" onclick="deleteRow('list-kantong')"
+                                    class="swn_button_red">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function showNotif(type, msg) {
+        $('#notif').removeClass('sukses gagal').addClass(type).html(msg).show();
+    }
+
+    function hideNotif() {
+        $('#notif').hide().text('');
+    }
+
+    function toggleTableActions() {
+        var rowCount = $('#tbody-kantong tr').length;
+        if (rowCount > 0) {
+            $('#table-actions').css('display', 'flex');
+        } else {
+            $('#table-actions').hide();
+        }
+    }
+
+    function deleteRow(tableID) {
+        var ids = [];
+
+        $('#tbody-kantong input[type="checkbox"]:checked').each(function() {
+            ids.push($(this).val());
+        });
+
+        if (ids.length === 0) {
+            showNotif('gagal', 'Pilih data yang mau dihapus terlebih dahulu.');
+            return;
+        }
+
+        if (!confirm('Hapus data yang dipilih dari tabel sementara?')) {
+            return;
+        }
+
+        $.ajax({
+            url: 'QC/ajax_delete_temp.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                ids: ids
+            },
+            success: function(res) {
+                console.log(res);
+
+                if (res.status === 'success') {
+                    $('#tbody-kantong').html(res.html);
+                    toggleTableActions();
+                    showNotif('sukses', res.msg);
+                } else {
+                    showNotif('gagal', res.msg);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
             }
-            ?>
-</select>
-</td>
-</tr>
+        });
+    }
 
-<tr><td>Nama Pengirim</td>
-<td class="input"><INPUT type="text" size="30" name="pengirim" id="pengirim"></td>
-</tr>
-	
-<td>Tgl Aftap</td>
-        <td class="input"><INPUT TYPE="text" NAME="tglaftap" VALUE="" SIZE=8>
-<A HREF="#" onClick="cal1xx.select(document.forms[0].tglaftap,'anchor1xx','yyyy-MM-dd'); return false;" TITLE="cal1xx.select(document.forms[0].tglaftap,'anchor1xx','yyyy-MM-dd'); return false;" NAME="anchor1xx" ID="anchor1xx">klik</A></td>
-    </tr>
+    function getFormData() {
+        return {
+            merk: $('#merk').val(),
+            merk_lainnya: $('#merk_lainnya').val(),
+            jenis2: $('#jenis2').val(),
+            produk: $('#produk').val(),
+            goldarah: $('#goldarah').val(),
+            rh: $('#rh').val(),
+            volume: $('#volume').val(),
+            asal_sampel: $('#asal_sampel').val(),
+            asal_sampel_lainnya: $('#asal_sampel_lainnya').val(),
+            pengirim: $('#pengirim').val(),
+            tglaftap: $('#tglaftap').val(),
+            tglkad: $('#tglkad').val(),
+            tglolah: $('#tglolah').val(),
+            cetakkantong: $('#cetakkantong').val(),
+            nokantong: $('#nokantong').val()
+        };
+    }
 
-<td>Tgl Kadaluarsa</td>
-        <td class="input"><INPUT TYPE="text" NAME="tglkad" VALUE="" SIZE=8>
-<A HREF="#" onClick="cal1xx.select(document.forms[0].tglkad,'anchor1xx','yyyy-MM-dd'); return false;" TITLE="cal1xx.select(document.forms[0].tglkad,'anchor1xx','yyyy-MM-dd'); return false;" NAME="anchor1xx" ID="anchor1xx">klik</A></td>
-    </tr>
+    function validasiForm(data) {
+        if (!data.merk) return 'Merk belum dipilih';
+        if (!data.produk) return 'Produk belum dipilih';
+        if (!data.volume) return 'Volume belum diisi';
+        if (!data.asal_sampel) return 'Asal sampel belum dipilih';
+        if (!data.pengirim) return 'Nama pengirim belum diisi';
+        if (!data.tglaftap) return 'Tgl Aftap belum diisi';
+        if (!data.tglkad) return 'Tgl Kadaluarsa belum diisi';
+        if (!data.tglolah) return 'Tgl Pengolahan belum diisi';
+        if (!data.nokantong) return 'No kantong belum diisi';
+        return '';
+    }
 
-<td>Tgl Pengolahan</td>
-        <td class="input"><INPUT TYPE="text" NAME="tglolah" VALUE="" SIZE=8>
-<A HREF="#" onClick="cal1xx.select(document.forms[0].tglolah,'anchor1xx','yyyy-MM-dd'); return false;" TITLE="cal1xx.select(document.forms[0].tglolah,'anchor1xx','yyyy-MM-dd'); return false;" NAME="anchor1xx" ID="anchor1xx">klik</A></td>
-    </tr>
+    function simpanTemp() {
+        hideNotif();
 
-					<tr>
-						<td>Jumlah Cetak Barcode</td>
-						<? if (!isset($_POST[cetakkantong])) $_POST[cetakkantong]='2';?>
-						<td class="input"><INPUT size=2 type="text"  name="cetakkantong" id="cetakkantong" value="<?=$_POST[cetakkantong]?>">
-						</td>
-					</tr>
+        var data = getFormData();
+        var cek = validasiForm(data);
+        if (cek !== '') {
+            showNotif('gagal', cek);
+            return;
+        }
 
-					<tr>
-						<td>No Kantong</td>
-						<td class="input"><INPUT type="text"  name="nokantong" id="nokantong"  placeholder="Masukkan No.Kantong"
-							onkeydown="chang(event,this);" onchange="cari_kantong('box-table-b');">
-						</td>
-					</tr>
-				</table>
-			</td>
-			<td valign=top><br/><br/>
-				<table class="list" id="box-table-b" width=350px align=top>
-					<tr class="field">
-						<td align='center'></td>
-						<td align='center'>No</td>
-						<td align='center'>No Kantong</td>
-						<td align='center'>Volume</td>
-						<td align='center'>Merk</td>
-						<td align='center'>Produk</td>
-						<td align='center'>Tgl Aftap</td>
-						<td align='center'>Tgl Kadaluarsa</td>
-						<td align='center'>Tgl Pengolahan</td>
-						<td align='center'>Gol Darah</td>
-						<td align='center'>Rhesus</td>
-						<td align='center'>Nama Pengirim</td>
-						
-						
-					</tr>
+        $.ajax({
+            url: 'QC/ajax_simpan_temp.php',
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function(res) {
+                console.log(res);
 
-				</table>
-			<!--<INPUT type="button" value="Delete Row" onclick="deleteRow('box-table-b')" />
+                if (res.status === 'success') {
+                    $('#tbody-kantong').html(res.html);
+                    toggleTableActions();
+                    showNotif('sukses', res.msg);
+                    $('#nokantong').val('').focus();
+                } else {
+                    showNotif('gagal', res.msg);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
+            }
+        });
+    }
 
-<input name="submit" type="submit" value="Simpan">
-<!--<input type="button" value="Add" onclick="addRow('box-table-b');">--> 
-			</td>
+    function simpanFinal() {
+        hideNotif();
+
+        if (!confirm('Simpan semua data ke registrasi QC?')) {
+            return;
+        }
+
+        $.ajax({
+            url: 'QC/ajax_simpan_final_qc_luar.php',
+            type: 'POST',
+            dataType: 'json',
+            cache: false,
+            success: function(res) {
+                console.log('RESP FINAL:', res);
+                console.log('HTML FINAL:', res.html);
+
+                if (res.status === 'success' || res.status === 'partial') {
+                    // update isi list sesuai sisa data temp
+                    $('#tbody-kantong').html(res.html || '');
+
+                    // pastikan tombol tampil/hilang sesuai isi tabel
+                    toggleTableActions();
+
+                    // kalau masih ada data gagal, tampilkan daftar gagal
+                    if (res.status === 'partial' && res.gagal && res.gagal.length > 0) {
+                        var html = '<div>' + res.msg + '</div>';
+                        html += '<div style="margin-top:8px;font-weight:700;">Data yang gagal:</div>';
+                        html += '<ul style="margin:6px 0 0 18px;padding:0;">';
+
+                        for (var i = 0; i < res.gagal.length; i++) {
+                            html += '<li><b>' + res.gagal[i].nokantong + '</b> - ' + res.gagal[i].alasan +
+                                '</li>';
+                        }
+
+                        html += '</ul>';
+
+                        $('#notif').removeClass('sukses gagal').addClass('gagal').html(html).show();
+                    } else {
+                        showNotif('sukses', res.msg);
+                    }
+
+                    return;
+                }
+
+                showNotif('gagal', res.msg);
+            },
+            error: function(xhr, status, error) {
+                console.log('STATUS:', status);
+                console.log('ERROR:', error);
+                console.log('RESPONSE:', xhr.responseText);
+                showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
+            }
+        });
+    }
 
 
-		</tr>
-	
-	</table>
-<DIV ID="testdiv1" STYLE="position:absolute;visibility:hidden;background-color:white;layer-background-color:white;"></DIV>
-</form>
-	
+
+    $(document).ready(function() {
+        $('.select2').select2({
+            width: '100%',
+            minimumResultsForSearch: 0
+        });
+
+        flatpickr(".datetime", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            time_24hr: true
+        });
+
+        $('#merk').on('change', function() {
+            if ($(this).val() === 'lainnya') {
+                $('#merk_lainnya').show().focus();
+            } else {
+                $('#merk_lainnya').hide().val('');
+            }
+        });
+
+        $('#asal_sampel').on('change', function() {
+            if ($(this).val() === 'lainnya') {
+                $('#asal_sampel_lainnya').show().focus();
+            } else {
+                $('#asal_sampel_lainnya').hide().val('');
+            }
+        });
+
+        $('#nokantong').on('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                simpanTemp();
+            }
+        });
+
+        toggleTableActions();
+    });
+    </script>
+</body>
+
+</html>

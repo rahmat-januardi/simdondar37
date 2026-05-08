@@ -145,6 +145,10 @@ switch ($v_periode){
                                     </tr>
                                 </thead>
                                 <?php
+				$q_wb="select count(distinct(case when `produk`='WB' THEN `noKantong` END )) AS WB1 from stokkantong where month(`tgl_Aftap`)='$bulan1' and year(`tgl_Aftap`)='$tahun1'";
+				$q_komponen1=mysql_query($q_wb);
+				$komp1=mysql_fetch_assoc($q_komponen1);
+
                                 $q_komponen = "SELECT
                                                 COUNT(DISTINCT(CASE WHEN  `Produk`='WB' THEN `noKantong` END )) AS WB,
                                                 COUNT(DISTINCT(CASE WHEN  `Produk`='PRC' THEN `noKantong` END )) AS PRC,
@@ -164,8 +168,8 @@ switch ($v_periode){
                                                 WHERE
                                                 month(`tgl`)='$bulan1' and year(`tgl`)='$tahun1'";
                                 $q_komponen=mysql_query($q_komponen);
-                                $komp=mysql_fetch_assoc($q_komponen);
-                                $tot_produksi= $komp['WB']+$komp['PRC']+$komp['LP']+$komp['FFP']+$komp['TC']+$komp['AHF']+$komp['WE']+$komp['LEUCO']+ $komp['TC_APH']+$komp['BUF_R']+$komp['BF_LEUCO']+$komp['LTF_LEUCO']+$komp['PRC_APH']+$komp['LP_APH'];
+				$komp=mysql_fetch_assoc($q_komponen);
+                                $tot_produksi= $komp1['WB1']+$komp['PRC']+$komp['LP']+$komp['FFP']+$komp['TC']+$komp['AHF']+$komp['WE']+$komp['LEUCO']+ $komp['TC_APH']+$komp['BUF_R']+$komp['BF_LEUCO']+$komp['LTF_LEUCO']+$komp['PRC_APH']+$komp['LP_APH'];
                                 //mencari data apheresis pada table htransaksi karena apheresis tidak melaewati table pengolahan
                                 $q_aph="SELECT
                                         count(case when `caraAmbil`='1' then `NoKantong` END) as TC_Aph,
@@ -425,7 +429,7 @@ switch ($v_periode){
                                 <tbody>
                                     <tr>
                                         <td rowspan="7">BIASA</td>
-                                        <td>Whole Blood (WB)</td>                   <td class="text-center"><?php echo $komp['WB'];?></td>     <td class="text-center"><?php echo $jml_wb;?></td>  <td class="text-center"><?php echo $jml_wba;?></td>
+                                        <td>Whole Blood (WB)</td>                   <td class="text-center"><?php echo $komp1['WB1'];?></td>     <td class="text-center"><?php echo $jml_wb;?></td>  <td class="text-center"><?php echo $jml_wba;?></td>
                                     </tr>
                                     <tr> <td>Packed Red cell (PRC)</td>             <td class="text-center"><?php echo $komp['PRC'];?></td>    <td class="text-center"><?php echo $jml_prc;?></td>  <td class="text-center"><?php echo $jml_prca;?></td></tr>
                                     <tr> <td>Plasma/ Liquid Plasma (LP)</td>        <td class="text-center"><?php echo $komp['LP'];?></td>     <td class="text-center"><?php echo $jml_lp;?></td>  <td class="text-center"><?php echo $jml_lpa;?></td></tr>

@@ -299,17 +299,24 @@ if ($result->num_rows > 0) {
                         }
 
                         // Dapat Perhitungan Volume
-                        // Jika Tidak WB : Volume = (Berat kantong (gram) - Berat Kantong Kosong) : berat jenis
-                        // Jika WB : Volume = ((Berat kantong (gram) - Berat Kantong Kosong) : berat jenis) - antikoagulan
+                        // Jika Tidak WB : Volume = (Berat kantong (gram) - Berat Kantong Kosong)ï¿½:ï¿½berat jenis
+                        // Jika WB : Volume = ((Berat kantong (gram) - Berat Kantong Kosong)ï¿½:ï¿½berat jenis) - antikoagulan
 
                         $ambilNK = substr($nKA, 0, -1);
                         $nKantong = $ambilNK . $tipe;
                         $dataTimbangdarah = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT berat_ukur FROM timbang_darah WHERE nokantong = '$nKantong' ORDER BY id DESC LIMIT 1"));
                         $beratKantongDarah = isset($dataTimbangdarah['berat_ukur']) ? $dataTimbangdarah['berat_ukur'] : 0;
 
+                        //ambil volume jika tidak ada data di timbang_darah
+                        $qVolAsal = "SELECT volumeasal FROM stokkantong WHERE noKantong LIKE '$nKA' AND noKantong LIKE '%A' LIMIT 1";
+                        $dataVolAsal = $dbi->query($qVolAsal);
+                        $rowVolAsal = $dataVolAsal->fetch_assoc();
+
                         if (stripos($option, 'wb') !== false) {
                             $hitungVolume = ($beratKantongDarah - $beratKantongKosong) / $beratjenis;
                             $resultVolume = round($hitungVolume - $antikoagulan);
+                        } else if ($beratKantongDarah == 0) {
+                            $resultVolume = $rowVolAsal['volumeasal'] ? $rowVolAsal['volumeasal'] : 0;
                         } else {
                             $resultVolume = round(($beratKantongDarah - $beratKantongKosong) / $beratjenis);
                         }
@@ -407,130 +414,130 @@ if ($result->num_rows > 0) {
 }
 ?>
 <script>
-    function updateFields(selectElement) {
-        const row = selectElement.closest('tr');
-        const selectedOption = selectElement.options[selectElement.selectedIndex];
-        const edProdukInput = row.querySelector('[name="ed_produk[]"]');
+function updateFields(selectElement) {
+    const row = selectElement.closest('tr');
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const edProdukInput = row.querySelector('[name="ed_produk[]"]');
 
-        const pcepatInput = row.querySelector('[name="pcepat[]"]');
-        const psuhuInput = row.querySelector('[name="psuhu[]"]');
-        const volumeInput = row.querySelector('[name="volume[]"]');
+    const pcepatInput = row.querySelector('[name="pcepat[]"]');
+    const psuhuInput = row.querySelector('[name="psuhu[]"]');
+    const volumeInput = row.querySelector('[name="volume[]"]');
 
-        const umurhari = parseInt(selectedOption.getAttribute('data-umurhari')) || 0;
-        const umurjam = parseInt(selectedOption.getAttribute('data-umurjam')) || 0;
-        const tglAftapStr = selectedOption.getAttribute('data-tgl-aftap');
+    const umurhari = parseInt(selectedOption.getAttribute('data-umurhari')) || 0;
+    const umurjam = parseInt(selectedOption.getAttribute('data-umurjam')) || 0;
+    const tglAftapStr = selectedOption.getAttribute('data-tgl-aftap');
 
-        if (tglAftapStr && edProdukInput) {
-            const tgl = new Date(tglAftapStr);
-            tgl.setDate(tgl.getDate() + umurhari);
-            tgl.setHours(tgl.getHours() + umurjam);
+    if (tglAftapStr && edProdukInput) {
+        const tgl = new Date(tglAftapStr);
+        tgl.setDate(tgl.getDate() + umurhari);
+        tgl.setHours(tgl.getHours() + umurjam);
 
-            // Format jadi: YYYY-MM-DD HH:mm
-            const yyyy = tgl.getFullYear();
-            const mm = String(tgl.getMonth() + 1).padStart(2, '0');
-            const dd = String(tgl.getDate()).padStart(2, '0');
-            const hh = String(tgl.getHours()).padStart(2, '0');
-            const min = String(tgl.getMinutes()).padStart(2, '0');
-            const edFormatted = `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+        // Format jadi: YYYY-MM-DD HH:mm
+        const yyyy = tgl.getFullYear();
+        const mm = String(tgl.getMonth() + 1).padStart(2, '0');
+        const dd = String(tgl.getDate()).padStart(2, '0');
+        const hh = String(tgl.getHours()).padStart(2, '0');
+        const min = String(tgl.getMinutes()).padStart(2, '0');
+        const edFormatted = `${yyyy}-${mm}-${dd} ${hh}:${min}`;
 
-            edProdukInput.value = edFormatted;
+        edProdukInput.value = edFormatted;
 
-            if (pcepatInput) pcepatInput.value = selectedOption.getAttribute('data-pcepat') || '';
-            if (psuhuInput) psuhuInput.value = selectedOption.getAttribute('data-psuhu') || '';
-            if (volumeInput) volumeInput.value = selectedOption.getAttribute('data-volume') || '';
+        if (pcepatInput) pcepatInput.value = selectedOption.getAttribute('data-pcepat') || '';
+        if (psuhuInput) psuhuInput.value = selectedOption.getAttribute('data-psuhu') || '';
+        if (volumeInput) volumeInput.value = selectedOption.getAttribute('data-volume') || '';
 
 
-            return;
+        return;
+    }
+
+    const selectedValue = selectElement.value;
+    const noKantongInput = row.querySelector('input[name="nK[]"]');
+
+    if (!noKantongInput) {
+        console.warn("?? noKantong input tidak ditemukan di baris ini.");
+        return;
+    }
+
+    $.ajax({
+        url: 'modul/pengolahan/pengolahanOnChange.php',
+        // url: 'pengolahanOnChange.php',
+        type: 'POST',
+        data: {
+            produk: selectedValue,
+            jKantong: noKantongInput.value
+        },
+        success: function(response) {
+            const data = JSON.parse(response);
+
+            //logging
+            // console.log(response);
+            // console.log(data);
+
+            if (!data.error) {
+                if (edProdukInput) edProdukInput.value = data.tglEd;
+                if (pcepatInput) pcepatInput.value = data.pcepat;
+                if (psuhuInput) psuhuInput.value = data.psuhu;
+                if (volumeInput) volumeInput.value = data.volume;
+
+            } else {
+                console.error("? Gagal mengambil data produk dari server:", data.produk);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("? AJAX Error:", error);
         }
+    });
+}
 
-        const selectedValue = selectElement.value;
-        const noKantongInput = row.querySelector('input[name="nK[]"]');
+function deleteRow(button) {
+    var row = button.closest('tr');
+    var id = row.querySelector('input[name="idOlah"]').value;
+    var noKantong = row.querySelector('input[name="nK[]"]').value;
 
-        if (!noKantongInput) {
-            console.warn("?? noKantong input tidak ditemukan di baris ini.");
-            return;
-        }
+    document.getElementById('modalNoKantong').textContent = noKantong;
 
+    $('#confirmDeleteModal').modal('show');
+
+    document.getElementById('confirmDeleteButton').onclick = function() {
         $.ajax({
-            url: 'modul/pengolahan/pengolahanOnChange.php',
-            // url: 'pengolahanOnChange.php',
+            url: 'modul/pengolahan/hapusPengolahanTemp.php',
+            // url: 'hapusPengolahanTemp.php',
             type: 'POST',
             data: {
-                produk: selectedValue,
-                jKantong: noKantongInput.value
+                id: id
             },
             success: function(response) {
-                const data = JSON.parse(response);
-
-                //logging
-                // console.log(response);
-                // console.log(data);
-
-                if (!data.error) {
-                    if (edProdukInput) edProdukInput.value = data.tglEd;
-                    if (pcepatInput) pcepatInput.value = data.pcepat;
-                    if (psuhuInput) psuhuInput.value = data.psuhu;
-                    if (volumeInput) volumeInput.value = data.volume;
-
-                } else {
-                    console.error("? Gagal mengambil data produk dari server:", data.produk);
+                try {
+                    var jsonResponse = JSON.parse(response);
+                    if (jsonResponse.success) {
+                        // row.remove(); // hanya menghapus dari tampilan HTML
+                        location.reload();
+                    } else {
+                        alert('Gagal menghapus data: ' + jsonResponse.message);
+                    }
+                } catch (e) {
+                    alert('Gagal memproses response dari server.');
                 }
+                // Sembunyikan modal setelah penghapusan
+                $('#confirmDeleteModal').modal('hide');
             },
             error: function(xhr, status, error) {
-                console.error("? AJAX Error:", error);
+                alert('Terjadi kesalahan saat menghapus data: ' + error);
+                $('#confirmDeleteModal').modal('hide');
             }
         });
-    }
-
-    function deleteRow(button) {
-        var row = button.closest('tr');
-        var id = row.querySelector('input[name="idOlah"]').value;
-        var noKantong = row.querySelector('input[name="nK[]"]').value;
-
-        document.getElementById('modalNoKantong').textContent = noKantong;
-
-        $('#confirmDeleteModal').modal('show');
-
-        document.getElementById('confirmDeleteButton').onclick = function() {
-            $.ajax({
-                url: 'modul/pengolahan/hapusPengolahanTemp.php',
-                // url: 'hapusPengolahanTemp.php',
-                type: 'POST',
-                data: {
-                    id: id
-                },
-                success: function(response) {
-                    try {
-                        var jsonResponse = JSON.parse(response);
-                        if (jsonResponse.success) {
-                            // row.remove(); // hanya menghapus dari tampilan HTML
-                            location.reload();
-                        } else {
-                            alert('Gagal menghapus data: ' + jsonResponse.message);
-                        }
-                    } catch (e) {
-                        alert('Gagal memproses response dari server.');
-                    }
-                    // Sembunyikan modal setelah penghapusan
-                    $('#confirmDeleteModal').modal('hide');
-                },
-                error: function(xhr, status, error) {
-                    alert('Terjadi kesalahan saat menghapus data: ' + error);
-                    $('#confirmDeleteModal').modal('hide');
-                }
-            });
-        };
-    }
+    };
+}
 </script>
 
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll("select[name='produk[]']").forEach(sel => {
-            const row = sel.closest('tr');
-            const edInput = row.querySelector("input[name='ed_produk[]']");
-            if (edInput && !edInput.value) {
-                updateFields(sel);
-            }
-        });
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll("select[name='produk[]']").forEach(sel => {
+        const row = sel.closest('tr');
+        const edInput = row.querySelector("input[name='ed_produk[]']");
+        if (edInput && !edInput.value) {
+            updateFields(sel);
+        }
     });
+});
 </script>

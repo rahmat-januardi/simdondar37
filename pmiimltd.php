@@ -6,15 +6,15 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
     echo "<a href=index.php target=\"_top\"><b>LOGIN</b></a></center>";
 }
 if (($_SESSION['leveluser']) == 'imltd') {
-    ?>
+?>
 
-    <head>
-        <title>SIMDONDAR</title>
-        <script language=javascript src="idcard.js" type="text/javascript"> </script>
-        <script language=javascript src="util.js" type="text/javascript"> </script>
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
-    </head>
-    <?php
+<head>
+    <title>SIMDONDAR</title>
+    <script language=javascript src="idcard.js" type="text/javascript"> </script>
+    <script language=javascript src="util.js" type="text/javascript"> </script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<?php
     $act = isset($_GET['act']) ? $_GET['act'] : '';
     $rstock = isset($_GET['rstock']) ? $_GET['rstock'] : '';
     switch ($act) {
@@ -22,7 +22,7 @@ if (($_SESSION['leveluser']) == 'imltd') {
         default:
             if ($rstock == '2')
                 include "penyimpanan/cek_kantong.php";
-                //include "modul/check_kantong_imltd.php";
+            //include "modul/check_kantong_imltd.php";
             include "config/koneksi.php";
             include "config/fungsi_combobox.php";
             include "config/library.php";
@@ -89,14 +89,11 @@ if (($_SESSION['leveluser']) == 'imltd') {
                 include "modul/entry_suplier.php";
             } elseif ($_GET['module'] == 'permintaan') {
                 include "modul/mod_permintaan.php";
-
             } elseif ($_GET['module'] == 'hasil_lab') {
                 include "modul/hasil_lab.php";
-
             } elseif ($_GET['module'] == 'shasil_labl') {
                 require_once('color.inc');
                 include "modul/label_lab.php";
-
             } elseif ($_GET['module'] == 'shasil_lab') {
                 include "modul/shasil_lab.php";
             } elseif ($_GET['module'] == 'elisa') {
@@ -114,10 +111,8 @@ if (($_SESSION['leveluser']) == 'imltd') {
                 //include "konfirmasi.php";
             } elseif ($_GET['module'] == 'hlab_bonus') {
                 include "modul/lab_bonus.php";
-
             } elseif ($_GET['module'] == 'pengesahan') {
                 include "modul/pengesahan_rapidtest.php";
-
             } elseif ($_GET['module'] == 'label_cross') {
                 require_once('color.inc');
                 include "modul/label_cross.php";
@@ -127,22 +122,16 @@ if (($_SESSION['leveluser']) == 'imltd') {
                 include "modul/reagen_aktif.php";
             } elseif ($_GET['module'] == 'sarancrossmatch') {
                 include "modul/mod_sarancross.php";
-
             } elseif ($_GET['module'] == 'crossmatch') {
                 include "modul/mod_crossmatch.php";
-
             } elseif ($_GET['module'] == 'user') {
                 include "modul/registrasi.php";
-
             } elseif ($_GET['module'] == 'cetak_id') {
                 include "modul/cetak_id.php";
-
             } elseif ($_GET['module'] == 'transaksi') {
                 include "modul/search_pendonor.php";
-
             } elseif ($_GET['module'] == 'eregistrasi') {
                 include "modul/edit_registrasi.php";
-
             } elseif ($_GET['module'] == 'transaksi_donor') {
                 include "transaksi_donor.php";
             } elseif ($_GET['module'] == 'spengambilan') {
@@ -153,43 +142,30 @@ if (($_SESSION['leveluser']) == 'imltd') {
                 include "modul/pengesahan_ambil_darah.php";
             } elseif ($_GET['module'] == 'aturuser') {
                 include "modul/mod_user.php";
-
             } elseif ($_GET['module'] == 'aturagenda') {
                 include "modul/mod_agendamn.php";
-
             } elseif ($_GET['module'] == 'agendaedit') {
                 include "modul/mod_agendamn1.php";
-
             } elseif ($_GET['module'] == 'updateagenda') {
                 include "modul/mod_updateagenda.php";
-
             } elseif ($_GET['module'] == 'tambahagenda') {
                 include "modul/mod_agendamn2.php";
-
             } elseif ($_GET['module'] == 'entryagenda') {
                 include "modul/mod_insertagenda.php";
-
             } elseif ($_GET['module'] == 'agendahapus') {
                 include "modul/mod_hapusagenda.php";
-
             } elseif ($_GET['module'] == 'agendalist') {
                 include "modul/mod_agendalist.php";
-
             } elseif ($_GET['module'] == 'smsgroup') {
                 include "modul/sms2/sms2.php";
-
             } elseif ($_GET['module'] == 'smsidi') {
                 include "modul/sms2/sms2.php";
-
             } elseif ($_GET['module'] == 'rtransaksi') {
                 include "modul/rtransaksi.php";
-
             } elseif ($_GET['module'] == 'stock') {
                 include "modul/stock.php";
-
             } elseif ($_GET['module'] == 'chek_imltd') {
                 include "modul/chek_imltd.php";
-
             } elseif ($_GET['module'] == 'pindah_titipan') {
                 include "modul/pindah_titipan.php";
             } elseif ($_GET['module'] == 'laborat_konfirmasi') {
@@ -200,12 +176,10 @@ if (($_SESSION['leveluser']) == 'imltd') {
                 include "laborat_distribusi.php";
             } elseif ($_GET['module'] == 'laborat_ujisaring') {
                 include "laborat_ujisaring.php";
-
             } elseif ($_GET['module'] == 'laborat_elisaclia') {
                 include "modul/elisa.php";
             } elseif ($_GET['module'] == 'laborat_nat') {
                 include "modul/nat.php";
-
             } elseif ($_GET['module'] == 'imltd_permintaan') {
                 include "imltd_permintaan.php";
             } elseif ($_GET['module'] == 'laborat_cetak') {
@@ -415,7 +389,6 @@ if (($_SESSION['leveluser']) == 'imltd') {
             //LAPORAN LTTTD BARU & ULANG dari tanggal pengmbilan
             elseif ($_GET['module'] == 'lap_lttd33') {
                 include "laporan/lttd3_aftap_baruulang.php";
-
             } elseif ($_GET['module'] == 'lap_lttd4') {
                 include "laporan/lttd4.php";
             } elseif ($_GET['module'] == 'lap_lttd5') {
@@ -571,7 +544,7 @@ if (($_SESSION['leveluser']) == 'imltd') {
             }
 
             //==============================================================
-//ROCHE COBAS ==================================================
+            //ROCHE COBAS ==================================================
             elseif ($_GET['module'] == 'import_roche') {
                 include "roche/imltd_import_roche.php";
             } elseif ($_GET['module'] == 'rochelistkonfirmasi') {
@@ -598,7 +571,7 @@ if (($_SESSION['leveluser']) == 'imltd') {
 
 
             //==============================================================
-//Manual
+            //Manual
             elseif ($_GET['module'] == 'manual_imltd') {
                 include "dokumentasiimltd.php";
             } elseif ($_GET['module'] == 'changestatus') {
@@ -751,10 +724,26 @@ if (($_SESSION['leveluser']) == 'imltd') {
             } elseif ($_GET['module'] == 'panther_printrslt') {
                 include "panther_nat/panther_print_konfirmasi.php";
             }
-        // ----------------
-        // Release duplo
-        elseif ($_GET['module']=='release_duplo'){include "imltd/imltd_duplo.php";}
-        elseif ($_GET['module']=='release_duplor'){include "imltd/imltd_duplorekap.php";}
+            // ----------------
+            // Release duplo
+            elseif ($_GET['module'] == 'release_duplo') {
+                include "imltd/imltd_duplo.php";
+            } elseif ($_GET['module'] == 'release_duplor') {
+                include "imltd/imltd_duplorekap.php";
+            }
+
+            // Sample Panel
+            elseif ($_GET['module'] == 'menu_sampel_panel') {
+                include "imltd/menu_sampel_panel.php";
+            } elseif ($_GET['module'] == 'permintaan_sampel_panel') {
+                include "imltd/permintaan_sampel_panel.php";
+            } elseif ($_GET['module'] == 'konfirmasi_sampel_panel') {
+                include "imltd/konfirmasi_sampel_panel.php";
+            } elseif ($_GET['module'] == 'proses_permintaan_sampel_panel') {
+                include "imltd/proses_permintaan_sampel_panel.php";
+            } elseif ($_GET['module'] == 'rekap_sampel_panel') {
+                include "imltd/rekap_sampel_panel.php";
+            }
     }
 }
 ?>

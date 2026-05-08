@@ -27,8 +27,6 @@ if (empty($v_tahun)){$v_tahun=$tahunini;}
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="/js/rgbcolor.js"></script>
     <script type="text/javascript" src="/js/canvg.js"></script>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
-
 
     <script>
       function getImgData(chartContainer) {
@@ -71,7 +69,7 @@ if (empty($v_tahun)){$v_tahun=$tahunini;}
         imgContainer.appendChild(img);
       }
     </script>
-    <script type="text/javascript" src="/js/jsapi.js"></script>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <link type="text/css" href="../css/blitzer/suwena.css" rel="stylesheet" />
 </head>
 <body>
@@ -86,7 +84,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));$s1="selected";
             ?>
             <script type="text/javascript">
-                google.charts.load('current', {packages: ['corechart']});
+                google.load('visualization', '1.0', {'packages':['corechart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = new google.visualization.DataTable();
@@ -124,7 +122,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));$s2="selected";
             ?>
                 <script type="text/javascript">
-                    google.charts.load('current', {packages: ['corechart']});
+                    google.load('visualization', '1.0', {'packages':['corechart']});
                     google.setOnLoadCallback(drawChart);
                     function drawChart() {
                         var data = new google.visualization.DataTable();
@@ -171,7 +169,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));$s3="selected";
             ?>
                 <script type="text/javascript">
-                    google.charts.load('current', {packages: ['corechart']});
+                    google.load('visualization', '1.0', {'packages':['corechart']});
                     google.setOnLoadCallback(drawChart);
                     function drawChart() {
                         var data = new google.visualization.DataTable();
@@ -205,7 +203,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));$s4="selected";
             ?>
             <script type="text/javascript">
-                google.charts.load('current', {packages: ['corechart']});
+                google.load('visualization', '1.0', {'packages':['corechart']});
                 google.setOnLoadCallback(drawChart);
                 function drawChart() {
                     var data = new google.visualization.DataTable();
@@ -239,7 +237,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));$s5="selected";
             ?>
                 <script type="text/javascript">
-                    google.charts.load('current', {packages: ['corechart']});
+                    google.load('visualization', '1.0', {'packages':['corechart']});
                     google.setOnLoadCallback(drawChart);
                     function drawChart() {
                         var data = new google.visualization.DataTable();
@@ -273,7 +271,7 @@ if (isset($_POST['submit'])) {
             $data = substr($data,0,(strlen($data)-1));$s6="selected";
             ?>
                 <script type="text/javascript">
-                    google.charts.load('current', {packages: ['corechart']});
+                    google.load('visualization', '1.0', {'packages':['corechart']});
                     google.setOnLoadCallback(drawChart);
                     function drawChart() {
                         var data = new google.visualization.DataTable();
@@ -319,7 +317,7 @@ if (isset($_POST['submit'])) {
             $s7="selected";
             ?>
             <script type="text/javascript">
-            google.charts.load('current', {packages: ['corechart']});
+            google.load('visualization', '1.0', {packages:['columnchart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
             var data = google.visualization.arrayToDataTable([['Bulan', 'Target','Donasi'],<?php echo $data;?>]);
@@ -369,7 +367,7 @@ if (isset($_POST['submit'])) {
             $s8="selected";
             ?>
         <script type="text/javascript">
-            google.charts.load('current', {packages: ['corechart']});
+            google.load('visualization', '1.0', {packages:['columnchart']});
             google.setOnLoadCallback(drawChart);
             function drawChart() {
                 var data = google.visualization.arrayToDataTable([['Bulan', 'Jumlah'],<?php echo $data;?>]);

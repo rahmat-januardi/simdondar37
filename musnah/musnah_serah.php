@@ -266,4 +266,4 @@ $notransaksi    = $_GET['no'];
 
     <br>
     <div style="font-size:10px; color:#000000; font-family: " Helvetica Neue", Helvetica, Arial, sans-serif;">Build :
-        21-08-2024</div>
+        16-04-2026</div>

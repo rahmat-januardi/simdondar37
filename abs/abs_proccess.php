@@ -184,15 +184,18 @@ switch ($modul) {
             // Ambil semua kecuali 1 karakter terakhir
             $prefix = substr($d_no_kantong, 0, -1);
 
+            $utd = mysqli_fetch_array(mysqli_query($dbi, "SELECT * from utd where `aktif`=1"));
+            $idudd = $utd['id'];
+
             // Update semua kantong yang memiliki prefix sama (kecuali huruf terakhir)
             $sl_updkantong = "UPDATE `stokkantong` 
                   SET `gol_darah` = ?, 
                       `RhesusDrh` = ?, 
-                      `statKonfirmasi` = '1' 
+                      `statKonfirmasi` = '1', tgl_konfirmasi = ?, `konfirmasi_di`  = ?
                   WHERE SUBSTRING(noKantong, 1, LENGTH(noKantong) - 1) = ?";
 
             $stmt = $dbi->prepare($sl_updkantong);
-            $stmt->bind_param("sss", $d_gol, $d_rh, $prefix);
+            $stmt->bind_param("sssss", $d_gol, $d_rh, $vtanggal, $idudd, $prefix);
             $qryupd_kantong = $stmt->execute();
 
             if (!$qryupd_kantong) {
@@ -265,6 +268,10 @@ switch ($modul) {
 
     case md5("simpaninputdata"):
         $k_today = "ABS" . date("dmy") . "-";
+
+        $utd = mysqli_fetch_array(mysqli_query($dbi, "SELECT * from utd where `aktif`=1"));
+        $idudd = $utd['id'];
+
         $query = "SELECT `abs_notrans` FROM `abs` WHERE `abs_notrans` LIKE '$k_today%' ORDER BY `abs_notrans` DESC LIMIT 1";
         $idp = mysqli_query($dbi, $query);
         $idp2 = 0;
@@ -338,7 +345,7 @@ switch ($modul) {
                 $log_aksi = "Antibody Screening : " . $d_metodemerger . ", No.Transaksi: " . $notrans . "; Kantong No:" . $d_no_kantong . ", hasil : " . $d_hasil;
                 addlog($log_aksi);
                 $prefix_no_kantong = preg_replace("/[A-Z]+$/", "", $d_no_kantong);
-                $sl_updkantong = "UPDATE `stokkantong` SET `abs`='$d_hasil', `tgl_abs`='$vtanggal' WHERE `noKantong` REGEXP '^" . $prefix_no_kantong . "[A-Z]$'";
+                $sl_updkantong = "UPDATE `stokkantong` SET `abs`='$d_hasil', `tgl_abs`='$vtanggal', `abs_di`='$idudd' WHERE SUBSTRING(noKantong, 1, LENGTH(noKantong) - 1) = '$prefix_no_kantong'";
                 $qryupd_kantong = mysqli_query($dbi, $sl_updkantong);
                 $dstatusabs = 0;
                 $query_gell = mysqli_query($dbi, $sqlgell);
