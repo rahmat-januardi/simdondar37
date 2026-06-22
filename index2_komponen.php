@@ -4,8 +4,7 @@
 			<font size="1"><a href="pmikomponen.php?module=laborat_komponen" target="isiadmin" class="fisheyeItem"><img
 			            src="images/update_stock.png" />Pembuatan Komponen</a></font>
 			<p>
-			    <font size="1"><a href="pmikomponen.php?module=menu_sampel_panel" target="isiadmin" class="fisheyeItem"><img
-			                src="images/sampel_panel.png" />Sampel Panel</a></font>
+
 			    <font size="1"><a href="pmikomponen.php?module=komponen_musnah" target="isiadmin" class="fisheyeItem"><img
 			                src="musnah/images/musnah_icon.png" />Pemusnahan Produk</a></font>
 			    <font size="1"><a href="pmikomponen.php?module=komponen_permintaan" target="isiadmin" class="fisheyeItem"><img

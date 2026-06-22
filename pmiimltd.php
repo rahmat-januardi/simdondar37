@@ -743,6 +743,8 @@ if (($_SESSION['leveluser']) == 'imltd') {
                 include "imltd/proses_permintaan_sampel_panel.php";
             } elseif ($_GET['module'] == 'rekap_sampel_panel') {
                 include "imltd/rekap_sampel_panel.php";
+            } elseif ($_GET['module'] == 'cetak_label_panel') {
+                include "imltd/cetak_label_panel.php";
             }
     }
 }

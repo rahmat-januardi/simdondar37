@@ -27,8 +27,8 @@ if (($_SESSION['leveluser']) == 'komponen') {
                 include "modul/stock.php";
             if ($rstock == '3')
                 // include "modul/stock1.php";
+                // include "release/qa_check_kantong.php";
                 include "modul/cek_kantong_new.php";
-            // include "release/qa_check_kantong.php";
             include "config/koneksi.php";
             include "config/fungsi_combobox.php";
             include "config/library.php";
@@ -530,13 +530,6 @@ if (($_SESSION['leveluser']) == 'komponen') {
             } elseif ($_GET['module'] == 'form_bdrs_ol') {
                 //include  "modul/form_bdrs_ol.php";
                 include  "modul/dropping/droppingBdrs.php";
-            }
-
-            // Sample Panel
-            elseif ($_GET['module'] == 'menu_sampel_panel') {
-                include "imltd/menu_sampel_panel.php";
-            } elseif ($_GET['module'] == 'proses_permintaan_sampel_panel') {
-                include "imltd/proses_permintaan_sampel_panel.php";
             }
     }
 }

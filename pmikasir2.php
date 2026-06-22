@@ -6,16 +6,16 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
     echo "<a href=index.php target=\"_top\"><b>LOGIN</b></a></center>";
 }
 if ($_SESSION['leveluser'] == 'kasir2') { ?>
-    <!doctype html>
-    <html>
+<!doctype html>
+<html>
 
-    <head>
-        <title>SIMDONDAR</title>
-        <script language=javascript src="idcard.js" type="text/javascript"> </script>
-        <script language=javascript src="util.js" type="text/javascript"> </script>
-        <link href="css/style.css" rel="stylesheet" type="text/css" />
-    </head>
-    <?php
+<head>
+    <title>SIMDONDAR</title>
+    <script language=javascript src="idcard.js" type="text/javascript"> </script>
+    <script language=javascript src="util.js" type="text/javascript"> </script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<?php
     //require_once('color.inc');
     switch ($_GET['act']) {
         default:
@@ -227,10 +227,8 @@ if ($_SESSION['leveluser'] == 'kasir2') { ?>
                 include "modul/editpasien.php";
             } elseif ($_GET['module'] == 'edit_datapasien') {
                 include "modul/edit_permintaan.php";
-
             } elseif ($_GET['module'] == 'form_pengantar') {
                 include "modul/pengantar_darah.php";
-
             } elseif ($_GET['module'] == 'permintaan1') {
                 include "receptionis_permintaan.php";
             } elseif ($_GET['module'] == 'pasien_plebotomi') {
@@ -253,6 +251,13 @@ if ($_SESSION['leveluser'] == 'kasir2') { ?>
                 include "modul/rekap_permintaanrs.php";
             } elseif ($_GET['module'] == 'rekap_pengeluarandarah') {
                 include "modul/rekap_pengeluarandarahrs.php";
+            } elseif ($_GET['module'] == 'cetak_ulang_kwitansi') {
+                include "modul/cetak_ulang_kwitansi.php";
+            } elseif ($_GET['module'] == 'bayar_ulang') {
+                include "color.inc";
+                include "modul/mod_kwitansi_ulang.php";
+            } elseif ($_GET['module'] == 'edit_kwitansibdrs') {
+                include "modul/editpembayaran_bdrs.php";
             }
             //12-2019
             //NEW PERMINTAAN DROPPING=============================
@@ -395,10 +400,23 @@ if ($_SESSION['leveluser'] == 'kasir2') { ?>
                 include "modul/musnah.php";
             }
 
-	//Inoput Stok Manual
-	elseif ($_GET['module']=='inputstok')               {include  "distribusi/stok_inputmanual.php";}
-        elseif ($_GET['module']=='inputstokrekap')          {include  "distribusi/stok_inputmanual_rekap.php";}
+            //Inoput Stok Manual
+            elseif ($_GET['module'] == 'inputstok') {
+                include  "distribusi/stok_inputmanual.php";
+            } elseif ($_GET['module'] == 'inputstokrekap') {
+                include  "distribusi/stok_inputmanual_rekap.php";
+            }
 
+            // Sample Panel
+            elseif ($_GET['module'] == 'menu_sampel_panel') {
+                include "imltd/menu_sampel_panel.php";
+            } elseif ($_GET['module'] == 'proses_permintaan_sampel_panel') {
+                include "imltd/proses_permintaan_sampel_panel.php";
+            } elseif ($_GET['module'] == 'rekap_sampel_panel') {
+                include "imltd/rekap_sampel_panel.php";
+            } elseif ($_GET['module'] == 'cetak_label_panel') {
+                include "imltd/cetak_label_panel.php";
+            }
     }
 }
 ?>

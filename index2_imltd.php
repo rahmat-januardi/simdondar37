@@ -13,8 +13,10 @@
 			    <font size="1"><a href="pmiimltd.php?module=rekap" target="isiadmin" class="fisheyeItem"><img
 			                src="images/report_harian.png" />Rekap Transaksi</a></font>
 			<p>
+			    <?php if ($_SESSION['namaudd'] == 'UDD PUSAT PMI') { ?>
 			    <font size="1"><a href="pmiimltd.php?module=menu_sampel_panel" target="isiadmin" class="fisheyeItem"><img
 			                src="images/sampel_panel.png" />Sampel Panel</a></font>
+			    <? } ?>
 			    <font size="1"><a href="pmiimltd.php?module=komponen_musnah" target="isiadmin" class="fisheyeItem"><img
 			                src="musnah/images/musnah_icon.png" />Pemusnahan Produk</a></font>
 			    <font size="1"><a href="pmiimltd.php?module=imltd_permintaan" target="isiadmin" class="fisheyeItem"><img

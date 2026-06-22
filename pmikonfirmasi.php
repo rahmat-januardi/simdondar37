@@ -58,6 +58,18 @@ if (($_SESSION['leveluser']) == 'konfirmasi') {
                 include "modul/cetak_hasil_imltd_group.php";
             }
 
+            // Pemusnahan Produk===============================
+            elseif ($_GET['module'] == 'komponen_musnah') {
+                include "laborat_musnah.php";
+            } elseif ($_GET['module'] == 'musnah') {
+                include "musnah/musnah24.php";
+            } elseif ($_GET['module'] == 'musnahlist') {
+                include "musnah/musnah_list.php";
+            } elseif ($_GET['module'] == 'rincian_darah_buang') {
+                include "musnah/musnah_rincian.php";
+            }
+
+
             //Qwalys===========================================
             elseif ($_GET['module'] == 'qwalys') {
                 include "qwalys/qwalys.php";
@@ -202,4 +214,3 @@ if (($_SESSION['leveluser']) == 'konfirmasi') {
             }
     }
 }
-?>
