@@ -121,6 +121,10 @@ $nodokumen = "-";
     $level            = $_SESSION['leveluser'];
     if ($level == "komponen") {
         $trans = 'KP-' . $now;
+    } else if ($level == "konfirmasi") {
+        $trans = 'KF-' . $now;
+    } else if ($level == "imltd") {
+        $trans = 'IMLTD-' . $now;
     } else {
         $trans = 'PR-' . $now;
     }

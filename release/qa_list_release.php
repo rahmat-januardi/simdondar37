@@ -477,6 +477,96 @@ body {
             </td>
             <? } ?>
     </table><br>
+
+
+    <table border=1 cellpadding=4 style="border-collapse:collapse">
+        <?
+        $golA = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as gola FROM `release` 
+		  WHERE rgolda='A+' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $golB = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as golb FROM `release` 
+		  WHERE rgolda='B+' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $golAB = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as golab FROM `release` 
+		  WHERE rgolda='AB+' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $golO = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as golo FROM `release` 
+		  WHERE rgolda='O+' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $golANEG = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as golaneg FROM `release` 
+		  WHERE rgolda='A-' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $golBNEG = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as golbneg FROM `release` 
+		  WHERE rgolda='B-' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $golABNEG = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as golabneg FROM `release` 
+		  WHERE rgolda='AB-' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $golONEG = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as goloneg FROM `release` 
+		  WHERE rgolda='O-' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $lulus = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as lulus FROM `release` 
+		  WHERE rstatus='0' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $tklulus = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as tklulus FROM `release` 
+		  WHERE rstatus='1' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $ctlulus = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as ctlulus FROM `release` 
+		  WHERE rstatus='2' AND DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+        $total = mysql_fetch_assoc(mysql_query("SELECT count(rnotrans) as total FROM `release` 
+		  WHERE DATE(rtgl)>='$tglawal' AND date(rtgl)<='$hariini' and rstatus like '$status%' and `ruser` like '%$petugas%' order by rnotrans asc"));
+
+
+        ?>
+
+        <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
+
+            <th colspan="8" align="center">Golongan Darah</th>
+            <th colspan="3" align="center">Keterangan</th>
+            <th rowspan="4" align="center">Total Pemeriksaan</th>
+        </tr>
+
+        <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
+            <th colspan="4" align="center">Positif</th>
+            <th colspan="4" align="center">Negatif</th>
+            <th rowspan="3" align="center">Lulus</th>
+            <th rowspan="3" align="center">Lulus Dengan Catatan</th>
+            <th rowspan="3" align="center">Tidak Lulus</th>
+        </tr>
+
+        <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
+            <th rowspan="2">A+</th>
+            <th rowspan="2">B+</th>
+            <th rowspan="2">O+</th>
+            <th rowspan="2">AB+</th>
+            <th rowspan="2">A-</th>
+            <th rowspan="2">B-</th>
+            <th rowspan="2">O-</th>
+            <th rowspan="2">AB-</th>
+
+        </tr>
+
+        <tr></tr>
+        <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
+            <th rowspan="2"><?= $golA["gola"] ?></th>
+            <th rowspan="2"><?= $golB["golb"] ?></th>
+            <th rowspan="2"><?= $golO["golo"] ?></th>
+            <th rowspan="2"><?= $golAB["golab"] ?></th>
+
+            <th rowspan="2"><?= $golANEG["golaneg"] ?></th>
+            <th rowspan="2"><?= $golBNEG["golbneg"] ?></th>
+            <th rowspan="2"><?= $golONEG["goloneg"] ?></th>
+            <th rowspan="2"><?= $golABNEG["golabneg"] ?></th>
+
+            <th rowspan="2"><?= $lulus["lulus"] ?></th>
+            <th rowspan="2"><?= $ctlulus["ctlulus"] ?></th>
+            <th rowspan="2"><?= $tklulus["tklulus"] ?></th>
+            <th rowspan="2"><?= $total["total"] ?></th>
+        </tr>
+
+
+    </table><br />
     <a href="pmiqa.php?module=input_qa" class="swn_button_blue">Kembali</a>
     <?
     if ($no !== 0) {

@@ -1,17 +1,12 @@
-# v_tgl=`date '+%Y%m%d_%H%M%S'`;
-# v_name=pmi_$v_tgl.sql;
-# v_nameplus=pmi_$v_tgl.sql;
-# s_name=sms_$v_tgl.sql;
-# w_name=wagw_$v_tgl.sql;
-# mysqldump -uroot -pF201603907 pmi > ~/Documents/backup_simdondar/$v_name;
-# mysqldump -uroot -pF201603907 pmi > ~/Documents/backup_simdondar/$v_nameplus;
-# #mysqldump -uroot -pF201603907 wagw > /media/server/padang/backup/wagw/$w_name;
-# #mysqldump -uroot -pF201603907 pmi > /home/server/FILE/pmi/$v_name;
-# #mysqldump -uroot -pF201603907 wagw > /home/server/FILE/wagw/$w_name;
-# #mysqldump -uroot -pF201603907 pmi > /var/www/simudda/backup_data/$v_name;
-# #mysqldump -uroot -pF201603907 wagw > /var/www/simudda/backup_data/$w_name;
-
-
 v_tgl=`date '+%Y%m%d_%H%M%S'`;
-	v_name=pmi_$v_tgl.sql.gz ;
-	mysqldump -uroot -pF201603907 --routines pmi | gzip > /home/server/Documents/backup_simdondar/file_backup/$v_name;
+v_name=pmi_$v_tgl.sql;
+v_nameplus=pmi_$v_tgl.sql;
+s_name=sms_$v_tgl.sql;
+w_name=wagw_$v_tgl.sql;
+mysqldump -uroot -pF201603907 pmi > ~/Documents/backup_simdondar/$v_name;
+mysqldump -uroot -pF201603907 pmi > ~/Documents/backup_simdondar/$v_nameplus;
+#mysqldump -uroot -pF201603907 wagw > /media/server/padang/backup/wagw/$w_name;
+#mysqldump -uroot -pF201603907 pmi > /home/server/FILE/pmi/$v_name;
+#mysqldump -uroot -pF201603907 wagw > /home/server/FILE/wagw/$w_name;
+#mysqldump -uroot -pF201603907 pmi > /var/www/simudda/backup_data/$v_name;
+#mysqldump -uroot -pF201603907 wagw > /var/www/simudda/backup_data/$w_name;

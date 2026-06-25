@@ -10,10 +10,13 @@
 <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
 <link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
 <script type="text/javascript">
-	jQuery(document).ready(function () {
-		document.getElementById('terima').focus();
-		$('#instansi').autocomplete({ source: 'modul/suggest_zipnama.php', minLength: 2 });
-	});
+jQuery(document).ready(function() {
+    document.getElementById('terima').focus();
+    $('#instansi').autocomplete({
+        source: 'modul/suggest_zipnama.php',
+        minLength: 2
+    });
+});
 </script>
 <?php
 require_once("modul/background_process.php");
@@ -126,96 +129,96 @@ $perthn1 = substr($today1, 0, 4);
 ?>
 <h1>RINCIAN TRANSAKSI DONOR</h1>
 <form method=post>
-	TANGGAL <input type=text name=minta1 id=datepicker size=10 value=<?php echo $today ?>>
-	S/D <input type=text name=minta2 id=datepicker1 size=10 value=<?php echo $today1 ?>>
-	INSTANSI <input type=text name=nomorf id=instansi size=10 value=<?php echo $src_nomorf ?>><br>
-	STATUS <select name="gol_status">
-		<option value="">-SEMUA-</option>
-		<option value="0">BERHASIL</option>
-		<option value="1">BATAL</option>
-		<option value="2">GAGAL</option>
-		<option value="3">LOLOS MCU</option>
-		<option value="4">GAGAL MCU</option>
-	</select>
+    TANGGAL <input type=text name=minta1 id=datepicker size=10 value=<?php echo $today ?>>
+    S/D <input type=text name=minta2 id=datepicker1 size=10 value=<?php echo $today1 ?>>
+    INSTANSI <input type=text name=nomorf id=instansi size=10 value=<?php echo $src_nomorf ?>><br>
+    STATUS <select name="gol_status">
+        <option value="">-SEMUA-</option>
+        <option value="0">BERHASIL</option>
+        <option value="1">BATAL</option>
+        <option value="2">GAGAL</option>
+        <option value="3">LOLOS MCU</option>
+        <option value="4">GAGAL MCU</option>
+    </select>
 
-	TEMPAT<SELECT name="hasil">
-		<option value="">-SEMUA-</option>
-		<option value="0">DALAM GEDUNG</option>
-		<option value="M">MOBIL UNIT</option>
-	</SELECT>
-	CARA AMBIL<SELECT name="gol_ambil">
-		<option value="">-SEMUA-</option>
-		<option value="0">BIASA</option>
-		<option value="1">TROMBOFERESIS</option>
-		<option value="2">LEUKAFERESIS</option>
-		<option value="3">PLASMAFERESIS</option>
-		<option value="4">ERITOFERESIS</option>
-	</SELECT>
-	SHIFT<SELECT name="gol_shift">
-		<option value="">-SEMUA-</option>
-		<option value="1">SHIFT I</option>
-		<option value="2">SHIFT II</option>
-		<option value="3">SHIFT III</option>
-		<option value="4">SHIFT IV</option>
-	</SELECT>
+    TEMPAT<SELECT name="hasil">
+        <option value="">-SEMUA-</option>
+        <option value="0">DALAM GEDUNG</option>
+        <option value="M">MOBIL UNIT</option>
+    </SELECT>
+    CARA AMBIL<SELECT name="gol_ambil">
+        <option value="">-SEMUA-</option>
+        <option value="0">BIASA</option>
+        <option value="1">TROMBOFERESIS</option>
+        <option value="2">LEUKAFERESIS</option>
+        <option value="3">PLASMAFERESIS</option>
+        <option value="4">ERITOFERESIS</option>
+    </SELECT>
+    SHIFT<SELECT name="gol_shift">
+        <option value="">-SEMUA-</option>
+        <option value="1">SHIFT I</option>
+        <option value="2">SHIFT II</option>
+        <option value="3">SHIFT III</option>
+        <option value="4">SHIFT IV</option>
+    </SELECT>
 
-	KANTONG<SELECT name="gol_ktg" id="jenis" onchange="viewjenis()">
+    KANTONG<SELECT name="gol_ktg" id="jenis" onchange="viewjenis()">
 
-		<option value="">-SEMUA-</option>
-		<option value="1">SINGLE</option>
-		<option value="2">DOUBLE</option>
-		<option value="3">TRIPLE</option>
-		<option value="4">QUADRUPLE</option>
-		<option value="6">PEDIATRIK</option>
-	</SELECT>
-	<!--list quadriple 050518-->
-	&nbsp;&nbsp;
-	<span id="bt" style="display: none">
-		JENIS :
-		<SELECT name="metoda" id="metoda">
-			<option value="" selected>SEMUA</option>
-			<!--							<option value="BS">Biasa</option>-->
-			<option value="TTB">TOP & TOP (Biasa)</option>
-			<option value="TTF">TOP & TOP (Filter)</option>
-			<option value="TBB">TOP & BOTTOM (Biasa)</option>
-			<option value="TBF">TOP & BOTTOM (Filter)</option>
-			<!--							<option value="FT">FILTER</option>-->
-		</SELECT>
-	</span>
-	<br>
-	GOL DARAH<SELECT name="gol_drh">
-		<option value="">-SEMUA-</option>
-		<option value="A">A</option>
-		<option value="B">B</option>
-		<option value="O">O</option>
-		<option value="AB">AB</option>
-	</SELECT>
-	Rh<SELECT name="gol_rh">
-		<option value="">-SEMUA-</option>
-		<option value="+">POS</option>
-		<option value="-">NEG</option>
+        <option value="">-SEMUA-</option>
+        <option value="1">SINGLE</option>
+        <option value="2">DOUBLE</option>
+        <option value="3">TRIPLE</option>
+        <option value="4">QUADRUPLE</option>
+        <option value="6">PEDIATRIK</option>
+    </SELECT>
+    <!--list quadriple 050518-->
+    &nbsp;&nbsp;
+    <span id="bt" style="display: none">
+        JENIS :
+        <SELECT name="metoda" id="metoda">
+            <option value="" selected>SEMUA</option>
+            <!--							<option value="BS">Biasa</option>-->
+            <option value="TTB">TOP & TOP (Biasa)</option>
+            <option value="TTF">TOP & TOP (Filter)</option>
+            <option value="TBB">TOP & BOTTOM (Biasa)</option>
+            <option value="TBF">TOP & BOTTOM (Filter)</option>
+            <!--							<option value="FT">FILTER</option>-->
+        </SELECT>
+    </span>
+    <br>
+    GOL DARAH<SELECT name="gol_drh">
+        <option value="">-SEMUA-</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="O">O</option>
+        <option value="AB">AB</option>
+    </SELECT>
+    Rh<SELECT name="gol_rh">
+        <option value="">-SEMUA-</option>
+        <option value="+">POS</option>
+        <option value="-">NEG</option>
 
-	</SELECT>
+    </SELECT>
 
-	JK<SELECT name="gol_jk">
-		<option value="">-SEMUA-</option>
-		<option value="0">PRIA</option>
-		<option value="1">WANITA</option>
+    JK<SELECT name="gol_jk">
+        <option value="">-SEMUA-</option>
+        <option value="0">PRIA</option>
+        <option value="1">WANITA</option>
 
-	</SELECT>
-	DS/DP<SELECT name="ds">
-		<option value="">-SEMUA-</option>
-		<option value="0">DS</option>
-		<option value="1">DP</option>
+    </SELECT>
+    DS/DP<SELECT name="ds">
+        <option value="">-SEMUA-</option>
+        <option value="0">DS</option>
+        <option value="1">DP</option>
 
-	</SELECT>
-	BARU/ULANG<SELECT name="baru">
-		<option value="">-SEMUA-</option>
-		<option value="0">Baru</option>
-		<option value="1">Ulang</option>
+    </SELECT>
+    BARU/ULANG<SELECT name="baru">
+        <option value="">-SEMUA-</option>
+        <option value="0">Baru</option>
+        <option value="1">Ulang</option>
 
-	</SELECT>
-	<input type="submit" name="submit" value="Lihat" class="swn_button_blue"><br>
+    </SELECT>
+    <input type="submit" name="submit" value="Lihat" class="swn_button_blue"><br>
 
 </form>
 <?php
@@ -233,7 +236,7 @@ if (isset($_POST['gol_status']) && $_POST['gol_status'] !== "") {
 			$whereStatus = " AND COALESCE(Pengambilan , '') = '1' ";
 			break;
 		case "2":
-			$whereStatus = " AND COALESCE(Pengambilan , '') = '2' OR jumHB IN ('2','3','4')) ";
+			$whereStatus = " AND COALESCE(Pengambilan , '') = '2' OR jumHB IN ('1','2','3','4')) ";
 			break;
 		case "3":
 			$whereStatus = " AND COALESCE(Pengambilan , '') = '3' AND jumHB = '1' ";
@@ -281,9 +284,9 @@ switch (isset($_POST['gol_drh']) ? $_POST['gol_drh'] : '') {
 /*$transaksipermintaan=mysqli_query($dbi, "SELECT * FROM htransaksi WHERE CAST(Tgl as date)>='$today' and CAST(Tgl as date)<='$today1' and Pengambilan like '%$src_status%' and tempat like '%$hasil%' and shift like '%$src_shift%' and caraambil like '%$src_ambil%' and jeniskantong like '%$src_ktg%' and gol_darah='$src_drh' and jk like '%$src_jk%' and Instansi like '%$src_nomorf%' and rhesus like '%$src_rh%' and JenisDonor like '%$src_ds%' and donorbaru like '%$src_baru%' order by NoTrans ASC  ");*/
 ?>
 <h1 class="table">Rincian Transaksi Donor dari tgl : <?php echo $pertgl ?>-<?php echo $perbln ?>-<?php echo $perthn ?>
-	s/d
-	<?php echo $pertgl1 ?>-<?php echo $perbln1 ?>-<?php echo $perthn1 ?>
-	<?php
+    s/d
+    <?php echo $pertgl1 ?>-<?php echo $perbln1 ?>-<?php echo $perthn1 ?>
+    <?php
 	$countp = mysqli_num_rows($transaksipermintaan);
 	echo ", Jumlah :  ";
 	echo "<b>";
@@ -294,76 +297,76 @@ switch (isset($_POST['gol_drh']) ? $_POST['gol_drh'] : '') {
 </h1>
 
 <table border=1 cellpadding=5 cellspacing=1 style="border-collapse:collapse" width="100%">
-	<tr style="background-color:#FF0000; font-size:11px; color:#FFFFFF; font-family:Verdana;"
-		onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
-		<!--th colspan=12><b>Total = <?php echo $TRec ?> Kantong</b></th></tr><tr class="field"-->
-		<td rowspan='2' align="center">No</td>
-		<td rowspan='2' align="center">NoTrans</td>
-		<td rowspan='2' align="center">Tanggal</td>
-		<td colspan='11' align="center">Pendonor</td>
-		<td colspan='12' align="center">Aftap</td>
-		<td colspan='5'>Piagam</td>
-		<td colspan='5' align="center">Petugas</td>
+    <tr style="background-color:#FF0000; font-size:11px; color:#FFFFFF; font-family:Verdana;"
+        onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
+        <!--th colspan=12><b>Total = <?php echo $TRec ?> Kantong</b></th></tr><tr class="field"-->
+        <td rowspan='2' align="center">No</td>
+        <td rowspan='2' align="center">NoTrans</td>
+        <td rowspan='2' align="center">Tanggal</td>
+        <td colspan='11' align="center">Pendonor</td>
+        <td colspan='12' align="center">Aftap</td>
+        <td colspan='5'>Piagam</td>
+        <td colspan='5' align="center">Petugas</td>
 
-	</tr>
-	<tr style="background-color:#FF0000; font-size:11px; color:#FFFFFF; font-family:Verdana;"
-		onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
-		<td align="center">ID</td>
-		<td align="center">Nama</td>
-		<td align="center">Alamat</td>
-		<td align="center">HP</td>
-		<td align="center">Umur</td>
-		<td align="center">Gol<br>(Rh)</td>
-		<td align="center">JK</td>
-		<td align="center">DS<br>DP</td>
-		<td align="center">Baru<br>Ulang</td>
-		<td align="center">Donor<br>Ke-</td>
-		<td align="center">Jam<br>Antri</td>
+    </tr>
+    <tr style="background-color:#FF0000; font-size:11px; color:#FFFFFF; font-family:Verdana;"
+        onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
+        <td align="center">ID</td>
+        <td align="center">Nama</td>
+        <td align="center">Alamat</td>
+        <td align="center">HP</td>
+        <td align="center">Umur</td>
+        <td align="center">Gol<br>(Rh)</td>
+        <td align="center">JK</td>
+        <td align="center">DS<br>DP</td>
+        <td align="center">Baru<br>Ulang</td>
+        <td align="center">Donor<br>Ke-</td>
+        <td align="center">Jam<br>Antri</td>
 
-		<td align="center">Jenis</td>
-		<td align="center">No<br>Kantong</td>
-		<td align="center">Penge-<br>sahan</td>
-		<td align="center">Jam<br>Entry</td>
-		<td align="center">Durasi<br>Pengambilan</td>
-		<td align="center">Status</td>
-		<td align="center">Keterangan<br>Batal</td>
-		<td align="center">Cara Ambil</td>
-		<td align="center">CC</td>
-		<td align="center">Shift</td>
-		<td align="center">DG<br>MU</td>
-		<td align="center">Instansi</td>
+        <td align="center">Jenis</td>
+        <td align="center">No<br>Kantong</td>
+        <td align="center">Penge-<br>sahan</td>
+        <td align="center">Jam<br>Entry</td>
+        <td align="center">Durasi<br>Pengambilan</td>
+        <td align="center">Status</td>
+        <td align="center">Keterangan<br>Batal</td>
+        <td align="center">Cara Ambil</td>
+        <td align="center">CC</td>
+        <td align="center">Shift</td>
+        <td align="center">DG<br>MU</td>
+        <td align="center">Instansi</td>
 
-		<td align="center">10x</td>
-		<td align="center">25x</td>
-		<td align="center">50x</td>
-		<td align="center">75x</td>
-		<td align="center">100x</td>
+        <td align="center">10x</td>
+        <td align="center">25x</td>
+        <td align="center">50x</td>
+        <td align="center">75x</td>
+        <td align="center">100x</td>
 
-		<td align="center">Dokter</td>
-		<td align="center">Tensi</td>
-		<td align="center">Hb</td>
-		<td align="center">Aftap</td>
-		<td align="center">Input</td>
-
-
-	</tr>
+        <td align="center">Dokter</td>
+        <td align="center">Tensi</td>
+        <td align="center">Hb</td>
+        <td align="center">Aftap</td>
+        <td align="center">Input</td>
 
 
-	<?php
+    </tr>
+
+
+    <?php
 	$no = 1;
 	while ($datatransaksipermintaan = mysqli_fetch_array($transaksipermintaan)) {
-		?>
+	?>
 
 
-		<tr style="background-color:#FFEFD5; font-size:11px; color:#000000; font-family:Verdana;"
-			onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
-			<td align="center"><?php echo $no ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['NoTrans'] ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['Tgl'] ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['KodePendonor'] ?></td>
+    <tr style="background-color:#FFEFD5; font-size:11px; color:#000000; font-family:Verdana;"
+        onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
+        <td align="center"><?php echo $no ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['NoTrans'] ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['Tgl'] ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['KodePendonor'] ?></td>
 
 
-			<?php
+        <?php
 			$kantong0 = mysqli_query($dbi, "SELECT * FROM stokkantong WHERE noKantong='$datatransaksipermintaan[NoKantong]'");
 			$kantong = mysqli_fetch_array($kantong0);
 			$pendonor0 = mysqli_query($dbi, "SELECT * FROM pendonor WHERE Kode='$datatransaksipermintaan[KodePendonor]'");
@@ -439,7 +442,7 @@ switch (isset($_POST['gol_drh']) ? $_POST['gol_drh'] : '') {
 
 			switch ($kantong['metoda']) {
 				//            case "BS":  $metkantong ="BIASA";        break;
-//            case "FT":  $metkantong ="FILTER";       break;
+				//            case "FT":  $metkantong ="FILTER";       break;
 				case "TTB":
 					$metkantong = "TOP & TOP (Biasa)";
 					break;
@@ -482,48 +485,48 @@ switch (isset($_POST['gol_drh']) ? $_POST['gol_drh'] : '') {
 				$sah1 = '-';
 			?>
 
-			<td align="left"><?php echo $pendonor['Nama'] ?></td>
-			<td align="center"><?php echo $pendonor['Alamat'] ?></td>
-			<td align="center"><?php echo $pendonor['telp2'] ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['umur'] ?></td>
-			<td align="center">
-				<?php echo $datatransaksipermintaan['gol_darah'] ?> 	<?php echo $datatransaksipermintaan['rhesus'] ?>
-			</td>
-			<td align="center"><?php echo $jk ?></td>
-			<td align="center"><?php echo $ds ?></td>
-			<td align="center"><?php echo $baru ?></td>
-			<td align="center"><?php echo $pendonor['jumDonor'] ?></td>
-			<td align="center"><?php echo $jamantri ?></td>
-			<td align="center"><?php echo $jenis ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['NoKantong'] ?></td>
-			<td align="center"><?php echo $sah1 ?></td>
-			<td align="center"><?php if ($sah1 == "-") {
-				echo "-";
-			} else {
-				echo $jamaftap;
-			} ?></td>
-			<td align="center"><?php if ($sah1 == "-") {
-				echo "-";
-			} else {
-				echo $kantong['lama_pengambilan'] . " menit";
-			} ?></td>
-			<td align="center"><?php echo $peng ?></td>
-			<td align="center"><?php echo $ketstatus ?></td>
-			<td align="center"><?php echo $caraambil ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['volumekantong'] ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['shift'] ?></td>
-			<?php
+        <td align="left"><?php echo $pendonor['Nama'] ?></td>
+        <td align="center"><?php echo $pendonor['Alamat'] ?></td>
+        <td align="center"><?php echo $pendonor['telp2'] ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['umur'] ?></td>
+        <td align="center">
+            <?php echo $datatransaksipermintaan['gol_darah'] ?> <?php echo $datatransaksipermintaan['rhesus'] ?>
+        </td>
+        <td align="center"><?php echo $jk ?></td>
+        <td align="center"><?php echo $ds ?></td>
+        <td align="center"><?php echo $baru ?></td>
+        <td align="center"><?php echo $pendonor['jumDonor'] ?></td>
+        <td align="center"><?php echo $jamantri ?></td>
+        <td align="center"><?php echo $jenis ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['NoKantong'] ?></td>
+        <td align="center"><?php echo $sah1 ?></td>
+        <td align="center"><?php if ($sah1 == "-") {
+									echo "-";
+								} else {
+									echo $jamaftap;
+								} ?></td>
+        <td align="center"><?php if ($sah1 == "-") {
+									echo "-";
+								} else {
+									echo $kantong['lama_pengambilan'] . " menit";
+								} ?></td>
+        <td align="center"><?php echo $peng ?></td>
+        <td align="center"><?php echo $ketstatus ?></td>
+        <td align="center"><?php echo $caraambil ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['volumekantong'] ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['shift'] ?></td>
+        <?php
 			if ($datatransaksipermintaan['tempat'] == 'M')
 				$tempat1 = 'MU';
 			if ($datatransaksipermintaan['tempat'] != 'M')
 				$tempat1 = 'DG';
 			?>
 
-			<td align="center"><?php echo $tempat1 ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['Instansi'] ?></td>
+        <td align="center"><?php echo $tempat1 ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['Instansi'] ?></td>
 
 
-			<?php
+        <?php
 			$p10 = 'Sdh';
 			if ($pendonor['jumDonor'] > 9 and $pendonor['p10'] == 0)
 				$p10 = 'Blm';
@@ -550,86 +553,86 @@ switch (isset($_POST['gol_drh']) ? $_POST['gol_drh'] : '') {
 			if ($pendonor['jumDonor'] < 100)
 				$p100 = '-';
 			?>
-			<td class=input align="right"><?php echo $p10 ?></td>
-			<td class=input align="right"><?php echo $p25 ?></td>
-			<td class=input align="right"><?php echo $p50 ?></td>
-			<td class=input align="right"><?php echo $p75 ?></td>
-			<td class=input align="right"><?php echo $p100 ?></td>
+        <td class=input align="right"><?php echo $p10 ?></td>
+        <td class=input align="right"><?php echo $p25 ?></td>
+        <td class=input align="right"><?php echo $p50 ?></td>
+        <td class=input align="right"><?php echo $p75 ?></td>
+        <td class=input align="right"><?php echo $p100 ?></td>
 
 
 
-			<?php
+        <?php
 			$dokter = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT Nama FROM dokter_periksa WHERE kode='$datatransaksipermintaan[NamaDokter]'"));
 			?>
-			<td class=input><?php echo $dokter['Nama'] ?></td>
+        <td class=input><?php echo $dokter['Nama'] ?></td>
 
-			<td align="center"><?php echo $datatransaksipermintaan['petugasTensi'] ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['petugasHB'] ?></td>
-			<!--? 	
+        <td align="center"><?php echo $datatransaksipermintaan['petugasTensi'] ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['petugasHB'] ?></td>
+        <!--? 	
 	$kantong1=mysqli_query($dbi, "SELECT * FROM stokkantong WHERE NoKantong='$datatransaksipermintaan[NoKantong]'");
 	$ambilkantong1=mysqli_fetch_array($kantong1);
 	
 	?-->
-			<td align="center"><?php echo $datatransaksipermintaan['petugas'] ?></td>
-			<td align="center"><?php echo $datatransaksipermintaan['user'] ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['petugas'] ?></td>
+        <td align="center"><?php echo $datatransaksipermintaan['user'] ?></td>
 
 
-		</tr>
-		<?php $no++;
+    </tr>
+    <?php $no++;
 	} ?>
 </table>
 
 <br>
 
 <tr>
-	<td>
-		<form name=xls method=post action=modul/rekap_transaksi_donor_xls.php>
-			<input type=hidden name=today value='<?php echo $today ?>'>
-			<input type=hidden name=today1 value='<?php echo $today1 ?>'>
-			<input type=hidden name=instansi value='<?php echo $src_nomorf ?>'>
-			<input type=hidden name=status value='<?php echo $src_status ?>'>
-			<input type=hidden name=ambil value='<?php echo $src_ambil ?>'>
-			<input type=hidden name=hasil value='<?php echo $hasil ?>'>
-			<input type=hidden name=shift value='<?php echo $src_shift ?>'>
-			<input type=hidden name=ktg value='<?php echo $src_ktg ?>'>
-			<input type=hidden name=drh value='<?php echo $src_drh ?>'>
-			<input type=hidden name=jk value='<?php echo $srcr_jk ?>'>
-			<input type=hidden name=rh value='<?php echo $src_rh ?>'>
-			<input type=hidden name=ds value='<?php echo $src_ds ?>'>
-			<input type=hidden name=baru value='<?php echo $src_baru ?>'>
-			<input type=hidden name=namauser value='<?php echo $namauser ?>'>
-			<input type=submit name=submit2 value='Print Rincian Transaksi Donor Lengkap (.XLS)'>
-		</form>
-	</td>
-	<td>
-		<form name=xls method=post action=modul/rekap_transaksi_donor_xls1.php>
-			<input type=hidden name=today value='<?php echo $today ?>'>
-			<input type=hidden name=today1 value='<?php echo $today1 ?>'>
-			<input type=hidden name=instansi value='<?php echo $src_nomorf ?>'>
-			<input type=hidden name=status value='<?php echo $src_status ?>'>
-			<input type=hidden name=ambil value='<?php echo $src_ambil ?>'>
-			<input type=hidden name=hasil value='<?php echo $hasil ?>'>
-			<input type=hidden name=shift value='<?php echo $src_shift ?>'>
-			<input type=hidden name=ktg value='<?php echo $src_ktg ?>'>
-			<input type=hidden name=drh value='<?php echo $src_drh ?>'>
-			<input type=hidden name=jk value='<?php echo $srcr_jk ?>'>
-			<input type=hidden name=rh value='<?php echo $src_rh ?>'>
-			<input type=hidden name=ds value='<?php echo $src_ds ?>'>
-			<input type=hidden name=baru value='<?php echo $src_baru ?>'>
-			<input type=hidden name=namauser value='<?php echo $namauser ?>'>
-			<input type=submit name=submit3 value='Print Rincian Transaksi Donor Kirim Kebagian (.XLS)'>
-		</form>
+    <td>
+        <form name=xls method=post action=modul/rekap_transaksi_donor_xls.php>
+            <input type=hidden name=today value='<?php echo $today ?>'>
+            <input type=hidden name=today1 value='<?php echo $today1 ?>'>
+            <input type=hidden name=instansi value='<?php echo $src_nomorf ?>'>
+            <input type=hidden name=status value='<?php echo $src_status ?>'>
+            <input type=hidden name=ambil value='<?php echo $src_ambil ?>'>
+            <input type=hidden name=hasil value='<?php echo $hasil ?>'>
+            <input type=hidden name=shift value='<?php echo $src_shift ?>'>
+            <input type=hidden name=ktg value='<?php echo $src_ktg ?>'>
+            <input type=hidden name=drh value='<?php echo $src_drh ?>'>
+            <input type=hidden name=jk value='<?php echo $srcr_jk ?>'>
+            <input type=hidden name=rh value='<?php echo $src_rh ?>'>
+            <input type=hidden name=ds value='<?php echo $src_ds ?>'>
+            <input type=hidden name=baru value='<?php echo $src_baru ?>'>
+            <input type=hidden name=namauser value='<?php echo $namauser ?>'>
+            <input type=submit name=submit2 value='Print Rincian Transaksi Donor Lengkap (.XLS)'>
+        </form>
+    </td>
+    <td>
+        <form name=xls method=post action=modul/rekap_transaksi_donor_xls1.php>
+            <input type=hidden name=today value='<?php echo $today ?>'>
+            <input type=hidden name=today1 value='<?php echo $today1 ?>'>
+            <input type=hidden name=instansi value='<?php echo $src_nomorf ?>'>
+            <input type=hidden name=status value='<?php echo $src_status ?>'>
+            <input type=hidden name=ambil value='<?php echo $src_ambil ?>'>
+            <input type=hidden name=hasil value='<?php echo $hasil ?>'>
+            <input type=hidden name=shift value='<?php echo $src_shift ?>'>
+            <input type=hidden name=ktg value='<?php echo $src_ktg ?>'>
+            <input type=hidden name=drh value='<?php echo $src_drh ?>'>
+            <input type=hidden name=jk value='<?php echo $srcr_jk ?>'>
+            <input type=hidden name=rh value='<?php echo $src_rh ?>'>
+            <input type=hidden name=ds value='<?php echo $src_ds ?>'>
+            <input type=hidden name=baru value='<?php echo $src_baru ?>'>
+            <input type=hidden name=namauser value='<?php echo $namauser ?>'>
+            <input type=submit name=submit3 value='Print Rincian Transaksi Donor Kirim Kebagian (.XLS)'>
+        </form>
 </tr>
 
 <script>
-	function viewjenis() {
-		var jenis = document.getElementById("jenis").value;
-		if (jenis == '4') {
-			document.getElementById("bt").style.display = "inline";
-		} else {
-			document.getElementById("bt").style.display = "none";
-		}
-	}
+function viewjenis() {
+    var jenis = document.getElementById("jenis").value;
+    if (jenis == '4') {
+        document.getElementById("bt").style.display = "inline";
+    } else {
+        document.getElementById("bt").style.display = "none";
+    }
+}
 </script>
 
 <DIV ID="testdiv1" STYLE="position:absolute;visibility:hidden;background-color:white;">

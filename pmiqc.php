@@ -594,13 +594,11 @@ if (($_SESSION['leveluser']) == 'qc') {
                 include "QC/qc_edit_kantong.php";
             } elseif ($_GET['module'] == 'density1') {
                 include "QC/qc_beratjenis.php";
+            } elseif ($_GET['module'] == 'qc_produk') {
+                include "QC/qc_input_produk.php";
             }
             //==============================================
-            elseif ($_GET['module'] == 'qc_produk') {
-                include "QC/qc_input_produk.php";
-            } elseif ($_GET['module'] == 'qc_produk_proses') {
-                include "QC/qc_produk_proses.php";
-            }
+
     }
 }
 ?>

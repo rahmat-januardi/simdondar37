@@ -28,114 +28,114 @@ $nodokumen = "-";
 <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
 <link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
 <style>
-.awesomeText {
-    color: #000;
-    font-size: 100%;
-}
+    .awesomeText {
+        color: #000;
+        font-size: 100%;
+    }
 </style>
 
 <style>
-#serahterima {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    border-collapse: collapse;
-}
+    #serahterima {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        border-collapse: collapse;
+    }
 
-#serahterima td,
-#serahterima th {
-    border: 1px solid #ddd;
-    padding: 3px;
-}
+    #serahterima td,
+    #serahterima th {
+        border: 1px solid #ddd;
+        padding: 3px;
+    }
 
-#serahterima tr:nth-child(even) {
-    background-color: #ffe6e6;
-}
+    #serahterima tr:nth-child(even) {
+        background-color: #ffe6e6;
+    }
 
-#serahterima tr:hover {
-    background-color: #ddd;
-}
+    #serahterima tr:hover {
+        background-color: #ddd;
+    }
 
-#serahterima th {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    text-align: left;
-    font-weight: lighter;
-    background-color: #ff9999;
-    color: #000000;
-}
+    #serahterima th {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: left;
+        font-weight: lighter;
+        background-color: #ff9999;
+        color: #000000;
+    }
 
-#serahterima input {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    text-align: left;
-    background-color: lightyellow;
-    color: #000000;
-}
+    #serahterima input {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: left;
+        background-color: lightyellow;
+        color: #000000;
+    }
 </style>
 <style>
-#entrybox {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    border-collapse: collapse;
-}
+    #entrybox {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        border-collapse: collapse;
+    }
 
-#entrybox td,
-#entrybox th {
-    border: 1px solid #ddd;
-    background-color: #ffe6e6;
-    padding: 3px;
-}
+    #entrybox td,
+    #entrybox th {
+        border: 1px solid #ddd;
+        background-color: #ffe6e6;
+        padding: 3px;
+    }
 
-#entrybox th {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    text-align: left;
-    font-weight: lighter;
-    background-color: #ffe6e6;
-    color: #000000;
-}
+    #entrybox th {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: left;
+        font-weight: lighter;
+        background-color: #ffe6e6;
+        color: #000000;
+    }
 
-#entrybox input {
-    padding-top: 2px;
-    padding-bottom: 2px;
-    text-align: left;
-    font-weight: bold;
-    background-color: #e6ffe6;
-    color: #000000;
-}
+    #entrybox input {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: left;
+        font-weight: bold;
+        background-color: #e6ffe6;
+        color: #000000;
+    }
 </style>
 <script language="javascript">
-function setFocus() {
-    document.sahdarah.nomorkantong.focus();
-}
+    function setFocus() {
+        document.sahdarah.nomorkantong.focus();
+    }
 </script>
 <script type="text/javascript">
-/***********************************************
- * Disable "Enter" key in Form script- By Nurul Fadilah(nurul@REMOVETHISvolmedia.com)
- * This notice must stay intact for use
- * Visit http://www.dynamicdrive.com/ for full source code
- ***********************************************/
+    /***********************************************
+     * Disable "Enter" key in Form script- By Nurul Fadilah(nurul@REMOVETHISvolmedia.com)
+     * This notice must stay intact for use
+     * Visit http://www.dynamicdrive.com/ for full source code
+     ***********************************************/
 
-function handleEnter(field, event) {
-    var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
-    if (keyCode == 13) {
-        var i;
-        for (i = 0; i < field.form.elements.length; i++)
-            if (field == field.form.elements[i])
-                break;
-        i = (i + 1) % field.form.elements.length;
-        field.form.elements[i].focus();
-        return false;
-    } else
-        return true;
-}
-
-function enterToSubmit(event) {
-    if (event.key === "Enter") {
-        document.getElementsByName('submit1')[0].click();
-        return false;
+    function handleEnter(field, event) {
+        var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+        if (keyCode == 13) {
+            var i;
+            for (i = 0; i < field.form.elements.length; i++)
+                if (field == field.form.elements[i])
+                    break;
+            i = (i + 1) % field.form.elements.length;
+            field.form.elements[i].focus();
+            return false;
+        } else
+            return true;
     }
-}
+
+    function enterToSubmit(event) {
+        if (event.key === "Enter") {
+            document.getElementsByName('submit1')[0].click();
+            return false;
+        }
+    }
 </script>
 
 <body onLoad=setFocus();>
@@ -298,10 +298,10 @@ function enterToSubmit(event) {
             $head = mysql_fetch_assoc($sq);
             $sa = "INSERT INTO `serahterima`(`hst_notrans`, `hst_bagpengirim`, `hst_bagpenerima`, `hst_tgl`, `hst_asal`,
     	    `hst_jenis_st`, `hst_user`, `hst_pengirim`, `hst_penerima`, `hst_penerima2`, `hst_penerima3`, `hst_kode_alat`, `hst_suhuterima`,
-    	    `hst_kondisiumum`, `hst_peruntukan`, `hst_modul`, `hst_shift_pengirim`)
+    	    `hst_kondisiumum`, `hst_peruntukan`, `hst_modul`, `hst_shift_pengirim`, `hst_dariudd`)
     	    VALUES ('$notrans','$bag_pengirim','$bag_penerima',NOW(),'$head[dst_asal]',
     	    'Kantong dan Sample Aftap','$namauser','$usr_pengirim','$usr_penerima1','$usr_penerima2','$usr_penerima3', '$head[dst_kodealat]','$head[dst_suhu]',
-    	    '$head[dst_keadaan]','Pengolahan Darah, Pemeriksaan IMLTD & KGD','$modul', '$head[dst_shift_pengirim]')";
+    	    '$head[dst_keadaan]','Pengolahan Darah, Pemeriksaan IMLTD & KGD','$modul', '$head[dst_shift_pengirim]', '$idudd')";
             //echo "$sa<br>";
             $a = mysql_query($sa);
             $sq = "SELECT * FROM `serahterima_detail_tmp` WHERE `dst_user`='$namauser' AND `dst_modul`='KARANTINA'";
@@ -362,9 +362,7 @@ function enterToSubmit(event) {
 
     ?>
     <a name="atas" id="atas"></a>
-    <div
-        style="background-color: #ffffff;font-size:24px; color:#0099ff;text-shadow: 1px 1px 1px #000000; font-family:Verdana;">
-        SERAH TERIMA KANTONG & SAMPLE DARI AFTAP/MOBILE UNIT</div>
+    <div style="background-color: #ffffff;font-size:24px; color:#0099ff;text-shadow: 1px 1px 1px #000000; font-family:Verdana;">SERAH TERIMA KANTONG & SAMPLE DARI AFTAP/MOBILE UNIT</div>
     <hr style="width: 100%;text-align:left;margin-left:0;color: #0099ff">
     <?php
     $sr = mysql_fetch_assoc(mysql_query("SELECT  `dst_asal`, `dst_kodealat`,  `dst_suhu`, `dst_keadaan` FROM `serahterima_detail_tmp` WHERE `dst_modul`='$modul' AND `dst_user`='$namauser'"));
@@ -374,15 +372,13 @@ function enterToSubmit(event) {
     $asal_sample  = $sr['dst_asal'];
     ?>
     <form name=sahdarah method=post>
-        <table
-            style="width: 100%; border-collapse: collapse;border: 2px solid #808080;box-shadow: 1px 2px 2px #000000;">
+        <table style="width: 100%; border-collapse: collapse;border: 2px solid #808080;box-shadow: 1px 2px 2px #000000;">
             <tr>
                 <td style="vertical-align: top; width=50%;">
                     <table id="serahterima" style="width: 98%;">
                         <tr>
                             <th>Bagian yang mengirimkan</th>
-                            <td><input name="bag_pengirim" id="bag_pengirim" type="text" disabled
-                                    value="<?= $bag_pengirim ?>"></td>
+                            <td><input name="bag_pengirim" id="bag_pengirim" type="text" disabled value="<?= $bag_pengirim ?>"></td>
                         </tr>
                         <tr>
                             <th>Jenis Serah Terima</th>
@@ -390,13 +386,11 @@ function enterToSubmit(event) {
                         </tr>
                         <tr>
                             <th>Bagian yang menerima</th>
-                            <td><input name="bag_penerima" id="bag_penerima" type="text" disabled
-                                    value="<?= $bag_penerima ?>"></td>
+                            <td><input name="bag_penerima" id="bag_penerima" type="text" disabled value="<?= $bag_penerima ?>"></td>
                         </tr>
                         <tr>
                             <th>Asal Kantong & Sample</th>
-                            <td><input name="asal" id="asal" type="text" required
-                                    onkeypress="return handleEnter(this, event)" value="<?= $asal_sample ?>"></td>
+                            <td><input name="asal" id="asal" type="text" required onkeypress="return handleEnter(this, event)" value="<?= $asal_sample ?>"></td>
                         </tr>
                     </table>
                 </td>
@@ -404,20 +398,15 @@ function enterToSubmit(event) {
                     <table id="serahterima" style="width: 98%;">
                         <tr>
                             <th>Kode alat pengiriman</th>
-                            <td><input name="kodealat" id="kodealat" required
-                                    onkeypress="return handleEnter(this, event)" type="text" value="<?= $kode_alat ?>">
-                            </td>
+                            <td><input name="kodealat" id="kodealat" required onkeypress="return handleEnter(this, event)" type="text" value="<?= $kode_alat ?>"></td>
                         </tr>
                         <tr>
                             <th>Suhu pada saat diterima</th>
-                            <td><input name="suhu" id="suhu" type="text" required
-                                    onkeypress="return handleEnter(this, event)" size="3"
-                                    value="<?= $suhu ?>"><sup>o</sup>C</td>
+                            <td><input name="suhu" id="suhu" type="text" required onkeypress="return handleEnter(this, event)" size="3" value="<?= $suhu ?>"><sup>o</sup>C</td>
                         </tr>
                         <tr>
                             <th>Keadaan umum saat diterima</th>
-                            <td><input name="keadaan" id="keadaan" type="text" required
-                                    onkeypress="return handleEnter(this, event)"" value=" <?= $keadaan ?>"></td>
+                            <td><input name="keadaan" id="keadaan" type="text" required onkeypress="return handleEnter(this, event)"" value=" <?= $keadaan ?>"></td>
                         </tr>
                         <tr>
                             <th>Peruntukan</th>
@@ -429,12 +418,10 @@ function enterToSubmit(event) {
         </table>
 
         <br>
-        <table id="entrybox"
-            style="border-collapse: collapse;border: 2px solid #ff0000;width: 100%; box-shadow: 1px 2px 2px #800000;">
+        <table id="entrybox" style="border-collapse: collapse;border: 2px solid #ff0000;width: 100%; box-shadow: 1px 2px 2px #800000;">
             <tr>
                 <td>Masukkan Nomor Kantong</td>
-                <td><input type=text name=nomorkantong id=nomorkantong autofocus
-                        onkeypress="return enterToSubmit(event)"></td>
+                <td><input type=text name=nomorkantong id=nomorkantong autofocus onkeypress="return enterToSubmit(event)"></td>
                 <td>Status Sample</td>
                 <td><select name="sr_sample" id="sr_sample" onkeypress="return handleEnter(this, event)">
                         <option value="1">Sesuai</option>
@@ -455,8 +442,7 @@ function enterToSubmit(event) {
 
 
         <br>
-        <table id="serahterima" width="100%"
-            style="border-collapse: collapse;border: 1px solid #808080;box-shadow: 1px 2px 2px #000000;">
+        <table id="serahterima" width="100%" style="border-collapse: collapse;border: 1px solid #808080;box-shadow: 1px 2px 2px #000000;">
             <tr style="font-size: 12px">
                 <th style="height: 40px;text-align: center;font-weight: bold">No</th>
                 <th style="height: 40px;text-align: center;font-weight: bold">No Kantong</th>
@@ -539,30 +525,28 @@ function enterToSubmit(event) {
                         break;
                 }
             ?>
-            <tr style="font-size: 12px">
-                <td align="right"><?= $no ?>.</td>
-                <td><?= $tmp['dst_nokantong'] ?></td>
-                <td align="center"><?= $tmp['dst_jenisktg'] ?></td>
-                <td><?= $tmp['dst_merk'] . ' ' . $tmp['dst_volumektg'] ?> ml</td>
-                <td style="text-align: center"><?= $tmp['dst_golda'] . $tmp['dst_rh'] ?></td>
-                <td align="center"><?= $tmp['dst_tglaftap'] ?></td>
-                <td><?= $tmp['dst_no_aftap'] ?></td>
-                <td><?= $ckt_status ?></td>
-                <td><?= $tmp['dst_lama_aftap'] ?> mnt</td>
+                <tr style="font-size: 12px">
+                    <td align="right"><?= $no ?>.</td>
+                    <td><?= $tmp['dst_nokantong'] ?></td>
+                    <td align="center"><?= $tmp['dst_jenisktg'] ?></td>
+                    <td><?= $tmp['dst_merk'] . ' ' . $tmp['dst_volumektg'] ?> ml</td>
+                    <td style="text-align: center"><?= $tmp['dst_golda'] . $tmp['dst_rh'] ?></td>
+                    <td align="center"><?= $tmp['dst_tglaftap'] ?></td>
+                    <td><?= $tmp['dst_no_aftap'] ?></td>
+                    <td><?= $ckt_status ?></td>
+                    <td><?= $tmp['dst_lama_aftap'] ?> mnt</td>
 
-                <td><?= $tmp['dst_kodedonor'] ?></td>
-                <td style="text-align: center"><?= $tmp['dst_dsdp'] ?></td>
-                <td style="text-align: center"><?= $tmp['dst_lamabaru'] ?></td>
-                <td style="text-align: center"><?= $tmp['dst_umur'] ?></td>
-                <td style="text-align: center"><?= $tmp['dst_kel'] ?></td>
-                <td style="text-align: center"><?= $tmp['dst_ptgaftap'] ?></td>
-                <td><?= $tmp['dst_sample'] ?></td>
-                <td style="text-align: center"><?= $tmp['dst_sah'] ?></td>
+                    <td><?= $tmp['dst_kodedonor'] ?></td>
+                    <td style="text-align: center"><?= $tmp['dst_dsdp'] ?></td>
+                    <td style="text-align: center"><?= $tmp['dst_lamabaru'] ?></td>
+                    <td style="text-align: center"><?= $tmp['dst_umur'] ?></td>
+                    <td style="text-align: center"><?= $tmp['dst_kel'] ?></td>
+                    <td style="text-align: center"><?= $tmp['dst_ptgaftap'] ?></td>
+                    <td><?= $tmp['dst_sample'] ?></td>
+                    <td style="text-align: center"><?= $tmp['dst_sah'] ?></td>
 
-                <td><a href="pmiaftap.php?module=delrow&op=del&ktg=<?= $tmp['dst_nokantong'] ?>&usr=<?= $namauser ?>&mdl=KARANTINA"
-                        onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?= $tmp['dst_nokantong'] ?> ?');">Hapus</a>
-                </td>
-            </tr>
+                    <td><a href="pmiaftap.php?module=delrow&op=del&ktg=<?= $tmp['dst_nokantong'] ?>&usr=<?= $namauser ?>&mdl=KARANTINA" onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?= $tmp['dst_nokantong'] ?> ?');">Hapus</a></td>
+                </tr>
             <?php
             }
             ?>
@@ -575,11 +559,9 @@ function enterToSubmit(event) {
                                     <?
                                     $usr = mysql_query("select id_user, nama_lengkap from user WHERE (upper(bagian) like '%AFTAP%' or upper(bagian) like '%PENGAMBILAN%') and aktif='0' order by nama_lengkap");
                                     while ($usr1 = mysql_fetch_assoc($usr)) {
-                                    ?>
-                                    <option value="<?= $usr1[id_user] ?>"><?= $usr1['nama_lengkap'] ?>
-                                        <?
-                                    }
-                                        ?>
+                                    ?><option value="<?= $usr1[id_user] ?>"><?= $usr1['nama_lengkap'] ?><?
+                                                                                                    }
+                                                                                                        ?>
                                 </select></td>
                         </tr>
                         <tr>
@@ -588,11 +570,9 @@ function enterToSubmit(event) {
                                     <?
                                     $usr = mysql_query("select id_user, nama_lengkap from user WHERE (upper(bagian) like '%KOMPONEN%' or upper(bagian) like '%PENGOLAHAN%' or upper(bagian) like '%KARANTINA%' or upper(bagian) like '%PENYIMPANAN%') and aktif='0' order by nama_lengkap");
                                     while ($usr1 = mysql_fetch_assoc($usr)) {
-                                    ?>
-                                    <option value="<?= $usr1[id_user] ?>"><?= $usr1['nama_lengkap'] ?>
-                                        <?
-                                    }
-                                        ?>
+                                    ?><option value="<?= $usr1[id_user] ?>"><?= $usr1['nama_lengkap'] ?><?
+                                                                                                    }
+                                                                                                        ?>
                                 </select></td>
                         </tr>
                         <tr>
@@ -601,11 +581,9 @@ function enterToSubmit(event) {
                                     <?
                                     $usr = mysql_query("select id_user, nama_lengkap from user WHERE (upper(bagian) like '%UJI SARING%' or upper(bagian) like '%IMLTD%' or upper(bagian) like '%SCREENING%') and aktif='0' order by nama_lengkap");
                                     while ($usr1 = mysql_fetch_assoc($usr)) {
-                                    ?>
-                                    <option value="<?= $usr1[id_user] ?>"><?= $usr1['nama_lengkap'] ?>
-                                        <?
-                                    }
-                                        ?>
+                                    ?><option value="<?= $usr1[id_user] ?>"><?= $usr1['nama_lengkap'] ?><?
+                                                                                                    }
+                                                                                                        ?>
                                 </select></td>
                         </tr>
                         <tr>
@@ -614,11 +592,9 @@ function enterToSubmit(event) {
                                     <?
                                     $usrk = mysql_query("select id_user, nama_lengkap from user WHERE (upper(bagian) like '%SCREENING%' or upper(bagian) like '%IMLTD%' or upper(bagian) like '%KONFIRMASI%' or upper(bagian) like '%KGD%') and aktif='0' order by nama_lengkap");
                                     while ($usrkgd = mysql_fetch_assoc($usrk)) {
-                                    ?>
-                                    <option value="<?= $usrkgd['id_user'] ?>"><?= $usrkgd['nama_lengkap'] ?>
-                                        <?
-                                    }
-                                        ?>
+                                    ?><option value="<?= $usrkgd['id_user'] ?>"><?= $usrkgd['nama_lengkap'] ?><?
+                                                                                                            }
+                                                                                                                ?>
                                 </select></td>
                         </tr>
                     </table>
@@ -650,9 +626,6 @@ function enterToSubmit(event) {
         </table>
         <hr style="width: 100%;text-align:left;margin-left:0; line-height: 1px">
         <input type="submit" name="submit2" value="Simpan Proses Serah Terima" class="swn_button_blue">
-        <a href="pmiaftap.php?module=batal&op=batal&usr=<?= $namauser ?>&mdl=<?= $modul ?>"
-            onclick="return confirm('PERHATIAN \n \nYakin akan membatalkan transaksi Serah Terima ini?');"
-            class="swn_button_blue">Batalkan Proses Serah Terima</a>
+        <a href="pmiaftap.php?module=batal&op=batal&usr=<?= $namauser ?>&mdl=<?= $modul ?>" onclick="return confirm('PERHATIAN \n \nYakin akan membatalkan transaksi Serah Terima ini?');" class="swn_button_blue">Batalkan Proses Serah Terima</a>
     </form>
-    <div style="font-size:10px; color:#000000; font-family: " Helvetica Neue", Helvetica, Arial, sans-serif;">Build :
-        26-05-2018</div>
+    <div style="font-size:10px; color:#000000; font-family: " Helvetica Neue", Helvetica, Arial, sans-serif;">Build : 26-05-2018</div>

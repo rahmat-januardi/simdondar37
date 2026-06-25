@@ -86,6 +86,10 @@ if ($lvl0 == 'komponen') {
 $tglawal    = date("Y-m-d");
 $hariini    = date("Y-m-d");
 $notransaksi = "";
+
+$utd = mysql_fetch_array(mysql_query("SELECT * from utd where `aktif`=1"));
+$idudd = $utd['id'];
+$namaudd = $utd['nama'];
 ?>
 
 <body>
@@ -119,6 +123,8 @@ $notransaksi = "";
             <th rowspan="2" style="height: 40px;text-align: center;font-weight: bold">Tanggal</th>
             <th rowspan="2" style="height: 40px;text-align: center;font-weight: bold">Waktu</th>
             <th rowspan="2" style="height: 40px;text-align: center;font-weight: bold">Asal</th>
+            <th rowspan="2" style="height: 40px;text-align: center;font-weight: bold">Asal Kantong</th>
+            <th rowspan="2" style="height: 40px;text-align: center;font-weight: bold">Tipe</th>
             <th rowspan="2" style="height: 40px;text-align: center;font-weight: bold">Petugas</th>
             <th rowspan="2" style="height: 40px;text-align: center;font-weight: bold">Kode Alat</th>
             <th rowspan="2" style="height: 40px;text-align: center;font-weight: bold">Suhu</th>
@@ -155,11 +161,20 @@ $notransaksi = "";
             <?php
         }
         $no = 0;
-        $qry = "SELECT h.`hst_notrans`, h.`hst_tgl`, DATE_FORMAT(h.`hst_tgl`,'%d-%m-%Y') as `dt`, DATE_FORMAT(h.`hst_tgl`,'%H:%i') as `tm` ,h.`hst_asal`,h.`hst_user`, h.`hst_kode_alat`,h.`hst_suhuterima`,
-              h.`hst_kondisiumum`, count(d.`dst_notrans`) as `jumlah`
-              FROM `serahterima` h inner join serahterima_detail d on d.`dst_notrans`=h.`hst_notrans`
-              WHERE `hst_modul`='KARANTINA' and (DATE(h.`hst_tgl`)>='$tglawal' and date(h.`hst_tgl`)<='$hariini')
-              GROUP BY h.`hst_notrans`, h.`hst_tgl`, h.`hst_asal`,h.`hst_user`, h.`hst_kode_alat`,h.`hst_suhuterima`, h.`hst_kondisiumum`";
+        $qry = "SELECT h.`hst_notrans`, h.`hst_tgl`, DATE_FORMAT(h.`hst_tgl`,'%d-%m-%Y') as `dt`, 
+              DATE_FORMAT(h.`hst_tgl`,'%H:%i') as `tm`,
+              h.`hst_asal`, h.`hst_user`, h.`hst_kode_alat`, h.`hst_suhuterima`,
+              h.`hst_kondisiumum`, h.`hst_dariudd`, 
+              u.nama as nama_udd, 
+              count(d.`dst_notrans`) as `jumlah`
+        FROM `serahterima` h 
+        INNER JOIN serahterima_detail d ON d.`dst_notrans`=h.`hst_notrans`
+        LEFT JOIN utd u ON u.id = h.`hst_dariudd`
+        WHERE `hst_modul`='KARANTINA' 
+          AND (DATE(h.`hst_tgl`)>='$tglawal' AND DATE(h.`hst_tgl`)<='$hariini')
+        GROUP BY h.`hst_notrans`, h.`hst_tgl`, h.`hst_asal`, h.`hst_user`, 
+                 h.`hst_kode_alat`, h.`hst_suhuterima`, h.`hst_kondisiumum`, 
+                 h.`hst_dariudd`, u.nama";
         //echo "$qry";
         $sql = mysql_query($qry);
         $no = 0;
@@ -183,6 +198,26 @@ $notransaksi = "";
                 <td style="text-align: center"><?= $tmp['dt'] ?></td>
                 <td style="text-align: center"><?= $tmp['tm'] ?></td>
                 <td style="text-align: left"><?= $tmp['hst_asal'] ?></td>
+                <td style="text-align: center; font-weight: bold;">
+                    <?php
+                    if (!empty($tmp['nama_udd'])) {
+                        echo htmlspecialchars($tmp['nama_udd']);
+                    } elseif (!empty($namaudd)) {
+                        echo htmlspecialchars($namaudd);
+                    } else {
+                        echo htmlspecialchars($tmp['hst_dariudd']);
+                    }
+                    ?>
+                </td>
+                <td style="text-align: center;">
+                    <?php
+                    if ($tmp['hst_dariudd'] == $idudd || $tmp['hst_dariudd'] == null) {
+                        echo '<span style="background-color:#28a745; color:white; padding:3px 8px; border-radius:12px; font-size:11px; font-weight:bold;">INTERNAL</span>';
+                    } else {
+                        echo '<span style="background-color:#ffc107; color:#212529; padding:3px 8px; border-radius:12px; font-size:11px; font-weight:bold;">KONSOLIDASI</span>';
+                    }
+                    ?>
+                </td>
                 <td style="text-align: center"><?= $tmp['hst_user'] ?></td>
                 <td style="text-align: center"><?= $tmp['hst_kode_alat'] ?></td>
                 <td style="text-align: center"><?= $tmp['hst_suhuterima'] ?></td>
@@ -218,9 +253,9 @@ $notransaksi = "";
             <?php } ?>
             <tr style="font-size: 16px;height: 40px; text-align: center;">
                 <?php if ($lvl0 == 'komponen') { ?>
-                    <td colspan="17">Tidak ada data</td>
+                    <td colspan="19">Tidak ada data</td>
                 <?php } else { ?>
-                    <td colspan="13">Tidak ada data</td>
+                    <td colspan="15">Tidak ada data</td>
                 <?php } ?>
             </tr>
         <?
@@ -275,7 +310,7 @@ $notransaksi = "";
 
         ?>
             <tr style="font-size: 12px;height: 40px; text-align: center;">
-                <td style="text-align: right" colspan="9">JUMLAH KANTONG</td>
+                <td style="text-align: right" colspan="11">JUMLAH KANTONG</td>
                 <td style="text-align: center"><?= $jmltotal ?></td>
                 <?php if ($lvl0 == 'komponen') { ?>
                     <td style="text-align: center"><?= $jmltotalprop['jumlah'] ?></td>

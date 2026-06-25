@@ -1,3 +1,8 @@
+08-05-2026|serahterima/sr_aftap_export_json.php -> update export json untuk konsolidasi
+08-05-2026|serahterima/sr_aftap_komponen_list_2025.php -> menambahkan tampilan internal atau konsolidasi
+08-05-2026|serahterima/sr_aftap_komponen.php -> menambahkan save id udd pada serahterima.hst_dariudd
+08-05-2026|serahterima/sr_list.php -> update tampilan serah terima komponen, imltd dan kgd
+08-05-2026|tambah field hst_dariudd dan hst_keudd pada tabel serahterima
 06-05-2026|modul/rekap_darah_terima_udd_new.php -> tambah file
 06-05-2026|receptionis_distribusi.php -> update untuk rekap terima darah udd lain
 30-04-2026|penambah tabel sampel_panel pada database

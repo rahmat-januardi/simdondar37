@@ -126,7 +126,9 @@ while ($d = mysql_fetch_assoc($q)) {
         continue;
     }
 
+    $merk           = esc($d['merk']);
     $produk         = esc($d['produk']);
+    $jenis_produk    = esc($d['jenis']);
     $volume         = esc($d['volume']);
     $goldarah       = esc($d['goldarah']);
     $rhesus         = esc($d['rhesus']);
@@ -142,9 +144,9 @@ while ($d = mysql_fetch_assoc($q)) {
 
     $sql = "
         INSERT INTO registrasi_qc
-        (nokantong, produk, volume, goldarah, rhesus, tgl, tglaftap, kadaluwarsa, tgl_pengolahan, petugas_terima, petugas_serah, asal_utd, suhu, jns_asal, catatan)
+        (nokantong, merk, produk, jenis_produk, volume, goldarah, rhesus, tgl, tglaftap, kadaluwarsa, tgl_pengolahan, petugas_terima, petugas_serah, asal_utd, suhu, jns_asal, catatan)
         VALUES
-        ('$nokantong', '$produk', '$volume', '$goldarah', '$rhesus', NOW(), '$tglaftap', '$kadaluwarsa', '$tgl_pengolahan', '$petugas_terima', '$petugas_serah', '$asal_utd', '$suhu', '$jns_asal', '$catatan')
+        ('$nokantong', '$merk', '$produk', '$jenis_produk', '$volume', '$goldarah', '$rhesus', NOW(), '$tglaftap', '$kadaluwarsa', '$tgl_pengolahan', '$petugas_terima', '$petugas_serah', '$asal_utd', '$suhu', '$jns_asal', '$catatan')
     ";
 
     $insert = mysql_query($sql);

@@ -33,56 +33,56 @@
     <!-- <link rel="stylesheet" href="../css/pengolahan.css"> -->
 
     <script>
-    window.onload = function() {
-        document.getElementById('nomorKantong').focus();
-    };
+        window.onload = function() {
+            document.getElementById('nomorKantong').focus();
+        };
     </script>
 
     <style>
-    .table th,
-    td {
-        padding: 0.1rem;
-    }
+        .table th,
+        td {
+            padding: 0.1rem;
+        }
 
-    .bstatus-slider {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 30%;
-        height: 10px;
-        border-radius: 4px;
-        background: #ccc;
-        /* Default warna abu-abu */
-        outline: none;
-        transition: 0.3s;
-    }
+        .bstatus-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30%;
+            height: 10px;
+            border-radius: 4px;
+            background: #ccc;
+            /* Default warna abu-abu */
+            outline: none;
+            transition: 0.3s;
+        }
 
-    /* Gaya tombol slider */
-    .bstatus-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        background: white;
-        cursor: pointer;
-        border-radius: 50%;
-        transition: 0.3s;
-    }
+        /* Gaya tombol slider */
+        .bstatus-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
 
 
-    .form-control {
-        width: 100%;
-        box-sizing: border-box;
-        font-size: 0.8rem;
-    }
+        .form-control {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.8rem;
+        }
 
-    .custom-select {
-        width: 100%;
-        border-radius: 4px;
-        font-size: 10px;
-        padding: .375rem 1.75rem .375rem .75rem;
-        color: #333;
-        background-color: #f9f9f9;
-    }
+        .custom-select {
+            width: 100%;
+            border-radius: 4px;
+            font-size: 10px;
+            padding: .375rem 1.75rem .375rem .75rem;
+            color: #333;
+            background-color: #f9f9f9;
+        }
     </style>
 
 </head>
@@ -208,6 +208,8 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
     $modeChecked = "putarPisah";
 } elseif ($mBeku == "00:00" && $mPutar == "00:00") {
     $modeChecked = "wb";
+} elseif ($mBeku != "00:00" && $mPutar == "00:00") {
+    $modeChecked = "bekuSaja";
 }
 ?>
 
@@ -233,6 +235,11 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                         <?php echo ($modeChecked == "lengkap" ? "checked" : ""); ?>>
                     <label class="form-check-label" for="mode3">Putar + Pisah + Beku</label>
                 </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="modePengerjaan" id="mode4" value="bekuSaja"
+                        <?php echo ($modeChecked == "bekuSaja" ? "checked" : ""); ?>>
+                    <label class="form-check-label" for="mode4">Beku Saja</label>
+                </div>
             </div>
         </div>
 
@@ -247,9 +254,9 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                         while ($aP = mysqli_fetch_assoc($aPutarOptions)) {
                             $selected = ($aP['kode'] == $aPutar) ? 'selected' : '';
                         ?>
-                        <option value="<?php echo $aP['kode']; ?>" <?php echo $selected; ?>>
-                            <?php echo $aP['kode'] . " - " . $aP['nama_barang']; ?>
-                        </option>
+                            <option value="<?php echo $aP['kode']; ?>" <?php echo $selected; ?>>
+                                <?php echo $aP['kode'] . " - " . $aP['nama_barang']; ?>
+                            </option>
                         <?php } ?>
                     </select>
                 </div>
@@ -263,9 +270,9 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                         while ($aPs = mysqli_fetch_assoc($aPisahOptions)) {
                             $selected = ($aPs['kode'] == $aPisah) ? 'selected' : '';
                         ?>
-                        <option value="<?php echo $aPs['kode']; ?>" <?php echo $selected; ?>>
-                            <?php echo $aPs['kode'] . " - " . $aPs['nama_barang']; ?>
-                        </option>
+                            <option value="<?php echo $aPs['kode']; ?>" <?php echo $selected; ?>>
+                                <?php echo $aPs['kode'] . " - " . $aPs['nama_barang']; ?>
+                            </option>
                         <?php } ?>
                     </select>
                 </div>
@@ -280,9 +287,9 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                             $selected = ($aBk['kode'] == $aBeku) ? 'selected' : ''; // ? benar
 
                         ?>
-                        <option value="<?php echo $aBk['kode']; ?>" <?php echo $selected; ?>>
-                            <?php echo $aBk['kode'] . " - " . $aBk['nama_barang']; ?>
-                        </option>
+                            <option value="<?php echo $aBk['kode']; ?>" <?php echo $selected; ?>>
+                                <?php echo $aBk['kode'] . " - " . $aBk['nama_barang']; ?>
+                            </option>
                         <?php } ?>
                     </select>
                 </div>
@@ -330,7 +337,7 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                     value="<?php echo htmlspecialchars($mBeku) ? htmlspecialchars($mBeku) : '00:00'; ?>">
             </div>
             <div class="col-sm-2">
-                <label for="clockpicker">Selesai Pemebkuan:</label>
+                <label for="clockpicker">Selesai Pembekuan:</label>
                 <input id="jSBeku" type="text" name="jamSelesaiBeku" class="form-control"
                     placeholder="Selesai Pembekuan"
                     value="<?php echo htmlspecialchars($sBeku) ? htmlspecialchars($sBeku) : '00:00'; ?>">
@@ -484,75 +491,56 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
         </div>
     </div>
 
-    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Konfirmasi</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="confirmModalBody"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="confirmModalYa">Ya</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="modul/pengolahan/js/aksiPengolahan.js" defer></script>
     <!-- <script src="../js/aksiPengolahan.js" defer></script> -->
 
     <script>
-    function getSelectedCetakLabelOption() {
-        return document.querySelector('input[name="cetakLabelOption"]:checked').value;
-    }
+        function getSelectedCetakLabelOption() {
+            return document.querySelector('input[name="cetakLabelOption"]:checked').value;
+        }
 
-    function simpanDanLanjutkan() {
-        var formData = new FormData(document.getElementById('pengolahanForm'));
-        $.ajax({
-            url: 'modul/pengolahan/prosesPengolahan.php',
-            // url: 'prosesPengolahan.php',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                try {
-                    var jsonResponse = response;
+        function simpanDanLanjutkan() {
+            var formData = new FormData(document.getElementById('pengolahanForm'));
+            $.ajax({
+                url: 'modul/pengolahan/prosesPengolahan.php',
+                // url: 'prosesPengolahan.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    try {
+                        var jsonResponse = response;
 
-                    if (jsonResponse.status === 'success') {
-                        $('#suksesModal .modal-body').html(jsonResponse.message);
-                        $('#suksesModal').modal('show');
+                        if (jsonResponse.status === 'success') {
+                            $('#suksesModal .modal-body').html(jsonResponse.message);
+                            $('#suksesModal').modal('show');
 
-                        $('#suksesModal').on('hidden.bs.modal', function() {
-                            // var selectedOption = $('input[name="cetakLabelOption"]:checked').val();
-                            var selectedOption = getSelectedCetakLabelOption();
-
-                            if (jsonResponse.noTrans) {
+                            $('#suksesModal').on('hidden.bs.modal', function() {
+                                // var selectedOption = $('input[name="cetakLabelOption"]:checked').val();
                                 var selectedOption = getSelectedCetakLabelOption();
-                                if (selectedOption === 'tidakCetak') {
-                                    window.location.href = 'pmikomponen.php?module=pengolahan';
-                                    return;
+
+                                if (jsonResponse.noTrans) {
+                                    var selectedOption = getSelectedCetakLabelOption();
+                                    if (selectedOption === 'tidakCetak') {
+                                        window.location.href = 'pmikomponen.php?module=pengolahan';
+                                        return;
+                                    } else {
+                                        var labelUrl = selectedOption === '1Kolom' ?
+                                            'labelPengolahan1Kolom.php?nT=' + encodeURIComponent(
+                                                jsonResponse.noTrans) +
+                                            '&barcode=C128&transaksi=transaksi' :
+                                            'labelPengolahan2Kolom.php?nT=' + encodeURIComponent(
+                                                jsonResponse.noTrans) +
+                                            '&barcode=C128&transaksi=transaksi';
+                                    }
+
                                 } else {
-                                    var labelUrl = selectedOption === '1Kolom' ?
-                                        'labelPengolahan1Kolom.php?nT=' + encodeURIComponent(
-                                            jsonResponse.noTrans) +
-                                        '&barcode=C128&transaksi=transaksi' :
-                                        'labelPengolahan2Kolom.php?nT=' + encodeURIComponent(
-                                            jsonResponse.noTrans) +
-                                        '&barcode=C128&transaksi=transaksi';
+                                    console.error('Error: noTrans value is missing in the response.');
+                                    return;
                                 }
 
-                            } else {
-                                console.error('Error: noTrans value is missing in the response.');
-                                return;
-                            }
-
-                            var cetakLabelModal = `
+                                var cetakLabelModal = `
                                 <div class="modal fade" id="cetakLabelModal" tabindex="-1" role="dialog" aria-labelledby="cetakLabelModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
@@ -572,150 +560,176 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                                     </div>
                                 </div>
                                 `;
-                            $('body').append(cetakLabelModal);
-                            $('#cetakLabelModal').modal('show');
+                                $('body').append(cetakLabelModal);
+                                $('#cetakLabelModal').modal('show');
 
-                            $('#cetakLabelModal').on('hidden.bs.modal', function() {
-                                window.location.href = 'pmikomponen.php?module=pengolahan';
+                                $('#cetakLabelModal').on('hidden.bs.modal', function() {
+                                    window.location.href = 'pmikomponen.php?module=pengolahan';
+                                });
                             });
-                        });
-                    } else {
-                        $('#errorModal .modal-body').html(jsonResponse.message);
+                        } else {
+                            $('#errorModal .modal-body').html(jsonResponse.message);
+                            $('#errorModal').modal('show');
+                        }
+                    } catch (e) {
+                        $('#errorModal .modal-body').html('Terjadi kesalahan saat memproses respons.');
                         $('#errorModal').modal('show');
                     }
-                } catch (e) {
-                    $('#errorModal .modal-body').html('Terjadi kesalahan saat memproses respons.');
-                    $('#errorModal').modal('show');
+
                 }
-
-            }
-        });
-    }
+            });
+        }
     </script>
 
     <script>
-    $(document).ready(function() {
-        $('#jMPutar, #jSPutar, #jMPisah, #jSPisah, #jMBeku, #jSBeku').clockpicker({
-            autoclose: true,
-            placement: 'bottom',
-            align: 'left',
-            donetext: 'Selesai',
-            twelvehour: false
-        });
-    });
-
-    document.getElementById("tglPengerjaan").addEventListener("click", function() {
-        this.showPicker(); // Memaksa menampilkan kalender
-    });
-    </script>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        updateSliders();
-
-        document.querySelectorAll(".bstatus-slider").forEach(function(slider) {
-            slider.addEventListener("input", function() {
-                updateSliderColor(this);
+        $(document).ready(function() {
+            $('#jMPutar, #jSPutar, #jMPisah, #jSPisah, #jMBeku, #jSBeku').clockpicker({
+                autoclose: true,
+                placement: 'bottom',
+                align: 'left',
+                donetext: 'Selesai',
+                twelvehour: false
             });
         });
 
-        // // Ambil waktu sekarang
-        // let now = new Date();
-
-        // // Format YYYY-MM-DDTHH:MM (format standar untuk datetime-local)
-        // let year = now.getFullYear();
-        // let month = String(now.getMonth() + 1).padStart(2, '0');
-        // let day = String(now.getDate()).padStart(2, '0');
-        // let hour = String(now.getHours()).padStart(2, '0');
-        // let minute = String(now.getMinutes()).padStart(2, '0');
-
-        // let formatted = `${year}-${month}-${day}T${hour}:${minute}`;
-
-        // // Set ke input
-        // document.getElementById("tglPengerjaan").value = formatted;
-    });
-
-    // Fungsi untuk memperbarui warna slider
-    function updateSliders() {
-        document.querySelectorAll(".bstatus-slider").forEach(updateSliderColor);
-    }
-
-    function updateSliderColor(slider) {
-        if (slider.value == "1") {
-            slider.style.background = "#2196F3";
-        } else {
-            slider.style.background = "red";
-        }
-    }
+        document.getElementById("tglPengerjaan").addEventListener("click", function() {
+            this.showPicker(); // Memaksa menampilkan kalender
+        });
     </script>
 
     <script>
-    $(document).ready(function() {
-        function updateMode() {
-            let mode = $('input[name="modePengerjaan"]:checked').val();
+        document.addEventListener("DOMContentLoaded", function() {
+            updateSliders();
 
-            // Reset semua kolom ke tampil terlebih dahulu
-            $('th, td').show();
-
-            // Indeks kolom untuk masing-masing bagian (1-based index untuk nth-child)
-            const pemutaranCols = [11, 12, 13, 14]; // Kolom Pemutaran (Alat, Kecepatan, Suhu, Waktu)
-            const pemisahanCols = [15, 16, 17, 18]; // Kolom Pemisahan (Metode, Alat, Mulai, Selesai)
-            const pembekuanCols = [19, 20, 21, 22]; // Kolom Pembekuan (Alat, Mulai, Selesai, Suhu Inti)
-
-
-            if (mode === "wb") {
-                // Sembunyikan input form
-                $("#alatPemutaran, #alatPemisahan, #alatPembekuan").closest(".form-group").hide();
-                $("#jMPutar, #jSPutar, #jMPisah, #jSPisah, #jMBeku, #jSBeku").closest("div").hide();
-
-                // Hide semua kolom pemutaran + pemisahan + pembekuan
-                [...pemutaranCols, ...pemisahanCols, ...pembekuanCols].forEach(col => {
-                    $(`thead tr:nth-child(2) th:nth-child(${col}), tbody td:nth-child(${col})`).hide();
+            document.querySelectorAll(".bstatus-slider").forEach(function(slider) {
+                slider.addEventListener("input", function() {
+                    updateSliderColor(this);
                 });
+            });
 
-                // Hide header utama (pakai class)
-                $('.col-pemutaran, .col-pengolahan, .col-pembekuan').hide();
-            } else if (mode === "putarPisah") {
-                // Tampilkan input untuk Pemutaran dan Pemisahan
-                $("#alatPemutaran, #alatPemisahan").closest(".form-group").show();
-                $("#jMPutar, #jSPutar, #jMPisah, #jSPisah").closest("div").show();
-                // Sembunyikan input untuk Pembekuan
-                $("#alatPembekuan").closest(".form-group").hide();
-                $("#jMBeku, #jSBeku").closest("div").hide();
+            // // Ambil waktu sekarang
+            // let now = new Date();
 
-                // Hide pembekuan
-                pembekuanCols.forEach(col => {
-                    $(`thead tr:nth-child(2) th:nth-child(${col}), tbody td:nth-child(${col})`).hide();
-                });
-                $('.col-pembekuan').hide();
+            // // Format YYYY-MM-DDTHH:MM (format standar untuk datetime-local)
+            // let year = now.getFullYear();
+            // let month = String(now.getMonth() + 1).padStart(2, '0');
+            // let day = String(now.getDate()).padStart(2, '0');
+            // let hour = String(now.getHours()).padStart(2, '0');
+            // let minute = String(now.getMinutes()).padStart(2, '0');
 
-                // Show pemutaran & pemisahan
-                $('.col-pemutaran, .col-pengolahan').show();
+            // let formatted = `${year}-${month}-${day}T${hour}:${minute}`;
 
-            } else { // lengkap
-                // Tampilkan semua input form
-                $("#alatPemutaran, #alatPemisahan, #alatPembekuan").closest(".form-group").show();
-                $("#jMPutar, #jSPutar, #jMPisah, #jSPisah, #jMBeku, #jSBeku").closest("div").show();
+            // // Set ke input
+            // document.getElementById("tglPengerjaan").value = formatted;
+        });
 
-                // Show semua header utama
-                $('.col-pemutaran, .col-pengolahan, .col-pembekuan').show();
+        // Fungsi untuk memperbarui warna slider
+        function updateSliders() {
+            document.querySelectorAll(".bstatus-slider").forEach(updateSliderColor);
+        }
+
+        function updateSliderColor(slider) {
+            if (slider.value == "1") {
+                slider.style.background = "#2196F3";
+            } else {
+                slider.style.background = "red";
             }
         }
+    </script>
 
-        // Panggil pertama kali saat halaman dimuat
-        updateMode();
+    <script>
+        $(document).ready(function() {
+            function updateMode() {
+                let mode = $('input[name="modePengerjaan"]:checked').val();
 
-        // Panggil saat radio button berubah
-        $('input[name="modePengerjaan"]').on("change", function() {
+                // Reset semua kolom ke tampil terlebih dahulu
+                $('th, td').show();
+
+                // Reset CSS order (untuk bekuSaja)
+                $("#alatPembekuan").closest(".col-sm-4").css("order", "");
+                $("#jMBeku").closest(".col-sm-2").css("order", "");
+                $("#jSBeku").closest(".col-sm-2").css("order", "");
+
+                // Indeks kolom untuk masing-masing bagian (1-based index untuk nth-child)
+                const pemutaranCols = [11, 12, 13, 14]; // Kolom Pemutaran (Alat, Kecepatan, Suhu, Waktu)
+                const pemisahanCols = [15, 16, 17, 18]; // Kolom Pemisahan (Metode, Alat, Mulai, Selesai)
+                const pembekuanCols = [19, 20, 21, 22]; // Kolom Pembekuan (Alat, Mulai, Selesai, Suhu Inti)
+
+
+                if (mode === "wb") {
+                    // Sembunyikan input form
+                    $("#alatPemutaran, #alatPemisahan, #alatPembekuan").closest(".form-group").hide();
+                    $("#jMPutar, #jSPutar, #jMPisah, #jSPisah, #jMBeku, #jSBeku").closest("div").hide();
+
+                    // Hide semua kolom pemutaran + pemisahan + pembekuan
+                    [...pemutaranCols, ...pemisahanCols, ...pembekuanCols].forEach(col => {
+                        $(`thead tr:nth-child(2) th:nth-child(${col}), tbody td:nth-child(${col})`).hide();
+                    });
+
+                    // Hide header utama (pakai class)
+                    $('.col-pemutaran, .col-pengolahan, .col-pembekuan').hide();
+                } else if (mode === "putarPisah") {
+                    // Tampilkan input untuk Pemutaran dan Pemisahan
+                    $("#alatPemutaran, #alatPemisahan").closest(".form-group").show();
+                    $("#jMPutar, #jSPutar, #jMPisah, #jSPisah").closest("div").show();
+                    // Sembunyikan input untuk Pembekuan
+                    $("#alatPembekuan").closest(".form-group").hide();
+                    $("#jMBeku, #jSBeku").closest("div").hide();
+
+                    // Hide pembekuan
+                    pembekuanCols.forEach(col => {
+                        $(`thead tr:nth-child(2) th:nth-child(${col}), tbody td:nth-child(${col})`).hide();
+                    });
+                    $('.col-pembekuan').hide();
+
+                    // Show pemutaran & pemisahan
+                    $('.col-pemutaran, .col-pengolahan').show();
+
+                } else if (mode === "bekuSaja") {
+                    // Tampilkan hanya input Pembekuan
+                    $("#alatPemutaran, #alatPemisahan").closest(".form-group").hide();
+                    $("#jMPutar, #jSPutar, #jMPisah, #jSPisah").closest("div").hide();
+                    $("#alatPembekuan").closest(".form-group").show();
+                    $("#jMBeku, #jSBeku").closest("div").show();
+
+                    // Pindahkan ke kiri menggunakan CSS order (Bootstrap row = flexbox)
+                    $("#alatPembekuan").closest(".col-sm-4").css("order", "-1");
+                    $("#jMBeku").closest(".col-sm-2").css("order", "-2");
+                    $("#jSBeku").closest(".col-sm-2").css("order", "-1");
+
+                    // Hide kolom pemutaran & pemisahan
+                    [...pemutaranCols, ...pemisahanCols].forEach(col => {
+                        $(`thead tr:nth-child(2) th:nth-child(${col}), tbody td:nth-child(${col})`).hide();
+                    });
+                    $('.col-pemutaran, .col-pengolahan').hide();
+
+                    // Show kolom pembekuan
+                    $('.col-pembekuan').show();
+
+                } else { // lengkap
+                    // Tampilkan semua input form
+                    $("#alatPemutaran, #alatPemisahan, #alatPembekuan").closest(".form-group").show();
+                    $("#jMPutar, #jSPutar, #jMPisah, #jSPisah, #jMBeku, #jSBeku").closest("div").show();
+
+                    // Show semua header utama
+                    $('.col-pemutaran, .col-pengolahan, .col-pembekuan').show();
+                }
+            }
+
+            // Panggil pertama kali saat halaman dimuat
             updateMode();
+
+            // Panggil saat radio button berubah
+            $('input[name="modePengerjaan"]').on("change", function() {
+                updateMode();
+            });
         });
-    });
     </script>
     <script>
-    flatpickr("#tglPengerjaan", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-    });
+        flatpickr("#tglPengerjaan", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+        });
     </script>
 
 

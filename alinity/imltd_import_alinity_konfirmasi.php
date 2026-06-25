@@ -8,107 +8,147 @@ $namalengkap=$_SESSION[nama_lengkap];
 <link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
 <script type="text/javascript" language="javascript" src="js/jquery-1.5.2.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.8.9.custom.min.js"></script>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-	@import url("topstyle.css");tr { background-color: #F0FFFF}.initial { background-color: #F0FFFF; color:#000000 }
-	.normal { background-color: #F0FFFF }.highlight { background-color: #7FFF00 }
-</style>
-<style>
-    .awesomeText {
-    color: #000;
-    font-size: 150%;
- }
-</style>
-<script language="javascript">
-jum_select=0;
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+    @import url("topstyle.css");
 
-function show1(idreag){
-	var campur = document.getElementById('reagen1').value;
-	var reag1 = campur.split('*');
-	document.getElementById('nama1').innerHTML = reag1[0];
-	document.getElementById('nolot1').innerHTML = reag1[1];
-	document.getElementById('kode1').innerHTML = reag1[2];
-	document.getElementById('sisa_test1').innerHTML = reag1[3];
-    document.getElementById('tgl_ed1').innerHTML = reag1[4];
-	if (reag1[0]===""){alert("Reagen HBsAg harus dipilih");}
-}
-function show2(idreag){
-	var campur = document.getElementById('reagen2').value;
-	var reag2 = campur.split('*');
-	document.getElementById('nama2').innerHTML = reag2[0];
-	document.getElementById('nolot2').innerHTML = reag2[1];
-	document.getElementById('kode2').innerHTML = reag2[2];
-	document.getElementById('sisa_test2').innerHTML = reag2[3];
-    document.getElementById('tgl_ed2').innerHTML = reag2[4];
-	if (reag2[0]===""){alert("Reagen HCV harus dipilih");}
-}
-
-function show3(idreag){
-	var campur = document.getElementById('reagen3').value;
-	var reag3 = campur.split('*');
-	document.getElementById('nama3').innerHTML = reag3[0];
-	document.getElementById('nolot3').innerHTML = reag3[1];
-	document.getElementById('kode3').innerHTML = reag3[2];
-	document.getElementById('sisa_test3').innerHTML = reag3[3];
-    document.getElementById('tgl_ed3').innerHTML = reag3[4];
-	if (reag3[0]===""){alert("Reagen HIV harus dipilih");}
-}
-
-function show4(idreag){
-	var campur = document.getElementById('reagen4').value;
-	var reag4 = campur.split('*');
-	document.getElementById('nama4').innerHTML = reag4[0];
-	document.getElementById('nolot4').innerHTML = reag4[1];
-	document.getElementById('kode4').innerHTML = reag4[2];
-	document.getElementById('sisa_test4').innerHTML = reag4[3];
-    document.getElementById('tgl_ed4').innerHTML = reag4[4];
-	if (reag4[0]===""){alert("Reagen Trep harus dipilih");}
-}
-
-function nextproses(jmlperiksa){
-	var campur = document.getElementById('reagen').value;
-	var masterreagen = campur.split('*');
-	var parameter = masterreagen[8];
-	var metode  = masterreagen[5];
-	var nolot = masterreagen[6];
-	var kode_reagen = masterreagen[0];
-	var sisa_tes = masterreagen[1];
-	var reaktif = masterreagen[2];
-	var nonreaktif = masterreagen[3];
-	var greyzone = masterreagen[4];
-	if (masterreagen[0]===""){
-		alert("Proses tidak bisa dilanjutkan, pilih dulu reagen yang digunakan!!!");
-	}else if (sisa_tes<jmlperiksa) {
-		alert("Proses konfirmasi tidak bisa dilanjutkan. Sisa test reagen kurang dari jumlah kantong yang diperiksa. Ganti dengan Reagen lain!!!");
-	}else{
-		var konfirmasi = confirm('Lanjutkan ke proses input hasil manual?');
-		if (konfirmasi===true){document.location.href='pmiimltd.php?module=import_etimax3000manualinput&parameter='+parameter+
-						'&nolot='+nolot+'&metode='+metode+'&kode_reagen='+kode_reagen+'&sisa_tes='+sisa_tes+'&reaktif='+reaktif+'&nonreaktif='+nonreaktif+'&greyzone='+greyzone;}
-	}
-}
-</script>
-<script>
-$(function() {
-	$('a[href*=#]:not([href=#])').click(function(){
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-		var target = $(this.hash);
-		target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-		if (target.length) {$('html,body').animate({scrollTop: target.offset().top}, 1000);return false;}
+    tr {
+        background-color: #F0FFFF
     }
-  });
-});
 
-</script>
+    .initial {
+        background-color: #F0FFFF;
+        color: #000000
+    }
 
-<title>SIMDONDAR</title>
+    .normal {
+        background-color: #F0FFFF
+    }
+
+    .highlight {
+        background-color: #7FFF00
+    }
+    </style>
+    <style>
+    .awesomeText {
+        color: #000;
+        font-size: 150%;
+    }
+    </style>
+    <script language="javascript">
+    jum_select = 0;
+
+    function show1(idreag) {
+        var campur = document.getElementById('reagen1').value;
+        var reag1 = campur.split('*');
+        document.getElementById('nama1').innerHTML = reag1[0];
+        document.getElementById('nolot1').innerHTML = reag1[1];
+        document.getElementById('kode1').innerHTML = reag1[2];
+        document.getElementById('sisa_test1').innerHTML = reag1[3];
+        document.getElementById('tgl_ed1').innerHTML = reag1[4];
+        if (reag1[0] === "") {
+            alert("Reagen HBsAg harus dipilih");
+        }
+    }
+
+    function show2(idreag) {
+        var campur = document.getElementById('reagen2').value;
+        var reag2 = campur.split('*');
+        document.getElementById('nama2').innerHTML = reag2[0];
+        document.getElementById('nolot2').innerHTML = reag2[1];
+        document.getElementById('kode2').innerHTML = reag2[2];
+        document.getElementById('sisa_test2').innerHTML = reag2[3];
+        document.getElementById('tgl_ed2').innerHTML = reag2[4];
+        if (reag2[0] === "") {
+            alert("Reagen HCV harus dipilih");
+        }
+    }
+
+    function show3(idreag) {
+        var campur = document.getElementById('reagen3').value;
+        var reag3 = campur.split('*');
+        document.getElementById('nama3').innerHTML = reag3[0];
+        document.getElementById('nolot3').innerHTML = reag3[1];
+        document.getElementById('kode3').innerHTML = reag3[2];
+        document.getElementById('sisa_test3').innerHTML = reag3[3];
+        document.getElementById('tgl_ed3').innerHTML = reag3[4];
+        if (reag3[0] === "") {
+            alert("Reagen HIV harus dipilih");
+        }
+    }
+
+    function show4(idreag) {
+        var campur = document.getElementById('reagen4').value;
+        var reag4 = campur.split('*');
+        document.getElementById('nama4').innerHTML = reag4[0];
+        document.getElementById('nolot4').innerHTML = reag4[1];
+        document.getElementById('kode4').innerHTML = reag4[2];
+        document.getElementById('sisa_test4').innerHTML = reag4[3];
+        document.getElementById('tgl_ed4').innerHTML = reag4[4];
+        if (reag4[0] === "") {
+            alert("Reagen Trep harus dipilih");
+        }
+    }
+
+    function nextproses(jmlperiksa) {
+        var campur = document.getElementById('reagen').value;
+        var masterreagen = campur.split('*');
+        var parameter = masterreagen[8];
+        var metode = masterreagen[5];
+        var nolot = masterreagen[6];
+        var kode_reagen = masterreagen[0];
+        var sisa_tes = masterreagen[1];
+        var reaktif = masterreagen[2];
+        var nonreaktif = masterreagen[3];
+        var greyzone = masterreagen[4];
+        if (masterreagen[0] === "") {
+            alert("Proses tidak bisa dilanjutkan, pilih dulu reagen yang digunakan!!!");
+        } else if (sisa_tes < jmlperiksa) {
+            alert(
+                "Proses konfirmasi tidak bisa dilanjutkan. Sisa test reagen kurang dari jumlah kantong yang diperiksa. Ganti dengan Reagen lain!!!"
+            );
+        } else {
+            var konfirmasi = confirm('Lanjutkan ke proses input hasil manual?');
+            if (konfirmasi === true) {
+                document.location.href = 'pmiimltd.php?module=import_etimax3000manualinput&parameter=' + parameter +
+                    '&nolot=' + nolot + '&metode=' + metode + '&kode_reagen=' + kode_reagen + '&sisa_tes=' + sisa_tes +
+                    '&reaktif=' + reaktif + '&nonreaktif=' + nonreaktif + '&greyzone=' + greyzone;
+            }
+        }
+    }
+    </script>
+    <script>
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location
+                .hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    </script>
+
+    <title>SIMDONDAR</title>
 </head>
+
 <body>
-<style>
-    td {font-family: "Arial", Verdana, serif;}
-</style>
-<?php
+    <style>
+    td {
+        font-family: "Arial", Verdana, serif;
+    }
+    </style>
+    <?php
 if(isset($_POST['Button']))  {
 	$ptgKonfirmasi 	= $_POST[konfirmasi];
 	$ptgSah			= $_POST[disahkan_oleh];
@@ -461,113 +501,188 @@ $Sq=mysql_query("SELECT `id`, `instrument_name`, `run_time`, `sample_id`, `param
 				Group by `sample_id`", $con_lis);
 $row = mysql_fetch_assoc($Sq);
 ?>
-<a name="atas" id="atas"></a>
-<table border=0 cellpadding="5" cellspacing="5" width="100%">
-   <tr>
-		<td align="left" style="background-color: #ffffff"><font size=5 color="blue"><b>KONFIRMASI HASIL PEMERIKSAAN ALINITY I ABBOTT</b></font></td>
-		<td align="right" style="background-color: #ffffff"><a href="#bawah" class="swn_button_blue">Ke bawah</a></td>
-   </tr>
-</table>
-<form name="manual_input" align="left" method="post" action="<?echo $PHPSELF?>">
-	<table class="list" border=1 cellpadding="2" cellspacing="2" style="border-collapse:collapse" width="100%">
-	<tr class="field">
-		<td colspan=6>Instrument</td>
-		<td colspan=5>Tanggal dan Jam Pemeriksaan</td>
-		<td colspan=5>User</td>
-	</tr>
-	<tr class="record">
-		<td colspan=6><?=$row['instrument_name'];?><input type=hidden name=instrument value="<?=$row['instrument_name']?>"></td>
-		<td colspan=5><?=$row['run_time'];?><input type=hidden name=trans_time value="<?=$row['run_time']?>"></td>
-		<td colspan=5><?=$row['operator'];$userarc=$row['operator'];?><input type=hidden name=user value="<?=$row['operator']?>"></td>
-	</tr>
-	<tr class="field">
-		<td colspan=4>Reagen HBsAg</td>
-		<td colspan=4>Reagen HCV</td>
-		<td colspan=4>Reagen HIV</td>
-		<td colspan=4>Reagen Syphilis</td>
-	</tr>
-	<? mysql_select_db("$db_pmi",$con_pmi); ?>
-	<tr class="field">
-		<td align="left" colspan=4>
-		<select name="reagen1" id="reagen1" onChange="show1(1)">
-				<option value="-">-</option>
-				<? 
+    <a name="atas" id="atas"></a>
+    <table border=0 cellpadding="5" cellspacing="5" width="100%">
+        <tr>
+            <td align="left" style="background-color: #ffffff">
+                <font size=5 color="blue"><b>KONFIRMASI HASIL PEMERIKSAAN ALINITY I ABBOTT</b></font>
+            </td>
+            <td align="right" style="background-color: #ffffff"><a href="#bawah" class="swn_button_blue">Ke bawah</a>
+            </td>
+        </tr>
+    </table>
+    <form name="manual_input" align="left" method="post" action="<?echo $PHPSELF?>">
+        <table class="list" border=1 cellpadding="2" cellspacing="2" style="border-collapse:collapse" width="100%">
+            <tr class="field">
+                <td colspan=6>Instrument</td>
+                <td colspan=5>Tanggal dan Jam Pemeriksaan</td>
+                <td colspan=5>User</td>
+            </tr>
+            <tr class="record">
+                <td colspan=6><?=$row['instrument_name'];?><input type=hidden name=instrument
+                        value="<?=$row['instrument_name']?>"></td>
+                <td colspan=5><?=$row['run_time'];?><input type=hidden name=run_time value="<?=$row['run_time']?>"></td>
+                <td colspan=5><?=$row['operator'];$userarc=$row['operator'];?><input type=hidden name=user
+                        value="<?=$row['operator']?>"></td>
+            </tr>
+            <tr class="field">
+                <td colspan=4>Reagen HBsAg</td>
+                <td colspan=4>Reagen HCV</td>
+                <td colspan=4>Reagen HIV</td>
+                <td colspan=4>Reagen Syphilis</td>
+            </tr>
+            <? mysql_select_db("$db_pmi",$con_pmi); ?>
+            <tr class="field">
+                <td align="left" colspan=4>
+                    <select name="reagen1" id="reagen1" onChange="show1(1)">
+                        <option value="-">-</option>
+                        <? 
 				$jreagen1=mysql_query("select * from reagen where Nama like '%alinity%Hbsag%' and aktif='1' and jumTest>0",$con_pmi);
 				while ($jreagen11=mysql_fetch_assoc($jreagen1)) { ?>
-					<option value="<?=$jreagen11[Nama]?>*<?=$jreagen11[noLot]?>*<?=$jreagen11[kode]?>*<?=$jreagen11[jumTest]?>*<?=$jreagen11[tglKad]?>">
-								   <?=$jreagen11[Nama]?>-<?=$jreagen11[noLot]?>-<?=$jreagen11[jumTest]?> T
-					</option><?
+                        <option
+                            value="<?=$jreagen11[Nama]?>*<?=$jreagen11[noLot]?>*<?=$jreagen11[kode]?>*<?=$jreagen11[jumTest]?>*<?=$jreagen11[tglKad]?>">
+                            <?=$jreagen11[Nama]?>-<?=$jreagen11[noLot]?>-<?=$jreagen11[jumTest]?> T
+                        </option>
+                        <?
 				} ?>
-		</select>
-		</td>
-		<td align="left" colspan=4>
-		<select name="reagen2" id="reagen2" onChange="show2(2)">
-				<option value="-">-</option>
-				<? 
+                    </select>
+                </td>
+                <td align="left" colspan=4>
+                    <select name="reagen2" id="reagen2" onChange="show2(2)">
+                        <option value="-">-</option>
+                        <? 
 				$jreagen1=mysql_query("select * from reagen where Nama like '%alinity%hcv%' and aktif='1' and jumTest>0",$con_pmi);
 				while ($jreagen11=mysql_fetch_assoc($jreagen1)) { ?>
-					<option value="<?=$jreagen11[Nama]?>*<?=$jreagen11[noLot]?>*<?=$jreagen11[kode]?>*<?=$jreagen11[jumTest]?>*<?=$jreagen11[tglKad]?>">
-								   <?=$jreagen11[Nama]?>-<?=$jreagen11[noLot]?>-<?=$jreagen11[jumTest]?> T
-					</option><?
+                        <option
+                            value="<?=$jreagen11[Nama]?>*<?=$jreagen11[noLot]?>*<?=$jreagen11[kode]?>*<?=$jreagen11[jumTest]?>*<?=$jreagen11[tglKad]?>">
+                            <?=$jreagen11[Nama]?>-<?=$jreagen11[noLot]?>-<?=$jreagen11[jumTest]?> T
+                        </option>
+                        <?
 				} ?>
-		</select>
-		</td>
-		<td align="left" colspan=4>
-		<select name="reagen3" id="reagen3" onChange="show3(3)">
-				<option value="-">-</option>
-				<? 
+                    </select>
+                </td>
+                <td align="left" colspan=4>
+                    <select name="reagen3" id="reagen3" onChange="show3(3)">
+                        <option value="-">-</option>
+                        <? 
 				$jreagen1=mysql_query("select * from reagen where Nama like '%alinity%HIV%' and aktif='1' and jumTest>0", $con_pmi);
 				while ($jreagen11=mysql_fetch_assoc($jreagen1)) { ?>
-					<option value="<?=$jreagen11[Nama]?>*<?=$jreagen11[noLot]?>*<?=$jreagen11[kode]?>*<?=$jreagen11[jumTest]?>*<?=$jreagen11[tglKad]?>">
-								   <?=$jreagen11[Nama]?>-<?=$jreagen11[noLot]?>-<?=$jreagen11[jumTest]?> T
-					</option><?
+                        <option
+                            value="<?=$jreagen11[Nama]?>*<?=$jreagen11[noLot]?>*<?=$jreagen11[kode]?>*<?=$jreagen11[jumTest]?>*<?=$jreagen11[tglKad]?>">
+                            <?=$jreagen11[Nama]?>-<?=$jreagen11[noLot]?>-<?=$jreagen11[jumTest]?> T
+                        </option>
+                        <?
 				} ?>
-		</select>
-		</td>
-		<td align="left" colspan=4>
-		<select name="reagen4" id="reagen4" onChange="show4(4)">
-				<option value="-">-</option>
-				<? 
+                    </select>
+                </td>
+                <td align="left" colspan=4>
+                    <select name="reagen4" id="reagen4" onChange="show4(4)">
+                        <option value="-">-</option>
+                        <? 
 				$jreagen1=mysql_query("select * from reagen where Nama like '%alinity%Syphilis%' and aktif='1' and jumTest>0",$con_pmi);
 				while ($jreagen11=mysql_fetch_assoc($jreagen1)) { ?>
-					<option value="<?=$jreagen11[Nama]?>*<?=$jreagen11[noLot]?>*<?=$jreagen11[kode]?>*<?=$jreagen11[jumTest]?>*<?=$jreagen11[tglKad]?>">
-									<?=$jreagen11[Nama]?>-<?=$jreagen11[noLot]?>-<?=$jreagen11[jumTest]?> T
-					</option><?
+                        <option
+                            value="<?=$jreagen11[Nama]?>*<?=$jreagen11[noLot]?>*<?=$jreagen11[kode]?>*<?=$jreagen11[jumTest]?>*<?=$jreagen11[tglKad]?>">
+                            <?=$jreagen11[Nama]?>-<?=$jreagen11[noLot]?>-<?=$jreagen11[jumTest]?> T
+                        </option>
+                        <?
 				} ?>
-		</select>
-		</td>
-	</tr>
-	<tr class="record">
-		<td><div id="nama1"></div></td> 	<td><div id="kode1"></div></td>		<td><div id="nolot1"></div></td>	<td><div id="sisa_test1"></div></td>
-		<td><div id="nama2"></div></td> 	<td><div id="kode2"></div></td>		<td><div id="nolot2"></div></td>	<td><div id="sisa_test2"></div></td>
-		<td><div id="nama3"></div></td> 	<td><div id="kode3"></div></td>		<td><div id="nolot3"></div></td>	<td><div id="sisa_test3"></div></td>
-		<td><div id="nama4"></div></td> 	<td><div id="kode4"></div></td>		<td><div id="nolot4"></div></td>	<td><div id="sisa_test4"></div></td>
-	</tr>
-    <tr class="record">
-        <td colspan="4"><div id="tgl_ed1"></div></td>
-        <td colspan="4"><div id="tgl_ed2"></div></td>
-        <td colspan="4"><div id="tgl_ed3"></div></td>
-        <td colspan="4"><div id="tgl_ed4"></div></td>
-    </tr>
-	</table>
-	<table class="list" border=1 cellpadding="2" cellspacing="2" width="100%" style="border-collapse:collapse">
-		<tr style="background-color:#FF6346; font-size:14px; color:#FFFFFF; font-family:Verdana;" onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
-			<td rowspan=2 align="center">No</td>
-			<td rowspan=2 align="center" nowrap>Kode Sample</td>
-			<td colspan=3 align="center">HBsAg</td>
-			<td colspan=3 align="center">HCV</td>
-			<td colspan=3 align="center">HIV</td>
-			<td colspan=3 align="center">Syphilis</td>
-			<td rowspan=2 align="center">Kantong</td>
-            <td rowspan=2 align="center" width="60px">Konfirm</td>
-		</tr>
-		<tr style="background-color:#FF6346; font-size:14px; color:#FFFFFF; font-family:Verdana;" onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
-			<td align="center">Qualitative</td><td align="center" nowrap width="100px">Hasil</td><td align="center">Ket</td>
-			<td align="center">Qualitative</td><td align="center" nowrap width="100px">Hasil</td><td align="center">Ket</td>
-			<td align="center">Qualitative</td><td align="center" nowrap width="100px">Hasil</td><td align="center">Ket</td>
-			<td align="center">Qualitative</td><td align="center" nowrap width="100px">Hasil</td><td align="center">Ket</td>
-		</tr>
-		<?
+                    </select>
+                </td>
+            </tr>
+            <tr class="record">
+                <td>
+                    <div id="nama1"></div>
+                </td>
+                <td>
+                    <div id="kode1"></div>
+                </td>
+                <td>
+                    <div id="nolot1"></div>
+                </td>
+                <td>
+                    <div id="sisa_test1"></div>
+                </td>
+                <td>
+                    <div id="nama2"></div>
+                </td>
+                <td>
+                    <div id="kode2"></div>
+                </td>
+                <td>
+                    <div id="nolot2"></div>
+                </td>
+                <td>
+                    <div id="sisa_test2"></div>
+                </td>
+                <td>
+                    <div id="nama3"></div>
+                </td>
+                <td>
+                    <div id="kode3"></div>
+                </td>
+                <td>
+                    <div id="nolot3"></div>
+                </td>
+                <td>
+                    <div id="sisa_test3"></div>
+                </td>
+                <td>
+                    <div id="nama4"></div>
+                </td>
+                <td>
+                    <div id="kode4"></div>
+                </td>
+                <td>
+                    <div id="nolot4"></div>
+                </td>
+                <td>
+                    <div id="sisa_test4"></div>
+                </td>
+            </tr>
+            <tr class="record">
+                <td colspan="4">
+                    <div id="tgl_ed1"></div>
+                </td>
+                <td colspan="4">
+                    <div id="tgl_ed2"></div>
+                </td>
+                <td colspan="4">
+                    <div id="tgl_ed3"></div>
+                </td>
+                <td colspan="4">
+                    <div id="tgl_ed4"></div>
+                </td>
+            </tr>
+        </table>
+        <table class="list" border=1 cellpadding="2" cellspacing="2" width="100%" style="border-collapse:collapse">
+            <tr style="background-color:#FF6346; font-size:14px; color:#FFFFFF; font-family:Verdana;"
+                onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
+                <td rowspan=2 align="center">No</td>
+                <td rowspan=2 align="center" nowrap>Kode Sample</td>
+                <td colspan=3 align="center">HBsAg</td>
+                <td colspan=3 align="center">HCV</td>
+                <td colspan=3 align="center">HIV</td>
+                <td colspan=3 align="center">Syphilis</td>
+                <td rowspan=2 align="center">Kantong</td>
+                <td rowspan=2 align="center" width="60px">Konfirm</td>
+            </tr>
+            <tr style="background-color:#FF6346; font-size:14px; color:#FFFFFF; font-family:Verdana;"
+                onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
+                <td align="center">Qualitative</td>
+                <td align="center" nowrap width="100px">Hasil</td>
+                <td align="center">Ket</td>
+                <td align="center">Qualitative</td>
+                <td align="center" nowrap width="100px">Hasil</td>
+                <td align="center">Ket</td>
+                <td align="center">Qualitative</td>
+                <td align="center" nowrap width="100px">Hasil</td>
+                <td align="center">Ket</td>
+                <td align="center">Qualitative</td>
+                <td align="center" nowrap width="100px">Hasil</td>
+                <td align="center">Ket</td>
+            </tr>
+            <?
 		$no				=0;
 		$valid			=0;
 		$jumlahproses	=0;
@@ -692,103 +807,132 @@ $row = mysql_fetch_assoc($Sq);
 			$nr_all="0";
 			if (($hcv_hasil!=="9") and ($hbsag_hasil!=="9") and ($hiv_hasil!=="9") and ($trep_hasil!=="9")){$all_param='1';} else {$all_param='0';}
 			?>
-			<tr style="font-size:13px; color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight';" onMouseOut="this.className='normal';">
-                <td align='right'>	<input type="hidden" name=no[] 	 value=<?=$no?>> 	 <?=$no.'.'?></td>
+            <tr style="font-size:13px; color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight';"
+                onMouseOut="this.className='normal';">
+                <td align='right'> <input type="hidden" name=no[] value=<?=$no?>> <?=$no.'.'?></td>
 
-						<input type=hidden name=sample[]   value="<?=$data['sample_id']?>">
-                        <input type=hidden name=run_time_b[]   value="<?=$rtime_b?>">
-                        <input type=hidden name=run_time_c[]   value="<?=$rtime_c?>">
-                        <input type=hidden name=run_time_i[]   value="<?=$rtime_i?>">
-                        <input type=hidden name=run_time_s[]   value="<?=$rtime_s?>">
+                <input type=hidden name=sample[] value="<?=$data['sample_id']?>">
+                <input type=hidden name=run_time_b[] value="<?=$rtime_b?>">
+                <input type=hidden name=run_time_c[] value="<?=$rtime_c?>">
+                <input type=hidden name=run_time_i[] value="<?=$rtime_i?>">
+                <input type=hidden name=run_time_s[] value="<?=$rtime_s?>">
 
-                        <input type=hidden name=id_b[]   value="<?=$id_raw_b?>">
-                        <input type=hidden name=id_c[]   value="<?=$id_raw_c?>">
-                        <input type=hidden name=id_i[]   value="<?=$id_raw_i?>">
-                        <input type=hidden name=id_s[]   value="<?=$id_raw_s?>">
+                <input type=hidden name=id_b[] value="<?=$id_raw_b?>">
+                <input type=hidden name=id_c[] value="<?=$id_raw_c?>">
+                <input type=hidden name=id_i[] value="<?=$id_raw_i?>">
+                <input type=hidden name=id_s[] value="<?=$id_raw_s?>">
 
-				<td align='left'  nowrap>	<input type="hidden" name=kantong[] 	 value=<?=$data[sample_id]?>> <?=$data['sample_id']; ?></td>
-				<td align='center'>	<input type="hidden" name=hbsag_od[] 	 value=<?=$hbsag_value?>> 	 <?=$hbsag_value;?></td>
-				<? if($hbsag_v=="Reaktif" or $hbsag_v=="Grayzone"){ ?>
-					<td align='center'  nowrap> 	<input type="hidden" name=hbsag_result[] value=<?=$hbsag_hasil?>> <font color="red"><b>  <?=$hbsag_v;?> </b></font></td>
-					<? $nr_all="1";?><input type="hidden" name=cekal_hbsag[] value="1"><?
+                <td align='left' nowrap> <input type="hidden" name=kantong[] value=<?=$data[sample_id]?>>
+                    <?=$data['sample_id']; ?></td>
+                <td align='center'> <input type="hidden" name=hbsag_od[] value=<?=$hbsag_value?>> <?=$hbsag_value;?>
+                </td>
+                <? if($hbsag_v=="Reaktif" or $hbsag_v=="Grayzone"){ ?>
+                <td align='center' nowrap> <input type="hidden" name=hbsag_result[] value=<?=$hbsag_hasil?>>
+                    <font color="red"><b> <?=$hbsag_v;?> </b></font>
+                </td>
+                <? $nr_all="1";?><input type="hidden" name=cekal_hbsag[] value="1">
+                <?
 					} else { ?>
-					<td align='center'  nowrap> 	<input type="hidden" name=hbsag_result[] value=<?=$hbsag_hasil?>> <font color="black">  <?=$hbsag_v;?> </font></td>
-                    <input type="hidden" name=cekal_hbsag[] value="0">
-					<?}?>
-				<td align='left'>	<input type="hidden" name=hbsag_ket[] 	 value=<?=$sketperiksa1?>> 	 <?=$sketperiksa1;?></td>
-				
-				<td align='center'> 	<input type="hidden" name=hcv_od[] 	 	 value=<?=$hcv_value?>> 	 <?=$hcv_value;?></td>
-				<? if($hcv_v=="Reaktif" or $hcv_v=="Grayzone"){ ?>
-					<td align='center'  nowrap> 	<input type="hidden" name=hcv_result[] value=<?=$hcv_hasil?>> <font color="red"><b>  <?=$hcv_v;?> </b></font></td>
-					<? $nr_all="2";?><input type="hidden" name=cekal_hcv[] value="1"><?
+                <td align='center' nowrap> <input type="hidden" name=hbsag_result[] value=<?=$hbsag_hasil?>>
+                    <font color="black"> <?=$hbsag_v;?> </font>
+                </td>
+                <input type="hidden" name=cekal_hbsag[] value="0">
+                <?}?>
+                <td align='left'> <input type="hidden" name=hbsag_ket[] value=<?=$sketperiksa1?>> <?=$sketperiksa1;?>
+                </td>
+
+                <td align='center'> <input type="hidden" name=hcv_od[] value=<?=$hcv_value?>> <?=$hcv_value;?></td>
+                <? if($hcv_v=="Reaktif" or $hcv_v=="Grayzone"){ ?>
+                <td align='center' nowrap> <input type="hidden" name=hcv_result[] value=<?=$hcv_hasil?>>
+                    <font color="red"><b> <?=$hcv_v;?> </b></font>
+                </td>
+                <? $nr_all="2";?><input type="hidden" name=cekal_hcv[] value="1">
+                <?
 					} else { ?>
-					<td align='center'  nowrap> 	<input type="hidden" name=hcv_result[] value=<?=$hcv_hasil?>> <font color="black">  <?=$hcv_v;?> </font></td>
-                    <input type="hidden" name=cekal_hcv[] value="0">
-					<?}?>
-				<td align='left'>	<input type="hidden" name=hcv_ket[] 	 value=<?=$sketperiksa2?>> 	 <?=$sketperiksa2;?></td>
-				
-				<td align='center'> 	<input type="hidden" name=hiv_od[] 		 value=<?=$hiv_value?>> 	 <?=$hiv_value;?></td>
-				<? if($hiv_v=="Reaktif" or $hiv_v=="Grayzone"){ ?>
-					<td align='center'  nowrap> 	<input type="hidden" name=hiv_result[] value=<?=$hiv_hasil?>> <font color="red"><b>  <?=$hiv_v;?> </b></font></td>
-					<? $nr_all="3";?><input type="hidden" name=cekal_hiv[] value="1"><?
+                <td align='center' nowrap> <input type="hidden" name=hcv_result[] value=<?=$hcv_hasil?>>
+                    <font color="black"> <?=$hcv_v;?> </font>
+                </td>
+                <input type="hidden" name=cekal_hcv[] value="0">
+                <?}?>
+                <td align='left'> <input type="hidden" name=hcv_ket[] value=<?=$sketperiksa2?>> <?=$sketperiksa2;?></td>
+
+                <td align='center'> <input type="hidden" name=hiv_od[] value=<?=$hiv_value?>> <?=$hiv_value;?></td>
+                <? if($hiv_v=="Reaktif" or $hiv_v=="Grayzone"){ ?>
+                <td align='center' nowrap> <input type="hidden" name=hiv_result[] value=<?=$hiv_hasil?>>
+                    <font color="red"><b> <?=$hiv_v;?> </b></font>
+                </td>
+                <? $nr_all="3";?><input type="hidden" name=cekal_hiv[] value="1">
+                <?
 					} else { ?>
-					<td align='center'  nowrap> 	<input type="hidden" name=hiv_result[] value=<?=$hiv_hasil?>> <font color="black">  <?=$hiv_v;?> </font></td>
-                    <input type="hidden" name=cekal_hiv[] value="0">
-					<?}?>
-				<td align='left'>	<input type="hidden" name=hiv_ket[] 	 value=<?=$sketperiksa3?>> 	 <?=$sketperiksa3;?></td>
-				
-				<td align='center'> 	<input type="hidden" name=syp_od[] 		 value=<?=$trep_value?>> 	 <?=$trep_value;?></td>
-				<? if($trep_v=="Reaktif" or $trep_v=="Grayzone"){ ?>
-					<td align='center'  nowrap> 	<input type="hidden" name=syp_result[] value=<?=$trep_hasil?>> <font color="red"><b>  <?=$trep_v;?> </b></font></td>
-					<? $nr_all="4";?><input type="hidden" name=cekal_syp[] value="1"><?
+                <td align='center' nowrap> <input type="hidden" name=hiv_result[] value=<?=$hiv_hasil?>>
+                    <font color="black"> <?=$hiv_v;?> </font>
+                </td>
+                <input type="hidden" name=cekal_hiv[] value="0">
+                <?}?>
+                <td align='left'> <input type="hidden" name=hiv_ket[] value=<?=$sketperiksa3?>> <?=$sketperiksa3;?></td>
+
+                <td align='center'> <input type="hidden" name=syp_od[] value=<?=$trep_value?>> <?=$trep_value;?></td>
+                <? if($trep_v=="Reaktif" or $trep_v=="Grayzone"){ ?>
+                <td align='center' nowrap> <input type="hidden" name=syp_result[] value=<?=$trep_hasil?>>
+                    <font color="red"><b> <?=$trep_v;?> </b></font>
+                </td>
+                <? $nr_all="4";?><input type="hidden" name=cekal_syp[] value="1">
+                <?
 					} else { ?>
-					<td align='center'  nowrap> 	<input type="hidden" name=syp_result[] value=<?=$trep_hasil?>> <font color="black">  <?=$trep_v;?> </font></td>
-                    <input type="hidden" name=cekal_syp[] value="0">
-					<?}?>
-				<td align='left'>	<input type="hidden" name=syp_ket[] 	   value=<?=$sketperiksa4?>> 	 <?=$sketperiksa4;?></td>
-				<td align='left'>   <input type="hidden" name=statuskantong[]  value=<?=$status_ktg?>> 	 <?=$statuskantong?>
-					<input type="hidden" name=umur[] value=<?=$umur?>>
+                <td align='center' nowrap> <input type="hidden" name=syp_result[] value=<?=$trep_hasil?>>
+                    <font color="black"> <?=$trep_v;?> </font>
+                </td>
+                <input type="hidden" name=cekal_syp[] value="0">
+                <?}?>
+                <td align='left'> <input type="hidden" name=syp_ket[] value=<?=$sketperiksa4?>> <?=$sketperiksa4;?></td>
+                <td align='left'> <input type="hidden" name=statuskantong[] value=<?=$status_ktg?>> <?=$statuskantong?>
+                    <input type="hidden" name=umur[] value=<?=$umur?>>
                     <input type="hidden" name=jenis_donor[] value=<?=$jenisdonor?>>
-					<input type="hidden" name=donorbaru[]   value=<?=$donorbaru?>>
-				</td>
+                    <input type="hidden" name=donorbaru[] value=<?=$donorbaru?>>
+                </td>
 
-                <td align='left'> 
-                	<?
+                <td align='left'>
+                    <?
                 	$sel0="";$sel1="";$sel2="";$sel3="";
                 	if (($status_ktg=="1") and ($c_ktg['sah']=="1") and ($nr_all=="0")){$sel1="selected";}
                 	if (($status_ktg=="1") and ($c_ktg['sah']=="1") and ($nr_all!=="0")){$sel2="selected";}
                 	if ($status_ktg=="0"){$sel3="selected";}
                 	if ($cekal!=="0"){$sel2="selected";}
                 	?>
-                	<select name="aksi[]">
-                		<option value="0" <?=$sel0?>>-</option>
-                		<option value="1" <?=$sel1?>>Sehat</option>
-                		<option value="2" <?=$sel2?>>Cekal</option>
-                		<option value="3" <?=$sel3?>>Tunda</option>
-                	</select>
+                    <select name="aksi[]">
+                        <option value="0" <?=$sel0?>>-</option>
+                        <option value="1" <?=$sel1?>>Sehat</option>
+                        <option value="2" <?=$sel2?>>Cekal</option>
+                        <option value="3" <?=$sel3?>>Tunda</option>
+                    </select>
                 </td>
-				
-			</tr>
-		<?
+
+            </tr>
+            <?
 		} ?>
-		<tr class="field">
-		<td colspan="2" align="left"  nowrap>Dikonfirmasi oleh</td>
-		<input type="hidden" name="konfirmasi" value="<?=$namauser?>">
-		<td colspan="7" align="left"> <?echo $namalengkap;?></td>
-        <td colspan="11" rowspan="3" align="left">
-            <b>Catatan :</b>
-                <ol>
-                    <li>Kantong yang bisa di-SEHAT-kan adalah semua parameter diperiksa lengkap dan status kantong Karantina</li>
-                    <li>Reagen harus dipilih sesuai parameter, jumlah dan nomor lot pemeriksaan</li>
-                    <li>Kantong darah yang diproses sesuai dengan aksi konfirmasi pada pilihan kolom paling kanan</li>
-                </ol>
-        </td>
-	</tr>
-    <? mysql_select_db("$db_pmi",$con_pmi); ?>
-	<tr class="field">
-		<td colspan="2" align="left">Operator Alinity</td>
-		<td colspan="7" align="left">
-			<select name="operator" > <?
+            <tr class="field">
+                <td colspan="2" align="left" nowrap>Dikonfirmasi oleh</td>
+                <input type="hidden" name="konfirmasi" value="<?=$namauser?>">
+                <td colspan="7" align="left">
+                    <?echo $namalengkap;?>
+                </td>
+                <td colspan="11" rowspan="3" align="left">
+                    <b>Catatan :</b>
+                    <ol>
+                        <li>Kantong yang bisa di-SEHAT-kan adalah semua parameter diperiksa lengkap dan status kantong
+                            Karantina</li>
+                        <li>Reagen harus dipilih sesuai parameter, jumlah dan nomor lot pemeriksaan</li>
+                        <li>Kantong darah yang diproses sesuai dengan aksi konfirmasi pada pilihan kolom paling kanan
+                        </li>
+                    </ol>
+                </td>
+            </tr>
+            <? mysql_select_db("$db_pmi",$con_pmi); ?>
+            <tr class="field">
+                <td colspan="2" align="left">Operator Alinity</td>
+                <td colspan="7" align="left">
+                    <select name="operator">
+                        <?
 				$user1="select * from user where (level like '%laboratorium%' or level like '%imltd%') order by nama_lengkap";
 				$do1=mysql_query($user1,$con_pmi);
 				while($data1=mysql_fetch_assoc($do1)) {
@@ -797,37 +941,40 @@ $row = mysql_fetch_assoc($Sq);
 					} else{
 						$select="";
 					}?>
-					<option value="<?=$data1[id_user]?>"<?=$select?>><?=$data1[nama_lengkap]?></option><?
+                        <option value="<?=$data1[id_user]?>" <?=$select?>><?=$data1[nama_lengkap]?></option>
+                        <?
 				}?>
-			</select>
-		</td>
-	</tr>
-	<tr class="field">
-		<td colspan="2" align="left">Disahkan Oleh</td>
-		<td colspan="7" align="left">
-			<select name="disahkan_oleh" > <?
+                    </select>
+                </td>
+            </tr>
+            <tr class="field">
+                <td colspan="2" align="left">Disahkan Oleh</td>
+                <td colspan="7" align="left">
+                    <select name="disahkan_oleh">
+                        <?
 				$user="select * from user  where (level like '%laboratorium%') or (level like '%pimpinan%') or (level like '%konseling%') or (level like '%imltd%') order by nama_lengkap";
 				$do=mysql_query($user,$con_pmi);
 				while($data=mysql_fetch_assoc($do)) {
 					$select1="";?>
-					<option value="<?=$data[id_user]?>"<?=$select1?>><?=$data[nama_lengkap]?></option>
-				<? } ?>
-			</select>
-		</td>
-	</tr>
-	</table>
-	<input type="hidden" name="jml_test_b" value=<?=$jml_test_b?>>
-	<input type="hidden" name="jml_test_c" value=<?=$jml_test_c?>>
-	<input type="hidden" name="jml_test_i" value=<?=$jml_test_i?>>
-	<input type="hidden" name="jml_test_s" value=<?=$jml_test_s?>>
-	<a href="#atas" class="swn_button_blue">Ke Atas</a><a name="bawah" id="bawah">
-	<a href="pmiimltd.php?module=alinitylistkonfirmasi"class="swn_button_blue">Kembali ke list data</a>
-	<a href="pmiimltd.php?module=import_alinity"class="swn_button_blue">Kembali ke Awal</a>
-    <?
+                        <option value="<?=$data[id_user]?>" <?=$select1?>><?=$data[nama_lengkap]?></option>
+                        <? } ?>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="jml_test_b" value=<?=$jml_test_b?>>
+        <input type="hidden" name="jml_test_c" value=<?=$jml_test_c?>>
+        <input type="hidden" name="jml_test_i" value=<?=$jml_test_i?>>
+        <input type="hidden" name="jml_test_s" value=<?=$jml_test_s?>>
+        <a href="#atas" class="swn_button_blue">Ke Atas</a><a name="bawah" id="bawah">
+            <a href="pmiimltd.php?module=alinitylistkonfirmasi" class="swn_button_blue">Kembali ke list data</a>
+            <a href="pmiimltd.php?module=import_alinity" class="swn_button_blue">Kembali ke Awal</a>
+            <?
     if ($no!==0){?>
-	    <input type="submit" name="Button" value="Proses Konfirmasi" title="Proses kantong" class="swn_button_red">
-    <?}?>
-</form>
+            <input type="submit" name="Button" value="Proses Konfirmasi" title="Proses kantong" class="swn_button_red">
+            <?}?>
+    </form>
 
 </body>
+
 </html>

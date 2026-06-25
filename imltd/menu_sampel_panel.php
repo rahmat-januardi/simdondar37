@@ -53,12 +53,12 @@ $(document).ready(function() {
     <ul class="thumb">
         <?php
         if ($level == 'imltd') {
-            echo '<li><a href="pmiimltd.php?module=permintaan_sampel_panel"><img src="images/wb1.png" alt="" /></a></li>';
-            echo '<li><a href="pmiimltd.php?module=konfirmasi_sampel_panel"><img src="images/wb1.png" alt="" /></a></li>';
-            echo '<li><a href="pmiimltd.php?module=rekap_sampel_panel"><img src="images/prc2.png" alt="" /></a></li>';
+            echo '<li><a href="pmiimltd.php?module=permintaan_sampel_panel"><img src="images/minta_sampel.png" alt="" /></a></li>';
+            echo '<li><a href="pmiimltd.php?module=konfirmasi_sampel_panel"><img src="images/verifikasi_sampel_panel.png" alt="" /></a></li>';
+            echo '<li><a href="pmiimltd.php?module=rekap_sampel_panel"><img src="images/rekap_sampel_panel.png" alt="" /></a></li>';
         } else {
-            echo '<li><a href="pmikomponen.php?module=proses_permintaan_sampel_panel"><img src="images/wb1.png" alt="" /></a></li>';
-            echo '<li><a href="pmiimltd.php?module=rekap_sampel_panel"><img src="images/prc2.png" alt="" /></a></li>';
+            echo '<li><a href="pmikasir2.php?module=proses_permintaan_sampel_panel"><img src="images/proses_sampel.png" alt="" /></a></li>';
+            echo '<li><a href="pmikasir2.php?module=rekap_sampel_panel"><img src="images/rekap_sampel_panel.png" alt="" /></a></li>';
         }
         ?>
     </ul>

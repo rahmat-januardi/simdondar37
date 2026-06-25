@@ -491,11 +491,10 @@ if (isset($_POST['simpan'])){
                                             <select class="form-control" name="petugas" required>
                                                 <option class="form-control" value="">-- Pilih Petugas --</option>
                                                 <?php
-                                                $aftaper = mysqli_query($dbi,"SELECT * from user where bagian like '%AFTAP%' order by nama_lengkap ");
-                                                while ($ptgsaft = mysqli_fetch_array($aftaper)){?>
-                                                    <option class="form-control" value=<?php echo $ptgsaft['id_user'];?>><?php echo $ptgsaft['nama_lengkap'];?></option>
-                                                <?php } ?>
-                                            </select>
+                            $aftaper = mysqli_query($dbi, "SELECT * from user where bagian like '%AFTAP%' or multi_bagian like '%AFTAP%' order by nama_lengkap ");
+                            while ($ptgsaft = mysqli_fetch_array($aftaper)) { ?>
+                              <option class="form-control" value=<?php echo $ptgsaft['id_user']; ?>><?php echo $ptgsaft['nama_lengkap']; ?></option>
+                            <?php } ?>                                            </select>
                                         </div>
                                 </div>
                                 <!--row1--->
