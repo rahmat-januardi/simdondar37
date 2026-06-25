@@ -180,7 +180,7 @@ try {
                         } else {
                             // Update semua field termasuk tgl_Aftap
                             if ($stmtUpdate = $dbi->prepare($upStokAll)) {
-                                $stmtUpdate->bind_param('ssssssss', $tglAftap, $ed_produk, $produk, $volum, $cekTglPengerjaan, $idudd, $noKantongRes);
+                                $stmtUpdate->bind_param('sssssss', $tglAftap, $ed_produk, $produk, $volum, $cekTglPengerjaan, $idudd, $noKantongRes);
                                 if (!$stmtUpdate->execute()) {
                                     error_log("Failed to execute update: " . $stmtUpdate->error);
                                 }

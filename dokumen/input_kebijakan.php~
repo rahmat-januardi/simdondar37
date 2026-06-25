@@ -1,0 +1,481 @@
+<?php
+include 'koneksi.php';
+//include "index.php";
+?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled Document</title>
+    <link href="../modul/thickbox/thickbox.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
+    <!--<script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>-->
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
+    <script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
+    <script language="javascript" src="../js/jquery.js"></script>
+    <script language="javascript" src="../modul/thickbox/thickbox.js"></script>
+    <link rel="stylesheet" href="jquery-ui-1.10.3/demos.css">
+    <script>
+    $(function() {
+        $("#datepicker").datepicker();
+        $("#datepicker").change(function() {
+            $("#datepicker").datepicker("option", "dateFormat", "dd MM yy");
+        });
+    });
+    </script>
+    <script>
+    $(function() {
+        $("#datepicker2").datepicker();
+        $("#datepicker2").change(function() {
+            $("#datepicker2").datepicker("option", "dateFormat", "dd MM yy");
+        });
+    });
+    </script>
+    <script>
+    $(function() {
+        $("#datepicker3").datepicker();
+        $("#datepicker3").change(function() {
+            $("#datepicker3").datepicker("option", "dateFormat", "dd MM yy");
+        });
+    });
+    </script>
+    <script>
+    function toggleTipeDokumen(enable) {
+        const kontrol1Input = document.getElementById("kontrol1");
+        const kontrol2Input = document.getElementById("kontrol2");
+        const kontrol3Input = document.getElementById("kontrol3");
+        const kontrol4Input = document.getElementById("kontrol4");
+        const kontrol5Input = document.getElementById("kontrol5");
+        const kontrol6Input = document.getElementById("kontrol6");
+        const kontrol7Input = document.getElementById("kontrol7");
+        const kontrol8Input = document.getElementById("kontrol8");
+        const kontrol9Input = document.getElementById("kontrol9");
+
+        kontrol1Input.disabled = !enable;
+        kontrol2Input.disabled = !enable;
+        kontrol3Input.disabled = !enable;
+        kontrol4Input.disabled = !enable;
+        kontrol5Input.disabled = enable;
+        kontrol6Input.disabled = enable;
+        kontrol7Input.disabled = enable;
+        kontrol8Input.disabled = enable;
+        kontrol9Input.disabled = enable;
+    }
+
+
+    function handleTipeDokumen() {
+        const typeDocument = document.querySelector('input[name="tipe_dokumen"]:checked').value;
+
+        if (typeDocument === "udd") {
+            toggleTipeDokumen(true);
+        } else {
+            toggleTipeDokumen(false);
+        }
+    }
+    </script>
+    <style type="text/css">
+    .ui-datepicker {
+        font-family: Garamond;
+        font-size: 12px;
+        margin-left: 10px
+    }
+
+    .COOPER {
+        font-family: Cooper Black;
+    }
+
+    .coper {
+        font-family: Cooper Black;
+    }
+    </style>
+    <style>
+    .button1 {
+        padding: 10px 20px;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        background-color: #556B2F;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 5px #999;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    td,
+    th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+    </style>
+</head>
+
+<body>
+    <br /><br />
+    <p align="center" class="COOPER">
+        <font size="5"><u>INPUT KEBIJAKAN BARU</u></font>
+    </p>
+    <form action="exe_kebijakan.php" method="post" enctype="multipart/form-data">
+        <table align="center" border="1" cellpadding="10" cellspacing="1" bgcolor="#FFFFFF">
+            <tr>
+                <td>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Bidang</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <select name="bidang">
+                                            <option></option>
+                                            <option>Manajemen Kualitas</option>
+                                            <option>Penyediaan Donor</option>
+                                            <option>Kerjasama Hukum dan Humas</option>
+                                            <option>Simdondar</option>
+                                            <option>Penyediaan Darah</option>
+                                            <option>Rujukan IMLTD</option>
+                                            <option>Rujukan Imunohematologi</option>
+                                            <option>Litbang</option>
+                                            <option>Produksi</option>
+                                            <option>Kalibrasi</option>
+                                            <option>Pengawasan Mutu</option>
+                                            <option>Pembinaan Kualitas</option>
+                                            <option>Umum</option>
+                                            <option>Logistik</option>
+                                            <option>Sekretariat</option>
+                                            <option>Rumah Tangga</option>
+                                            <option>Wisma</option>
+                                            <option>Kepegawaian</option>
+                                            <option>Keuangan</option>
+                                            <option>Diklat</option>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Judul Dokumen</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <input type="text" name="nama1" size="50" required="" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Judul Dokumen Sebelumnya</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <input type="text" name="nama2" size="50" value="N/A" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tingkatan Dokumen</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <select name="tingkat">
+
+                                            <option>1</option>
+                                            <!--<option>2</option>
+    	    <option>3</option>
+    	    <option>4</option>
+    	    <option>5</option>-->
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tipe Dokumen</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left">
+                                    <input type="radio" id="udd" name="tipe_dokumen" value="udd" required
+                                        onChange="handleTipeDokumen()">
+                                    <label for="udd">UDD</label>
+
+                                    <input type="radio" id="selain_udd" name="tipe_dokumen" value="selain_udd"
+                                        onChange="handleTipeDokumen()" required>
+                                    <label for="selain_udd">Selain UDD</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2">
+                                <div align="right"><strong>No. Kontrol Dokumen</strong></div>
+                            </td>
+                            <td rowspan="2"><strong>:</strong></td>
+                            <?php
+                            $sql = 'select count(*)+1 as jumlah from kebijakan';
+                            $proses = mysql_query($sql);
+                            $data = mysql_fetch_array($proses);
+                            ?>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" id="kontrol1" name="kontrol1" value="UDDP-"
+                                            readonly="readonly" size="7" disabled />
+                                        <select name="kontrol2" id="kontrol2" disabled>
+                                            <option></option>
+                                            <option>MK</option>
+                                            <option>PDR</option>
+                                            <option>HMS</option>
+                                            <option>SIM</option>
+                                            <option>PDD</option>
+                                            <option>IMLTD</option>
+                                            <option>SGD</option>
+                                            <option>LITBANG</option>
+                                            <option>PRR</option>
+                                            <option>KAL</option>
+                                            <option>PM</option>
+                                            <option>PK</option>
+                                            <option>UMM</option>
+                                            <option>LOG</option>
+                                            <option>SEKR</option>
+                                            <option>RT</option>
+                                            <option>WM</option>
+                                            <option>KEPEG</option>
+                                            <option>KEU</option>
+                                            <option>DIKLAT</option>
+					    <option>UM</option>
+                                        </select>
+                                        <input type="text" id="kontrol3" name="kontrol3" value="-L1-"
+                                            readonly="readonly" size="5" disabled />
+                                        <input type="text" id="kontrol4" name="kontrol4" size="10" disabled />
+
+                                    </strong></div>
+                            </td>
+                            <td rowspan="2"><strong><a href="cari_data_kebijakan.php?&width=400&height=350"
+                                        class="thickbox"><img src="images/cari.png" width="40" height="40"
+                                            border="0" /></a></strong></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="left"><strong>
+                                        <input type="text" id="kontrol5" name="kontrol5" value="PSU-"
+                                            readonly="readonly" size="7" disabled />
+                                        <select name="kontrol6" id="kontrol6" disabled>
+                                            <option></option>
+                                            <option>MK</option>
+                                            <option>PML</option>
+                                        </select>
+                                        <input type="number" step="0.01" min="0" max="100" id="kontrol7"
+                                            name=" kontrol7" size="5" placeholder="Klausul" disabled />
+                                        <select name="kontrol8" id="kontrol8" disabled>
+                                            <option></option>
+                                            <option>I</option>
+                                            <option>II</option>
+                                        </select>
+                                        <input type="text" id="kontrol9" name="kontrol9" size="10" disabled />
+
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Periode Kaji Ulang (bulan)</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <input type="text" name="periode" size="5" required="" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>No. Versi</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <input type="text" name="no_versi" size="10" required="" placeholder="000" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tanggal Disahkan</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <input type="text" name="tgl_setuju" id="" required=""
+                                            placeholder="Tahun-Bulan-Tanggal" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tanggal Berlaku</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <input type="text" name="tgl_pelaksanaan" id="" required=""
+                                            placeholder="Tahun-Bulan-Tanggal" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Tanggal Kaji Ulang</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <input type="text" name="tgl_peninjauan" id="" required=""
+                                            placeholder="Tahun-Bulan-Tanggal" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Disusun Oleh</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <select name="pembuat">
+                                            <option></option>
+                                            <?php
+                                            $query =
+                                                'select * from user order by nama_lengkap';
+                                            $hasil = mysql_query($query);
+                                            while (
+                                                $data = mysql_fetch_array(
+                                                    $hasil
+                                                )
+                                            ) {
+                                                echo "<option>$data[nama_lengkap]</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Diperiksa Oleh</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <select name="pemeriksa">
+                                            <option></option>
+                                            <?php
+                                            $query =
+                                                'select * from user order by nama_lengkap';
+                                            $hasil = mysql_query($query);
+                                            while (
+                                                $data = mysql_fetch_array(
+                                                    $hasil
+                                                )
+                                            ) {
+                                                echo "<option>$data[nama_lengkap]</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Disetujui Oleh</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <select name="pengesah">
+                                            <option></option>
+                                            <?php
+                                            $query =
+                                                'select * from user order by nama_lengkap';
+                                            $hasil = mysql_query($query);
+                                            while (
+                                                $data = mysql_fetch_array(
+                                                    $hasil
+                                                )
+                                            ) {
+                                                echo "<option>$data[nama_lengkap]</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Disahkan Oleh</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+                                        <select name="pengesah2">
+                                            <option></option>
+                                            <?php
+                                            $query =
+                                                'select * from user order by nama_lengkap';
+                                            $hasil = mysql_query($query);
+                                            while (
+                                                $data = mysql_fetch_array(
+                                                    $hasil
+                                                )
+                                            ) {
+                                                echo "<option>$data[nama_lengkap]</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </strong></div>
+                            </td>
+                        </tr>
+
+                        <!--awal upload-->
+                        <tr>
+                            <td>
+                                <div align="right"><strong>Upload Dokumen</strong></div>
+                            </td>
+                            <td><strong>:</strong></td>
+                            <td colspan="2">
+                                <div align="left"><strong>
+
+                                        <input type="file" name="fileupload" id="fileupload" class="form-control" />
+                                    </strong></div>
+                            </td>
+                        </tr>
+                        <!--akhir upload-->
+
+                        <tr>
+                            <td colspan="4" align="right"><strong>
+                                    <input class="button1" type="submit" name="upload" value="Simpan" />
+                                </strong></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br />
+</body>
+
+</html>

@@ -42,7 +42,7 @@ if (!in_array($data['Status'], array('2', '3'))) {
     exit;
 }
 
-if (!empty($data['stat2']) && $data['stat2'] != $kodeDistribusi) {
+if (!is_null($data['stat2']) && $data['stat2'] != $kodeDistribusi) {
     echo json_encode(array(
         'valid' => '3',
         'pesan' => 'Kantong belum di distribusi ke QC'

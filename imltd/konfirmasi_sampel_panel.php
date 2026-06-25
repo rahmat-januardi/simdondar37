@@ -5,7 +5,7 @@ require_once('config/db_connect.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-// date_default_timezone_set('Asia/Jakarta');
+date_default_timezone_set('Asia/Jakarta');
 
 $namauser = isset($_SESSION['namauser']) ? $_SESSION['namauser'] : '';
 
@@ -338,7 +338,7 @@ if ($verif_active && isset($_SESSION['verif_panel']['notrans'])) {
         <div class="card-body">
             <div class="alert alert-info">
                 Arah kerja:
-                <strong>scan / input nomor kantong</strong> → sistem cek pada detail transaksi →
+                <strong>scan / input nomor kantong</strong> ? sistem cek pada detail transaksi ?
                 jika cocok maka tanda centang muncul di daftar.
             </div>
 

@@ -15,7 +15,7 @@
      *		- Select : stokkantong join htransaksi
      *		- exec   : serahterima_h, serahterima_detail, serahterima_detail_tmp
      ***********************************************/
-    $nodokumen="No. Dokumen: UDDSLM-PD-L4-011-2022";
+    $nodokumen="No. Dokumen: UDDP-PD-L4-011-2022";
     include('config/db_connect.php');
     $today			=date("Y-m-d H:i:s");
     $namauser		=$_SESSION[namauser];

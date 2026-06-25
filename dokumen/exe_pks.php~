@@ -1,0 +1,81 @@
+<?php
+include 'koneksi.php';
+
+$bidang = $_POST['bidang'];
+$nama1 = $_POST['nama1'];
+$nama2 = $_POST['nama2'];
+$tingkat = $_POST['tingkat'];
+$kontrol1 = $_POST['kontrol1'];
+$kontrol2 = $_POST['kontrol2'];
+$kontrol3 = $_POST['kontrol3'];
+$kontrol4 = $_POST['kontrol4'];
+$kontrol5 = $_POST['kontrol5'];
+$kontrol6 = $_POST['kontrol6'];
+$kontrol7 = $_POST['kontrol7'];
+$kontrol8 = $_POST['kontrol8'];
+$kontrol9 = $_POST['kontrol9'];
+$tipe_dokumen = $_POST['tipe_dokumen'];
+$periode = $_POST['periode'];
+$no_versi = $_POST['no_versi'];
+$tgl_setuju = $_POST['tgl_setuju'];
+$tgl_pelaksanaan = $_POST['tgl_pelaksanaan'];
+$tgl_peninjauan = $_POST['tgl_peninjauan'];
+$pembuat = $_POST['pembuat'];
+$pemeriksa = $_POST['pemeriksa'];
+$pengesah = $_POST['pengesah'];
+$pengesah2 = $_POST['pengesah2'];
+$ImageName = $_FILES['fileupload']['name'];
+
+$cek_klausul = $kontrol7 > 0 ? '-' . $kontrol7 . '-' : '-';
+
+$tgl1 = "$tgl_peninjauan";
+$tgl2 = date('Y-m-d', strtotime('-60 days', strtotime($tgl1)));
+
+if ($tipe_dokumen === 'udd') {
+    $sql = "insert into pks(bidang,nama1,nama2,tingkat,kontrol,kontrol2,kontrol3,periode,no_versi,tgl_setuju,tgl_pelaksanaan,tgl_peninjauan,pembuat,pemeriksa,pengesah,pengesah2,tgl_notif,fileku) values ('$bidang','$nama1','$nama2','$tingkat','$kontrol1',concat('$kontrol1','$kontrol2','$kontrol3','$kontrol4'),concat('$kontrol2','$kontrol3'),'$periode','$no_versi','$tgl_setuju','$tgl_pelaksanaan','$tgl_peninjauan','$pembuat','$pemeriksa','$pengesah','$pengesah2','$tgl2','$ImageName')";
+} else {
+    $sql = "insert into pks(bidang,nama1,nama2,tingkat,kontrol,kontrol2,kontrol3,periode,no_versi,tgl_setuju,tgl_pelaksanaan,tgl_peninjauan,pembuat,pemeriksa,pengesah,pengesah2,tgl_notif,fileku) values ('$bidang','$nama1','$nama2','$tingkat','$kontrol5',concat('$kontrol5','$kontrol6','$cek_klausul', '$kontrol8', '-','$kontrol9'),concat('$kontrol5','$kontrol6','$cek_klausul', '$kontrol8'), '$periode', '$no_versi', '$tgl_setuju', '$tgl_pelaksanaan', '$tgl_peninjauan', '$pembuat', '$pemeriksa','$pengesah','$pengesah2', '$tgl2','$ImageName')";
+}
+
+$result = mysql_query($sql);
+
+if ($result) {
+    include 'pks.php';
+    echo 'Data PKS berhasil di input';
+} else {
+    echo 'ERROR';
+}
+?>
+
+<!--upload file-->
+<?php if (isset($_POST['upload'])) {
+    $temp = 'upload/';
+    if (!file_exists($temp)) {
+        mkdir($temp);
+    }
+
+    $fileupload = $_FILES['fileupload']['tmp_name'];
+    $ImageName = $_FILES['fileupload']['name'];
+    $ImageType = $_FILES['fileupload']['type'];
+
+    $namafile = $_POST['fileku'];
+    $type = 'pdf';
+
+    if (!empty($fileupload)) {
+        // mengacak angka untuk nama file
+        //$acak = rand(00000000, 99999999);
+
+        //$ImageExt       = substr($ImageName, strrpos($ImageName, '.'));
+        $ImageExt = str_replace('.', '', $ImageExt); // Extension
+        //$ImageName      = preg_replace("/\.[^.\s]{3,4}$/", "", $ImageName);
+        $NewImageName = $ImageName . '' . $ImageExt;
+
+        move_uploaded_file(
+            $_FILES['fileupload']['tmp_name'],
+            $temp . $NewImageName
+        ); // Menyimpan file
+
+        echo "<script>alert('Berhasil diupload'); location='pks.php'</script>";
+    }
+}
+?>

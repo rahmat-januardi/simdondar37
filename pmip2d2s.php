@@ -278,6 +278,8 @@ if ($_SESSION['leveluser'] == "p2d2s") {
                 include "mobile/mobile_proses_antrean.php";
             } elseif ($_GET['module'] == "mobile_transaksimu") {
                 include "mobile/mobile_transaksimu.php";
+            } elseif ($_GET['module'] == "rekap_transaksi3") {
+                include "modul/rekap_transaksi_instansi.php";
             }
     }
 }

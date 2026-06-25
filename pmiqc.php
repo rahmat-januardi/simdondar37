@@ -8,12 +8,12 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
 if (($_SESSION['leveluser']) == 'qc') {
 ?>
 
-<head>
-    <title>SIMDONDAR</title>
-    <script language=javascript src="idcard.js" type="text/javascript"> </script>
-    <script language=javascript src="util.js" type="text/javascript"> </script>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-</head>
+    <head>
+        <title>SIMDONDAR</title>
+        <script language=javascript src="idcard.js" type="text/javascript"> </script>
+        <script language=javascript src="util.js" type="text/javascript"> </script>
+        <link href="css/style.css" rel="stylesheet" type="text/css" />
+    </head>
 <?php
 
     //require_once('color.inc');

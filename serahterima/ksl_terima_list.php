@@ -1,514 +1,607 @@
 <?php
 session_start();
-$msg="";
+$msg = "";
 require_once('clogin.php');
 require_once('config/dbi_connect.php');
-$leveluser=$_SESSION['level'];
-$level=$_SESSION['leveluser'];
-$namauser=$_SESSION['namauser'];
-$namalengkap=$_SESSION['nama_lengkap'];
-$udd=mysqli_fetch_assoc(mysqli_query($dbi,"SELECT `nama`,`id` FROM `utd` WHERE `aktif`='1';"));
-$id_uddaktif=$udd['id'];
-$nama_uddaktif=$udd['nama'];
-//echo $id_uddaktif;
+$leveluser   = $_SESSION['level'];
+$level       = $_SESSION['leveluser'];
+$namauser    = $_SESSION['namauser'];
+$namalengkap = $_SESSION['nama_lengkap'];
+$udd         = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `nama`,`id` FROM `utd` WHERE `aktif`='1';"));
+$id_uddaktif   = $udd['id'];
+$nama_uddaktif = $udd['nama'];
 
-$tgl    = date('Ymd');
-$token  = "17091945".$tgl;
+$tgl   = date('Ymd');
+$token = "17091945" . $tgl;
 
-(isset($_SESSION['tanggal1'])) ? $f_tanggal1=$_SESSION['tanggal1'] : $f_tanggal1 = date('Y-m-d');
-(isset($_SESSION['tanggal2'])) ? $f_tanggal2=$_SESSION['tanggal2'] : $f_tanggal2 = date('Y-m-d');
-(isset($_SESSION['status'])) ? $f_status=$_SESSION['status'] : $f_status = "";
+(isset($_SESSION['tanggal1'])) ? $f_tanggal1 = $_SESSION['tanggal1'] : $f_tanggal1 = date('Y-m-d');
+(isset($_SESSION['tanggal2'])) ? $f_tanggal2 = $_SESSION['tanggal2'] : $f_tanggal2 = date('Y-m-d');
+(isset($_SESSION['status']))   ? $f_status   = $_SESSION['status']   : $f_status   = "";
 
-if(isset($_POST['vfilter'])){
-    $f_status       =$_SESSION['status']    = $_POST['fltstatus'];
-    $f_tanggal1     =$_SESSION['tanggal1']  = $_POST['fltTanggal1'];
-    $f_tanggal2     =$_SESSION['tanggal2']    = $_POST['fltTanggal2'];
+if (isset($_POST['vfilter'])) {
+    $f_status   = $_SESSION['status']   = $_POST['fltstatus'];
+    $f_tanggal1 = $_SESSION['tanggal1'] = $_POST['fltTanggal1'];
+    $f_tanggal2 = $_SESSION['tanggal2'] = $_POST['fltTanggal2'];
 }
-if(isset($_POST['vreset'])){
-    $f_status        = "";
-    $f_tanggal1     = date('Y-m-d');
-    $f_tanggal2     = date('Y-m-d');
+if (isset($_POST['vreset'])) {
+    $f_status   = "";
+    $f_tanggal1 = date('Y-m-d');
+    $f_tanggal2 = date('Y-m-d');
 }
 
-//CURL Cari Permintaan dari dbdonor
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => "https://dbdonor.pmi.or.id/konsolidasi/get_terima_transaksi.php",
+// ── Ambil data ONLINE dari dbdonor ────────────────────────────────────────────
+$curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_URL            => "https://dbdonor.pmi.or.id/konsolidasi/get_terima_transaksi.php",
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => "",
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
+    CURLOPT_ENCODING       => "",
+    CURLOPT_MAXREDIRS      => 10,
+    CURLOPT_TIMEOUT        => 10,
     CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => "POST",
-    CURLOPT_POSTFIELDS => array('udd' => $id_uddaktif, 'key' => $token),
-    ));
-    $response = curl_exec($curl);
-    curl_close($curl);
-    //echo $response;
-    $tgl= date("Y/m/d");
-    $data = json_decode($response, true);
-    //echo var_dump($data);
-    //echo 'Count Data :'.count($data).'<br>';
+    CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST  => "POST",
+    CURLOPT_POSTFIELDS     => array('udd' => $id_uddaktif, 'key' => $token),
+));
+$response  = curl_exec($curl);
+$curlError = curl_error($curl);
+curl_close($curl);
 
+$dataOnline = array();
+if ($response && !$curlError) {
+    $decoded = json_decode($response, true);
+    if (isset($decoded['data']) && is_array($decoded['data'])) {
+        $dataOnline = $decoded['data'];
+    }
+}
 
+// ── Ambil data VIA DOWNLOAD dari tabel lokal ─────────────────────────────────
+mysqli_query($dbi, "CREATE TABLE IF NOT EXISTS `ksl_import_antrian` (
+    `id`             INT AUTO_INCREMENT PRIMARY KEY,
+    `notrans`        VARCHAR(60)  NOT NULL DEFAULT '',
+    `hst_tgl`        VARCHAR(30)  DEFAULT '',
+    `udd_asal_id`    VARCHAR(20)  DEFAULT '',
+    `udd_asal_nama`  VARCHAR(150) DEFAULT '',
+    `udd_penerima`   VARCHAR(20)  DEFAULT '',
+    `hst_asal`       VARCHAR(100) DEFAULT '',
+    `jumlahA`        INT DEFAULT 0,
+    `jumlahB`        INT DEFAULT 0,
+    `jumlahO`        INT DEFAULT 0,
+    `jumlahAB`       INT DEFAULT 0,
+    `jumlah`         INT DEFAULT 0,
+    `status`         TINYINT DEFAULT 0,
+    `tgl_import`     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `imported_by`    VARCHAR(50) DEFAULT '',
+    UNIQUE KEY `uk_notrans` (`notrans`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+$dataDownload = array();
+$qryDl = mysqli_query($dbi, "SELECT * FROM `ksl_import_antrian` WHERE `status`=0 ORDER BY `tgl_import` DESC");
+while ($rowDl = mysqli_fetch_assoc($qryDl)) {
+    $dataDownload[] = $rowDl;
+}
+
+$cntOnline   = count($dataOnline);
+$cntDownload = count($dataDownload);
 ?>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="bootsrap337/bspmi.css">
-        <link rel="stylesheet" href="bootsrap337/w3.css">
-        <link rel="stylesheet" href="pmf/pmfstyle.css">
-        <link rel="stylesheet" href="bootsrap337/css/bootstrap.min.css">
-        <link href="bootsrap337/datepicker/css/bootstrap-datepicker.css" rel="stylesheet">
-        <link rel="stylesheet" href="bootsrap337/chosen/chosen.css">
-        <link href="https://cdn.datatables.net/v/bs/dt-1.13.8/datatables.min.css" rel="stylesheet">
-        <style>
-             .shadow{box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
-            .btn-pref .btn {
-                border-radius:0 !important;
-            }
-            .modal-fullscreen {
-                width: 98%;
-                padding: 0;
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="15">   <!-- 15 detik -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootsrap337/bspmi.css">
+    <link rel="stylesheet" href="bootsrap337/w3.css">
+    <link rel="stylesheet" href="pmf/pmfstyle.css">
+    <link rel="stylesheet" href="bootsrap337/css/bootstrap.min.css">
+    <link href="bootsrap337/datepicker/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="bootsrap337/chosen/chosen.css">
+    <link href="https://cdn.datatables.net/v/bs/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    <style>
+        .shadow {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+        }
+
+        .modal-half {
+            width: 70%;
+            padding: 0;
+            position: fixed;
+            left: 15%;
+        }
+
+        .modal-content {
+            width: 100%;
+            margin: 0 0;
+        }
+
+        .modal-footer {
+            bottom: 0;
+            position: relative;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-top: 1px;
+            margin-bottom: 1px;
+        }
+
+        .table thead th {
+            height: 40px;
+            padding: 2px !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+            text-shadow: 1px 1px 2px black;
+            font-size: 1.2em;
+        }
+
+        .table tbody td {
+            font-size: 1em;
+            white-space: nowrap;
+            vertical-align: middle !important;
+        }
+
+        #loading {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            border: 5px solid #ccc;
+            border-top-color: #ff6a00;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            z-index: 99;
+            animation: sp 2s ease infinite;
+        }
+
+        @keyframes sp {
+            from {
+                transform: rotate(0deg)
             }
 
-            .modal-half {
-                width: 70%;
-                padding: 0;
-                position: fixed;
-                left: 15%;
+            to {
+                transform: rotate(360deg)
             }
+        }
 
-            .modal-content {
-                /* min-height: 90%; */
-                width: 100%;
-                border-radius: 25;
-                margin: 0 0;
-            }
-            .modal-footer {
-                border-radius: 25;
-                bottom:0px;
-                position:relative;
-                width:100%;
-            }
-            .form-group{margin-top: 1px;margin-bottom: 1px;}
-            .table thead th {
-                height: 40px;
-                padding: 2px !important;
-                text-align: center !important;
-                vertical-align: middle !important;
-                text-shadow: 1px 1px  2px black;
-                font-size : 1.2em;
-                /* word-break:break-all; */
-            }
-            .table tbody td {
-                font-size:1em;
-                white-space: nowrap;
-                vertical-align: middle !important;
-            }
-            .text-vertical{
-                vertical-align: middle;
-                text-align: center;
-                transform: rotate(-90deg);
-                white-space: nowrap;
-            }
-            #loading {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 100%;
-                    border: 5px solid #ccc;
-                    border-top-color: #ff6a00;
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    margin: auto;
-                    z-index: 99;
-                    animation: sp 2s ease infinite;
-                }
-                @keyframes sp {
-                    from {transform: rotate(0deg);
-                    } to {transform: rotate(360deg);
-                    }
-                }
-                a{
-                    text-decoration: none !important;
-                }
-                .table td.text {
-                    max-width: 300px;
-                }
-                .table td.text span {
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: inline-block;
-                    max-width: 100%;
-                }
+        a {
+            text-decoration: none !important;
+        }
 
-            .swal2-popup {font-size: 1.6rem !important;}
-            .swal-footer {text-align: center;}
-            .custom-swal {
-                background: linear-gradient(to bottom, white, red) !important;
-                border-radius: 15px !important;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5) !important;
-                width: 800px !important;
-                max-width: 95% !important;
-                padding: 20px !important;
-                overflow: hidden;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <div id="loading"></div>
-        <div class="container-fluid" style="margin: 30px;">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel w3-border-theme shadow">
-                        <div class="panel-heading w3-theme-d5 clearfix">
-                            <div class="col-lg-9 col-md-8 col-sm-7 col-xs-8 text-left text-shadow" style="font-size: 150%;font-weight: bold;">ANTRIAN PENERIMAAN DARAH KONSOLIDASI</div>
-                            <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4 text-right">
-                                
-                                <a href="?module=rekapksl" class="w3-btn w3-theme w3-hover-yellow" >REKAP PENERIMAAN</a>
-                            </div>
+        .swal2-popup {
+            font-size: 1.6rem !important;
+        }
+
+        .nav-tabs-ksl {
+            border-bottom: 2px solid #8b1a1a;
+            margin-bottom: 15px;
+        }
+
+        .nav-tabs-ksl>li>a {
+            color: #8b1a1a;
+            font-weight: bold;
+            border-radius: 4px 4px 0 0;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+
+        .nav-tabs-ksl>li.active>a,
+        .nav-tabs-ksl>li.active>a:hover {
+            background: #8b1a1a;
+            color: #fff;
+            border-color: #8b1a1a;
+        }
+
+        .nav-tabs-ksl>li>a:hover {
+            background: #f2d4d4;
+            color: #8b1a1a;
+        }
+
+        .upload-area {
+            border: 2px dashed #8b1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #fff8f8;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            background: #f2d4d4;
+        }
+
+        .upload-area .up-icon {
+            font-size: 36px;
+            color: #8b1a1a;
+        }
+
+        .upload-area p {
+            margin: 6px 0 0;
+            color: #555;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading"></div>
+    <div class="container-fluid" style="margin:30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel w3-border-theme shadow">
+
+                    <div class="panel-heading w3-theme-d5 clearfix">
+                        <div class="col-lg-9 col-md-8 col-sm-7 col-xs-8 text-left text-shadow"
+                            style="font-size:150%;font-weight:bold;">
+                            ANTRIAN PENERIMAAN DARAH KONSOLIDASI
                         </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-12"><?php echo $msg;?></div>
-                                <div class="col-xs-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-responsive table-bordered table-striped table-md table-hover table-md display"  id="dtaudittrail">
-                                            <thead class="w3-theme-d4" style="height: 40px;">
-                                                <tr>
-                                                    <th class="text-center">No</th>
-                                                    <th>Transaksi</th>
-                                                    <th>Tanggal</th>
-                                                    <th>Asal UDD</th>
-                                                    <th>Tempat<br>Pengambilan</th>
-                                                    <th>A</th>
-                                                    <th>B</th>
-                                                    <th>O</th>
-                                                    <th>AB</th>
-                                                    <th>Jumlah<br>Kolf</th>
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php 
-                                                for($a=0; $a < count($data['data']); $a++){
-                                                    $no=$a+1;
-                                                    $chkdata=strlen($data['data'][$a]['hst_notrans']);
-                                                    if ($chkdata>0){
-                                                     
-                                                      echo  "<tr>";
-                                                      echo  "<td class='text-right' nowrap>".$no.".</td>";
-                                                      echo  "<td>".$data['data'][$a]['hst_notrans']."</td>"; 
-                                                      echo  "<td>".$data['data'][$a]['hst_tgl']."</td>";
-                                                      echo  "<td>".$data['data'][$a]['nama']."</td>";
-                                                      echo  "<td>".$data['data'][$a]['hst_asal']."</td>";
-                                                      echo  "<td align='right'>".$data['data'][$a]['jumlahA']."</td>";
-                                                      echo  "<td align='right'>".$data['data'][$a]['jumlahB']."</td>";
-                                                      echo  "<td align='right'>".$data['data'][$a]['jumlahO']."</td>";
-                                                      echo  "<td align='right'>".$data['data'][$a]['jumlahAB']."</td>";
-                                                      echo  "<td align='right'>".$data['data'][$a]['jumlah']."</td>";  
-                                                        
-                                                      echo  '<td align="center"><a href="pmi'.$level.'.php?module=sr_aftap_knsdt&mode=proses&id='.$data['data'][$a]['hst_notrans'].'" class="btn-kirim">PROSES</a>';?>
-                                                       |    <a href="pmi<?php echo $level;?>.php?module=hapus_knsdt&mode=hapus&id=<?php echo $data['data'][$a]['hst_notrans'];?>" onclick="return confirm('Yakin Hapus Data Konsolidasi?')" class="btn-kirim">HAPUS</a></td><?php
-                                                      echo  "</tr>";
-                                                    }
-                                                   }
-                                                   if ($no=='0'){
-                                                      echo '<tr>';
-                                                      echo '<td colspan="16" style="font-size:20px;" class="text-center">Tidak ada data pengiriman</td>';
-                                                      echo '</tr>';
-                                                   }
-                                                ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4 text-right">
+                            <a href="?module=rekapksl" class="w3-btn w3-theme w3-hover-yellow">REKAP PENERIMAAN</a>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="modal fade" id="mFilter" role="dialog">
-            <div class="modal-dialog" role="document">   
-                <div class="modal-content">
-                    <div class="modal-header w3-theme shadow">
-                        <button type="button" class="close " data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title" style="color:white;">Filter Data</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form name="mFrmFilter" class="form-horizontal" id="mFrmFilter" action="" method="POST">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="fltTanggal1">Tanggal</label>
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control startdate" value="<?php echo $f_tanggal1;?>"  name="fltTanggal1" id="fltTanggal1"/>
-                                            <span class="input-group-addon input-sm">s/d</span>
-                                        <input type="text" class="form-control enddate" value="<?php echo $f_tanggal2;?>"  name="fltTanggal2" id="fltTanggal2"/>
+                    <div class="panel-body">
+                        <div class="col-xs-12"><?php echo $msg; ?></div>
+
+                        <!-- Tab navigation -->
+                        <ul class="nav nav-tabs nav-tabs-ksl" id="tabKonsolidasi">
+                            <li class="active">
+                                <a href="#tab-download" data-toggle="tab">
+                                    Via Download (Import JSON)
+                                    <?php if ($cntDownload > 0) {
+                                        echo '<span class="badge" style="background:#1a6a8b;">' . $cntDownload . '</span>';
+                                    } ?>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#tab-online" data-toggle="tab">
+                                    Via Online
+                                    <?php if ($cntOnline > 0) {
+                                        echo '<span class="badge" style="background:#1a8b3a;">' . $cntOnline . '</span>';
+                                    } ?>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+
+                            <!-- TAB ONLINE -->
+                            <div class="tab-pane" id="tab-online">
+                                <?php if ($curlError) { ?>
+                                    <div class="alert alert-warning">
+                                        <strong>Perhatian:</strong> Gagal menghubungi server dbdonor.pmi.or.id.
+                                        (<?php echo htmlspecialchars($curlError); ?>)
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" for="fltStatus">Status</label>
-                                <div class="col-sm-9">
-                                    <select name="fltStatus" class="form-control input-sm chosen-select">
-										<?php 
-                                        $arr_status=array("0"=>"Semua", "1"=>"Terkirim");
-                                        foreach($arr_status as $val=>$cap){
-                                            if($val==$f_status){
-                                                echo '<option value="'.$val.'" selected>'.$cap.'</option>';
-                                            }else{
-                                                echo '<option value="'.$val.'">'.$cap.'</option>';
+                                <?php } ?>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover display" id="tblOnline">
+                                        <thead class="w3-theme-d4">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Transaksi</th>
+                                                <th>Tanggal</th>
+                                                <th>Asal UDD</th>
+                                                <th>Tempat<br>Pengambilan</th>
+                                                <th>A</th>
+                                                <th>B</th>
+                                                <th>O</th>
+                                                <th>AB</th>
+                                                <th>Jumlah<br>Kantong</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $no = 0;
+                                            for ($a = 0; $a < count($dataOnline); $a++) {
+                                                if (strlen($dataOnline[$a]['hst_notrans']) == 0) continue;
+                                                $no++;
+                                                echo "<tr>";
+                                                echo "<td class='text-right'>" . $no . ".</td>";
+                                                echo "<td>" . htmlspecialchars($dataOnline[$a]['hst_notrans']) . "</td>";
+                                                echo "<td>" . htmlspecialchars($dataOnline[$a]['hst_tgl'])     . "</td>";
+                                                echo "<td>" . htmlspecialchars($dataOnline[$a]['nama'])        . "</td>";
+                                                echo "<td>" . htmlspecialchars($dataOnline[$a]['hst_asal'])    . "</td>";
+                                                echo "<td align='right'>" . $dataOnline[$a]['jumlahA']  . "</td>";
+                                                echo "<td align='right'>" . $dataOnline[$a]['jumlahB']  . "</td>";
+                                                echo "<td align='right'>" . $dataOnline[$a]['jumlahO']  . "</td>";
+                                                echo "<td align='right'>" . $dataOnline[$a]['jumlahAB'] . "</td>";
+                                                echo "<td align='right'>" . $dataOnline[$a]['jumlah']   . "</td>";
+                                                echo "<td align='center'>";
+                                                echo "<a href='pmi" . $level . ".php?module=sr_aftap_knsdt&mode=proses&id=" . urlencode($dataOnline[$a]['hst_notrans']) . "&source=online'>PROSES</a>";
+                                                echo " | ";
+                                                echo "<a href='pmi" . $level . ".php?module=hapus_knsdt&mode=hapus&id=" . urlencode($dataOnline[$a]['hst_notrans']) . "' onclick=\"return confirm('Yakin Hapus Data Konsolidasi?')\">HAPUS</a>";
+                                                echo "</td>";
+                                                echo "</tr>";
                                             }
-                                        }
-										?>
-										</select>
+                                            if ($no == 0) {
+                                                echo '<tr class="text-center">';
+                                                echo '<td colspan="11" style="font-size:16px; padding:30px !important;">';
+                                                echo 'Tidak ada data antrian konsolidasi online';
+                                                echo '</td>';
+                                                echo '</tr>';
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" name="vfilter" id="vfilter" class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">OK</button>
-                        <button type="submit" name="vreset" id="vreset" class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">Reset</button>
-                        <button class="w3-btn w3-theme w3-hover-indigo w3-card" data-dismiss="modal">Batal</button>
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+                            </div><!-- /tab-online -->
 
-        <div class="modal fade" id="mKirim" role="dialog">
-            <div class="modal-half" role="document">   
-                <div class="modal-content">
-                    <div class="modal-header w3-theme shadow">
-                        <button type="button" class="close " data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title" style="color:white;">Terima Darah Konsolidasi</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form name="mFrmKirim" class="form-horizontal" id="mFrmKirim" action="" method="POST">
-                            <div class="form-group">
-                                <label class="control-label col-md-3" for="InpNomor">No Transaksi</label>
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control input-sm" name="InpNotransaksi" id="InpNotransaksi" readonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <?php 
-                                        $nohst  =  $data['data'][$a]['hst_notrans'];
-                                        $tgl    = date('Ymd');
-                                        $token  = "17091945".$tgl;
-                                        //CURL Lihat Detail
-                                        $curlD = curl_init();
-                                        curl_setopt_array($curlD, array(
-                                        CURLOPT_URL => "https://dbdonor.pmi.or.id/konsolidasi/get_detail_preterima.php",
-                                        CURLOPT_RETURNTRANSFER => true,
-                                        CURLOPT_ENCODING => "",
-                                        CURLOPT_MAXREDIRS => 10,
-                                        CURLOPT_TIMEOUT => 0,
-                                        CURLOPT_FOLLOWLOCATION => true,
-                                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                                        CURLOPT_CUSTOMREQUEST => "POST",
-                                        CURLOPT_POSTFIELDS => array('udd' => $nohst, 'key' => $token),
-                                        ));
-                                        $responseD = curl_exec($curlD);
-                                        curl_close($curlD);
-                                        echo $responseD;
-                                        $tgl= date("Y/m/d");
-                                        $dataD = json_decode($responseD, true);
-                                        //echo var_dump($data);
-                                        //echo 'Count Data :'.count($data).'<br>';
+                            <!-- TAB DOWNLOAD -->
+                            <div class="tab-pane active" id="tab-download">
 
-                                        echo "No. Host adalah : ".$nohst;
-                                    ?>
-
-                                        <div class="table-responsive">
-                                            <table class="table table-responsive table-bordered table-striped table-md table-hover table-md display"  id="dtaudittrail">
-                                                <thead class="w3-theme-d4" style="height: 40px;">
-                                                    <tr>
-                                                        <th class="text-center">No</th>
-                                                        <th>No. Kantong</th>
-                                                        <th>Tgl. Aftap</th>
-                                                        <th>Merk</th>
-                                                        <th>Volume</th>
-                                                        <th>Gol.</th>
-                                                        <th>Rhesus</th>
-                                                        
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php 
-                                                    for($a=0; $a < count($dataD['data']); $a++){
-                                                        $no=$a+1;
-                                                        $chkdata=strlen($dataD['data'][$a]['dst_nokantong']);
-                                                        if ($chkdata>0){
-                                                        
-                                                        echo  "<tr>";
-                                                        echo  "<td class='text-right' nowrap>".$no.".</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_nokantong']."</td>"; 
-                                                        echo  "<td>".$dataD['data'][$a]['dst_tglaftap']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_merk']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_volambil']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_golda']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_rh']."</td>";
-                                                        echo  "</tr>";
-                                                        }
-                                                    }
-                                                    if ($no=='0'){
-                                                        echo '<tr>';
-                                                        echo '<td colspan="7" style="font-size:20px;" class="text-center">Tidak ada data antrian konsolidasi</td>';
-                                                        echo '</tr>';
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
+                                <!-- Area upload JSON -->
+                                <div class="row" style="margin-bottom:15px;">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <div class="upload-area" id="uploadArea"
+                                            onclick="document.getElementById('inputJsonFile').click();">
+                                            <div class="up-icon">
+                                                <span class="glyphicon glyphicon-upload"></span>
+                                            </div>
+                                            <p><strong>Klik di sini atau seret file JSON ke area ini</strong></p>
+                                            <p>File hasil ekspor dari <em>Konsolidasi via Download</em></p>
+                                            <p class="mt-1" id="selectedFileName" style="color:#8b1a1a;font-weight:bold;font-size:17px;"></p>
                                         </div>
+                                        <input type="file" id="inputJsonFile" accept=".json" style="display:none;">
+                                        <div style="text-align:center;margin-top:8px;">
+                                            <button class="w3-btn w3-theme-d4 w3-hover-green w3-card"
+                                                id="btnImportJson" disabled="disabled">
+                                                <span class="glyphicon glyphicon-import"></span> Import JSON
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tabel antrian import -->
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover display" id="tblDownload">
+                                        <thead class="w3-theme-d4">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Transaksi</th>
+                                                <th>Tgl. Serah Terima</th>
+                                                <th>Asal UDD</th>
+                                                <th>Tempat<br>Pengambilan</th>
+                                                <th>A</th>
+                                                <th>B</th>
+                                                <th>O</th>
+                                                <th>AB</th>
+                                                <th>Jumlah<br>Kantong</th>
+                                                <th>Tgl. Import</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $noDl = 0;
+                                            for ($b = 0; $b < count($dataDownload); $b++) {
+                                                $noDl++;
+                                                $dl = $dataDownload[$b];
+                                                echo "<tr>";
+                                                echo "<td class='text-right'>" . $noDl . ".</td>";
+                                                echo "<td>" . htmlspecialchars($dl['notrans'])       . "</td>";
+                                                echo "<td>" . htmlspecialchars($dl['hst_tgl'])       . "</td>";
+                                                echo "<td>" . htmlspecialchars($dl['udd_asal_nama']) . "</td>";
+                                                echo "<td>" . htmlspecialchars($dl['hst_asal'])      . "</td>";
+                                                echo "<td align='right'>" . $dl['jumlahA']  . "</td>";
+                                                echo "<td align='right'>" . $dl['jumlahB']  . "</td>";
+                                                echo "<td align='right'>" . $dl['jumlahO']  . "</td>";
+                                                echo "<td align='right'>" . $dl['jumlahAB'] . "</td>";
+                                                echo "<td align='right'>" . $dl['jumlah']   . "</td>";
+                                                echo "<td>" . htmlspecialchars($dl['tgl_import']) . "</td>";
+                                                echo "<td align='center'>";
+                                                echo "<a href='pmi" . $level . ".php?module=sr_aftap_knsdt&mode=proses&id=" . urlencode($dl['notrans']) . "&source=download'>PROSES</a>";
+                                                echo " | ";
+                                                echo "<a href='#' data-notrans='" . htmlspecialchars($dl['notrans']) . "' onclick=\"hapusDownload(this);return false;\">HAPUS</a>";
+                                                echo "</td>";
+                                                echo "</tr>";
+                                            }
+                                            if ($noDl == 0) { ?>
+                                                <tr class="text-center">
+                                                    <td colspan="12" style="padding:40px 20px !important; font-size:16px;">
+                                                        Belum ada data konsolidasi yang diimport via Download.<br>
+                                                        <small>Gunakan tombol import di atas untuk menambahkan data.</small>
+                                                    </td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div><!-- /tab-download -->
+
+                        </div><!-- /tab-content -->
+                    </div><!-- /panel-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Filter -->
+    <div class="modal fade" id="mFilter" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header w3-theme shadow">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" style="color:white;">Filter Data</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="mFrmFilter" class="form-horizontal" action="" method="POST">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Tanggal</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input type="text" class="form-control startdate"
+                                        value="<?php echo $f_tanggal1; ?>" name="fltTanggal1">
+                                    <span class="input-group-addon">s/d</span>
+                                    <input type="text" class="form-control enddate"
+                                        value="<?php echo $f_tanggal2; ?>" name="fltTanggal2">
                                 </div>
                             </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" name="vKirim" id="vKirim" class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">PROSES</button>
-                        <button class="w3-btn w3-theme w3-hover-indigo w3-card" data-dismiss="modal">Batal</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="vfilter" class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">OK</button>
+                            <button type="submit" name="vreset" class="w3-btn w3-theme-d4 w3-hover-indigo w3-card">Reset</button>
+                            <button class="w3-btn w3-theme w3-hover-indigo w3-card" data-dismiss="modal">Batal</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+
+</body>
 
 <script src="bootsrap337/js/jquery.min.js"></script>
 <script src="bootsrap337/js/bootstrap.min.js"></script>
 <script src="bootsrap337/datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="bootsrap337/datepicker/custom.js"></script>
-<script src="bootsrap337/chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="bootsrap337/chosen/chosen.jquery.js"></script>
 <script src="https://cdn.datatables.net/v/bs/dt-1.13.8/datatables.min.js"></script>
 <script src="bootsrap337/sweetalert2/sweetalert2@11"></script>
 <script>
-    $(document).ready(function(){
-        setDateRangePicker(".startdate", ".enddate")
-        var table = $('#dtaudittrail').DataTable( { 
-	        lengthMenu: [
-                [5,10, 15, 25, 50, -1],
-                [5,10, 15, 25, 50, 'All']
-            ]
-	    });
-        var load = document.getElementById("loading");window.addEventListener('load', function(){load.style.display = "none";});
-        $('.btn-kirim').on('click', function() {
-            var noTrans = $(this).data('id'); 
-            $('#InpNotransaksi').val(noTrans);
+    $(document).ready(function() {
+
+        var load = document.getElementById('loading');
+        window.addEventListener('load', function() {
+            load.style.display = 'none';
         });
 
-        $('#vKirim').on('click', function() {
-            var noTransaksi = $('#InpNotransaksi').val();
-            var dari = $('#InpDari').val();
-            var kirimKe = $('select[name="InpKirimke"]').val();
-            if (!noTransaksi || !dari || !kirimKe) {
-                Swal.fire({
-                    title: "Gagal!",
-                    text: "Harap isi semua data sebelum mengirim.",
-                    icon: "error",
-                    confirmButtonText: "OK"
-                });
+        // Fungsi Inisialisasi DataTable yang lebih aman
+        function initDataTable(tableId) {
+            // Jangan inisialisasi jika tabel kosong (hanya ada baris pesan colspan)
+            if ($(tableId + ' tbody td[colspan]').length > 0) {
+                console.log('DataTable skip ' + tableId + ': tabel kosong (ada colspan)');
                 return;
             }
-            $('#mKirim').modal('hide');
+            // Jangan inisialisasi jika tidak ada baris sama sekali
+            if ($(tableId + ' tbody tr').length === 0) {
+                console.log('DataTable skip ' + tableId + ': tidak ada baris');
+                return;
+            }
+
+            if ($.fn.DataTable.isDataTable(tableId)) {
+                $(tableId).DataTable().destroy();
+            }
+
+            $(tableId).DataTable({
+                lengthMenu: [
+                    [5, 10, 15, 25, 50, -1],
+                    [5, 10, 15, 25, 50, 'All']
+                ],
+                pageLength: 25,
+                destroy: true,
+                ordering: true,
+                searching: true,
+                info: true,
+                language: {
+                    emptyTable: "Tidak ada data yang tersedia",
+                    zeroRecords: "Tidak ditemukan data yang sesuai",
+                    infoEmpty: "Tidak ada data yang ditampilkan"
+                }
+            });
+        }
+
+        // Inisialisasi kedua tabel saat halaman load
+        // Guard sudah ada di dalam fungsi initDataTable, jadi langsung panggil saja
+        setTimeout(function() {
+            initDataTable('#tblDownload');
+            initDataTable('#tblOnline');
+        }, 500);
+
+        // Saat ganti tab — guard sudah ada di dalam initDataTable
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+            var target = $(e.target).attr('href');
+            setTimeout(function() {
+                if (target === '#tab-download') {
+                    initDataTable('#tblDownload');
+                } else if (target === '#tab-online') {
+                    initDataTable('#tblOnline');
+                }
+            }, 200);
+        });
+
+        // ====================== UPLOAD JSON ======================
+        $('#inputJsonFile').on('change', function() {
+            var fileName = this.files[0] ? this.files[0].name : '';
+            $('#selectedFileName').text(fileName ? '📄 ' + fileName : '');
+            $('#btnImportJson').prop('disabled', !fileName);
+        });
+
+        var ua = document.getElementById('uploadArea');
+        ua.addEventListener('dragover', e => {
+            e.preventDefault();
+            $(ua).css('background', '#f2d4d4');
+        });
+        ua.addEventListener('dragleave', () => $(ua).css('background', '#fff8f8'));
+        ua.addEventListener('drop', function(e) {
+            e.preventDefault();
+            $(ua).css('background', '#fff8f8');
+            var files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('inputJsonFile').files = files;
+                $('#selectedFileName').text('📄 ' + files[0].name);
+                $('#btnImportJson').prop('disabled', false);
+            }
+        });
+
+        $('#btnImportJson').on('click', function() {
+            var file = document.getElementById('inputJsonFile').files[0];
+            if (!file) return;
+
+            var formData = new FormData();
+            formData.append('jsonFile', file);
+
             Swal.fire({
-                title: "Mengirim Data...",
-                text: "Harap tunggu, data sedang dikirim.",
-                icon: "info",
+                title: 'Mengimport...',
                 allowOutsideClick: false,
                 showConfirmButton: false,
-                didOpen: function() {
-                    Swal.showLoading();
-                }
+                didOpen: () => Swal.showLoading()
             });
 
             $.ajax({
-                url: 'serahterima/sr_aftap_kirimkantong.php',
+                url: 'serahterima/ksl_terima_import_json.php',
                 type: 'POST',
-                data: {
-                    noTransaksi: noTransaksi,
-                    dari: dari,
-                    kirimKe: kirimKe
-                },
-                dataType: "json",
-                success: function(response) {
-                    console.log("Response dari server:", response); 
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(res) {
                     Swal.close();
-
-                    if (response && response.status === "success") {
-                        Swal.fire({
-                            title: "Sukses!",
-                            text: response.message || "Data berhasil dikirim.",
-                            icon: "success",
-                            confirmButtonText: "OK"
-                        }).then(function() {
-                            location.reload();
-                        });
+                    if (res.status === 'success') {
+                        Swal.fire('Berhasil!', res.message, 'success').then(() => location.reload());
                     } else {
-                        Swal.fire({
-                            title: "Gagal!",
-                            text: response.message || "Terjadi kesalahan saat mengirim data.",
-                            icon: "error",
-                            confirmButtonText: "Coba Lagi"
-                        });
+                        Swal.fire('Gagal!', res.message || 'Terjadi kesalahan', 'error');
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("AJAX Error:", textStatus, errorThrown);
-
-                    let errorMessage = "Terjadi kesalahan saat menghubungi server.";
-                    if (jqXHR.responseText) {
-                        try {
-                            let errorResponse = JSON.parse(jqXHR.responseText);
-                            errorMessage = errorResponse.message || errorMessage;
-                        } catch (e) {
-                            console.error("Error parsing JSON response:", e);
-                        }
-                    }
-
+                error: function() {
                     Swal.close();
-                    Swal.fire({
-                        title: "Gagal!",
-                        text: errorMessage,
-                        icon: "error",
-                        confirmButtonText: "Coba Lagi"
-                    });
+                    Swal.fire('Gagal!', 'Gagal upload file.', 'error');
                 }
             });
         });
+
+        window.hapusDownload = function(el) {
+            var notrans = $(el).data('notrans');
+            Swal.fire({
+                title: 'Hapus Data?',
+                text: 'Yakin hapus: ' + notrans + '?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus'
+            }).then(r => {
+                if (r.isConfirmed) {
+                    $.post('serahterima/ksl_terima_hapus_dl.php', {
+                        notrans: notrans
+                    }, function(res) {
+                        if (res.status === 'success') {
+                            Swal.fire('Dihapus!', res.message, 'success').then(() => location.reload());
+                        } else {
+                            Swal.fire('Gagal!', res.message, 'error');
+                        }
+                    }, 'json');
+                }
+            });
+        };
     });
-
-    $('.chosen-select').chosen({width: "100%"});
-
-    function setDateRangePicker(start, end) {
-        $(start).datepicker({
-            format: 'yyyy-mm-dd',
-            autoclose: true
-        }).on('changeDate', function (selected) {
-            var startDate = new Date(selected.date.valueOf());
-            $(end).datepicker('setStartDate', startDate);
-            if ($(end).val() === '') {
-                $(end).datepicker('setDate', startDate);
-            }
-        });
-
-        $(end).datepicker({
-            format: 'yyyy-mm-dd',
-            autoclose: true
-        }).on('changeDate', function (selected) {
-            var endDate = new Date(selected.date.valueOf());
-            $(start).datepicker('setEndDate', endDate);
-        });
-    }
 </script>
-<?php 
-
-?>

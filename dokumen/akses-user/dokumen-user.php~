@@ -1,0 +1,384 @@
+<?php
+	include "../koneksi.php";
+	//include "index.php";
+
+	
+
+if (isset($_POST[submit])) {
+
+$donor = "select * from kebijakan where aktif='0' and bidang='$_POST[bidang]' order by right(kontrol,3)";
+$proses = mysql_query($donor);
+
+$donor2 = "select * from pks where aktif='0' and bidang='$_POST[bidang]' order by kontrol2";
+$proses2 = mysql_query($donor2);
+
+$donor3 = "select * from ik where aktif='0' and bidang='$_POST[bidang]' order by kontrol2";
+$proses3 = mysql_query($donor3);
+
+$donor4 = "select * from ika where aktif='0' and bidang='$_POST[bidang]' order by kontrol2";
+$proses4 = mysql_query($donor4);
+
+$donor5 = "select * from formulir where aktif='0' and bidang='$_POST[bidang]' order by kontrol2";
+$proses5 = mysql_query($donor5);
+
+$donor6 = "select * from eksternal where aktif='0' and bidang='$_POST[bidang]' order by kontrol2";
+$proses6 = mysql_query($donor6);
+
+$donor7 = "select * from pendukung where aktif='0' and bidang='$_POST[bidang]' order by kontrol2";
+$proses7 = mysql_query($donor7);
+}	
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+	font-size:12px;
+	margin:auto;
+	width:100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+<style> 
+input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 100%;
+}
+</style>
+<style>
+.button {
+  padding: 10px 20px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #ff5a0b;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 5px #999;
+}
+
+.button1 {
+  padding: 10px 20px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #ff0000;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 5px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 3px #666;
+  transform: translateY(3px);
+}
+</style>
+</head>
+<body>
+<br />
+
+<input id="myInput" type="text" placeholder="Search..">
+<br><br>
+
+<p align="center"><b> SKEMA E-DOKUMEN <br> (KEBIJAKAN - SPO - IK - FORMULIR - DOKUMEN PENDUKUNG - DOKUMEN EKSTERNAL)</b></p>
+
+<br>
+<form method=post> 
+<label style="margin:10px;">bidang : </label>
+<select name="bidang">
+	<option value="">-PILIH-</option>
+	<option value="Manajemen Kualitas">Manajemen Kualitas</option>
+	<option value="Rekrutmen">Rekrutmen</option>
+	<option value="Penyediaan Donor">Penyediaan Donor</option>
+	<option value="Kerjasama, Hukum dan Humas">Kerjasama, Hukum dan Humas</option>
+	<option value="Teknologi Informasi">Teknologi Informasi</option>
+	<option value="Penyediaan Darah">Penyediaan Darah</option>
+	<option value="Rujukan IMLTD">Rujukan IMLTD</option>
+	<option value="Rujukan Imunohematologi">Rujukan Imunohematologi</option>
+	<option value="Litbang">Litbang</option>
+	<option value="Produksi">Produksi</option>
+	<option value="Kalibrasi">Kalibrasi</option>
+	<option value="Evaluasi Alat dan BHP">Evaluasi Alat dan BHP</option>
+	<option value="Pembinaan Kualitas">Pembinaan Kualitas</option>
+	<option value="Umum">Umum</option>
+	<option value="Logistik">Logistik</option>
+	<option value="Sekretariat">Sekretariat</option>
+	<option value="Rumah Tangga">Rumah Tangga</option>
+	<option value="Wisma">Wisma</option>
+	<option value="Kepegawaian">Kepegawaian</option>
+	<option value="Keuangan">Keuangan</option>
+	</select>
+
+<input type="submit" name="submit" value="Cari" style="margin-left:10px; background-color: #04AA6D; border: none; color: white; padding: 5px 15px 5px 15px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; border-radius: 12px;">
+
+</form>
+
+<br><br>
+
+<table>
+  <thead>
+    <tr width="100%">
+	<td colspan="4"><h3><b>KEBIJAKAN</b></h3></td>
+    </tr>
+    <tr>
+      	<th rowspan="2">No</th>
+    	<th rowspan="2">Bidang</th>
+    	<th rowspan="2">Judul Dokumen</th>
+	<th rowspan="2">File</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    <?php
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses)){ 
+	$nourut++;
+	?>
+  <tr>
+    	<td><?php echo $nourut; ?></td>
+        <td><?php echo $data['bidang']; ?></td>
+        <td><?php echo $data['nama1']; ?></td>
+        <td><a href="download-user.php?filename=<?=$data['fileku']?>"><?php echo $data['fileku']; ?></a></td>     
+  </tr>
+  <?php
+	}
+  ?>
+  </tbody>
+</table>
+
+<br><br>
+
+<table>
+  <thead>
+    <tr width="100%">
+	<td colspan="4"><h3><b>SPO</b></h3></td>
+    </tr>
+    <tr>
+      	<th rowspan="2">No</th>
+    	<th rowspan="2">Bidang</th>
+    	<th rowspan="2">Judul Dokumen</th>
+	<th rowspan="2">File</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    <?php
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses2)){ 
+	$nourut++;
+	?>
+  <tr>
+    	<td><?php echo $nourut; ?></td>
+        <td><?php echo $data['bidang']; ?></td>
+        <td><?php echo $data['nama1']; ?></td>
+        <td><a href="download-user.php?filename=<?=$data['fileku']?>"><?php echo $data['fileku']; ?></a></td>     
+  </tr>
+  <?php
+	}
+  ?>
+  </tbody>
+</table>
+
+<br><br>
+
+<table>
+  <thead>
+    <tr width="100%">
+	<td colspan="4"><h3><b>IK</b></h3></td>
+    </tr>
+    <tr>
+      	<th rowspan="2">No</th>
+    	<th rowspan="2">Bidang</th>
+    	<th rowspan="2">Judul Dokumen</th>
+	<th rowspan="2">File</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    <?php
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses3)){ 
+	$nourut++;
+	?>
+  <tr>
+    	<td><?php echo $nourut; ?></td>
+        <td><?php echo $data['bidang']; ?></td>
+        <td><?php echo $data['nama1']; ?></td>
+        <td><a href="download-user.php?filename=<?=$data['fileku']?>"><?php echo $data['fileku']; ?></a></td>     
+  </tr>
+  <?php
+	}
+  ?>
+  </tbody>
+</table>
+
+<br><br>
+
+<table>
+  <thead>
+    <tr width="100%">
+	<td colspan="4"><h3><b>IK ALAT</b></h3></td>
+    </tr>
+    <tr>
+      	<th rowspan="2">No</th>
+    	<th rowspan="2">Bidang</th>
+    	<th rowspan="2">Judul Dokumen</th>
+	<th rowspan="2">File</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    <?php
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses4)){ 
+	$nourut++;
+	?>
+  <tr>
+    	<td><?php echo $nourut; ?></td>
+        <td><?php echo $data['bidang']; ?></td>
+        <td><?php echo $data['nama1']; ?></td>
+        <td><a href="download-user.php?filename=<?=$data['fileku']?>"><?php echo $data['fileku']; ?></a></td>     
+  </tr>
+  <?php
+	}
+  ?>
+  </tbody>
+</table>
+
+<br><br>
+
+<table>
+  <thead>
+    <tr width="100%">
+	<td colspan="4"><h3><b>DOKUMEN PENDUKUNG</b></h3></td>
+    </tr>
+    <tr>
+      	<th rowspan="2">No</th>
+    	<th rowspan="2">Bidang</th>
+    	<th rowspan="2">Judul Dokumen</th>
+	<th rowspan="2">File</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    <?php
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses7)){ 
+	$nourut++;
+	?>
+  <tr>
+    	<td><?php echo $nourut; ?></td>
+        <td><?php echo $data['bidang']; ?></td>
+        <td><?php echo $data['nama1']; ?></td>
+        <td><a href="download-user.php?filename=<?=$data['fileku']?>"><?php echo $data['fileku']; ?></a></td>     
+  </tr>
+  <?php
+	}
+  ?>
+  </tbody>
+</table>
+
+<br><br>
+
+<table>
+  <thead>
+    <tr width="100%">
+	<td colspan="4"><h3><b>FORMULIR</b></h3></td>
+    </tr>
+    <tr>
+      	<th rowspan="2">No</th>
+    	<th rowspan="2">Bidang</th>
+    	<th rowspan="2">Judul Dokumen</th>
+	<th rowspan="2">File</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    <?php
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses5)){ 
+	$nourut++;
+	?>
+  <tr>
+    	<td><?php echo $nourut; ?></td>
+        <td><?php echo $data['bidang']; ?></td>
+        <td><?php echo $data['nama1']; ?></td>
+        <td><a href="download-user.php?filename=<?=$data['fileku']?>"><?php echo $data['fileku']; ?></a></td>     
+  </tr>
+  <?php
+	}
+  ?>
+  </tbody>
+</table>
+
+<br><br>
+
+<table>
+  <thead>
+    <tr width="100%">
+	<td colspan="4"><h3><b>DOKUMEN EKSTERNAL</b></h3></td>
+    </tr>
+    <tr>
+      	<th rowspan="2">No</th>
+    	<th rowspan="2">Bidang</th>
+    	<th rowspan="2">Judul Dokumen</th>
+	<th rowspan="2">File</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    <?php
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses6)){ 
+	$nourut++;
+	?>
+  <tr>
+    	<td><?php echo $nourut; ?></td>
+        <td><?php echo $data['bidang']; ?></td>
+        <td><?php echo $data['nama1']; ?></td>
+        <td><a href="download-user.php?filename=<?=$data['fileku']?>"><?php echo $data['fileku']; ?></a></td>     
+  </tr>
+  <?php
+	}
+  ?>
+  </tbody>
+</table>
+
+</body>
+</html>

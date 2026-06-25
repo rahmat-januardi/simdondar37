@@ -1,3 +1,50 @@
+18-06-2026|modul/rekap_transaksi_instansi.php -> tambah file untuk rekap donor instansi
+18-06-2026|p2d2s_rekap.php -> update untuk modul rekap donor instansi
+18-06-2026|pmip2d2s.php -> update untuk modul rekap donor instansi
+15-06-2026|modul/cek_kantong_new.php -> menambahkan run time pemeriksaan IMLTD
+15-06-2026|architec/imltd_rpt_konfirm1.php -> update tampilan cetak
+15-06-2026|architec/imltd_import_arc2000_viewkonfirm.php -> menambahkan run time untuk rincian setiap pemeriksaan
+12-06-2026|imltd/cetak_label_panel.php -> menambahkan cetak label sampel panel
+03-06-2026|modul/rekap_transaksi_donor_xls.php -> tambah kolom keterangan batal
+02-06-2026|laborat_komponen.php-> menambahkan modul rekap pengolahan
+02-06-2026|pmikomponen.php -> menambahkan modul rekap pengolahan
+02-06-2026|modul/pengolahan/pengolahan_list_rekap.php -> menambahkan file rekap seperti pada prolis, dengan menyesuaikan informasi kebutuhannya
+26-05-2026|imltd/rekap_sampel_panel.php -> penambahan cetak serah terima dikomponen
+26-05-2026|imltd/permintaan_sampel_panel.php -> penambahan cetak berita acara
+25-05-2026|modul/rekap_transaksi_donor.php -> memperbaiki filter Gagal pada rincian aftap donor, dan menampilkan volume gagal mislek sesuai input aftap
+25-05-2026|serahterima/sr_list.php -> perbaikan untuk konsolidasi
+25-05-2026|serahterima/sr_imltd.php -> perbaikan untuk konsolidasi
+25-05-2026|serahterima/sr_komponen.php -> perbaikan untuk konsolidasi
+25-05-2026|serahterima/sr_konfirmasi.php -> perbaikan untuk konsolidasi
+25-05-2026|modul/rekap_pembuatan_komponen_xls.php -> menyesuaikan hasil untuk excel
+25-05-2026|modul/rekap_pembuatan_komponen.php -> ubah tampilan rekap dan menampilkan hasilnya
+25-05-2026|modul/rekap_pembuatan_komponen1.php -> ubah filter tanggal berdasarkan tanggal pengerjaan dan memperbaiki filter produk komponen
+22-05-2026|database -> tambah field id_rp untuk tabel riwayat database dbdokumen
+21-05-2026|dokumen/rekap_rencana_perubahan.png -> menambahkan filter tingkat dokumen
+12-05-2026|serahterima/ksl_terima_hapus_dl.php -> update untuk terima konsolidasi
+12-05-2026|serahterima/ksl_terima_import_json.php -> update untuk terima konsolidasi
+12-05-2026|serahterima/ksl_terima_proses.php -> update untuk terima konsolidasi
+12-05-2026|serahterima/ksl_terima_listdetail.php -> update untuk terima konsolidasi
+12-05-2026|serahterima/ksl_terima_list.php -> update untuk terima konsolidasi
+12-05-2026|serahterima/sr_aftap_komponen_list_2025.php -> penyesuaian perbaikan code
+11-05-2026|dokumen/images/rekap_rencana_perubahan.png -> tembah ikon untuk fitur rekap rencana perubahan dokumen
+11-05-2026|dokumen/rekap_rencana_perubahan.php -> tambah file untuk fitur rekap rencana perubahan dokumen
+11-05-2026|index2_mk.php -> menambahkan rekap rencana perubahan dokumen
+11-05-2026|imltd/rekap_sampel_panel.php -> menambahkan menu rekap sampel panel
+11-05-2026|imltd/konfirmasi_sampel_panel.php -> menambahkan menu konfirmasi/verifikasi sampel panel
+11-05-2026|imltd/proses_permintaan_sampel_panel.php -> menambahkan menu proses dari permintaan sampel panel
+11-05-2026|imltd/permintaan_sampel_panel.php -> menambahkan menu permintaan sampel panel
+11-05-2026|imltd/menu_sampel_panel.php -> menambahkan menu didalam sampel panel
+11-05-2026|index2_komponen.php -> menambah menu sampel panel
+11-05-2026|pmikomponen.php -> menambah module sampel panel
+11-05-2026|index2_imltd.php -> menambah menu sampel panel
+11-05-2026|pmiimltd.php -> menambah module sampel panel
+11-05-2026|DB/sampel_panel_detail.sql -> menambah table detail transaksi sampel panel
+11-05-2026|DB/sampel_panel_trans.sql -> menambah table transaksi sampel panel
+11-05-2026|images/proses_sampel.png -> menambah gambar proses permintaan sampel panel
+11-05-2026|images/minta_sampel.png -> menambah gambar permintaan sampel panel
+11-05-2026|images/verifikasi_sampel_panel.png -> menambah gambar verifikasi sampel panel
+11-05-2026|images/rekap_sampel_panel.png -> menambah gambar rekap sampel panel
 08-05-2026|serahterima/sr_aftap_export_json.php -> update export json untuk konsolidasi
 08-05-2026|serahterima/sr_aftap_komponen_list_2025.php -> menambahkan tampilan internal atau konsolidasi
 08-05-2026|serahterima/sr_aftap_komponen.php -> menambahkan save id udd pada serahterima.hst_dariudd

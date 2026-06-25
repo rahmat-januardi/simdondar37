@@ -67,17 +67,11 @@ if (!$tabel1) {
 <div class="container">
 	<ul class="thumb">
 		<?php if ($level != "tatausaha") { ?>
-			<?php if ($level != "konfirmasi") { ?>
-				<li><a href="pmi<?php echo $level; ?>.php?module=rekap_reaktif"><img src="images/rekap_imltd_rr.png"
-							alt="" /></a></li>
-			<?php } ?>
-			<li><a href="pmi<?php echo $level; ?>.php?module=musnah"><img src="musnah/images/musnah_entry.png" alt="" /></a>
-			</li>
+			<li><a href="pmi<?php echo $level; ?>.php?module=rekap_reaktif"><img src="images/rekap_imltd_rr.png" alt="" /></a></li>
+			<li><a href="pmi<?php echo $level; ?>.php?module=musnah"><img src="musnah/images/musnah_entry.png" alt="" /></a></li>
 		<?php } ?>
-		<li><a href="pmi<?php echo $level; ?>.php?module=musnahlist"><img src="musnah/images/musnah_list.png"
-					alt="" /></a></li>
-		<li><a href="pmi<?php echo $level; ?>.php?module=rincian_darah_buang"><img src="musnah/images/musnah_rekap.png"
-					alt="" /></a></li>
+		<li><a href="pmi<?php echo $level; ?>.php?module=musnahlist"><img src="musnah/images/musnah_list.png" alt="" /></a></li>
+		<li><a href="pmi<?php echo $level; ?>.php?module=rincian_darah_buang"><img src="musnah/images/musnah_rekap.png" alt="" /></a></li>
 	</ul>
 	</ul>
 	</ul>

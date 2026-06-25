@@ -545,9 +545,6 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
             $release = mysqli_fetch_assoc(mysqli_query($dbi, $qrel));
             $qkgd = "select * from `dkonfirmasi` where `NoKantong` = '$no_kantonga' order by NoKonfirmasi desc";
             $konfirmasi = mysqli_fetch_assoc(mysqli_query($dbi, $qkgd));
-            $qabs = "SELECT * FROM `abs` WHERE abs_sample_id='$no_kantonga' LIMIT 1";
-            $abs = mysqli_fetch_assoc(mysqli_query($dbi, $qabs));
-
             if ($hasilrelease == 'Tidak ada') {
                 $volume_darah = $stokkantong['volume'];
             } else {
@@ -581,10 +578,6 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                             <tr>
                                 <td class="label">Nomor kantong</td>
                                 <td class="value"><?php echo $nkt; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Nomor Selang</td>
-                                <td class="value"><?php echo $stokkantong['noSelang']; ?></td>
                             </tr>
                             <tr>
                                 <td class="label">UDD PMI</td>
@@ -634,7 +627,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                             </tr>
                             <tr>
                                 <td class="label">Tgl ABS</td>
-                                <td class="value"><?php echo $abs['abs_tgl'] ? $abs['abs_tgl'] : '-'; ?></td>
+                                <td class="value"><?php echo $stokkantong['tgl_abs'] ? $stokkantong['tgl_abs'] : '-'; ?></td>
                             </tr>
                             <tr>
                                 <td class="label">Tgl NAT</td>
@@ -1617,6 +1610,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                         <th rowspan="2">OD</th>
                                         <th rowspan="2">Hasil</th>
                                         <th colspan="3">Reagen</th>
+                                        <th rowspan="2">Run Time</th>
                                         <th rowspan="2">Pencatat</th>
                                         <th rowspan="2">Di Cek</th>
                                         <th rowspan="2">Disahkan</th>
@@ -1639,6 +1633,28 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                         if ($sq_reagen['noLot'] == "") {
                                             $sq_reagen = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `Nama`, `noLot`, `tglKad` FROM `reagen` WHERE noLot='$imltd[noLot]'"));
                                         }
+
+                                        // Ambil Run Time dari imltd_arc_konfirm sesuai parameter
+                                        $runtime_col = '';
+                                        switch ($imltd['Parameter']) {
+                                            case 'HBsAg':
+                                                $runtime_col = 'b_run_time';
+                                                break;
+                                            case 'Anti HCV':
+                                                $runtime_col = 'c_run_time';
+                                                break;
+                                            case 'Anti HIV':
+                                                $runtime_col = 'i_run_time';
+                                                break;
+                                            case 'Syphilis':
+                                                $runtime_col = 's_run_time';
+                                                break;
+                                        }
+                                        $imltd_runtime = '';
+                                        if ($runtime_col != '') {
+                                            $sq_arcrt = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `$runtime_col` AS runtime FROM `imltd_arc_konfirm` WHERE `id_tes`='$imltd[noKantong]' ORDER BY `id` DESC LIMIT 1"));
+                                            $imltd_runtime = $sq_arcrt['runtime'];
+                                        }
                                     ?>
                                         <tr>
                                             <td><?php echo $imltd['id']; ?></td>
@@ -1651,6 +1667,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                             <td><?php echo $sq_reagen['Nama']; ?></td>
                                             <td><?php echo $sq_reagen['noLot']; ?></td>
                                             <td><?php echo $sq_reagen['tglKad']; ?></td>
+                                            <td><?php echo $imltd_runtime; ?></td>
                                             <td><?php echo $imltd['dicatatOleh']; ?></td>
                                             <td><?php echo $imltd['dicekOleh']; ?></td>
                                             <td><?php echo $imltd['DisahkanOleh']; ?></td>
@@ -1658,7 +1675,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                     <?php } ?>
                                     <?php if ($no == 0) { ?>
                                         <tr>
-                                            <td colspan="13" class="text-center">TIDAK ADA DATA PEMERIKSAAN IMLTD METODE ELISA</td>
+                                            <td colspan="14" class="text-center">TIDAK ADA DATA PEMERIKSAAN IMLTD METODE ELISA</td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -1843,6 +1860,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                         <th rowspan="3">TS-O</th>
                                         <th rowspan="3">AC</th>
                                         <th rowspan="3">BA 6%</th>
+                                        <th rowspan="3">Run Time</th>
                                         <th rowspan="3">Petugas</th>
                                     </tr>
                                     <tr style="background-color: mistyrose; color: #000;">
@@ -1886,6 +1904,9 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                         if ($a_dtransaksipermintaan['ba'] == '0') $ba = 'Pos';
                                         if ($a_dtransaksipermintaan['ba'] == '1') $ba = 'Neg';
 
+                                        $runtime_abd = mysqli_fetch_assoc(mysqli_query($dbi, "select `runtime` from `qwalys_abd_raw` where `sample_id`='" . mysqli_real_escape_string($dbi, $a_dtransaksipermintaan['NoKantong']) . "' order by `runtime` desc limit 1"));
+                                        $runtime_abd = $runtime_abd['runtime'] ? date("d/m/Y H:i:s", strtotime($runtime_abd['runtime'])) : '-';
+
                                         $pengolahan = $a_dtransaksipermintaan['tgl'];
                                         $tglkel0 = date("Y-m-d", strtotime($pengolahan));
                                     ?>
@@ -1916,93 +1937,15 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                             <td><?php echo $a_dtransaksipermintaan['tsO']; ?></td>
                                             <td><?php echo $ac; ?></td>
                                             <td><?php echo $ba; ?></td>
+                                            <td><?php echo $runtime_abd; ?></td>
                                             <td><?php echo $a_dtransaksipermintaan['petugas']; ?></td>
                                         </tr>
                                     <?php } ?>
 
                                     <?php if ($no == 1) { ?>
                                         <tr>
-                                            <td colspan="23" class="text-center">TIDAK ADA DATA PEMERIKSAAN KONFIRMASI GOLONGAN
+                                            <td colspan="24" class="text-center">TIDAK ADA DATA PEMERIKSAAN KONFIRMASI GOLONGAN
                                                 DARAH
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="panel-card mt-4">
-                    <div class="panel-card-header">
-                        <div>Pemeriksaan Antibody Screening</div>
-                        <div></div>
-                    </div>
-
-                    <div class="panel-body">
-                        <?php
-                        $a = mysqli_query($dbi, "select * from abs where abs_sample_id='$no_kantonga' order by abs_notrans ASC");
-                        $no = 1;
-                        ?>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm mb-0">
-                                <thead style="background-color: mistyrose; color: #000;">
-                                    <tr>
-                                        <th rowspan="3">No</th>
-                                        <th rowspan="3">Tanggal</th>
-                                        <th rowspan="3">No Transaksi</th>
-                                        <th rowspan="3">Kantong Utama</th>
-                                        <th rowspan="3">Kode Pendonor</th>
-                                        <th rowspan="3">Metode</th>
-                                        <th rowspan="3">Hasil</th>
-                                        <th rowspan="3">Petugas</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    while ($a_dtransaksipermintaan = mysqli_fetch_assoc($a)) {
-                                        if ($a_dtransaksipermintaan['Cocok'] == '1') {
-                                            $var_kgd = '1';
-                                        }
-
-                                        $cocok1 = '-';
-                                        if ($a_dtransaksipermintaan['Cocok'] == '0') $cocok1 = 'Cocok';
-                                        if ($a_dtransaksipermintaan['Cocok'] == '1') $cocok1 = 'Tidak Cocok';
-
-                                        $sel = '';
-                                        if ($a_dtransaksipermintaan['sel'] == '0') $sel = 'Ya';
-                                        if ($a_dtransaksipermintaan['sel'] == '1') $sel = 'Tidak';
-
-                                        $serum = '';
-                                        if ($a_dtransaksipermintaan['serum'] == '0') $serum = 'Ya';
-                                        if ($a_dtransaksipermintaan['serum'] == '1') $serum = 'Tidak';
-
-                                        $ac = '';
-                                        if ($a_dtransaksipermintaan['ac'] == '0') $ac = 'Pos';
-                                        if ($a_dtransaksipermintaan['ac'] == '1') $ac = 'Neg';
-
-                                        $ba = '';
-                                        if ($a_dtransaksipermintaan['ba'] == '0') $ba = 'Pos';
-                                        if ($a_dtransaksipermintaan['ba'] == '1') $ba = 'Neg';
-
-                                        $pengolahan = $a_dtransaksipermintaan['abs_tgl'];
-                                        $tglkel0 = date("Y-m-d", strtotime($pengolahan));
-                                    ?>
-                                        <tr>
-                                            <td><?php echo $no++; ?>.</td>
-                                            <td><?php echo $tglkel0; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['abs_notrans']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['abs_sample_id']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['abs_id_donor']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['abs_metode']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['abs_result']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['abs_user']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-
-                                    <?php if ($no == 1) { ?>
-                                        <tr>
-                                            <td colspan="23" class="text-center">TIDAK ADA DATA PEMERIKSAAN ANTIBODY SCREENING
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -2023,7 +1966,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
 
                     <div class="panel-body">
                         <?php
-                        $a = mysqli_query($dbi, "SELECT  `id`, `noKantong`, `Produk`, `tgl`, `aPisah`, `aPutar`, `aBeku`,                   
+                        $a = mysqli_query($dbi, "SELECT  `id`, `noKantong`, `Produk`, `tgl`, `aPisah`, `aPutar`, `aBeku`, `tglPengerjaan`,                   
                     CASE WHEN `cara`='0' THEN 'Manual' ELSE 'Otomatis' END AS cara,
                     CASE
                         WHEN `pisah`='0' THEN 'Centrifuge 1'
@@ -2038,7 +1981,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                     INNER JOIN `user` ON `user`.`id_user`=`dpengolahan`.`petugas`
                     INNER JOIN `produk` ON `produk`.`Nama`=`dpengolahan`.`Produk`
                     WHERE `noKantong`='$nkt'
-                    ORDER BY tgl DESC");
+                    ORDER BY tglPengerjaan DESC");
 
                         $komponen = mysqli_fetch_assoc($a);
 
@@ -2072,7 +2015,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                             </tr>
                                             <tr>
                                                 <td class="label">Tanggal Pengolahan</td>
-                                                <td class="value"><?php echo $komponen['tgl']; ?></td>
+                                                <td class="value"><?php echo $komponen['tglPengerjaan']; ?></td>
                                             </tr>
                                             <tr>
                                                 <td class="label">Nama Produk</td>
@@ -2612,7 +2555,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                   user_log.modul, user_log.aksi_user, `user`.nama_lengkap
                            FROM user_log
                            LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND user_log.aksi_user LIKE '%IMLTD%' AND user_log.modul='IMLTD'
+                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND (user_log.aksi_user LIKE '%IMLTD%' OR user_log.modul='IMLTD')
                            ORDER BY time_aksi ASC";
                                 $a = mysqli_query($dbi, $a1);
                                 while ($komp = mysqli_fetch_assoc($a)) {
@@ -2636,15 +2579,20 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                 <?php }
 
                                 // Pengolahan
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer, user_log.time_aksi,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$nkt%' AND user_log.aksi_user LIKE '%Pengolahan%'
-                           ORDER BY time_aksi ASC";
+                                $a1 = "SELECT 
+                                    DATE_FORMAT(d.tglPengerjaan, '%d/%m/%Y') as tgl_aksi,
+                                    DATE_FORMAT(d.tglPengerjaan, '%H:%i') as jam_aksi,
+                                    d.tglPengerjaan as time_aksi,
+                                    'PENGOLAHAN' as modul,
+                                    CONCAT('Pengolahan (', p.lengkap, ') No.Trans: ', d.NoTrans) as aksi_user,
+                                    u.nama_lengkap,
+                                    '' as tempat
+                                FROM dpengolahan d
+                                LEFT JOIN user u ON u.id_user = d.petugas
+                                LEFT JOIN produk p ON p.Nama = d.Produk
+                                WHERE d.noKantong = '$nkt'
+                                ORDER BY d.tglPengerjaan ASC";
+
                                 $a = mysqli_query($dbi, $a1);
                                 while ($komp = mysqli_fetch_assoc($a)) {
                                     $ada_audit = 1;
@@ -2654,7 +2602,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                         <td><?php echo $komp['tgl_aksi']; ?></td>
                                         <td><?php echo $komp['jam_aksi']; ?></td>
                                         <td><?php echo $komp['modul']; ?></td>
-                                        <td><?php echo $komp['tempat'] . $komp['aksi_user']; ?></td>
+                                        <td><?php echo $komp['aksi_user']; ?></td>
                                         <td><?php echo $komp['nama_lengkap']; ?></td>
                                     </tr>
                                 <?php }

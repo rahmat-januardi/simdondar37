@@ -40,6 +40,7 @@ $("ul.thumb li").hover(function() {
 <ul class="thumb">
 	<li><a href="pmip2d2s.php?module=rekap_transaksi1"><img src="images/rekap_transaksi_donor.png" alt=""/></a></li>
 	<li><a href="pmip2d2s.php?module=rekap_transaksi2"><img src="images/rekap_transaksi0.png" alt=""/></a></li>
+	<li><a href="pmip2d2s.php?module=rekap_transaksi3"><img src="images/rekap_donor_instansi.png" alt="" /></a></li>
 	<!--li><a href="pmiaftap.php?module=rekap_apheresis"><img src="images/rekap_epheresis.png" alt="" /></a></li>
 	<li><a href="pmiaftap.php?module=laporan&jenis=7"><img src="images/rekap_bus.png" alt="" /></a></li-->
 </ul>

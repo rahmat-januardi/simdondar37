@@ -1,0 +1,46 @@
+<?
+include "koneksi.php";
+session_start();
+$tgl_awal = date('Y-m-d');
+$tgl_akhir = $tgl_awal;
+$namauser = $_SESSION[namauser];
+
+if (isset($_POST[tgl_awal])) {
+    $tgl_awal = $_POST[tgl_awal];
+    $tgl_akhir = $tgl_awal;
+}
+if ($_POST[tgl_akhir] != '') $tgl_akhir = $_POST[tgl_akhir];
+
+$lacakdokumen = mysql_query("select * from lacakdokumen where CAST(tanggal_akses as date)>='$tgl_awal' and CAST(tanggal_akses as date)<='$tgl_akhir'");
+?>
+
+<h3 align="center">REKAP DATA DOKUMEN</h3>
+<form method=post>
+    </br>
+    TANGGAL : <input type=date name=tgl_awal id=datepicker size=10 value=<?= $tgl_awal ?>>
+    S/D <input type=date name=tgl_akhir id=datepicker1 size=10 value=<?= $tgl_akhir ?>><br></br>
+
+    <input type="submit" name="submit" value="Lihat" class="swn_button_grey">
+</form>
+
+<table border=1 cellpadding=5 cellspacing=1 style="border-collapse:collapse">
+    <tr tr style="background-color:#006400; font-size:12px; color:#FFFFFF; font-family:Verdana;" onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'" align="center">
+        <td>No</td>
+        <th>Nama Pengakses</th>
+        <th>Level Akses</th>
+        <th>Tanggal Akses</th>
+        <th>Nama Dokumen</th>
+    </tr>
+    <?
+    $no = 1;
+    while ($dokumen = mysql_fetch_array($lacakdokumen)) {
+    ?>
+        <tr>
+            <td><?= $no++; ?></td>
+            <td><?= $dokumen[nama_pengakses]; ?></td>
+            <td><?= $dokumen[level_pengakses]; ?></td>
+            <td><?= $dokumen[tanggal_akses]; ?></td>
+            <td><?= $dokumen[nama_dokumen]; ?></td>
+        </tr>
+    <? } ?>
+</table>

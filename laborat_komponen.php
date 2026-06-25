@@ -71,6 +71,7 @@ if (!$tabel1) {
 		<!--<li><a href="pmikomponen.php?module=shasil_labl"><img src="images/cetak_label.png" alt=""/></a></li>-->
 		<li><a href="pmikomponen.php?module=rincian_komponen"><img src="images/rincian_komponen.png" alt="" /></a></li>
 		<li><a href="pmikomponen.php?module=rekap_komponen"><img src="images/rekap_komponen.png" alt="" /></a></li>
+		<li><a href="pmikomponen.php?module=pengolahan_list_rekap"><img src="images/qa_rekap_release.png" alt="" /></a></li>
 		<!-- <li><a href="pmikomponen.php?module=set_stok_sos"><img src="images/set_sos.png" alt=""/></a></li>
 	<li><a href="pmikomponen.php?module=cetak_label_komponen"><img src="images/cetak_label.png" alt=""/></a></li> -->
 		<!--li><a href="pmikomponen.php?module=musnah"><img src="images/pemusnahan_kantong.png" alt="" /></a></li>

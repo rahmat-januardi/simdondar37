@@ -1,373 +1,564 @@
 <?php
 session_start();
-$msg="";
+$msg = "";
 require_once('clogin.php');
 require_once('config/dbi_connect.php');
-$leveluser=$_SESSION['level'];
-$namauser=$_SESSION['namauser'];
-$namalengkap=$_SESSION['nama_lengkap'];
-$level = $_SESSION['leveluser'];
-$udd=mysqli_fetch_assoc(mysqli_query($dbi,"SELECT `nama`,`id` FROM `utd` WHERE `aktif`='1';"));
-$id_uddaktif=$udd['id'];
-$nama_uddaktif=$udd['nama'];
-//echo $id_uddaktif;
+$leveluser   = $_SESSION['level'];
+$namauser    = $_SESSION['namauser'];
+$namalengkap = $_SESSION['nama_lengkap'];
+$level       = $_SESSION['leveluser'];
+$udd         = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `nama`,`id` FROM `utd` WHERE `aktif`='1';"));
+$id_uddaktif   = $udd['id'];
+$nama_uddaktif = $udd['nama'];
 
-$tgl    = date('Ymd');
-$token  = "17091945".$tgl;
-$notrans= $_GET['id'];
-$mode   = $_GET['mode'];
+$tgl     = date('Ymd');
+$token   = "17091945" . $tgl;
+$notrans = isset($_GET['id'])     ? trim($_GET['id'])     : '';
+$mode    = isset($_GET['mode'])   ? trim($_GET['mode'])   : 'proses';
+$source  = isset($_GET['source']) ? trim($_GET['source']) : 'online';
 
-(isset($_SESSION['tanggal1'])) ? $f_tanggal1=$_SESSION['tanggal1'] : $f_tanggal1 = date('Y-m-d');
-(isset($_SESSION['tanggal2'])) ? $f_tanggal2=$_SESSION['tanggal2'] : $f_tanggal2 = date('Y-m-d');
-(isset($_SESSION['status'])) ? $f_status=$_SESSION['status'] : $f_status = "";
-
-if(isset($_POST['vfilter'])){
-    $f_status       =$_SESSION['status']    = $_POST['fltstatus'];
-    $f_tanggal1     =$_SESSION['tanggal1']  = $_POST['fltTanggal1'];
-    $f_tanggal2     =$_SESSION['tanggal2']    = $_POST['fltTanggal2'];
-}
-if(isset($_POST['vreset'])){
-    $f_status        = "";
-    $f_tanggal1     = date('Y-m-d');
-    $f_tanggal2     = date('Y-m-d');
+if ($notrans === '') {
+    header("Location: pmi" . $level . ".php?module=sr_aftap_kns");
+    exit;
 }
 
-//CURL Lihat Detail
-$curlD = curl_init();
-curl_setopt_array($curlD, array(
-CURLOPT_URL => "https://dbdonor.pmi.or.id/konsolidasi/get_detail_preterima.php",
-CURLOPT_RETURNTRANSFER => true,
-CURLOPT_ENCODING => "",
-CURLOPT_MAXREDIRS => 10,
-CURLOPT_TIMEOUT => 0,
-CURLOPT_FOLLOWLOCATION => true,
-CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-CURLOPT_CUSTOMREQUEST => "POST",
-CURLOPT_POSTFIELDS => array('udd' => $notrans, 'key' => $token),
-));
-$responseD = curl_exec($curlD);
-curl_close($curlD);
-//echo $responseD;
-$tgl= date("Y/m/d");
-$dataD = json_decode($responseD, true);
-//echo var_dump($data);
-//echo 'Count Data :'.count($data).'<br>';
+$notrans_esc = mysqli_real_escape_string($dbi, $notrans);
 
+// ── Ambil data detail sesuai sumber ──────────────────────────────────────────
+$detail_rows    = array();
+$info_header    = array();
+$curl_error_msg = '';
 
+if ($source === 'download') {
+    // SUMBER: lokal DB (via Download)
+    $qryHdr = mysqli_query(
+        $dbi,
+        "SELECT * FROM `ksl_import_antrian` WHERE `notrans`='$notrans_esc' LIMIT 1"
+    );
+    if ($qryHdr) {
+        $info_header = mysqli_fetch_assoc($qryHdr);
+        if (!$info_header) $info_header = array();
+    }
 
+    $qryDet = mysqli_query(
+        $dbi,
+        "SELECT * FROM `ksl_import_antrian_detail` WHERE `notrans`='$notrans_esc' ORDER BY `id`"
+    );
+    if ($qryDet) {
+        while ($rd = mysqli_fetch_assoc($qryDet)) {
+            $detail_rows[] = $rd;
+        }
+    }
+} else {
+    // SUMBER: API Online dbdonor
+    $curlD = curl_init();
+    curl_setopt_array($curlD, array(
+        CURLOPT_URL            => "https://dbdonor.pmi.or.id/konsolidasi/get_detail_preterima.php",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING       => "",
+        CURLOPT_MAXREDIRS      => 10,
+        CURLOPT_TIMEOUT        => 10,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST  => "POST",
+        CURLOPT_POSTFIELDS     => array('udd' => $notrans, 'key' => $token),
+    ));
+    $responseD      = curl_exec($curlD);
+    $curl_error_msg = curl_error($curlD);
+    curl_close($curlD);
 
+    $dataD = json_decode($responseD, true);
+    if (isset($dataD['data']) && is_array($dataD['data'])) {
+        foreach ($dataD['data'] as $row) {
+            if (strlen(isset($row['dst_nokantong']) ? $row['dst_nokantong'] : '') > 0) {
+                $detail_rows[] = $row;
+            }
+        }
+    }
+}
 ?>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="bootsrap337/bspmi.css">
-        <link rel="stylesheet" href="bootsrap337/w3.css">
-        <link rel="stylesheet" href="pmf/pmfstyle.css">
-        <link rel="stylesheet" href="bootsrap337/css/bootstrap.min.css">
-        <link href="bootsrap337/datepicker/css/bootstrap-datepicker.css" rel="stylesheet">
-        <link rel="stylesheet" href="bootsrap337/chosen/chosen.css">
-        <link href="https://cdn.datatables.net/v/bs/dt-1.13.8/datatables.min.css" rel="stylesheet">
-        <style>
-             .shadow{box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
-            .btn-pref .btn {
-                border-radius:0 !important;
-            }
-            .modal-fullscreen {
-                width: 98%;
-                padding: 0;
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bootsrap337/bspmi.css">
+    <link rel="stylesheet" href="bootsrap337/w3.css">
+    <link rel="stylesheet" href="pmf/pmfstyle.css">
+    <link rel="stylesheet" href="bootsrap337/css/bootstrap.min.css">
+    <link href="bootsrap337/datepicker/css/bootstrap-datepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="bootsrap337/chosen/chosen.css">
+    <link href="https://cdn.datatables.net/v/bs/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    <style>
+        .shadow {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 6px 20px 0 rgba(0, 0, 0, .19);
+        }
+
+        .modal-half {
+            width: 70%;
+            padding: 0;
+            position: fixed;
+            left: 15%;
+        }
+
+        .modal-content {
+            width: 100%;
+            margin: 0 0;
+        }
+
+        .modal-footer {
+            bottom: 0;
+            position: relative;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-top: 1px;
+            margin-bottom: 1px;
+        }
+
+        .table thead th {
+            height: 40px;
+            padding: 2px !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+            text-shadow: 1px 1px 2px black;
+            font-size: 1.2em;
+        }
+
+        .table tbody td {
+            font-size: 1em;
+            white-space: nowrap;
+            vertical-align: middle !important;
+        }
+
+        #loading {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            border: 5px solid #ccc;
+            border-top-color: #ff6a00;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            z-index: 99;
+            animation: sp 2s ease infinite;
+        }
+
+        @keyframes sp {
+            from {
+                transform: rotate(0deg)
             }
 
-            .modal-half {
-                width: 70%;
-                padding: 0;
-                position: fixed;
-                left: 15%;
+            to {
+                transform: rotate(360deg)
             }
+        }
 
-            .modal-content {
-                /* min-height: 90%; */
-                width: 100%;
-                border-radius: 25;
-                margin: 0 0;
-            }
-            .modal-footer {
-                border-radius: 25;
-                bottom:0px;
-                position:relative;
-                width:100%;
-            }
-            .form-group{margin-top: 1px;margin-bottom: 1px;}
-            .table thead th {
-                height: 40px;
-                padding: 2px !important;
-                text-align: center !important;
-                vertical-align: middle !important;
-                text-shadow: 1px 1px  2px black;
-                font-size : 1.2em;
-                /* word-break:break-all; */
-            }
-            .table tbody td {
-                font-size:1em;
-                white-space: nowrap;
-                vertical-align: middle !important;
-            }
-            .text-vertical{
-                vertical-align: middle;
-                text-align: center;
-                transform: rotate(-90deg);
-                white-space: nowrap;
-            }
-            #loading {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 100%;
-                    border: 5px solid #ccc;
-                    border-top-color: #ff6a00;
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    margin: auto;
-                    z-index: 99;
-                    animation: sp 2s ease infinite;
-                }
-                @keyframes sp {
-                    from {transform: rotate(0deg);
-                    } to {transform: rotate(360deg);
-                    }
-                }
-                a{
-                    text-decoration: none !important;
-                }
-                .table td.text {
-                    max-width: 300px;
-                }
-                .table td.text span {
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    display: inline-block;
-                    max-width: 100%;
-                }
+        a {
+            text-decoration: none !important;
+        }
 
-            .swal2-popup {font-size: 1.6rem !important;}
-            .swal-footer {text-align: center;}
-            .custom-swal {
-                background: linear-gradient(to bottom, white, red) !important;
-                border-radius: 15px !important;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5) !important;
-                width: 800px !important;
-                max-width: 95% !important;
-                padding: 20px !important;
-                overflow: hidden;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <div id="loading"></div>
-        <div class="container-fluid" style="margin: 30px;">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel w3-border-theme shadow">
-                        <div class="panel-heading w3-theme-d5 clearfix">
-                            <div class="col-lg-9 col-md-8 col-sm-7 col-xs-8 text-left text-shadow" style="font-size: 150%;font-weight: bold;">KONFIRMASI PENERIMAAN DARAH KONSOLIDASI</div>
-                            <div class="col-lg-3 col-md-4 col-sm-5 col-xs-4 text-right">
-                                <form name="mFrmKirim" class="form-horizontal" id="mFrmKirim" action="" method="POST">
-                                    <input type="hidden" class="form-control input-sm" name="noTrans" value="<?php echo $notrans;?>" >
-                                    <input type="hidden" class="form-control input-sm" name="InpNotransaksi" value="<?php echo $notrans;?>" id="InpNotransaksi" readonly>
-                                <?php if($mode =="proses"){?>
-                                    <button type="button" name="vKirim" id="vKirim" class="w3-btn w3-theme w3-hover-green">PROSES</button>
-                                <?php }else{?>
-                                    <a href="?module=proseshapus" class="w3-btn w3-theme w3-hover-green" >HAPUS</a>
-                                    <?php } ?> 
-                                    <a href="?module=sr_aftap_kns" class="w3-btn w3-theme w3-hover-yellow" >KEMBALI</a>
-                                </form>
-                            </div>
+        .swal2-popup {
+            font-size: 1.6rem !important;
+        }
+
+        .label-source {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .label-source-online {
+            background: #1a8b3a;
+            color: #fff;
+        }
+
+        .label-source-download {
+            background: #1a6a8b;
+            color: #fff;
+        }
+
+        .info-card {
+            background: #fff8f8;
+            border: 1px solid #e0c0c0;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .info-card strong {
+            color: #8b1a1a;
+        }
+
+        .success {
+            background-color: #d4edda !important;
+        }
+
+        .chk-verifikasi {
+            width: 10px;
+            height: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading"></div>
+    <div class="container-fluid" style="margin:30px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel w3-border-theme shadow">
+
+                    <div class="panel-heading w3-theme-d5 clearfix">
+                        <div class="col-lg-8 col-md-7 col-sm-6 col-xs-6 text-left text-shadow"
+                            style="font-size:150%;font-weight:bold;">
+                            KONFIRMASI PENERIMAAN DARAH KONSOLIDASI
                         </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-12"><?php echo $msg;?></div>
-                                <div class="col-xs-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-responsive table-bordered table-striped table-md table-hover table-md display"  id="dtaudittrail">
-                                                <thead class="w3-theme-d4" style="height: 40px;">
-                                                    <tr>
-                                                        <th class="text-center">No</th>
-                                                        <th>No. Kantong</th>
-                                                        <th>Tgl. Aftap</th>
-                                                        <th>Kode<br>Pendonor</th>
-                                                        <th>Merk</th>
-                                                        <th>Volume</th>
-                                                        <th>Gol.</th>
-                                                        <th>Rhesus</th>
-                                                        
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php 
-                                                    for($a=0; $a < count($dataD['data']); $a++){
-                                                        $no=$a+1;
-                                                        $chkdata=strlen($dataD['data'][$a]['dst_nokantong']);
-                                                        if ($chkdata>0){
-                                                        
-                                                        echo  "<tr>";
-                                                        echo  "<td class='text-right' nowrap>".$no.".</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_nokantong']."</td>"; 
-                                                        echo  "<td>".$dataD['data'][$a]['dst_tglaftap']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_kodedonor']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_merk']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_volambil']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_golda']."</td>";
-                                                        echo  "<td>".$dataD['data'][$a]['dst_rh']."</td>";
-                                                        echo  "</tr>";
-                                                        }
-                                                    }
-                                                    if ($no=='0'){
-                                                        echo '<tr>';
-                                                        echo '<td colspan="7" style="font-size:20px;" class="text-center">Tidak ada data antrian konsolidasi</td>';
-                                                        echo '</tr>';
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                </div>
-                            </div>
+                        <div class="col-lg-4 col-md-5 col-sm-6 col-xs-6 text-right">
+                            <input type="hidden" id="InpNotransaksi" value="<?php echo htmlspecialchars($notrans); ?>">
+                            <input type="hidden" id="hdnSource" value="<?php echo htmlspecialchars($source); ?>">
+                            <?php if ($mode === 'proses') { ?>
+                                <button type="button" id="vKirim"
+                                    class="w3-btn w3-theme w3-hover-green">PROSES</button>
+                            <?php } else { ?>
+                                <a href="?module=proseshapus" class="w3-btn w3-theme w3-hover-green">HAPUS</a>
+                            <?php } ?>
+                            <a href="?module=sr_aftap_kns" class="w3-btn w3-theme w3-hover-yellow">KEMBALI</a>
                         </div>
                     </div>
+
+                    <div class="panel-body">
+                        <div class="col-xs-12"><?php echo $msg; ?></div>
+
+                        <!-- Info header -->
+                        <div class="info-card">
+                            <strong>No. Transaksi :</strong> <?php echo htmlspecialchars($notrans); ?>
+                            &nbsp;&nbsp;
+                            <span class="label-source label-source-<?php echo $source; ?>">
+                                <?php echo ($source === 'download') ? 'Via Download (Lokal)' : 'Via Online'; ?>
+                            </span>
+                            <?php if ($source === 'download' && !empty($info_header)) { ?>
+                                &nbsp;&nbsp;
+                                <strong>Asal UDD :</strong>
+                                <?php echo htmlspecialchars($info_header['udd_asal_nama']); ?>
+                                &nbsp;&nbsp;
+                                <strong>Tgl. Serah :</strong>
+                                <?php echo htmlspecialchars($info_header['hst_tgl']); ?>
+                            <?php } ?>
+                        </div>
+
+                        <?php if ($curl_error_msg && $source === 'online') { ?>
+                            <div class="alert alert-warning">
+                                <strong>Perhatian:</strong> Gagal menghubungi server online.
+                                (<?php echo htmlspecialchars($curl_error_msg); ?>)
+                            </div>
+                        <?php } ?>
+
+                        <div class="row" style="margin-bottom:15px;">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+                                    <input type="text" id="barcodeInput" class="form-control input-lg"
+                                        placeholder="Scan barcode kantong di sini..." autofocus>
+                                </div>
+                                <small class="text-muted">Barcode scanner akan otomatis terdeteksi</small>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <h4>
+                                    Terverifikasi: <strong id="countVerified">0</strong> /
+                                    <strong id="countTotal"><?php echo count($detail_rows); ?></strong>
+                                </h4>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover display"
+                                id="dtaudittrail">
+                                <thead class="w3-theme-d4">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>No. Kantong</th>
+                                        <th>Tgl. Aftap</th>
+                                        <th>Kode Pendonor</th>
+                                        <th>Merk</th>
+                                        <th>Volume</th>
+                                        <th>Gol.</th>
+                                        <th>Rhesus</th>
+                                        <th>Verifikasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if (count($detail_rows) === 0) {
+                                        echo '<tr><td colspan="8" class="text-center" style="font-size:16px;">Tidak ada data kantong untuk transaksi ini</td></tr>';
+                                    } else {
+                                        for ($i = 0; $i < count($detail_rows); $i++) {
+                                            $d = $detail_rows[$i];
+                                            echo "<tr>";
+                                            echo "<td class='text-right'>" . ($i + 1) . ".</td>";
+                                            echo "<td>" . htmlspecialchars($d['dst_nokantong']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($d['dst_tglaftap'])  . "</td>";
+                                            echo "<td>" . htmlspecialchars($d['dst_kodedonor']) . "</td>";
+                                            echo "<td>" . htmlspecialchars($d['dst_merk'])      . "</td>";
+                                            echo "<td>" . htmlspecialchars($d['dst_volambil'])  . "</td>";
+                                            echo "<td>" . htmlspecialchars($d['dst_golda'])     . "</td>";
+                                            echo "<td>" . htmlspecialchars($d['dst_rh'])        . "</td>";
+                                            echo "<td class='text-center verifikasi-col'>";
+                                            echo "<input type='checkbox' class='chk-verifikasi' 
+             data-nokantong='" . htmlspecialchars($d['dst_nokantong']) . "' 
+             disabled style='transform:scale(1.4); cursor: not-allowed;'>";
+                                            echo "</td>";
+                                            echo "</tr>";
+                                        }
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- /panel-body -->
                 </div>
             </div>
         </div>
+    </div>
 
-    </body>
+</body>
 
 <script src="bootsrap337/js/jquery.min.js"></script>
 <script src="bootsrap337/js/bootstrap.min.js"></script>
 <script src="bootsrap337/datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="bootsrap337/datepicker/custom.js"></script>
-<script src="bootsrap337/chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="bootsrap337/chosen/chosen.jquery.js"></script>
 <script src="https://cdn.datatables.net/v/bs/dt-1.13.8/datatables.min.js"></script>
 <script src="bootsrap337/sweetalert2/sweetalert2@11"></script>
 <script>
-    $(document).ready(function(){
-        setDateRangePicker(".startdate", ".enddate")
-        var table = $('#dtaudittrail').DataTable( { 
-	        lengthMenu: [
-                [5,10, 15, 25, 50, -1],
-                [5,10, 15, 25, 50, 'All']
-            ]
-	    });
-        var load = document.getElementById("loading");window.addEventListener('load', function(){load.style.display = "none";});
-        $('.btn-kirim').on('click', function() {
-            var noTrans = $(this).data('id'); 
-            $('#InpNotransaksi').val(noTrans);
+    $(document).ready(function() {
+        var load = document.getElementById('loading');
+        window.addEventListener('load', function() {
+            load.style.display = 'none';
+        });
+
+        // ── Simpan barcode terverifikasi di Set (sumber kebenaran, bukan DOM) ──────
+        const verifiedBarcodes = new Set();
+        const totalCount = <?php echo count($detail_rows); ?>;
+
+        function updateCounter() {
+            var count = verifiedBarcodes.size;
+            $('#countVerified').text(count);
+            if (count === totalCount && totalCount > 0) {
+                $('#vKirim').prop('disabled', false)
+                    .removeClass('w3-theme').addClass('w3-green');
+            } else {
+                $('#vKirim').prop('disabled', true)
+                    .removeClass('w3-green').addClass('w3-theme');
+            }
+        }
+
+        // Re-apply visual state setelah DataTables re-render halaman
+        function reapplyVerifiedState() {
+            verifiedBarcodes.forEach(function(barcode) {
+                var $cb = $('.chk-verifikasi[data-nokantong="' + barcode + '"]');
+                if ($cb.length > 0) {
+                    $cb.prop('checked', true);
+                    $cb.closest('tr').addClass('success');
+                }
+            });
+        }
+
+        // Inisialisasi DataTable + pasang drawCallback
+        var dtTable = $('#dtaudittrail').DataTable({
+            lengthMenu: [
+                [5, 10, 15, 25, 50, -1],
+                [5, 10, 15, 25, 50, 'All']
+            ],
+            drawCallback: function() {
+                // Setiap kali DataTables me-render ulang halaman, terapkan kembali state
+                reapplyVerifiedState();
+            }
+        });
+
+        // Event delegation: tangkap change dari semua checkbox .chk-verifikasi
+        // (termasuk yang di-render ulang oleh DataTables di halaman lain)
+        $(document).on('change', '.chk-verifikasi', function() {
+            updateCounter();
         });
 
         $('#vKirim').on('click', function() {
             var noTransaksi = $('#InpNotransaksi').val();
-            var dari = $('#InpDari').val();
-            var kirimKe = $('select[name="InpKirimke"]').val();
+            var source = $('#hdnSource').val();
+
             if (!noTransaksi) {
                 Swal.fire({
-                    title: "Gagal!",
-                    text: "Harap isi semua data sebelum mengirim.",
-                    icon: "error",
-                    confirmButtonText: "OK"
+                    title: 'Gagal!',
+                    text: 'No. Transaksi tidak ditemukan.',
+                    icon: 'error'
                 });
                 return;
             }
-            $('#mKirim').modal('hide');
+
             Swal.fire({
-                title: "Mengirim Data...",
-                text: "Harap tunggu, data sedang dikirim.",
-                icon: "info",
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: function() {
-                    Swal.showLoading();
-                }
-            });
+                title: 'Konfirmasi',
+                html: 'Proses penerimaan darah konsolidasi<br><strong>' + noTransaksi + '</strong>?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#1a6a1a',
+                confirmButtonText: 'Ya, Proses',
+                cancelButtonText: 'Batal'
+            }).then(function(result) {
+                if (!result.isConfirmed) return;
 
-            $.ajax({
-                url: 'serahterima/ksl_terima_proses.php',
-                type: 'POST',
-                data: {
-                    noTransaksi: noTransaksi
-                },
-                dataType: "json",
-                success: function(response) {
-                    console.log("Response dari server:", response); 
-                    Swal.close();
-
-                    if (response && response.status === "success") {
-                        Swal.fire({
-                            title: "Sukses!",
-                            text: response.message || "Data berhasil diterima.",
-                            icon: "success",
-                            confirmButtonText: "OK"
-                        }).then(function() {
-                            location.reload();
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Gagal!",
-                            text: response.message || "Terjadi kesalahan saat mengirim data.",
-                            icon: "error",
-                            confirmButtonText: "Coba Lagi"
-                        });
+                Swal.fire({
+                    title: 'Memproses Data...',
+                    text: 'Harap tunggu.',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: function() {
+                        Swal.showLoading();
                     }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("AJAX Error:", textStatus, errorThrown);
+                });
 
-                    let errorMessage = "Terjadi kesalahan saat menghubungi server.";
-                    if (jqXHR.responseText) {
-                        try {
-                            let errorResponse = JSON.parse(jqXHR.responseText);
-                            errorMessage = errorResponse.message || errorMessage;
-                        } catch (e) {
-                            console.error("Error parsing JSON response:", e);
+                $.ajax({
+                    url: 'serahterima/ksl_terima_proses.php',
+                    type: 'POST',
+                    data: {
+                        noTransaksi: noTransaksi,
+                        source: source
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        Swal.close();
+                        if (response && response.status === 'success') {
+                            Swal.fire({
+                                title: 'Sukses!',
+                                text: response.message || 'Data berhasil diterima.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(function() {
+                                window.location.href = 'pmi<?php echo $level; ?>.php?module=sr_aftap_kns';
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: response.message || 'Terjadi kesalahan saat memproses data.',
+                                icon: 'error'
+                            });
                         }
+                    },
+                    error: function(xhr) {
+                        Swal.close();
+                        var msg = 'Terjadi kesalahan saat menghubungi server.';
+                        try {
+                            msg = JSON.parse(xhr.responseText).message || msg;
+                        } catch (e) {}
+                        Swal.fire({
+                            title: 'Gagal!',
+                            text: msg,
+                            icon: 'error'
+                        });
                     }
-
-                    Swal.close();
-                    Swal.fire({
-                        title: "Gagal!",
-                        text: errorMessage,
-                        icon: "error",
-                        confirmButtonText: "Coba Lagi"
-                    });
-                }
+                });
             });
         });
-    });
 
-    $('.chosen-select').chosen({width: "100%"});
+        const $barcodeInput = $('#barcodeInput');
 
-    function setDateRangePicker(start, end) {
-        $(start).datepicker({
-            format: 'yyyy-mm-dd',
-            autoclose: true
-        }).on('changeDate', function (selected) {
-            var startDate = new Date(selected.date.valueOf());
-            $(end).datepicker('setStartDate', startDate);
-            if ($(end).val() === '') {
-                $(end).datepicker('setDate', startDate);
+        // Auto focus ke input scan
+        $barcodeInput.focus();
+
+        // Event Scan Barcode
+        $barcodeInput.on('keypress', function(e) {
+            if (e.which === 13) { // Enter key
+                const barcode = $(this).val().trim();
+                if (barcode === '') return;
+
+                processBarcode(barcode);
+                $(this).val('').focus();
             }
         });
 
-        $(end).datepicker({
-            format: 'yyyy-mm-dd',
-            autoclose: true
-        }).on('changeDate', function (selected) {
-            var endDate = new Date(selected.date.valueOf());
-            $(start).datepicker('setEndDate', endDate);
-        });
-    }
-</script>
-<?php 
+        function processBarcode(barcode) {
+            // Cek apakah sudah terverifikasi sebelumnya (pakai Set, bukan DOM)
+            if (verifiedBarcodes.has(barcode)) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'info',
+                    title: 'Sudah terverifikasi: ' + barcode,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return;
+            }
 
-?>
+            // Cari checkbox dengan nomor kantong tersebut
+            const $checkbox = $('.chk-verifikasi[data-nokantong="' + barcode + '"]');
+
+            if ($checkbox.length > 0) {
+                // Tambahkan ke Set terlebih dulu
+                verifiedBarcodes.add(barcode);
+
+                // Terapkan visual (checkbox + warna baris)
+                $checkbox.prop('checked', true);
+                $checkbox.closest('tr').addClass('success');
+
+                // Update counter lewat Set
+                updateCounter();
+
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Terverifikasi: ' + barcode,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                // Barcode valid tapi tidak ada di halaman ini (mungkin ada di halaman lain DataTables)?
+                // Cek dari semua data: jika barcode ada di data PHP tapi tidak ditemukan di DOM
+                // → kemungkinan DataTables belum me-render halaman tersebut
+                // Solusi: tambahkan ke Set dulu, visual akan diterapkan saat drawCallback
+                var allBarcodes = [];
+                $('.chk-verifikasi').each(function() {
+                    allBarcodes.push($(this).data('nokantong'));
+                });
+
+                // Jika ditemukan di semua baris (termasuk yang tersembunyi DataTables)
+                var $allCheckbox = $('input.chk-verifikasi[data-nokantong="' + barcode + '"]');
+                if ($allCheckbox.length > 0) {
+                    verifiedBarcodes.add(barcode);
+                    $allCheckbox.prop('checked', true);
+                    $allCheckbox.closest('tr').addClass('success');
+                    updateCounter();
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Terverifikasi: ' + barcode,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'Kantong tidak ditemukan: ' + barcode,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            }
+        }
+
+        // Update counter (delegasi — tetap ada sebagai fallback)
+        // Utamanya update dilakukan langsung dari processBarcode via updateCounter()
+
+        // Inisialisasi counter
+        updateCounter();
+    });
+</script>

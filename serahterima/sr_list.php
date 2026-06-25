@@ -185,9 +185,9 @@ $namaudd = $utd['nama'];
             $jumproi = mysql_fetch_assoc(mysql_query("SELECT COUNT(dst_nokantong) as jumlah FROM serahterima_detail WHERE dst_notrans='$tmp[hst_notrans]' AND dst_receive2 IS NOT NULL AND dst_stat_receive2!='0' AND dst_date_receive2 IS NOT NULL"));
             $jumprok = mysql_fetch_assoc(mysql_query("SELECT COUNT(dst_nokantong) as jumlah FROM serahterima_detail WHERE dst_notrans='$tmp[hst_notrans]' AND dst_receive3 IS NOT NULL AND dst_stat_receive3!='0' AND dst_date_receive3 IS NOT NULL"));
 
-            $jumblmp = mysql_fetch_assoc(mysql_query("SELECT COUNT(dst_nokantong) as jumlah FROM serahterima_detail WHERE dst_notrans='$tmp[hst_notrans]' AND (dst_receive1 IS NULL OR dst_receive1 = '') AND dst_stat_receive1='0' AND dst_date_receive1 IS NULL"));
-            $jumblmi = mysql_fetch_assoc(mysql_query("SELECT COUNT(dst_nokantong) as jumlah FROM serahterima_detail WHERE dst_notrans='$tmp[hst_notrans]' AND (dst_receive2 IS NULL OR dst_receive2 = '') AND dst_stat_receive2='0' AND dst_date_receive2 IS NULL"));
-            $jumblmk = mysql_fetch_assoc(mysql_query("SELECT COUNT(dst_nokantong) as jumlah FROM serahterima_detail WHERE dst_notrans='$tmp[hst_notrans]' AND (dst_receive3 IS NULL OR dst_receive3 = '') AND dst_stat_receive3='0' AND dst_date_receive3 IS NULL"));
+            $jumblmp = mysql_fetch_assoc(mysql_query("SELECT COUNT(dst_nokantong) as jumlah FROM serahterima_detail WHERE dst_notrans='$tmp[hst_notrans]' AND (dst_receive1 IS NULL OR dst_receive1 = '') AND dst_stat_receive1='0' AND (dst_date_receive1 IS NULL OR dst_date_receive1='0000-00-00 00:00:00')"));
+            $jumblmi = mysql_fetch_assoc(mysql_query("SELECT COUNT(dst_nokantong) as jumlah FROM serahterima_detail WHERE dst_notrans='$tmp[hst_notrans]' AND (dst_receive2 IS NULL OR dst_receive2 = '') AND dst_stat_receive2='0' AND (dst_date_receive2 IS NULL OR dst_date_receive2='0000-00-00 00:00:00')"));
+            $jumblmk = mysql_fetch_assoc(mysql_query("SELECT COUNT(dst_nokantong) as jumlah FROM serahterima_detail WHERE dst_notrans='$tmp[hst_notrans]' AND (dst_receive3 IS NULL OR dst_receive3 = '') AND dst_stat_receive3='0' AND (dst_date_receive3 IS NULL OR dst_date_receive3='0000-00-00 00:00:00')"));
             if ($lvl0 != 'komponen') {
             ?>
                 <tr></tr>
@@ -290,7 +290,7 @@ $namaudd = $utd['nama'];
     WHERE (DATE(s.hst_tgl)>='$tglawal' AND DATE(s.hst_tgl)<='$hariini') 
     AND (d.dst_receive1 IS NULL OR d.dst_receive1 = '') 
     AND d.dst_stat_receive1 = '0' 
-    AND d.dst_date_receive1 IS NULL"));
+    AND (d.dst_date_receive1 IS NULL OR d.dst_date_receive1='0000-00-00 00:00:00')"));
 
             // Belum Proses IMLTD
             $jmltotalblmi = mysql_fetch_assoc(mysql_query("SELECT COUNT(d.dst_nokantong) as jumlah 
@@ -298,7 +298,7 @@ $namaudd = $utd['nama'];
     WHERE (DATE(s.hst_tgl)>='$tglawal' AND DATE(s.hst_tgl)<='$hariini') 
     AND (d.dst_receive2 IS NULL OR d.dst_receive2 = '') 
     AND d.dst_stat_receive2 = '0' 
-    AND d.dst_date_receive2 IS NULL"));
+    AND (d.dst_date_receive2 IS NULL OR d.dst_date_receive2='0000-00-00 00:00:00')"));
 
             // Belum Proses KGD
             $jmltotalblmk = mysql_fetch_assoc(mysql_query("SELECT COUNT(d.dst_nokantong) as jumlah 
@@ -306,7 +306,7 @@ $namaudd = $utd['nama'];
     WHERE (DATE(s.hst_tgl)>='$tglawal' AND DATE(s.hst_tgl)<='$hariini') 
     AND (d.dst_receive3 IS NULL OR d.dst_receive3 = '') 
     AND d.dst_stat_receive3 = '0' 
-    AND d.dst_date_receive3 IS NULL"));
+    AND (d.dst_date_receive3 IS NULL OR d.dst_date_receive3='0000-00-00 00:00:00')"));
 
         ?>
             <tr style="font-size: 12px;height: 40px; text-align: center;">

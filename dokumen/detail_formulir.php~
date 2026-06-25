@@ -1,0 +1,394 @@
+<?php
+	include "koneksi.php";
+	//include "index.php";
+	
+	$detail = $_GET['detail'];
+	
+	$sql="select * from formulir where kontrol2='$detail'";
+	$proses=mysql_query($sql);
+	$data=mysql_fetch_array($proses);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
+	<script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>
+	<script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
+	<script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
+	<script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
+<link rel="stylesheet" href="jquery-ui-1.10.3/demos.css">
+<script>
+	$(function() {
+		$( "#datepicker" ).datepicker();
+		$("#datepicker").change(function(){
+			$("#datepicker").datepicker("option","dateFormat","dd MM yy");
+			});
+	});
+</script>
+<script>
+	$(function() {
+		$( "#datepicker2" ).datepicker();
+		$("#datepicker2").change(function(){
+			$("#datepicker2").datepicker("option","dateFormat","dd MM yy");
+			});
+	});
+</script>
+<script>
+	$(function() {
+		$( "#datepicker3" ).datepicker();
+		$("#datepicker3").change(function(){
+			$("#datepicker3").datepicker("option","dateFormat","dd MM yy");
+			});
+	});
+</script>
+<style type="text/css">
+		.ui-datepicker {
+				font-family:Garamond;
+				font-size:12px;
+				margin-left:10px
+				}
+.COOPER {
+	font-family: Cooper Black;
+}
+.coper {
+	font-family: Cooper Black;
+}
+</style>
+<style>
+.button1 {
+  padding: 10px 20px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #556B2F;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 5px #999;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+	font-size:12px;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+
+</style>
+</head>
+
+<body>
+<br />
+<p align="center" class="COOPER"><font size="5"><u>DOKUMEN FORMULIR<br /><?php echo $data['nama1']; ?></u></font></p>
+<?php
+	$sql="select formulir.terkait as nama, pks.kontrol as kontrol, pks.kontrol2 as kontrol2, pks.kontrol3 as kontrol3  from pks,formulir where pks.nama1=formulir.terkait and formulir.nomor='$detail'";
+	$proses=mysql_query($sql);
+	$data=mysql_fetch_array($proses);
+?>
+<p align="center"><?php echo $data['nama']; ?><?php echo $data['kontrol']; ?><?php echo $data['kontrol2']; ?><?php echo $data['kontrol3']; ?></p>
+<?php
+	$sql="select * from formulir where kontrol2='$detail'";
+	$proses=mysql_query($sql);
+	$data=mysql_fetch_array($proses);
+?>
+  <form method="post" action="edit_formulir.php" enctype="multipart/form-data">
+  
+  
+<input type="text" name="bidang_riwayat" value="<?php echo $data['bidang']; ?>" style="display:none" />
+<input type="text" name="nama1_riwayat" value="<?php echo $data['nama1']; ?>" style="display:none" />
+<input type="text" name="nama2_riwayat" value="<?php echo $data['nama2']; ?>" style="display:none" />
+<input type="text" name="tingkat_riwayat" value="<?php echo $data['tingkat']; ?>" style="display:none" />
+<input type="text" name="kontrol_riwayat" value="<?php echo $data['kontrol']; ?>" style="display:none" />
+<input type="text" name="kontrol2_riwayat" value="<?php echo $data['kontrol2']; ?>" style="display:none" />
+<input type="text" name="kontrol3_riwayat" value="<?php echo $data['kontrol3']; ?>" style="display:none" />
+<input type="text" name="periode riwayat" value="<?php echo $data['periode']; ?>" style="display:none" />
+<input type="text" name="versi_riwayat" value="<?php echo $data['no_versi']; ?>" style="display:none" />
+<input type="text" name="setuju_riwayat" value="<?php echo $data['tgl_setuju']; ?>" style="display:none" />
+<input type="text" name="pelaksanaan_riwayat" value="<?php echo $data['tgl_pelaksanaan']; ?>" style="display:none" />
+<input type="text" name="peninjauan_riwayat" value="<?php echo $data['tgl_peninjauan']; ?>" style="display:none" />
+<input type="text" name="pembuat_riwayat" value="<?php echo $data['pembuat']; ?>" style="display:none" />
+<input type="text" name="pemeriksa_riwayat" value="<?php echo $data['pemeriksa']; ?>" style="display:none" />
+<input type="text" name="pengesah_riwayat" value="<?php echo $data['pengesah']; ?>" style="display:none" />
+<input type="text" name="pengesah_riwayat2" value="<?php echo $data['pengesah2']; ?>" style="display:none" />
+  
+  <table align="center" border="1" cellpadding="10" cellspacing="1" bgcolor="#FFFFFF">
+  <tr>
+    <td valign="top">
+      <table align="center">
+        <tr>
+          <td><div align="right"><strong>Bidang</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <select name="bidang">
+              <option><?php echo $data['bidang']; ?></option>
+	    <option>Manajemen Kualitas</option>
+            <option>Penyediaan Donor</option>
+            <option>Kerjasama Hukum dan Humas</option>
+            <option>Simdondar</option>
+            <option>Penyediaan Darah</option>
+            <option>Rujukan IMLTD</option>
+            <option>Serologi Golongan Darah</option>
+            <option>Produksi</option>
+            <option>Pengawasan Mutu</option>
+            <option>Penelitian dan Pengembangan</option>
+            <option>Pembinaan Kualitas</option>
+	    <option>Perencanaan dan Keuangan</option>
+	    <option>Kepegawaian</option>
+	    <option>Diklat</option>
+	    <option>Logistik</option>
+	    <option>Rumah Tangga</option>
+	    
+            </select>
+          </strong></div>            <strong><text style="display:none">
+              <div align="left">
+                <input type="text" name="nomor" value="<?php echo $data['nomor']; ?>" />
+              </div>
+            </text>
+            </strong></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Judul Dokumen</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="nama1" size="50" value="<?php echo $data['nama1']; ?>" />
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>Judul Dokumen Sebelumnya</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="nama2" size="50" value="<?php echo $data['nama2']; ?>" />
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>Tingkatan Dokumen</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <select name="tingkat">
+              <option><?php echo $data['tingkat']; ?></option>
+              <!--<option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>-->
+            </select>
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>No. Kontrol Dokumen</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" style="background:yellow;" readonly="readonly" name="kontrol2" size="20" value="<?php echo $data['kontrol2']; ?>" />	
+          </div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>Periode Review (bulan)</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="periode" size="5" value="<?php echo $data['periode']; ?>" />
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>No. Versi</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="no_versi" size="10" value="<?php echo $data['no_versi']; ?>" />
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>Tanggal Disetujui</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="tgl_setuju" id="" value="<?php echo $data['tgl_setuju']; ?>" />
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>Tanggal Berlaku</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="tgl_pelaksanaan" id="" value="<?php echo $data['tgl_pelaksanaan']; ?>" />
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>Tanggal Kaji Ulang</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="tgl_peninjauan" id="" value="<?php echo $data['tgl_peninjauan']; ?>" />
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>Disusun Oleh</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <select name="pembuat">
+              <option><?php echo $data['pembuat']; ?></option>
+              <?php
+    			$query = "select * from user order by nama_lengkap";
+    			$hasil = mysql_query($query);
+    			while($data=mysql_fetch_array($hasil)){
+        		echo "<option>$data[nama_lengkap]</option>";
+    			}
+			?>
+            </select>
+          </strong></div></td>
+          </tr>
+        <tr>
+          <?php
+    	$sql="select * from formulir where kontrol2='$detail'";
+		$proses=mysql_query($sql);
+		$data=mysql_fetch_array($proses);
+		?>
+          <td><div align="right"><strong>Diperiksa Oleh</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <select name="pemeriksa">
+              <option><?php echo $data['pemeriksa']; ?></option>
+              <?php
+    			$query = "select * from user order by nama_lengkap";
+    			$hasil = mysql_query($query);
+    			while($data=mysql_fetch_array($hasil)){
+        		echo "<option>$data[nama_lengkap]</option>";
+    			}
+			?>
+            </select>
+          </strong></div></td>
+          </tr>
+        <tr>
+          <?php
+    	$sql="select * from formulir where kontrol2='$detail'";
+		$proses=mysql_query($sql);
+		$data=mysql_fetch_array($proses);
+		?>
+          <td><div align="right"><strong>Disetujui Oleh</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <select name="pengesah">
+              <option><?php echo $data['pengesah']; ?></option>
+              <?php
+    			$query = "select * from user order by nama_lengkap";
+    			$hasil = mysql_query($query);
+    			while($data=mysql_fetch_array($hasil)){
+        		echo "<option>$data[nama_lengkap]</option>";
+    			}
+			?>
+            </select>
+          </strong></div></td>
+          </tr>
+
+	<tr>
+          <?php
+    	$sql="select * from formulir where kontrol2='$detail'";
+		$proses=mysql_query($sql);
+		$data=mysql_fetch_array($proses);
+		?>
+          <td><div align="right"><strong>Disahkan Oleh</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <select name="pengesah2">
+              <option><?php echo $data['pengesah2']; ?></option>
+              <?php
+    			$query = "select * from user order by nama_lengkap";
+    			$hasil = mysql_query($query);
+    			while($data=mysql_fetch_array($hasil)){
+        		echo "<option>$data[nama_lengkap]</option>";
+    			}
+			?>
+            </select>
+          </strong></div></td>
+          </tr>
+
+	<!--awal upload-->
+    <tr>
+    	<td><div align="right"><strong>Upload Dokumen</strong></div></td>
+        <td><strong>:</strong></td>
+        <td><div align="left"><strong>
+          
+		<input type="file" name="fileupload" id="fileupload" class="form-control" />
+        </strong></div></td>
+    </tr>
+	<!--akhir upload-->
+
+        <tr>
+          <td>&nbsp;</td>
+          </tr>
+        <tr>
+          <td colspan="3" align="right"><input class="button1" type="submit" name="upload" value="Update" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+  </tr>
+  </table>
+  </form>
+<br />
+<p align="center"><b> Riwayat Perubahan Formulir</b></p>
+<table align="center">
+<tr>
+	<td><strong>No</strong></td>
+    <td><strong>Bidang</strong></td>
+    <td><strong>Judul Dokumen</strong></td>
+    <td><strong>Tingkat Dokumen</strong></td>
+    <td><strong>No. Kontrol Dokumen</strong></td>
+    <td><strong>Periode Review</strong></td>
+    <td><strong>No Versi</strong></td>
+    <td><strong>Tgl Disetujui</strong></td>
+    <td><strong>Tgl Berlaku</strong></td>
+    <td><strong>Tgl Kaji Ulang</strong></td>
+    <td><strong>Disusun Oleh</strong></td>
+    <td><strong>Diperiksa Oleh</strong></td>
+    <td><strong>Disetujui Oleh</strong></td>
+    <td><strong>Disahkan Oleh</strong></td>
+</tr>
+<?php
+	$detail = $_GET['detail'];
+ 	$donor="select * from riwayat where kontrol2='$detail'";
+	//$donor = "select * from riwayat where nama1 like '%IKM%' order by nomor desc";
+
+	// awal Konversi tanggal ke bahasa indonesia
+	function format_indo($date){
+    	$BulanIndo = array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+
+    	$tahun = substr($date, 0, 4);               
+    	$bulan = substr($date, 5, 2);
+    	$tgl   = substr($date, 8, 2);
+    	$result = $tgl . " " . $BulanIndo[(int)$bulan-1]. " ". $tahun;
+    	return($result);
+	}
+	// akhir Konversi tanggal ke bahasa indonesia
+
+	$proses = mysql_query($donor);
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses)){ 
+	$nourut++;
+		?>
+<tr>
+	<td><?php echo $nourut; ?></td>
+    <td><?php echo $data['bidang']; ?></td>
+    <td><?php echo $data['nama1']; ?></td>
+    <td><?php echo $data['tingkat']; ?></td>
+    <td><?php echo $data['kontrol2']; ?></td>
+    <td><?php echo $data['periode']; ?></td>
+    <td><?php echo $data['no_versi']; ?></td>
+    <td><?php echo format_indo($data['tgl_setuju']); ?></td>
+    <td><?php echo format_indo($data['tgl_pelaksanaan']); ?></td>
+    <td><?php echo format_indo($data['tgl_peninjauan']); ?></td>
+    <td><?php echo $data['pembuat']; ?></td>
+    <td><?php echo $data['pemeriksa']; ?></td>
+    <td><?php echo $data['pengesah']; ?></td>
+    <td><?php echo $data['pengesah2']; ?></td>
+</tr>
+<?php
+		}
+		?>
+</table>
+<br />
+</body>
+</html>

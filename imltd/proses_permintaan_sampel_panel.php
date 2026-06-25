@@ -43,7 +43,7 @@ if (!isset($_SESSION['panel_proses'])) {
     $_SESSION['panel_proses'] = array();
 }
 
-$redirect = "pmikasir2.php?module=proses_permintaan_sampel_panel";
+$redirect = "pmikomponen.php?module=proses_permintaan_sampel_panel";
 
 /* =========================
    START PROSES
@@ -507,7 +507,7 @@ for ($i = 0; $i < count($panel_items); $i++) {
         <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Permintaan Sampel Panel</h4>
             <button type="button" class="btn btn-primary" aria-label="Rekap"
-                onclick="window.location.href='pmikasir2.php?module=rekap_sampel_panel'">
+                onclick="window.location.href='pmikomponen.php?module=rekap_sampel_panel'">
                 Rekap
             </button>
         </div>

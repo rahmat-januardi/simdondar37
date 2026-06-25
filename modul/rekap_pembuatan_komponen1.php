@@ -139,10 +139,10 @@ ini_set('display_errors', 1);
 					$tgl_awal = isset($_POST['dari']) ? $_POST['dari'] : date('Y-m-d');
 					$tgl_akhir = isset($_POST['sampai']) ? $_POST['sampai'] : date('Y-m-d');
 					$shift = !empty($_POST['shift']) ? "AND shift='" . $_POST['shift'] . "'" : "";
-					$komponen = !empty($_POST['produk']) ? "AND Produk='" . $_POST['komponen'] . "'" : "";
+					$komponen = !empty($_POST['komponen']) ? "AND Produk='" . $_POST['komponen'] . "'" : "";
 					$petugas = !empty($_POST['petugas']) ? "AND petugas LIKE '%" . $_POST['petugas'] . "%'" : "";
 
-					$query = "SELECT * FROM dpengolahan WHERE DATE(tgl) BETWEEN '$tgl_awal' AND '$tgl_akhir' $shift $komponen $petugas ORDER BY tgl ASC";
+					$query = "SELECT * FROM dpengolahan WHERE DATE(tglPengerjaan) BETWEEN '$tgl_awal' AND '$tgl_akhir' $shift $komponen $petugas ORDER BY tgl ASC";
 					$result = mysqli_query($dbi, $query);
 
 					$no = 1;

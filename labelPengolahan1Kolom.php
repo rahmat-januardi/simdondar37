@@ -111,11 +111,11 @@ $style = array(
 
 if (isset($transaksi)) {
     if ($transaksi === 'transaksi') {
-        $query = "SELECT noKantong, Produk, petugas, tgl, DATE(tgl) as tanggal, goldarah, rhesus, jenis 
+        $query = "SELECT noKantong, Produk, petugas, tgl, DATE(tgl) as tanggal, tglPengerjaan, DATE(tglPengerjaan) as tanggalPengerjaan, goldarah, rhesus, jenis 
                 FROM `dpengolahan` 
                 WHERE NoTrans='$nT'";
     } elseif ($transaksi === 'kantong') {
-        $query = "SELECT noKantong, Produk, petugas, tgl, DATE(tgl) as tanggal, goldarah, rhesus, jenis 
+        $query = "SELECT noKantong, Produk, petugas, tgl, DATE(tgl) as tanggal, tglPengerjaan, DATE(tglPengerjaan) as tanggalPengerjaan, goldarah, rhesus, jenis 
                 FROM `dpengolahan` 
                 WHERE noKantong='$nT'";
     } else {
@@ -281,7 +281,7 @@ foreach ($rows as $row) {
         $pdf->Cell(0, 0, $row['Produk'], 0, 0, 'L');
         $pdf->SetFont('dejavusans', '', 4);
         $pdf->SetXY(3, $posY + 12.3);
-        $pdf->Cell(0, 0, 'Pengolahan: ' . formatTanggal($row['tgl']), 0, 0, 'L');
+        $pdf->Cell(0, 0, 'Pengolahan: ' . formatTanggal($row['tglPengerjaan']), 0, 0, 'L');
     }
 
     $pdf->SetXY(4, $posY);

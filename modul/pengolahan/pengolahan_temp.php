@@ -322,12 +322,17 @@ if ($sD['nK'] != 'A') {
         //    exit;
         //}
 
-        if ($sD['nK'] == 'A') {
+
+	// Kantong dengan merk HAEMONETICS dikecualikan dari pengecekan kadaluwarsa
+        $isHaemonetics = (stripos($sD['merk'], 'HAEMONETICS') !== false);
+
+        if ($sD['nK'] == 'A' && !$isHaemonetics) {
             if (!is_null($sD['kadaluwarsa']) && $kedaluwarsa < time()) {
                 echo json_encode(array('status' => 'error', 'message' => 'Kantong darah sudah <b>KEDALUWARSA</b> pada tanggal: <br><b>' . formatTanggal($sD['kadaluwarsa']) . '</b> dan tidak dapat diproses.'));
                 exit;
             }
         }
+
 
         $batasWaktu = (stripos($sD['merk'], 'HAEMONETICS') !== false) ? 90 : 15;
 

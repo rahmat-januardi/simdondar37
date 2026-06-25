@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="favicon.ico" >
+<link rel="icon" href="images/pmi.gif" type="image/gif" >
+<title>Kontrol Dokumen</title>
+</head>
+
+<body>
+<table align="center" bgcolor="#CCCCCC">
+<tr>
+	<td>
+    <table align="center">
+    <tr>
+    	<!--<td align="center"><img src="images/aplikasi3.png" /></td>-->
+    </tr>
+    </table>
+    </td>
+</tr>
+<tr>
+	<td>
+    <table align="center">
+    <tr>
+        <td><a href="kebijakan.php"><img src="images/kebijakan-new.png" width="180" height="66" /></a></td>
+        <td><a href="pks.php"><img src="images/pks-new.png" width="180" height="66" /></a></td>
+        <td><a href="ik.php"><img src="images/ik-new.png" width="180" height="66" /></a></td>
+        <td><a href="ika.php"><img src="images/ika-new.png" width="180" height="66" /></a></td>
+        <td><a href="formulir.php"><img src="images/formulir-new.png" width="180" height="66" /></a></td>
+        <td><a href="eksternal.php"><img src="images/eksternal-new.png" width="180" height="66" /></a></td>
+        <td><a href="pendukung.php"><img src="images/pendukung-new.png" width="180" height="66" /></a></td>
+	<td><a href="pendukung.php"><img src="images/pegawai.png" width="180" height="66" /></a></td>
+    </tr>
+    </table>
+    </td>
+</tr>
+</table>
+</body>
+</html>

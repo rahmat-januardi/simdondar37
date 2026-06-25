@@ -1,0 +1,12 @@
+<?php
+	include "koneksi.php";
+	
+	$hapus = $_GET['hapus'];
+	
+	$sql="delete from eksternal where kontrol2='$hapus'";
+	$result=mysql_query($sql);
+
+	$hapus_nomor=mysql_query("delete from master_nomor_eksternal where kontrol2='$hapus'");
+	
+	include "eksternal.php";
+?>

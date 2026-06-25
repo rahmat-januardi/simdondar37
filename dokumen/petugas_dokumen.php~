@@ -1,0 +1,124 @@
+<?php
+	include "koneksi.php";
+	//include "index.php";
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+	font-size:12px;
+	margin:auto;
+	width:100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+<style> 
+input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 100%;
+}
+</style>
+<style>
+.button {
+  padding: 10px 20px;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 5px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 3px #666;
+  transform: translateY(3px);
+}
+</style>
+</head>
+<body>
+<br />
+<input id="myInput" type="text" placeholder="Search..">
+<br><br>
+<a href="input_petugas.php"><button class="button">Tambah Petugas</button></a>
+<br><br>
+<table>
+  <thead>
+    <tr>
+      	<th>No</th>
+    	<th>Nama</th>
+    	<th>Bidang</th>
+    	<th style="width:10px">Email</th>
+    	<th style="width:10px">No. Hp</th>
+	<th>Jabatan</th>
+    	<th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody id="myTable">
+    <?php
+	$donor = "select * from user order by nama_lengkap";
+	$proses = mysql_query($donor);
+	$nourut = 0;
+	while($data = mysql_fetch_array($proses)){ 
+	$nourut++;
+		?>
+  <tr>
+    	    <td><?php echo $nourut; ?></td>
+            <td><?php echo $data['nama_lengkap']; ?></td>
+            <td><?php echo $data['bagian']; ?></td>
+	    <td><?php echo $data['email']; ?></td>
+	    <td><?php echo $data['telp']; ?></td>
+	    <td><?php echo $data['jabatan']; ?></td>
+            
+            <td><a href="detail_petugas.php?detail=<?php echo $data['nomor']; ?>"><img src="images/ubah.png"></img></a>&nbsp;&nbsp;<a href="hapus_petugas.php?hapus=<?php echo $data['id']; ?>"><img src="images/hapus.png"></img></a></td>
+  </tr>
+  <?php
+		}
+		?>
+  </tbody>
+</table>
+
+</body>
+</html>

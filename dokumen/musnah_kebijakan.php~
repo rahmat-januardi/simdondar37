@@ -1,0 +1,202 @@
+<?php
+	include "koneksi.php";
+	//include "index.php";
+	
+	$detail = $_GET['detail'];
+	
+	$sql="select * from kebijakan where kontrol='$detail'";
+	$proses=mysql_query($sql);
+	$data=mysql_fetch_array($proses);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link rel="stylesheet" href="jquery-ui-1.10.3/themes/base/jquery.ui.all.css">
+	<script src="jquery-ui-1.10.3/jquery-1.9.1.js"></script>
+	<script src="jquery-ui-1.10.3/ui/jquery.ui.core.js"></script>
+	<script src="jquery-ui-1.10.3/ui/jquery.ui.widget.js"></script>
+	<script src="jquery-ui-1.10.3/ui/jquery.ui.datepicker.js"></script>
+<link rel="stylesheet" href="jquery-ui-1.10.3/demos.css">
+<script>
+	$(function() {
+		$( "#datepicker" ).datepicker();
+		$("#datepicker").change(function(){
+			$("#datepicker").datepicker("option","dateFormat","dd MM yy");
+			});
+	});
+</script>
+<script>
+	$(function() {
+		$( "#datepicker2" ).datepicker();
+		$("#datepicker2").change(function(){
+			$("#datepicker2").datepicker("option","dateFormat","dd MM yy");
+			});
+	});
+</script>
+<script>
+	$(function() {
+		$( "#datepicker3" ).datepicker();
+		$("#datepicker3").change(function(){
+			$("#datepicker3").datepicker("option","dateFormat","dd MM yy");
+			});
+	});
+</script>
+<style type="text/css">
+		.ui-datepicker {
+				font-family:Garamond;
+				font-size:12px;
+				margin-left:10px
+				}
+.COOPER {
+	font-family: Cooper Black;
+}
+.coper {
+	font-family: Cooper Black;
+}
+</style>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+	font-size:12px;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+}
+
+
+</style>
+</head>
+
+<body>
+<br />
+<p align="center" class="COOPER"><font size="5"><u>FORM PEMUSNAHAN DOKUMEN KEBIJAKAN<br /><?php echo $data['nama1']; ?></u></font></p>
+<?php
+	$sql="select kebijakan.terkait as nama, pks.kontrol as kontrol, pks.kontrol as kontrol2, pks.kontrol3 as kontrol3  from pks,kebijakan where pks.nama1=kebijakan.terkait and kebijakan.nomor='$detail'";
+	$proses=mysql_query($sql);
+	$data=mysql_fetch_array($proses);
+?>
+<p align="center"><?php echo $data['nama']; ?><?php echo $data['kontrol']; ?><?php echo $data['kontrol']; ?><?php echo $data['kontrol3']; ?></p>
+<?php
+	$sql="select * from kebijakan where kontrol='$detail'";
+	$proses=mysql_query($sql);
+	$data=mysql_fetch_array($proses);
+?>
+  <form method="post" action="musnah_data_kebijakan.php" enctype="multipart/form-data">
+  
+  
+<input type="text" name="bidang_riwayat" value="<?php echo $data['bidang']; ?>" style="display:none" />
+<input type="text" name="nama1_riwayat" value="<?php echo $data['nama1']; ?>" style="display:none" />
+<input type="text" name="kontrol2_riwayat" value="<?php echo $data['kontrol']; ?>" style="display:none" />
+<input type="text" name="versi_riwayat" value="<?php echo $data['no_versi']; ?>" style="display:none" />
+<input type="text" name="keluar_riwayat" value="<?php echo $data['tgl_keluar1']; ?>" style="display:none" />
+
+  
+  <table align="center" border="1" cellpadding="10" cellspacing="1" bgcolor="#FFFFFF">
+  <tr>
+    <td valign="top">
+      <table align="center">
+        <tr>
+          <td><div align="right"><strong>Bidang</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <select name="bidang">
+              <option><?php echo $data['bidang']; ?></option>	    
+            </select>
+          </strong></div>            <strong><text style="display:none">
+              <div align="left">
+                <input type="text" name="nomor" value="<?php echo $data['nomor']; ?>" />
+              </div>
+            </text>
+            </strong></td>
+        </tr>
+
+        <tr>
+          <td><div align="right"><strong>Judul Dokumen</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="nama1" size="50" readonly="readonly" value="<?php echo $data['nama1']; ?>" />
+          </strong></div></td>
+          </tr>
+        
+        <tr>
+          <td><div align="right"><strong>No. Kontrol Dokumen</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" style="background:yellow;" readonly="readonly" name="kontrol2" size="20" value="<?php echo $data['kontrol']; ?>" />	
+          </div></td>
+          </tr>
+
+	<tr>
+          <td><div align="right"><strong>No. Versi</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="no_versi" size="10" readonly="readonly" value="<?php echo $data['no_versi']; ?>" />
+          </strong></div></td>
+          </tr>
+        
+	 <tr>
+          <td><div align="right"><strong>Keterangan</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="ket1" size="50" required="" />
+          </strong></div></td>
+          </tr>
+
+	
+        <tr>
+          <td><div align="right"><strong>Tanggal Pemusnahan</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <input type="text" name="tgl_musnah1" required="" placeholder="Tahun-Bulan-Tanggal"  />
+          </strong></div></td>
+          </tr>
+        <tr>
+          <td><div align="right"><strong>Petugas Yang Memusnahkan</strong></div></td>
+          <td><strong>:</strong></td>
+          <td><div align="left"><strong>
+            <select name="petugas1">
+              <option></option>
+              <?php
+    			$query = "select * from user order by nama_lengkap";
+    			$hasil = mysql_query($query);
+    			while($data=mysql_fetch_array($hasil)){
+        		echo "<option>$data[nama_lengkap]</option>";
+    			}
+			?>
+            </select>
+          </strong></div></td>
+          </tr>
+        
+	
+
+	<!--awal upload
+    <tr>
+    	<td><div align="right"><strong>Upload Dokumen</strong></div></td>
+        <td><strong>:</strong></td>
+        <td><div align="left"><strong>
+          
+		<input type="file" name="fileupload" id="fileupload" class="form-control" />
+        </strong></div></td>
+    </tr>
+	akhir upload-->
+
+        <tr>
+          <td>&nbsp;</td>
+          </tr>
+        <tr>
+          <td colspan="3" align="right"><input type="submit" name="upload" value="Simpan" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+  </tr>
+  </table>
+  </form>
+
+</body>
+</html>
