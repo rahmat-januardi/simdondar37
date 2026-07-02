@@ -15,13 +15,13 @@ $hariini = date("Y-m-d");
 
 <head>
     <style>
-    body {
-        font-family: "Lato", sans-serif;
-    }
+        body {
+            font-family: "Lato", sans-serif;
+        }
     </style>
 
     <script type="text/javascript" language="JavaScript">
-    document.forms['prolis'].elements['noktg'].focus();
+        document.forms['prolis'].elements['noktg'].focus();
     </script>
 
 </head>
@@ -42,7 +42,10 @@ $hariini = date("Y-m-d");
             $URL = "pmiqa.php?module=release_proses&nokantong=$nkt&mode=2";
             header("Location: $URL");
         } else {
-            if ($stokkantong['hasil_release'] == '1') {
+            if (!$stokkantong) {
+                $statuskantong = 'Kantong Tidak Ditemukan';
+                echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
+            } else if ($stokkantong['hasil_release'] == '1') {
                 $statuskantong = 'Sudah di release';
                 echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
             } else if (strtotime($stokkantong['kadaluwarsa']) <= time()) {
@@ -64,9 +67,9 @@ $hariini = date("Y-m-d");
                         }
                         break;
                     case '2':
-                        if(($stokkantong['tgl_release'] == null) or ($stokkantong['tgl_release'] == '0000-00-00') or ($stokkantong['hasil_release'] != '0')){
-				$statuskantong = 'Kantong Sudah di Release';
-			 }
+                        if (($stokkantong['tgl_release'] == null) or ($stokkantong['tgl_release'] == '0000-00-00') or ($stokkantong['hasil_release'] != '0')) {
+                            $statuskantong = 'Kantong Sudah di Release';
+                        }
                         if (substr($stokkantong[stat2], 0, 1) == 'b') $tempat = " (BDRS)";
                         break;
                     case '3':
@@ -82,7 +85,7 @@ $hariini = date("Y-m-d");
                         $statuskantong = 'Dimusnahkan';
                         break;
                     default:
-                        $statuskantong = '-';
+                        $statuskantong = 'Kantong Tidak Ditemukan';
                 }
                 echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak dapat dilakukan release, karena statusnya : $statuskantong.');</SCRIPT>";
             }
