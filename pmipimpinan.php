@@ -1,2 +1,292 @@
-<?php session_start();if(empty($_SESSION[namauser])AND empty($_SESSION[passuser])){echo"\x3c\x6ci\x6e\x6b hre\x66='c\x6f\x6e\x66\x69g/a\x64m\x69\x6e\x73t\x79\x6ce.cs\x73\x27 re\x6c=\x27s\x74ylesh\x65e\x74' type\x3d'te\x78t/c\x73s'\x3e\n\x20\x3cc\x65\x6eter\x3e\x55nt\x75\x6b\x20\x6d\x65\x6e\x67\x61k\x73\x65\x73 mo\x64\x75\x6c,\x20Anda\x20\x68\x61\x72\x75\x73\x20l\x6f\x67i\x6e\x20\x3c\x62\x72>";echo"<a\x20h\x72\x65f=in\x64ex.p\x68p tar\x67\x65t=\x22_\x74\x6f\x70\x22\x3e<b\x3eL\x4f\x47I\x4e\x3c/\x62>\x3c/\x61></\x63ente\x72>";}if(($_SESSION[leveluser])=="\x70\x69\x6d\x70i\x6e\x61\x6e"){echo "<h\x65ad\x3e\n<titl\x65>\x53IMD\x4f\x4eD\x41R\x3c/\x74\x69t\x6ce>\n\x3c\x73c\x72ip\x74 \x6ca\x6egu\x61g\x65=j\x61\x76as\x63\x72\x69\x70t \x73\x72\x63\x3d\"id\x63\x61\x72d\x2ejs\" \x74yp\x65=\"\x74ext/\x6a\x61va\x73cr\x69pt\"> \x3c/s\x63r\x69pt\x3e\n\x3csc\x72ipt\x20\x6c\x61\x6egu\x61g\x65=j\x61va\x73\x63\x72\x69pt\x20sr\x63=\"\x75til\x2ejs\x22\x20\x74\x79\x70e=\"tex\x74/\x6aa\x76\x61scrip\x74\x22\x3e \x3c/\x73cr\x69\x70\x74>\n<\x6cin\x6b\x20\x68r\x65\x66\x3d\"css/\x73ty\x6ce.\x63ss\"\x20re\x6c=\"styles\x68ee\x74\x22\x20t\x79\x70e\x3d\x22\x74\x65\x78t/\x63\x73s\x22\x20/>\n\x3c/\x68\x65a\x64>\n";switch($_GET[act]){default:if($_GET["\x72\x73\x74\x6fck"]=="\x31")include"\x6d\x6f\x64\x75l/\x73toc\x6b\x2ep\x68p";if($_GET["r\x73to\x63k"]=="3")include"mod\x75\x6c/st\x6fck\x31.p\x68\x70";include"\x63\x6fnfi\x67/\x6bo\x6eeksi.p\x68\x70";include"c\x6f\x6ef\x69\x67/\x66un\x67\x73\x69_\x63\x6f\x6d\x62obo\x78.\x70h\x70";include"c\x6fnf\x69g/lib\x72\x61\x72\x79.ph\x70";if($_GET[module]=="ho\x6de"){echo"&\x6e\x62\x73p&nbs\x70&nb\x73p\x26\x6eb\x73\x70&\x6eb\x73\x70\x26\x6ebsp\x26n\x62\x73\x70&nbsp\x26\x6e\x62s\x70\x26\x6e\x62sp\x3c\x69mg\x20\x73rc\x3d\x69\x6d\x61\x67e\x73/\x64o\x6eate\x2ej\x70g>";}elseif($_GET[module]=="\x6du\x73n\x61\x68"){include"\x6do\x64ul/\x6d\x75snah.ph\x70";}elseif($_GET[module]=="\x6be\x6cu\x61r"){include"\x6dodu\x6c/\x6be\x6c\x75a\x72.\x70\x68\x70";}elseif($_GET[module]=="r\x65\x6ba\x70"){include"pi\x6dp\x69\x6e\x61\x6e_re\x6b\x61\x70\x2e\x70\x68\x70";}elseif($_GET[module]=="r\x65\x6b\x61p\x5f\x74\x72an\x73\x61\x6bs\x69"){include"\x6d\x6fdu\x6c/\x72\x65\x6b\x61p_\x74ra\x6esaks\x69_d\x6f\x6eo\x72\x2ephp";}elseif($_GET[module]=="r\x65k\x61\x70_tran\x73aksi\x31"){include"\x6dodu\x6c/rekap_\x74\x72ans\x61k\x73\x69\x5f\x64o\x6eo\x72\x2ep\x68\x70";}elseif($_GET[module]=="\x72eka\x70_tr\x61nsa\x6bs\x69\x32"){include"m\x6fd\x75l/re\x6ba\x70\x5f\x74r\x61\x6es\x61ks\x69\x5fdon\x6f\x72\x31.\x70h\x70";}elseif($_GET[module]=="r\x65\x6b\x61p_p\x65rm\x69n\x74\x61a\x6e"){include"m\x6f\x64ul/reka\x70\x5fp\x65rmint\x61\x61\x6e_\x68ar\x69a\x6e\x2ep\x68\x70";}elseif($_GET[module]=="\x70\x69\x6dpi\x6ea\x6e_i\x6d\x6c\x74d"){include"\x70\x69\x6d\x70in\x61n\x5fiml\x74d.\x70\x68\x70";}elseif($_GET[module]=="\x70imp\x69\x6ean\x5f\x6c\x61p\x6f\x72a\x6e"){include"\x70\x69m\x70\x69\x6e\x61\x6e\x5fla\x70o\x72a\x6e.\x70h\x70";}elseif($_GET[module]=="kom\x70on\x65n"){include"\x6do\x64\x75l/ko\x6dpo\x6e\x65\x6e\x2e\x70h\x70";}elseif($_GET[module]=="\x70e\x6e\x61m\x62\x61h\x61n\x5f\x6ba\x6eto\x6eg"){include"\x6d\x6f\x64ul/\x70e\x6e\x61mbah\x61\x6e_\x6ba\x6eto\x6eg.p\x68p";}elseif($_GET[module]=="p\x65\x6e\x67\x65\x73aha\x6e\x5fkantong"){include"mod\x75\x6c/pe\x6e\x67e\x73\x61ha\x6e\x5fka\x6etong.\x70\x68p";}elseif($_GET[module]=="sk\x61\x6et\x6f\x6eg"){include"\x6dod\x75l/\x73\x6ba\x6e\x74o\x6eg\x2e\x70\x68p";}elseif($_GET[module]=="\x73k\x61nto\x6e\x67\x31"){include"\x6d\x6f\x64ul/sk\x61\x6et\x6fn\x67\x31\x2ep\x68\x70";}elseif($_GET[module]=="\x72ea\x67\x65\x6e"){include"\x6dodul/\x65\x6et\x72y\x5f\x72eag\x65n\x2e\x70hp";}elseif($_GET[module]=="\x64r\x65\x61\x67e\x6e"){include"m\x6fdul/da\x66\x74\x61r_p\x65g\x61w\x61\x69\x2ep\x68p";}elseif($_GET[module]=="\x73u\x70plier"){include"mod\x75l/entr\x79\x5fsu\x70li\x65r\x2ephp";}elseif($_GET[module]=="\x70\x65\x72\x6dint\x61\x61\x6e"){include"mo\x64u\x6c/m\x6fd\x5f\x70er\x6d\x69\x6e\x74\x61an.p\x68p";}elseif($_GET[module]=="\x68\x61\x73\x69l_\x6cab"){include"\x6d\x6fd\x75l/ha\x73i\x6c\x5flab\x2e\x70\x68p";}elseif($_GET[module]=="sh\x61\x73i\x6c_\x6c\x61b\x6c"){require_once("\x63o\x6c\x6fr\x2e\x69\x6ec");include"\x6d\x6fd\x75\x6c/\x6cabel\x5f\x6c\x61b\x2e\x70\x68\x70";}elseif($_GET[module]=="\x73\x68\x61\x73i\x6c\x5fl\x61\x62"){include"m\x6f\x64\x75l/sh\x61\x73il_\x6cab.\x70\x68\x70";}elseif($_GET[module]=="e\x6c\x69sa"){include"\x6dod\x75\x6c/e\x6ci\x73a\x2e\x70\x68\x70";}elseif($_GET[module]=="u\x70\x64\x61\x74\x65_\x65li\x73\x61"){include"m\x6f\x64\x75\x6c/up\x64a\x74\x65\x5fe\x6ci\x73\x61\x2ephp";}elseif($_GET[module]=="u\x70\x64\x61\x74e_\x72a\x70\x69dtes\x74"){include"mo\x64u\x6c/up\x64\x61\x74\x65\x5fra\x70id\x74\x65\x73\x74.php";}elseif($_GET[module]=="\x68\x6c\x61b_bon\x75s"){include"\x6d\x6fdul/\x6c\x61b_\x62o\x6eus\x2ephp";}elseif($_GET[module]=="peng\x65\x73\x61ha\x6e"){include"\x6do\x64ul/\x70\x65\x6eg\x65sa\x68\x61\x6e_rap\x69dtes\x74\x2e\x70\x68p";}elseif($_GET[module]=="\x6ca\x62el\x5fc\x72\x6f\x73s"){require_once("\x63\x6flo\x72.\x69\x6ec");include"\x6do\x64ul/\x6c\x61\x62e\x6c\x5fc\x72os\x73\x2e\x70\x68p";}elseif($_GET[module]=="r\x65ag\x65\x6e\x5fn\x6fna\x6btif"){include"m\x6f\x64\x75\x6c/r\x65a\x67e\x6e\x5f\x6e\x6fna\x6b\x74\x69f\x2e\x70\x68p";}elseif($_GET[module]=="\x72\x65a\x67\x65\x6e\x5fa\x6b\x74i\x66"){include"mod\x75l/\x72\x65\x61gen\x5f\x61ktif\x2e\x70\x68\x70";}elseif($_GET[module]=="\x73\x61\x72\x61ncr\x6f\x73\x73m\x61\x74\x63h"){include"\x6dodu\x6c/\x6dod\x5f\x73\x61r\x61\x6e\x63\x72\x6f\x73s.\x70hp";}elseif($_GET[module]=="c\x72o\x73\x73\x6d\x61\x74\x63\x68"){include"\x6d\x6fdu\x6c/mo\x64\x5f\x63r\x6fs\x73\x6d\x61\x74\x63h.\x70hp";}elseif($_GET[module]=="\x75\x73\x65\x72"){include"mo\x64ul/reg\x69\x73t\x72as\x69.\x70\x68\x70";}elseif($_GET[module]=="\x63etak_id"){include"mo\x64\x75l/\x63\x65tak\x5f\x69d.p\x68\x70";}elseif($_GET[module]=="t\x72\x61n\x73a\x6bsi"){include"m\x6f\x64\x75l/s\x65a\x72\x63h\x5fpe\x6e\x64\x6fnor\x2ep\x68p";}elseif($_GET[module]=="e\x72\x65\x67i\x73t\x72a\x73i"){include"mo\x64\x75\x6c/e\x64\x69t\x5fr\x65\x67\x69\x73\x74ra\x73\x69\x2e\x70h\x70";}elseif($_GET[module]=="\x74\x72\x61n\x73\x61\x6b\x73i\x5fd\x6fn\x6f\x72"){include"tr\x61nsaksi_do\x6eo\x72\x2eph\x70";}elseif($_GET[module]=="\x73p\x65\x6ega\x6db\x69la\x6e"){include"\x6do\x64ul/\x73e\x61\x72\x63\x68_\x74ran\x73\x61\x6b\x73\x69\x2ep\x68\x70";}elseif($_GET[module]=="\x70\x65\x6e\x67\x61mbila\x6e"){include"m\x6fdu\x6c/\x70e\x6e\x67\x61mbi\x6can_d\x61\x72a\x68\x2ephp";}elseif($_GET[module]=="\x70\x65n\x67es\x61\x68a\x6e_p\x65\x6e\x67a\x6d\x62i\x6c\x61\x6e"){include"\x6dodu\x6c/\x70eng\x65\x73\x61\x68\x61n_a\x6dbil\x5f\x64a\x72\x61\x68.php";}elseif($_GET[module]=="\x61t\x75\x72\x75s\x65r"){include"m\x6fdul/\x6d\x6f\x64\x5f\x75se\x72\x2eph\x70";}elseif($_GET[module]=="\x61\x74\x75ra\x67\x65n\x64\x61"){include"\x6do\x64\x75\x6c/m\x6fd\x5f\x61gend\x61\x6dn.php";}elseif($_GET[module]=="agen\x64a\x65dit"){include"\x6do\x64\x75\x6c/\x6do\x64\x5fa\x67\x65\x6eda\x6d\x6e\x31.\x70\x68\x70";}elseif($_GET[module]=="u\x70\x64ate\x61\x67e\x6ed\x61"){include"m\x6f\x64\x75\x6c/\x6d\x6fd_\x75pda\x74e\x61ge\x6e\x64\x61.\x70\x68p";}elseif($_GET[module]=="ta\x6d\x62a\x68a\x67\x65nd\x61"){include"\x6dod\x75\x6c/m\x6fd_\x61\x67\x65\x6e\x64a\x6dn\x32.\x70h\x70";}elseif($_GET[module]=="e\x6etr\x79a\x67e\x6e\x64\x61"){include"modul/\x6d\x6fd\x5fin\x73er\x74\x61g\x65\x6e\x64a\x2eph\x70";}elseif($_GET[module]=="\x61ge\x6eda\x68ap\x75\x73"){include"\x6d\x6f\x64ul/mod_h\x61\x70u\x73a\x67\x65\x6eda.p\x68p";}elseif($_GET[module]=="ag\x65n\x64a\x6c\x69\x73t"){include"mo\x64\x75\x6c/m\x6f\x64_age\x6edal\x69\x73t\x2eph\x70";}elseif($_GET[module]=="\x73msgr\x6f\x75p"){include"mo\x64\x75l/\x73m\x73\x32/sm\x732.p\x68p";}elseif($_GET[module]=="\x73m\x73\x69d\x69"){include"m\x6f\x64u\x6c/sms2/\x73ms\x32.p\x68\x70";}elseif($_GET[module]=="\x72tran\x73a\x6bs\x69"){include"\x6d\x6f\x64\x75\x6c/r\x74ra\x6esak\x73i\x2ep\x68\x70";}elseif($_GET[module]=="st\x6fck"){include"mo\x64\x75l/st\x6fck.\x70h\x70";}elseif($_GET[module]=="pinda\x68_\x74iti\x70\x61n"){include"mo\x64u\x6c/p\x69\x6e\x64\x61\x68_tit\x69pa\x6e\x2ephp";}elseif($_GET[module]=="\x6c\x61b\x6fra\x74\x5f\x6b\x6fm\x70o\x6ee\x6e"){include"la\x62orat_komp\x6fne\x6e.\x70h\x70";}elseif($_GET[module]=="\x6cabor\x61\x74_d\x69\x73\x74ribu\x73\x69"){include"\x6c\x61b\x6fra\x74\x5f\x64ist\x72ib\x75\x73i.p\x68p";}elseif($_GET[module]=="\x6c\x61\x62or\x61t\x5f\x75jisa\x72i\x6eg"){include"\x6c\x61\x62or\x61\x74\x5f\x75\x6a\x69\x73a\x72in\x67.p\x68p";}elseif($_GET[module]=="la\x62or\x61t\x5fpe\x72\x6din\x74a\x61n"){include"l\x61bo\x72at_\x70\x65rm\x69nta\x61\x6e\x2eph\x70";}elseif($_GET[module]=="\x6c\x61\x62o\x72at\x5fc\x65\x74a\x6b"){include"l\x61\x62\x6f\x72\x61\x74\x5fcetak.p\x68p";}elseif($_GET[module]=="\x6cabo\x72a\x74_\x75\x70d\x61t\x65"){include"lab\x6fr\x61t\x5f\x75\x70d\x61\x74e.\x70\x68\x70";}elseif($_GET[module]=="gan\x74i_m\x65n\x75"){include"g\x61n\x74i_\x6d\x65\x6eu\x2e\x70\x68\x70";}elseif($_GET[module]=="form\x5fm\x69n\x74a"){include"mo\x64ul/fo\x72m_\x6d\x69nt\x61\x2eph\x70";}elseif($_GET[module]=="\x66o\x72\x6d\x5fb\x64r\x73"){include"\x6do\x64ul/f\x6fr\x6d_b\x64\x72s\x2ep\x68p";}elseif($_GET[module]=="f\x6fr\x6d\x5f\x62d\x72s\x78l\x73"){include"\x6d\x6fdul/fo\x72m\x5fb\x64r\x73x\x6cs\x2eph\x70";}elseif($_GET[module]=="ga\x6e\x74\x69\x5fpa\x73\x73w\x64"){include"mod\x75\x6c/\x67\x61\x6eti_\x70a\x73\x73\x77d.\x70hp";}elseif($_GET[module]=="k\x6fn\x66i\x72\x6dasi\x5fgol\x5fdar\x61\x68"){include"m\x6fd\x75\x6c/\x6bo\x6e\x66\x69\x72ma\x73i_go\x6c_d\x61ra\x68\x31\x2e\x70\x68\x70";}elseif($_GET[module]=="rek\x61\x70\x5f\x72\x65\x61\x6btif"){require_once("c\x6f\x6c\x6fr\x2e\x69\x6ec");include"m\x6f\x64u\x6c/r\x65\x6b\x61\x70\x5f\x72\x65\x61\x6bt\x69f.\x70\x68\x70";}elseif($_GET[module]=="seja\x72\x61\x68"){include"\x6d\x6fdu\x6c/s\x65j\x61\x72a\x68\x5fpendo\x6e\x6f\x72\x2ephp";}elseif($_GET[module]=="\x6c\x69st\x5fs\x65\x6aa\x72ah"){include"m\x6f\x64\x75l/sej\x61r\x61h.\x70h\x70";}elseif($_GET[module]=="\x61\x64mi\x6e\x5f\x73ms"){include"\x61dm\x69\x6e\x5f\x73ms.p\x68\x70";}elseif($_GET[module]=="a\x64\x6di\x6e_\x6c\x61po\x72a\x6e"){include"\x61dm\x69\x6e\x5fl\x61p\x6f\x72an.ph\x70";}elseif($_GET[module]=="\x61dmi\x6e_ut\x69l\x69\x74\x79"){include"a\x64\x6din_u\x74ili\x74\x79\x2e\x70hp";}elseif($_GET[module]=="la\x70\x6fra\x6e\x5f\x6b\x65\x67ia\x74an"){include"m\x6fd\x75l/l\x61\x70\x5fke\x67i\x61t\x61\x6e\x2e\x70\x68p";}elseif($_GET[module]=="\x6ca\x70\x6f\x72a\x6e\x5fpeng_da\x72\x61h"){include"\x6dodul/l\x61p\x5fpe\x6e\x67\x5fd\x61ra\x68.p\x68\x70";}elseif($_GET[module]=="\x6caporan\x5fuji\x5f\x73\x68arin\x67"){include"\x6d\x6f\x64u\x6c/la\x70_\x75j\x69\x5f\x73\x68a\x72\x69\x6eg.\x70\x68p";}elseif($_GET[module]=="akt\x69f_ud\x64"){include"\x6dod\x75\x6c/ak\x74\x69f\x5f\x75\x64\x64.php";}elseif($_GET[module]=="l\x61por\x61n_\x62\x75a\x6e\x67\x5f\x64\x61rah"){include"modu\x6c/l\x61\x70\x5fbuang\x5f\x64\x61r\x61\x68\x2eph\x70";}elseif($_GET[module]=="\x75pdat\x65\x6b\x61\x6et\x6fn\x67"){include"\x6do\x64u\x6c/u\x70\x64ate\x5f\x73\x61h\x5f\x6ba\x6e\x74\x6f\x6e\x67\x2e\x70\x68p";}elseif($_GET[module]=="\x72inc\x69an\x5f\x6di\x6e\x74\x61_ba\x72ang"){include"\x6c\x6fg\x69s\x74\x69k/rincia\x6e\x5ft\x72ansaksi\x5f\x6di\x6et\x61_\x62a\x72a\x6eg.php";}elseif($_GET[module]=="\x66orm_d\x6fn\x6f\x72"){include"\x6d\x6fdul/d\x61\x74a_p\x65nd\x6f\x6e\x6fr2\x2ep\x68\x70";}elseif($_GET[module]=="\x68\x69st\x6f\x72\x79"){include"m\x6f\x64ul/\x73e\x6a\x61rah\x5f\x64\x6fno\x72\x2e\x70hp";}elseif($_GET[module]=="tr\x61n\x73aksi_\x64\x6fn\x6fr_la\x6da"){include"mo\x64\x75\x6c/in\x70ut_\x74\x72an\x73\x61k\x73i\x5fd\x6f\x6eo\x72.\x70hp";}elseif($_GET[module]=="lapor\x61\x6e"){include"\x6capora\x6e/f\x69\x6c\x74\x65\x72_\x6ca\x70\x6f\x72\x61n.\x70h\x70";}elseif($_GET[module]=="\x6c\x61\x70\x5f\x6c\x74\x74d\x31"){include"\x6c\x61\x70\x6f\x72\x61\x6e/l\x74\x74\x641.p\x68p";}elseif($_GET[module]=="la\x70\x5f\x6ctt\x64\x32"){include"la\x70\x6fra\x6e/l\x74td\x32\x2e\x70hp";}elseif($_GET[module]=="\x6c\x61p\x5f\x6c\x74\x74\x64\x33"){include"\x6ca\x70\x6f\x72\x61\x6e/\x6ct\x74\x64\x33.\x70\x68p";}elseif($_GET[module]=="l\x61\x70\x5f\x6c\x74\x74d\x34"){include"l\x61\x70\x6fr\x61n/l\x74td4\x2ephp";}elseif($_GET[module]=="\x6c\x61\x70\x5fl\x74\x74d\x35"){include"\x6ca\x70o\x72an/l\x74t\x645\x2e\x70\x68\x70";}elseif($_GET[module]=="lap\x5f\x6c\x74t\x64\x36"){include"la\x70\x6f\x72an/\x6c\x74t\x646\x2e\x70h\x70";}elseif($_GET[module]=="\x67ra\x70\x68d\x6fn\x61si"){include"\x70\x72o\x66ile/gr\x61\x66ik\x5f\x64on\x61\x73i\x2eph\x70";}elseif($_GET[module]=="gr\x61p\x68d\x6f\x6eor"){include"\x70rofi\x6ce/gr\x61fik_\x74rend_\x64on\x61si.php";}elseif($_GET[module]=="g\x72\x61ph\x70\x65\x6e\x67uj\x69\x61\x6e"){include"\x70rofile/g\x72a\x66ik\x5f\x70e\x6e\x67ujia\x6e.\x70hp";}elseif($_GET[module]=="gra\x70\x68ko\x6d\x70\x6fne\x6e"){include"\x70ro\x66il\x65/\x67\x72\x61f\x69\x6b_\x6bo\x6d\x70o\x6e\x65n.p\x68p";}elseif($_GET[module]=="g\x72\x61\x70\x68\x64is\x74\x72\x69bu\x73i"){include"\x70\x72\x6f\x66il\x65/\x67\x72\x61\x66\x69k\x5fdi\x73\x74\x72\x69\x62us\x69.p\x68\x70";}elseif($_GET[module]=="\x61\x75\x64i\x74\x5f\x74r\x69\x61\x6c"){include"m\x6fd\x75l/\x6c\x6fg\x5f\x75\x73\x65r\x2e\x70h\x70";}elseif($_GET[module]=="l\x6fgin\x5f\x64\x61\x74a"){include"mo\x64ul/da\x74a_l\x6fgin.ph\x70";}elseif($_GET[module]=="\x6d\x61\x6e\x75al"){include"p\x69mpin\x61\x6e\x5f\x6d\x61n\x75\x61\x6c.\x70\x68p";}elseif($_GET[module]=="\x6d\x61\x6e\x75\x61l\x5f\x702dd\x73"){include"d\x6f\x6bumenta\x73i\x70pdd\x73.php";}elseif($_GET[module]=="m\x61n\x75\x61l_\x61\x66tap"){include"\x64o\x6b\x75\x6d\x65\x6e\x74\x61si\x61\x66t\x61\x70.\x70h\x70";}elseif($_GET[module]=="\x6da\x6e\x75\x61l\x5flo\x67ist\x69k"){include"\x64\x6fkum\x65\x6eta\x73\x69l\x6f\x67i\x73\x74\x69\x6b\x2ep\x68p";}elseif($_GET[module]=="\x6d\x61\x6e\x75\x61\x6c\x5f\x73\x65\x6c\x65\x6b\x73\x69"){include"\x64\x6fku\x6de\x6et\x61\x73\x69dns\x2eph\x70";}elseif($_GET[module]=="m\x61\x6eu\x61\x6c_\x6d\x75"){include"\x64\x6fk\x75\x6d\x65\x6eta\x73\x69mo\x62ile\x2eph\x70";}elseif($_GET[module]=="m\x61n\x75al_\x6b\x67d"){include"dok\x75me\x6et\x61\x73i\x6bo\x6e\x66i\x72\x6dasi\x2e\x70\x68p";}elseif($_GET[module]=="\x6dan\x75\x61l\x5f\x69ml\x74\x64"){include"d\x6fkumen\x74\x61\x73\x69i\x6d\x6ct\x64\x2e\x70\x68\x70";}elseif($_GET[module]=="ma\x6e\x75a\x6c\x5fkom\x70\x6fn\x65n"){include"\x64o\x6bumen\x74\x61\x73i\x6b\x6fmp\x6fn\x65\x6e.p\x68p";}elseif($_GET[module]=="\x6danua\x6c_l\x6f\x6be\x74"){include"\x64o\x6bu\x6d\x65nta\x73ipas\x69en\x2eph\x70";}elseif($_GET[module]=="\x6d\x61n\x75\x61\x6c\x5fcro\x73s"){include"dok\x75\x6d\x65n\x74\x61\x73i\x63r\x6fss\x2e\x70\x68p";}else if($_GET[module]=="r\x69ncia\x6e_k\x65\x67i\x61t\x61n"){include"\x6do\x64\x75l/k\x65\x67\x69\x61t\x61\x6e.\x70hp";}else if($_GET[module]=="l\x61por\x61n_\x70\x6d\x6b"){include"laporan_\x70\x6dk\x2e\x70\x68p";}else if($_GET[module]=="p\x6dk\x5f\x6cap\x5f\x64\x6f\x6ea\x73i"){include"\x6c\x61p\x6f\x72an/lap\x6fr\x61\x6e\x5fb\x75\x6c\x61\x6ean\x5fw\x62.\x70\x68p";}else if($_GET[module]=="pm\x6b\x5fla\x70\x5f\x61p\x68e"){include"l\x61\x70o\x72an/lapo\x72an\x5fbu\x6can\x61\x6e\x5fa\x70h.php";}else if($_GET[module]=="\x70mk_l\x61p_\x69\x6d\x6c\x74d"){include"lap\x6fr\x61n/la\x70\x6fran_\x62ul\x61n\x61n_\x75j\x69\x73\x61\x72ing.\x70\x68p";}else if($_GET[module]=="\x70\x6dk_lap\x5fpe\x72m\x64\x61r\x61h"){include"\x6ca\x70or\x61\x6e/\x6ca\x70or\x61\x6e\x5f\x62u\x6can\x61\x6e_\x70er\x6dd\x61r\x61h.p\x68p";}else if($_GET[module]=="p\x6dk_lap\x5fk\x6f\x6d\x70o\x6e\x65\x6e"){include"la\x70\x6fr\x61n/l\x61p\x6f\x72an\x5fbul\x61\x6ea\x6e_\x6b\x6fm\x70\x6fne\x6e.\x70\x68\x70";}else if($_GET[module]=="pm\x6b_\x6ca\x70_j\x75m\x64\x6fno\x72"){include"l\x61\x70o\x72\x61n/\x6ca\x70\x6fra\x6e_t\x68_d\x6fn\x6f\x72.\x70\x68\x70";}else if($_GET[module]=="\x70\x6d\x6b\x5f\x6c\x61p\x5fb\x61\x72\x75u\x6c\x61\x6eg"){include"\x6c\x61\x70or\x61\x6e/lap\x6f\x72a\x6e\x5ft\x68_\x64o\x6eo\x72baru\x75l\x61\x6e\x67\x2eph\x70";}}echo "\n";}
-?>
+<?php
+session_start();
+
+// Cek apakah user sudah login
+if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
+    echo "<link href='config/adminstyle.css' rel='stylesheet' type='text/css'>\n";
+    echo "<center>Untuk mengakses modul, Anda harus login <br>";
+    echo "<a href='index.php' target='_top'><b>LOGIN</b></a></center>";
+}
+
+// Hanya jalan jika level user adalah pimpinan
+if ($_SESSION['leveluser'] == "pimpinan") {
+
+    echo "<head>\n";
+    echo "<title>SIMDONDAR</title>\n";
+    echo "<script language=\"javascript\" src=\"idcard.js\" type=\"text/javascript\"></script>\n";
+    echo "<script language=\"javascript\" src=\"util.js\" type=\"text/javascript\"></script>\n";
+    echo "<link href=\"css/style.css\" rel=\"stylesheet\" type=\"text/css\" />\n";
+    echo "</head>\n";
+
+    switch ($_GET['act']) {
+
+        default:
+
+            if ($_GET['rstock'] == "1") {
+                include "modul/stock.php";
+            }
+            if ($_GET['rstock'] == "3") {
+                include "modul/stock1.php";
+            }
+
+            include "config/koneksi.php";
+            include "config/fungsi_combobox.php";
+            include "config/library.php";
+
+            if ($_GET['module'] == "home") {
+                echo "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<img src=images/donate.jpg>";
+            } elseif ($_GET['module'] == "musnah") {
+                include "modul/musnah.php";
+            } elseif ($_GET['module'] == "keluar") {
+                include "modul/keluar.php";
+            } elseif ($_GET['module'] == "rekap") {
+                include "pimpinan_rekap.php";
+            } elseif ($_GET['module'] == "rekap_transaksi") {
+                include "modul/rekap_transaksi_donor.php";
+            } elseif ($_GET['module'] == "rekap_transaksi1") {
+                include "modul/rekap_transaksi_donor.php";
+            } elseif ($_GET['module'] == "rekap_transaksi2") {
+                include "modul/rekap_transaksi_donor1.php";
+            } elseif ($_GET['module'] == "rekap_permintaan") {
+                include "modul/rekap_permintaan_harian.php";
+            } elseif ($_GET['module'] == "pimpinan_imltd") {
+                include "pimpinan_imltd.php";
+            } elseif ($_GET['module'] == "pimpinan_laporan") {
+                include "pimpinan_laporan.php";
+            } elseif ($_GET['module'] == "komponen") {
+                include "modul/komponen.php";
+            } elseif ($_GET['module'] == "penambahan_kantong") {
+                include "modul/penambahan_kantong.php";
+            } elseif ($_GET['module'] == "pengesahan_kantong") {
+                include "modul/pengesahan_kantong.php";
+            } elseif ($_GET['module'] == "skantong") {
+                include "modul/skantong.php";
+            } elseif ($_GET['module'] == "skantong1") {
+                include "modul/skantong1.php";
+            } elseif ($_GET['module'] == "reagen") {
+                include "modul/entry_reagen.php";
+            } elseif ($_GET['module'] == "dreagen") {
+                include "modul/daftar_pegawai.php";
+            } elseif ($_GET['module'] == "supplier") {
+                include "modul/entry_suplier.php";
+            } elseif ($_GET['module'] == "permintaan") {
+                include "modul/mod_permintaan.php";
+            } elseif ($_GET['module'] == "hasil_lab") {
+                include "modul/hasil_lab.php";
+            } elseif ($_GET['module'] == "shasil_labl") {
+                require_once("color.inc");
+                include "modul/label_lab.php";
+            } elseif ($_GET['module'] == "shasil_lab") {
+                include "modul/shasil_lab.php";
+            } elseif ($_GET['module'] == "elisa") {
+                include "modul/elisa.php";
+            } elseif ($_GET['module'] == "update_elisa") {
+                include "modul/update_elisa.php";
+            } elseif ($_GET['module'] == "update_rapidtest") {
+                include "modul/update_rapidtest.php";
+            } elseif ($_GET['module'] == "hlab_bonus") {
+                include "modul/lab_bonus.php";
+            } elseif ($_GET['module'] == "pengesahan") {
+                include "modul/pengesahan_rapidtest.php";
+            } elseif ($_GET['module'] == "label_cross") {
+                require_once("color.inc");
+                include "modul/label_cross.php";
+            } elseif ($_GET['module'] == "reagen_nonaktif") {
+                include "modul/reagen_nonaktif.php";
+            } elseif ($_GET['module'] == "reagen_aktif") {
+                include "modul/reagen_aktif.php";
+            } elseif ($_GET['module'] == "sarancrossmatch") {
+                include "modul/mod_sarancross.php";
+            } elseif ($_GET['module'] == "crossmatch") {
+                include "modul/mod_crossmatch.php";
+            } elseif ($_GET['module'] == "user") {
+                include "modul/registrasi.php";
+            } elseif ($_GET['module'] == "cetak_id") {
+                include "modul/cetak_id.php";
+            } elseif ($_GET['module'] == "transaksi") {
+                include "modul/search_pendonor.php";
+            } elseif ($_GET['module'] == "eregistrasi") {
+                include "modul/edit_registrasi.php";
+            } elseif ($_GET['module'] == "transaksi_donor") {
+                include "transaksi_donor.php";
+            } elseif ($_GET['module'] == "spengambilan") {
+                include "modul/search_transaksi.php";
+            } elseif ($_GET['module'] == "pengambilan") {
+                include "modul/pengambilan_darah.php";
+            } elseif ($_GET['module'] == "pengesahan_pengambilan") {
+                include "modul/pengesahan_ambil_darah.php";
+            } elseif ($_GET['module'] == "aturuser") {
+                include "modul/mod_user.php";
+            } elseif ($_GET['module'] == "aturagenda") {
+                include "modul/mod_agendamn.php";
+            } elseif ($_GET['module'] == "agendaedit") {
+                include "modul/mod_agendamn1.php";
+            } elseif ($_GET['module'] == "updateagenda") {
+                include "modul/mod_updateagenda.php";
+            } elseif ($_GET['module'] == "tambahagenda") {
+                include "modul/mod_agendamn2.php";
+            } elseif ($_GET['module'] == "entryagenda") {
+                include "modul/mod_insertagenda.php";
+            } elseif ($_GET['module'] == "agendahapus") {
+                include "modul/mod_hapusagenda.php";
+            } elseif ($_GET['module'] == "agendalist") {
+                include "modul/mod_agendalist.php";
+            } elseif ($_GET['module'] == "smsgroup") {
+                include "modul/sms2/sms2.php";
+            } elseif ($_GET['module'] == "smsidi") {
+                include "modul/sms2/sms2.php";
+            } elseif ($_GET['module'] == "rtransaksi") {
+                include "modul/rtransaksi.php";
+            } elseif ($_GET['module'] == "stock") {
+                include "modul/stock.php";
+            } elseif ($_GET['module'] == "pindah_titipan") {
+                include "modul/pindah_titipan.php";
+            } elseif ($_GET['module'] == "laborat_komponen") {
+                include "laborat_komponen.php";
+            } elseif ($_GET['module'] == "laborat_distribusi") {
+                include "laborat_distribusi.php";
+            } elseif ($_GET['module'] == "laborat_ujisaring") {
+                include "laborat_ujisaring.php";
+            } elseif ($_GET['module'] == "laborat_permintaan") {
+                include "laborat_permintaan.php";
+            } elseif ($_GET['module'] == "laborat_cetak") {
+                include "laborat_cetak.php";
+            } elseif ($_GET['module'] == "laborat_update") {
+                include "laborat_update.php";
+            } elseif ($_GET['module'] == "ganti_menu") {
+                include "ganti_menu.php";
+            } elseif ($_GET['module'] == "form_minta") {
+                include "modul/form_minta.php";
+            } elseif ($_GET['module'] == "form_bdrs") {
+                include "modul/form_bdrs.php";
+            } elseif ($_GET['module'] == "form_bdrsxls") {
+                include "modul/form_bdrsxls.php";
+            } elseif ($_GET['module'] == "ganti_passwd") {
+                include "modul/ganti_passwd.php";
+            } elseif ($_GET['module'] == "konfirmasi_gol_darah") {
+                include "modul/konfirmasi_gol_darah1.php";
+            } elseif ($_GET['module'] == "rekap_reaktif") {
+                require_once("color.inc");
+                include "modul/rekap_reaktif.php";
+            } elseif ($_GET['module'] == "sejarah") {
+                include "modul/sejarah_pendonor.php";
+            } elseif ($_GET['module'] == "list_sejarah") {
+                include "modul/sejarah.php";
+            } elseif ($_GET['module'] == "admin_sms") {
+                include "admin_sms.php";
+            } elseif ($_GET['module'] == "admin_laporan") {
+                include "admin_laporan.php";
+            } elseif ($_GET['module'] == "admin_utility") {
+                include "admin_utility.php";
+            } elseif ($_GET['module'] == "laporan_kegiatan") {
+                include "modul/lap_kegiatan.php";
+            } elseif ($_GET['module'] == "laporan_peng_darah") {
+                include "modul/lap_peng_darah.php";
+            } elseif ($_GET['module'] == "laporan_uji_sharing") {
+                include "modul/lap_uji_sharing.php";
+            } elseif ($_GET['module'] == "aktif_udd") {
+                include "modul/aktif_udd.php";
+            } elseif ($_GET['module'] == "laporan_buang_darah") {
+                include "modul/lap_buang_darah.php";
+            } elseif ($_GET['module'] == "updatekantong") {
+                include "modul/update_sah_kantong.php";
+            } elseif ($_GET['module'] == "rincian_minta_barang") {
+                include "logistik/rincian_transaksi_minta_barang.php";
+            } elseif ($_GET['module'] == "form_donor") {
+                include "modul/data_pendonor2.php";
+            } elseif ($_GET['module'] == "history") {
+                include "modul/sejarah_donor.php";
+            } elseif ($_GET['module'] == "transaksi_donor_lama") {
+                include "modul/input_transaksi_donor.php";
+            } elseif ($_GET['module'] == "laporan") {
+                include "laporan/filter_laporan.php";
+            } elseif ($_GET['module'] == "lap_lttd1") {
+                include "laporan/lttd1.php";
+            } elseif ($_GET['module'] == "lap_lttd2") {
+                include "laporan/lttd2.php";
+            } elseif ($_GET['module'] == "lap_lttd3") {
+                include "laporan/lttd3.php";
+            } elseif ($_GET['module'] == "lap_lttd4") {
+                include "laporan/lttd4.php";
+            } elseif ($_GET['module'] == "lap_lttd5") {
+                include "laporan/lttd5.php";
+            } elseif ($_GET['module'] == "lap_lttd6") {
+                include "laporan/lttd6.php";
+            } elseif ($_GET['module'] == 'graphdonor') {
+                include  "profile/grafik_pendonor.php";
+            } elseif ($_GET['module'] == 'graphdonasi') {
+                include  "profile/grafik_donasi.php";
+            } elseif ($_GET['module'] == 'graphtrendbulanan') {
+                include  "profile/grafik_trend_donasi.php";
+            } elseif ($_GET['module'] == 'graphpengujian') {
+                include  "profile/grafik_pengujian.php";
+            } elseif ($_GET['module'] == 'graphkomponen') {
+                include  "profile/grafik_komponen.php";
+            } elseif ($_GET['module'] == 'graphdistribusi') {
+                include  "profile/grafik_distribusi.php";
+            }
+            // } elseif ($_GET['module'] == "graphdonasi") {
+            //     include "profile/grafik_donasi.php";
+            // } elseif ($_GET['module'] == "graphdonor") {
+            //     include "profile/grafik_trend_donasi.php";
+            // } elseif ($_GET['module'] == "graphpengujian") {
+            //     include "profile/grafik_pengujian.php";
+            // } elseif ($_GET['module'] == "graphkomponen") {
+            //     include "profile/grafik_komponen.php";
+            // } elseif ($_GET['module'] == "graphdistribusi") {
+            //     include "profile/grafik_distribusi.php";
+            // }
+            // elseif ($_GET['module'] == "audit_trial") {
+            //     include "modul/log_user.php";
+            // }
+            elseif ($_GET['module'] == "audit_trial") {
+                include "pmf/pmf_audittrail.php";
+            } elseif ($_GET['module'] == "login_data") {
+                include "modul/data_login.php";
+            } elseif ($_GET['module'] == "manual") {
+                include "pimpinan_manual.php";
+            } elseif ($_GET['module'] == "manual_p2dds") {
+                include "dokumentasippdds.php";
+            } elseif ($_GET['module'] == "manual_aftap") {
+                include "dokumentasiaftap.php";
+            } elseif ($_GET['module'] == "manual_logistik") {
+                include "dokumentasilogistik.php";
+            } elseif ($_GET['module'] == "manual_seleksi") {
+                include "dokumentasidns.php";
+            } elseif ($_GET['module'] == "manual_mu") {
+                include "dokumentasimobile.php";
+            } elseif ($_GET['module'] == "manual_kgd") {
+                include "dokumentasikonfirmasi.php";
+            } elseif ($_GET['module'] == "manual_imltd") {
+                include "dokumentasiimltd.php";
+            } elseif ($_GET['module'] == "manual_komponen") {
+                include "dokumentasikomponen.php";
+            } elseif ($_GET['module'] == "manual_loket") {
+                include "dokumentasipasien.php";
+            } elseif ($_GET['module'] == "manual_cross") {
+                include "dokumentasicross.php";
+            } elseif ($_GET['module'] == "rincian_kegiatan") {
+                include "modul/kegiatan.php";
+            } elseif ($_GET['module'] == "laporan_pmk") {
+                include "laporan_pmk.php";
+            } elseif ($_GET['module'] == "pmk_lap_donasi") {
+                include "laporan/laporan_bulanan_wb.php";
+            } elseif ($_GET['module'] == "pmk_lap_aphe") {
+                include "laporan/laporan_bulanan_aph.php";
+            } elseif ($_GET['module'] == "pmk_lap_imltd") {
+                include "laporan/laporan_bulanan_ujisaring.php";
+            } elseif ($_GET['module'] == "pmk_lap_permdarah") {
+                include "laporan/laporan_bulanan_permdarah.php";
+            } elseif ($_GET['module'] == "pmk_lap_komponen") {
+                include "laporan/laporan_bulanan_komponen.php";
+            } elseif ($_GET['module'] == "pmk_lap_jumdonor") {
+                include "laporan/laporan_th_donor.php";
+            } elseif ($_GET['module'] == "pmk_lap_baruulang") {
+                include "laporan/laporan_th_donorbaruulang.php";
+            }
+
+            break;
+    }
+
+    echo "\n";
+}
