@@ -1,467 +1,575 @@
 <?php
+ob_start();
+session_start();
+include('config/dbi_connect.php');
+
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
+function e($str)
+{
+    return htmlspecialchars($str, ENT_QUOTES);
+}
+
+function getAlasanList($dbi)
+{
+    $list = array();
+    $sql = mysqli_query($dbi, "SELECT nomor, alasan FROM alasan_musnah ORDER BY nomor ASC");
+    if ($sql) {
+        while ($row = mysqli_fetch_assoc($sql)) {
+            $list[$row['nomor']] = $row['alasan'];
+        }
+    }
+    return $list;
+}
+
+function getAlasanLabel($kode, $dbi)
+{
+    static $list = null;
+
+    if ($list === null) {
+        $list = getAlasanList($dbi);
+    }
+
+    if (isset($list[$kode])) {
+        return $list[$kode];
+    }
+
+    return "Alasan Belum Dipilih";
+}
+
+function getStatusKantong($status, $dst_sahktg = "")
+{
+    switch ($status) {
+        case '0':
+            return "Kosong";
+        case '1':
+            return ($dst_sahktg == "0") ? "Aftap" : "Karantina";
+        case '2':
+            return "Sehat";
+        case '3':
+            return "Keluar";
+        case '4':
+            return "Rusak-Reaktif";
+        case '5':
+            return "Rusak-Gagal";
+        case '6':
+            return "Rusak-Dimusnahkan";
+        default:
+            return "Kantong Belum Terdaftar";
+    }
+}
+
+function getAsalUTD($dbi)
+{
+    $q = mysqli_query($dbi, "SELECT `id` FROM `utd` WHERE `aktif`='1' LIMIT 1");
+    if ($q && ($row = mysqli_fetch_assoc($q))) {
+        return $row['id'];
+    }
+    return '';
+}
+
 $nodokumen = "-";
+
+$now   = date("dmyHi");
+$today = date("Y-m-d H:i:s");
+
+$namauser    = isset($_SESSION['namauser']) ? $_SESSION['namauser'] : '';
+$namauserlkp = isset($_SESSION['nama_lengkap']) ? $_SESSION['nama_lengkap'] : '';
+$level       = isset($_SESSION['leveluser']) ? $_SESSION['leveluser'] : '';
+
+if ($level == "komponen") {
+    $trans = 'KP-' . $now;
+} else if ($level == "konfirmasi") {
+    $trans = 'KF-' . $now;
+} else if ($level == "imltd") {
+    $trans = 'IMLTD-' . $now;
+} else if ($level == "qa") {
+    $trans = 'PR-' . $now;
+} else if ($level == "laboratorium") {
+    $trans = 'CRM-' . $now;
+} else {
+    $trans = 'MUSNAH-' . $now;
+}
+
+
+if (isset($_POST['trans']) && $_POST['trans'] != '') {
+    $trans = $_POST['trans'];
+}
+
+$shift_terima_res = mysqli_query($dbi, "SELECT nama FROM `shift` WHERE `jam` <= CURRENT_TIME() AND `sampai_jam` >= CURRENT_TIME() LIMIT 1");
+$shift_terima = $shift_terima_res ? mysqli_fetch_assoc($shift_terima_res) : array('nama' => '');
+
+$message    = "";
+$alasanList = getAlasanList($dbi);
+
+if (isset($_POST['submit1'])) {
+    $no_kantong = isset($_POST['nomorkantong']) ? trim($_POST['nomorkantong']) : '';
+    $trans_post = isset($_POST['trans']) ? trim($_POST['trans']) : '';
+    $alasan     = isset($_POST['alasan']) ? trim($_POST['alasan']) : '';
+
+    $no_kantong_sql = mysqli_real_escape_string($dbi, $no_kantong);
+    $alasan_sql     = mysqli_real_escape_string($dbi, $alasan);
+    $trans_sql      = mysqli_real_escape_string($dbi, $trans_post);
+
+    $cekDup = mysqli_query(
+        $dbi,
+        "SELECT `noKantong` FROM `ar_stokkantongtemp`
+             WHERE `noKantong` = '$no_kantong_sql'
+               AND `bagian` = '$level'
+               AND `user` = '$namauser'
+             LIMIT 1"
+    );
+
+    if ($cekDup && mysqli_num_rows($cekDup) > 0) {
+        $message = "Nomor <b>$no_kantong_sql SUDAH ADA</b> dalam list";
+    } else {
+        $cari = "
+                SELECT
+                    s.`noKantong`, s.`kantongAsal`, s.`AsalUTD`, s.`mu`, s.`Status`, s.`StatTempat`,
+                    s.`tglpengolahan`, s.`tglTerima`, s.`kodePendonor`, s.`jenis`, s.`produk`,
+                    s.`gol_darah`, s.`RhesusDrh`, s.`merk`, s.`tgl_Aftap`, s.`sah`,
+                    s.`tglperiksa`, s.`kadaluwarsa`, s.`volume`
+                FROM `stokkantong` s
+                LEFT JOIN `htransaksi` h ON s.`noKantong` = h.`NoKantong`
+                WHERE s.`noKantong` = '$no_kantong_sql'
+            ";
+
+        $ck_res = mysqli_query($dbi, $cari);
+        $ck = $ck_res ? mysqli_fetch_assoc($ck_res) : array();
+
+        if (!$ck) {
+            $message = "Nomor <b>$no_kantong_sql</b> tidak ditemukan";
+        } else {
+            $asalUTD = '';
+            if (isset($ck['AsalUTD']) && trim($ck['AsalUTD']) !== '') {
+                $asalUTD = $ck['AsalUTD'];
+            } else {
+                $asalUTD = getAsalUTD($dbi);
+            }
+
+            $asalUTD_sql = mysqli_real_escape_string($dbi, $asalUTD);
+
+            if (
+                ($ck['Status'] == "0") ||
+                ($ck['Status'] == "1") ||
+                ($ck['Status'] == "2") ||
+                ($ck['Status'] == "7") ||
+                ($ck['Status'] == "4") ||
+                ($ck['Status'] == "5")
+            ) {
+                $jenis         = mysqli_real_escape_string($dbi, $ck['jenis']);
+                $status        = mysqli_real_escape_string($dbi, $ck['Status']);
+                $tglTerima     = mysqli_real_escape_string($dbi, $ck['tglTerima']);
+                $volume        = mysqli_real_escape_string($dbi, $ck['volume']);
+                $merk          = mysqli_real_escape_string($dbi, $ck['merk']);
+                $produk        = mysqli_real_escape_string($dbi, $ck['produk']);
+                $sah           = mysqli_real_escape_string($dbi, $ck['sah']);
+                $gol_darah     = mysqli_real_escape_string($dbi, $ck['gol_darah']);
+                $RhesusDrh     = mysqli_real_escape_string($dbi, $ck['RhesusDrh']);
+                $StatTempat    = mysqli_real_escape_string($dbi, $ck['StatTempat']);
+                $kodePendonor  = mysqli_real_escape_string($dbi, $ck['kodePendonor']);
+                $tgl_Aftap     = mysqli_real_escape_string($dbi, $ck['tgl_Aftap']);
+                $kadaluwarsa   = mysqli_real_escape_string($dbi, $ck['kadaluwarsa']);
+                $tglpengolahan = mysqli_real_escape_string($dbi, $ck['tglpengolahan']);
+                $mu            = mysqli_real_escape_string($dbi, $ck['mu']);
+
+                $sql_tmp = "
+                        INSERT INTO `ar_stokkantongtemp`
+                        (
+                            notrans, bagian, noKantong, jenis, `Status`, tglTerima, volume, merk, kantongAsal,
+                            produk, sah, gol_darah, RhesusDrh,  StatTempat, kodePendonor,
+                            statKonfirmasi, statQC, AsalUTD, tgl_Aftap, kadaluwarsa, tglpengolahan, mu,
+                            alasan_buang, tgl_buang, user
+                        )
+                        VALUES
+                        (
+                            '$trans_post', '$level', '$no_kantong_sql', '$jenis', '$status', '$tglTerima', '$volume', '$merk', '$asalUTD_sql',
+                            '$produk', '$sah', '$gol_darah', '$RhesusDrh',  '$StatTempat', '$kodePendonor',
+                            '1', '0', '$asalUTD_sql', '$tgl_Aftap', '$kadaluwarsa', '$tglpengolahan', '$mu',
+                            '$alasan_sql', '$today', '$namauser'
+                        )
+                    ";
+
+                $add = mysqli_query($dbi, $sql_tmp);
+
+                if ($add) {
+                    $message = "Nomor <b>$no_kantong_sql</b> berhasil dimasukkan dalam list";
+                } else {
+                    // cek kantong di ar_stokkantongtemp
+                    $cekListTemp = mysqli_query($dbi, "SELECT `bagian`, `noKantong`, `user` FROM `ar_stokkantongtemp` WHERE  `noKantong` = '$no_kantong_sql' LIMIT 1");
+                    $rowListTemp = mysqli_fetch_assoc($cekListTemp);
+                    $rowBagian = $rowListTemp['bagian'];
+                    $rowUser   = $rowListTemp['user'];
+                    $message = "Gagal memasukkan nomor <b>$no_kantong_sql</b> Karena sudah ada dilist pada bidang <b> $rowBagian </b> dengam petugas <b>$rowUser</b>";
+                    mysqli_error($dbi);
+                }
+            } elseif ($ck['Status'] == "6") {
+                $message = "Nomor <b>$no_kantong_sql</b> sudah dimusnahkan";
+            } elseif ($ck['Status'] == "3") {
+                $message = "Nomor <b>$no_kantong_sql</b> tidak dapat dimusnahkan karena status sudah <b>keluar</b>";
+            } else {
+                $message = "Nomor <b>$no_kantong_sql</b> tidak dapat dimasukkan dalam list, silahkan cek kantong";
+            }
+        }
+    }
+}
+
+if (isset($_POST['submit2'])) {
+    $trans_post   = isset($_POST['trans']) ? trim($_POST['trans']) : '';
+    $shift        = isset($shift_terima['nama']) ? $shift_terima['nama'] : '';
+
+    $trans_sql    = mysqli_real_escape_string($dbi, $trans_post);
+    $shift_sql    = mysqli_real_escape_string($dbi, $shift);
+    $namauser_sql = mysqli_real_escape_string($dbi, $namauser);
+
+
+    // Hitung total volume dari list sementara
+    $sumq = "
+        SELECT COALESCE(
+            SUM(CAST(REPLACE(volume, ',', '.') AS DECIMAL(10,2))),
+            0
+        ) AS total_volume_ml
+        FROM ar_stokkantongtemp
+        WHERE bagian='$level'
+          AND user='$namauser_sql'
+    ";
+    $sumres = mysqli_query($dbi, $sumq);
+    if (!$sumres) {
+        $message = "Gagal hitung total volume: " . mysqli_error($dbi);
+        exit;
+    }
+
+    $sumrow = mysqli_fetch_assoc($sumres);
+    $total_volume_ml = isset($sumrow['total_volume_ml']) ? floatval($sumrow['total_volume_ml']) : 0;
+    $berat_kg = round($total_volume_ml / 1000, 3);
+
+    $sq  = "SELECT * FROM `ar_stokkantongtemp` WHERE `bagian`='$level' AND `user`='$namauser_sql'";
+    $tmp = mysqli_query($dbi, $sq);
+
+    if (!$tmp) {
+        $message = "Gagal baca temporary: " . mysqli_error($dbi);
+        exit;
+    } else {
+
+        $sukses_semua = 1;
+        $jml = 0;
+        $rows_temp = array();
+
+        while ($row_temp = mysqli_fetch_assoc($tmp)) {
+            $rows_temp[] = $row_temp;
+        }
+
+        foreach ($rows_temp as $dta) {
+            $jml++;
+
+            $noKantongCurrent = isset($dta['noKantong']) ? trim($dta['noKantong']) : '';
+            $noKantongSql = mysqli_real_escape_string($dbi, $noKantongCurrent);
+
+            // cek dahulu nokantong pada ar_stokkantong
+            $cekDup2 = mysqli_query($dbi, "SELECT `noKantong` FROM `ar_stokkantong` WHERE `noKantong` = '$noKantongSql' LIMIT 1");
+            if ($cekDup2 && mysqli_num_rows($cekDup2) > 0) {
+                $sq_del_single = mysqli_query(
+                    $dbi,
+                    "DELETE FROM `ar_stokkantongtemp`
+                     WHERE `bagian`='$level'
+                       AND `user`='$namauser_sql'
+                       AND `noKantong`='$noKantongSql'"
+                );
+
+                if (!$sq_del_single) {
+                    $sukses_semua = 0;
+                    $message = "Gagal hapus data duplikat dari temporary: " . mysqli_error($dbi);
+                    break;
+                }
+
+                $message = "Nomor <b>$noKantongCurrent</b> sudah ada di database pemusnahan dan dilewati.";
+                continue;
+            }
+
+            $asalUTDFinal = (isset($dta['AsalUTD']) && trim($dta['AsalUTD']) !== '')
+                ? $dta['AsalUTD']
+                : getAsalUTD($dbi);
+
+            $q_detail = "
+                    INSERT INTO `ar_stokkantong`
+                    (
+                        notrans, bagian, noKantong, jenis, `Status`, tglTerima, volume, merk, kantongAsal,
+                        produk, sah, gol_darah, RhesusDrh, StatTempat, kodePendonor,
+                        statKonfirmasi, statQC, AsalUTD, tgl_Aftap, kadaluwarsa, tglpengolahan, mu,
+                        alasan_buang, tgl_buang, user
+                    )
+                    VALUES
+                    (
+                        '$trans_sql', '$level',
+                        '" . mysqli_real_escape_string($dbi, $dta['noKantong']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['jenis']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['Status']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['tglTerima']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['volume']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['merk']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['kantongAsal']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['produk']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['sah']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['gol_darah']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['RhesusDrh']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['StatTempat']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['kodePendonor']) . "',
+                        '1', '1',
+                        '" . mysqli_real_escape_string($dbi, $asalUTDFinal) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['tgl_Aftap']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['kadaluwarsa']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['tglpengolahan']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['mu']) . "',
+                        '" . mysqli_real_escape_string($dbi, $dta['alasan_buang']) . "',
+                        '$today',
+                        '$namauser_sql'
+                    )
+                ";
+
+            $add_d = mysqli_query($dbi, $q_detail);
+            if (!$add_d) {
+                $sukses_semua = 0;
+                $message = "Gagal simpan detail: " . mysqli_error($dbi);
+                break;
+            }
+
+            $noKantong_del = mysqli_real_escape_string($dbi, $dta['noKantong']);
+            $updatektg3 = mysqli_query($dbi, "UPDATE `stokkantong` SET `Status`='6' WHERE `noKantong`='$noKantong_del'");
+            if (!$updatektg3) {
+                $sukses_semua = 0;
+                $message = "Gagal update stokkantong: " . mysqli_error($dbi);
+                break;
+            }
+
+            $sq_del_single = mysqli_query(
+                $dbi,
+                "DELETE FROM `ar_stokkantongtemp`
+                 WHERE `bagian`='$level'
+                   AND `user`='$namauser_sql'
+                   AND `noKantong`='$noKantongSql'"
+            );
+            if (!$sq_del_single) {
+                $sukses_semua = 0;
+                $message = "Gagal hapus temporary: " . mysqli_error($dbi);
+                break;
+            }
+
+            $log_mdl = $level;
+            $log_aksi = 'Pemusnahan Produk Darah : ' . $dta['noKantong'] . '  No. transaksi: ' . $trans . ' Kode Pemusnahan : ' . $dta['alasan_buang'];
+            include "user_log.php";
+        }
+
+        if ($sukses_semua > 0 && $jml > 0) {
+            $sa = "INSERT INTO `ar_stokkantong_trans`
+           (notrans, tgl, bagian, ptgs_musnah, shift, berat)
+           VALUES
+           ('$trans_sql', '$today', '$level', '$namauser_sql', '$shift_sql', '$berat_kg')";
+
+            $a = mysqli_query($dbi, $sa);
+
+            if (!$a) {
+                $message = "Gagal simpan transaksi: " . mysqli_error($dbi);
+                exit;
+            } else {
+
+                echo "TRANSAKSI PEMUSNAHAN SUKSES, Kantong berpindah ke PEMUSNAHAN";
+                // echo "<meta http-equiv='refresh' content='2;url=musnah_label.php?notrans=$trans_sql'>";
+                echo "<meta http-equiv='refresh' content='2;url=pmi$level.php?module=musnahlist'>";
+                exit;
+            }
+        }
+    }
+}
 ?>
+
 <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.6.custom.css" rel="stylesheet" />
 <link type="text/css" href="css/table1.css" rel="stylesheet" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <link type="text/css" href="css/blitzer/jquery-ui-1.8.9m.custom.css" rel="stylesheet" />
+<link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
+
 <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.6.custom.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.5.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
-<link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
-<style>
-    .awesomeText {
-        color: #000;
-        font-size: 100%;
-    }
-</style>
 
 <style>
-    #serahterima {
-        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        border-collapse: collapse;
-    }
+.awesomeText {
+    color: #000;
+    font-size: 100%;
+}
 
-    #serahterima td,
-    #serahterima th {
-        border: 1px solid #ddd;
-        padding: 3px;
-    }
+#serahterima {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    border-collapse: collapse;
+}
 
-    #serahterima tr:nth-child(even) {
-        background-color: #ffe6e6;
-    }
+#serahterima td,
+#serahterima th {
+    border: 1px solid #ddd;
+    padding: 3px;
+}
 
-    #serahterima tr:hover {
-        background-color: #ddd;
-    }
+#serahterima tr:nth-child(even) {
+    background-color: #ffe6e6;
+}
 
-    #serahterima th {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        text-align: left;
-        font-weight: lighter;
-        background-color: #ff9999;
-        color: #000000;
-    }
+#serahterima tr:hover {
+    background-color: #ddd;
+}
 
-    #serahterima input {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        text-align: left;
-        background-color: lightyellow;
-        color: #000000;
-    }
+#serahterima th {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: left;
+    font-weight: lighter;
+    background-color: #ff9999;
+    color: #000000;
+}
+
+#serahterima input {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: left;
+    background-color: lightyellow;
+    color: #000000;
+}
+
+#entrybox {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    border-collapse: collapse;
+}
+
+#entrybox td,
+#entrybox th {
+    border: 1px solid #ddd;
+    background-color: #ffe6e6;
+    padding: 3px;
+}
+
+#entrybox th {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: left;
+    font-weight: lighter;
+    background-color: #ffe6e6;
+    color: #000000;
+}
+
+#entrybox input,
+#entrybox select {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: left;
+    font-weight: bold;
+    background-color: #e6ffe6;
+    color: #000000;
+}
 </style>
-<style>
-    #entrybox {
-        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        border-collapse: collapse;
-    }
 
-    #entrybox td,
-    #entrybox th {
-        border: 1px solid #ddd;
-        background-color: #ffe6e6;
-        padding: 3px;
-    }
-
-    #entrybox th {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        text-align: left;
-        font-weight: lighter;
-        background-color: #ffe6e6;
-        color: #000000;
-    }
-
-    #entrybox input {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        text-align: left;
-        font-weight: bold;
-        background-color: #e6ffe6;
-        color: #000000;
-    }
-</style>
-<script language="javascript">
-    function setFocus() {
-        document.sahdarah.nomorkantong.focus();
-    }
-</script>
 <script type="text/javascript">
-    function handleEnter(field, event) {
-        var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
-        if (keyCode == 13) {
-            var i;
-            for (i = 0; i < field.form.elements.length; i++)
-                if (field == field.form.elements[i])
-                    break;
-            i = (i + 1) % field.form.elements.length;
-            field.form.elements[i].focus();
-            return false;
-        } else
-            return true;
+function setFocus() {
+    var el = document.getElementById('nomorkantong');
+    if (el) {
+        el.focus();
     }
+}
+
+function validasiInputList() {
+    var alasan = document.getElementById('alasan').value;
+    var noKantong = document.getElementById('nomorkantong').value;
+
+    if (alasan === '') {
+        alert('Alasan pemusnahan wajib dipilih sebelum masuk list.');
+        document.getElementById('alasan').focus();
+        return false;
+    }
+
+    if (noKantong === '') {
+        alert('Nomor kantong tidak boleh kosong.');
+        document.getElementById('nomorkantong').focus();
+        return false;
+    }
+
+    return true;
+}
 </script>
 
-<body onLoad=setFocus();>
-    <?php
-
-    include('config/dbi_connect.php');
-    date_default_timezone_set("Asia/Jakarta");
-    $now            = date("dmyHi");
-
-    $today            = date("Y-m-d H:i:s");
-    $namauser        = $_SESSION['namauser'];
-    $namauserlkp    = $_SESSION['nama_lengkap'];
-    $level            = $_SESSION['leveluser'];
-    if ($level == "komponen") {
-        $trans = 'KP-' . $now;
-    } else {
-        $trans = 'PR-' . $now;
-    }
-    $modul            = "KARANTINA";
-    $bag_pengirim    = "AFTAP";
-    $bag_penerima    = "KOMPONEN, IMLTD & KGD";
-    if (isset($_POST['asal'])) {
-        $asal_sample = $_POST['asal'];
-    } else {
-        $asal_sample = "";
-    }
-    if (isset($_POST['kodealat'])) {
-        $kode_alat = $_POST['kodealat'];
-    } else {
-        $kode_alat = "";
-    }
-    if (isset($_POST['suhu'])) {
-        $suhu = $_POST['suhu'];
-    } else {
-        $suhu = "";
-    }
-    if (isset($_POST['keadaan'])) {
-        $keadaan = $_POST['keadaan'];
-    } else {
-        $keadaan = "";
-    }
-    if (isset($_POST['alasan'])) {
-        $alasan = $_POST['alasan'];
-    }
-    if (isset($_POST['trans'])) {
-        $trans = $_POST['trans'];
-    }
-    $shift_terima = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama FROM `shift` WHERE `jam`<=current_time() and `sampai_jam`>=current_time()"));
-    //echo "Alasan Anda ".$alasan;
-
-    if (isset($_POST['submit1'])) {
-        //Semua input harus terisi, bila blm lengkap, Alert dan balik
-        $no_kantong = mysql_real_escape_string($_POST['nomorkantong']);
-        $trans    = $_POST['trans'];
-        $alasan   = $_POST['alasan'];
-        if ((strlen($no_kantong) == 0) or (empty($no_kantong))) {
-            $nokantong_kosong = "1";
-        } else {
-            $nokantong_kosong = "0";
-        }
-
-        if ($nokantong_kosong == "0") {
-
-            $cek = "SELECT `noKantong` from `ar_stokkantongtemp` WHERE `noKantong`='$no_kantong'";
-            $cek1 = mysqli_fetch_assoc(mysqli_query($dbi, $cek));
-            if ($no_kantong == $cek1['noKantong']) {
-                $message = "Nomor <b>$no_kantong SUDAH ADA</b> dalam list";
-            } else {
-                $cari = "SELECT s.`noKantong`, s.`kantongAsal`, s.`mu`, s.`Status`,s.`stat2`,s.`StatTempat`,s.`tglpengolahan`,s.`tglTerima`,s.`kodePendonor`,s.`jenis`, s.`produk`, s.`gol_darah`,s.`RhesusDrh`,s.`merk`,s.`tgl_Aftap`,s.`sah`,s.`tglperiksa`,s.`kadaluwarsa`,s.`volume` FROM `stokkantong` s LEFT JOIN `htransaksi` h on s.`noKantong`=h.`NoKantong` WHERE  s.`noKantong`='$no_kantong'";
-                $ck = mysqli_fetch_assoc(mysqli_query($dbi, $cari));
-
-                $cek_asal = "SELECT `nama`, `id` FROM `utd` WHERE `aktif`='1'";
-                $cek_asal_q = mysqli_fetch_assoc(mysqli_query($dbi, $cek_asal));
-
-                $kantong_asal = $ck['kantongAsal'] == null ? $cek_asal_q['id'] : $ck['kantongAsal'];
-                //echo $cari;
-
-
-                if (($ck['Status'] == "0") or ($ck['Status'] == "1") or ($ck['Status'] == "2") or ($ck['Status'] == "7") or ($ck['Status'] == "4") or ($ck['Status'] == "5")) {
-
-
-                    $sql_tmp = "INSERT INTO `ar_stokkantongtemp` (notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES('$trans','$level','$no_kantong','$ck[jenis]', '$ck[Status]', '$ck[tglTerima]','$ck[volume]', '$ck[merk]', '$kantong_asal', '$ck[produk]','$ck[sah]', '$ck[gol_darah]', '$ck[RhesusDrh]',  '$ck[stat2]', '$ck[StatTempat]','$ck[kodePendonor]', '1', '1', '3372', '$ck[tgl_Aftap]', '$ck[kadaluwarsa]', '$ck[tglpengolahan]',  '$ck[mu]', '$alasan', '$today', '$namauser')";
-                    //echo "$sql_tmp";
-                    $add = mysqli_query($dbi, $sql_tmp);
-                    $message = "Nomor <b>$no_kantong Berhasil</b> dimasukkan dalam list";
-                } else if (($ck['Status'] == "6")) {
-                    $message = "Nomor <b>$no_kantong </b> sudah dimusnahkan";
-                } else {
-                    $message = "Nomor <b>$no_kantong </b> tidak dapat dimasukkan dalam list, silahkan cek kantong";
-                }
-            }
-        } else {
-            $message = "Nomor kantong <b>TIDAK BOLEH</b> kosong";
-        }
-    }
-    if (isset($_POST[submit3])) {
-        echo "Transaksi Serah Terima Darah dan Sampel Darah : DIBATALKAN<br>";
-        //echo "<meta http-equiv='rupdateefresh' content='2;url=pmiaftap.php?module=serahterima'";
-        if ($level == "komponen") {
-            echo "<meta http-equiv='refresh' content='2;url=pmikomponen.php?module=musnahlist'";
-        } else if ($level == "qa") {
-            echo "<meta http-equiv='refresh' content='2;url=pmiqa.php?module=musnahlist'";
-        } else if ($level == "imltd") {
-            echo "<meta http-equiv='refresh' content='2;url=pmiimltd.php?module=musnahlist'";
-        }
-    }
-    if (isset($_POST[submit2])) {
-        //Generated NoTransaksi===============================================
-        $trans = $_POST['trans'];
-        //END Generate no transaksi===============================================
-        $instansi       = $_POST['instansi'];
-        $ptg_penerima   = $_POST['ptg_penerima'];
-        $shift          = $shift_terima['nama'];
-
-        $nama_file_ba = NULL;
-
-        // if (isset($_FILES['upload_berita_acara']) && $_FILES['upload_berita_acara']['error'] == 0) {
-
-        //                     $file_name = $_FILES['upload_berita_acara']['name'];
-        //                     $file_tmp  = $_FILES['upload_berita_acara']['tmp_name'];
-        //                     $file_size = $_FILES['upload_berita_acara']['size'];
-        //                     $file_ext  = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
-        //                     // Validasi ekstensi
-        //                     $allowed_ext = array('jpg', 'jpeg', 'png', 'pdf');
-        //                     if (!in_array($file_ext, $allowed_ext)) {
-        //                         $message = "Format Berita Acara tidak valid (jpg, jpeg, png, pdf)";
-        //                         goto end_submit;
-        //                     }
-
-        //                     // Validasi ukuran 5MB
-        //                     if ($file_size > 5 * 1024 * 1024) {
-        //                         $message = "Ukuran Berita Acara maksimal 5MB";
-        //                         goto end_submit;
-        //                     }
-
-        //                     // Folder upload
-        //                     $upload_dir = __DIR__ . "/file_berita_acara/";
-        //                     if (!is_dir($upload_dir)) {
-        //                         mkdir($upload_dir, 0777, true);
-        //                     }
-
-        //                     // Rename file
-        //                     $nama_file_ba = "BA_" . $trans . "_" . time() . "." . $file_ext;
-        //                     $upload_path = $upload_dir . $nama_file_ba;
-
-        //                     // Upload
-        //                     if (!move_uploaded_file($file_tmp, $upload_path)) {
-        //                         $message = "Gagal upload Berita Acara";
-        //                         goto end_submit;
-        //                     }
-        //                 }
-
-        // if($nama_file_ba == null){
-        //    $message= "Wajib Upload Berita Acara";
-        //    goto end_submit;
-        //  }
-
-        $sa = "INSERT INTO `ar_stokkantong_trans`(notrans, tgl, bagian, ptgs_musnah, ptgs_limbah, pengelola, shift, file_berita_acara)
-    	    VALUES ('$trans','$today', '$level', '$namauser', '$ptg_penerima', '$instansi', '$shift', " . ($nama_file_ba ? "'$nama_file_ba'" : "NULL") . ")";
-        //echo "$sa<br>";
-        $a  = mysqli_query($dbi, $sa);
-        $sq = "SELECT * FROM `ar_stokkantongtemp` WHERE `bagian`='$level'";
-        $tmp = mysqli_query($dbi, $sq);
-        $no = 0;
-        while ($dta = mysqli_fetch_assoc($tmp)) {
-            $no++;
-            //echo "Proses : $no $dta[dst_nokantong]<br>";
-            //insert serahterima_detail
-            $q_detail = "INSERT INTO `ar_stokkantong`(notrans,bagian,noKantong,jenis,`Status`,tglTerima,volume,merk,kantongAsal,produk,sah,gol_darah,RhesusDrh,stat2,StatTempat,kodePendonor,statKonfirmasi,statQC,AsalUTD,tgl_Aftap,kadaluwarsa,tglpengolahan,mu,alasan_buang, tgl_buang, user)VALUES ( '$trans','$level','$dta[noKantong]','$dta[jenis]', '$dta[Status]', '$dta[tglTerima]','$dta[volume]', '$dta[merk]', '3372', '$dta[produk]','$dta[sah]', '$dta[gol_darah]', '$dta[RhesusDrh]',  '$dta[stat2]', '$dta[StatTempat]','$dta[kodePendonor]', '1', '1', '3372', '$dta[tgl_Aftap]', '$dta[kadaluwarsa]', '$dta[tglpengolahan]',  '$dta[mu]', '$dta[alasan_buang]', '$today', '$namauser')";
-
-
-            //echo "$q_detail<br>";
-            $add_d  = mysqli_query($dbi, $q_detail);
-            //Update Stokkantong menjadi musnah
-            $updatektg3 = mysqli_query($dbi, "update `stokkantong` set  `Status`='6'  where `noKantong`='$dta[noKantong]'");
-
-            //=======Audit Trial====================================================================================
-            $log_mdl = $level;
-            $log_aksi = 'Pemusnahan Produk Darah : ' . $dta['noKantong'] . '  No. transaksi: ' . $trans . ' Kode Pemusnahan : ' . $dta['alasan_buang'];
-            include "user_log.php";
-            //=====================================================================================================
-        }
-        //PRINT FORMULIR SERAH TERIMA
-        //Hapus temporary
-        $sq_del = mysqli_query($dbi, "DELETE FROM `ar_stokkantongtemp` WHERE `notrans`='$trans' AND `bagian`='$level' AND `user`='$namauser'");
-        echo "TRANSAKSI PEMUSNAHAN SUKSES, Kantong kantong berpindah ke PEMUSNAHAN";
-
-        /*
-        if ($level == "komponen"){
-            echo "<meta http-equiv='refresh' content='2;url=pmikomponen.php?module=musnahlist'";
-       }else {
-            echo "<meta http-equiv='refresh' content='2;url=pmiqa.php?module=musnahlist'";
-       }
-        */
-        echo "<meta http-equiv='refresh' content='2;url=musnah_label.php?notrans=$trans'";
-
-        end_submit: // <-- hanya dieksekusi jika ada error
-
-        if (isset($message) && $message != '') {
-            echo "<script>alert('" . addslashes($message) . "');</script>";
-            // tetap di halaman upload
-            echo "<meta http-equiv='refresh' content='0'>";
-            exit;
-        }
-    }
-
-
-    ?>
+<body onLoad="setFocus();">
     <a name="atas" id="atas"></a>
+
     <center>
         <div
             style="background-color: #ffffff;font-size:24px; color:#0099ff;text-shadow: 1px 1px 1px #000000; font-family:Verdana;">
-            PEMUSNAHAN PRODUK DARAH</div>
+            PEMUSNAHAN PRODUK DARAH
+        </div>
     </center>
+
     <p>
         <hr style="width: 100%;text-align:left;margin-left:0;color: #0099ff">
-        <?php
-        $sr = mysql_fetch_assoc(mysql_query("SELECT  `dst_asal`, `dst_kodealat`,  `dst_suhu`, `dst_keadaan` FROM `serahterima_detail_tmp` WHERE `dst_modul`='$modul' AND `dst_user`='$namauser'"));
-        $keadaan      = $sr['dst_keadaan'];
-        $suhu         = $sr['dst_suhu'];
-        $kode_alat    = $sr['dst_kodealat'];
-        $asal_sample  = $sr['dst_asal'];
-        ?>
-    <form name=sahdarah method=post enctype="multipart/form-data">
+
+    <form name="sahdarah" method="post" enctype="multipart/form-data">
         <table
             style="width: 100%; border-collapse: collapse;border: 2px solid #808080;box-shadow: 1px 2px 2px #000000;">
             <tr>
-                <td style="vertical-align: top; width=100%;">
+                <td style="vertical-align: top; width:100%;">
                     <table id="serahterima" style="width: 98%;">
                         <tr>
                             <th>Nomor Transaksi</th>
-                            <td><input type="hidden" name="trans" value=<?php echo $trans; ?>><?php echo $trans; ?></td>
+                            <td>
+                                <input type="hidden" name="trans" value="<?php echo e($trans); ?>">
+                                <?php echo e($trans); ?>
+                            </td>
                         </tr>
                         <tr>
                             <th>Asal Pemusnahan</th>
-                            <td><?php echo strtoupper($level); ?></td>
+                            <td><?php echo strtoupper(e($level)); ?></td>
                         </tr>
                         <tr>
                             <th>Petugas Pemusnahan</th>
-                            <td><?php echo strtoupper($namauserlkp); ?></td>
+                            <td><?php echo strtoupper(e($namauserlkp)); ?></td>
                         </tr>
                     </table>
                 </td>
-
             </tr>
         </table>
 
         <br>
+
         <table id="entrybox" width="100%"
             style="border-collapse: collapse;border: 2px solid #ff0000;width: 100%; box-shadow: 1px 2px 2px #800000;">
             <tr>
-                <td>Alasan Pemusnahan</td>
-                <?php
-                $A = '';
-                $B = '';
-                $C = '';
-                $D = '';
-                $E = '';
-                $F = '';
-                $G = '';
-                $H = '';
-                $I = '';
-                $J = '';
-                $K = '';
-                $L = '';
-                $M = '';
-                $N = '';
-                $O = '';
-                $P = '';
-                $Q = '';
-                if ($alasan == '0') $A = 'selected';
-                if ($alasan == '11') $B = 'selected';
-                if ($alasan == '4') $C = 'selected';
-                if ($alasan == '6') $D = 'selected';
-                if ($alasan == '1') $E = 'selected';
-                if ($alasan == '2') $F = 'selected';
-                if ($alasan == '5') $G = 'selected';
-                if ($alasan == '8') $H = 'selected';
-                if ($alasan == '10') $I = 'selected';
-                if ($alasan == '13') $J = 'selected';
-                if ($alasan == '9') $K = 'selected';
-                if ($alasan == '7') $L = 'selected';
-                if ($alasan == '12') $M = 'selected';
-                if ($alasan == '3') $N = 'selected';
-                if ($alasan == '14') $O = 'selected';
-                if ($alasan == '15') $P = 'selected';
-                if ($alasan == '16') $Q = 'selected';
-
-                if ($alasan == '17') $R = 'selected';
-                if ($alasan == '18') $S = 'selected';
-                if ($alasan == '19') $T = 'selected';
-                if ($alasan == '20') $U = 'selected';
-                if ($alasan == '21') $V = 'selected';
-                if ($alasan == '22') $W = 'selected';
-                if ($alasan == '23') $X = 'selected';
-                if ($alasan == '24') $Y = 'selected';
-                if ($alasan == '25') $Z = 'selected';
-                if ($alasan == '26') $AA = 'selected';
-                if ($alasan == '27') $AB = 'selected';
-                ?>
+                <td>Alasan Pemusnahan <span style="color:red">*</span></td>
                 <td>
-                    <select name="alasan" onchange="document.musnah.nomorkantong.focus()">
+                    <select name="alasan" id="alasan" onchange="document.getElementById('nomorkantong').focus();">
                         <option value="">Pilih Alasan</option>
-                        <option value="0" <?= $A ?>>Gagal Aftap</option>
-                        <option value="11" <?= $B ?>>Bekas Pembuatan TPK</option>
-                        <option value="4" <?= $C ?>>Reaktif Buang</option>
-                        <!--option value="11">Reaktif Dirujuk Ke UTDP</option-->
-                        <option value="6" <?= $D ?>>Greyzone</option>
-                        <option value="1" <?= $E ?>>Lisis</option>
-                        <option value="2" <?= $F ?>>Kadaluwarsa</option>
-                        <option value="5" <?= $G ?>>Lifemik</option>
-                        <option value="8" <?= $H ?>>Kantong Bocor</option>
-                        <option value="10" <?= $I ?>>Pembuatan Leucodepleted</option>
-                        <option value="13" <?= $J ?>>Plasma Sisa PRC</option>
-                        <option value="9" <?= $K ?>>Satelit Rusak</option>
-                        <option value="7" <?= $L ?>>DCT Positif</option>
-                        <option value="12" <?= $M ?>>Hematokrit Tinggi</option>
-                        <option value="3" <?= $N ?>>Plebotomi Terapi</option>
-                        <option value="14" <?= $O ?>>Leukosit Tinggi</option>
-                        <option value="15" <?= $P ?>>Produk Rusak</option>
-                        <option value="16" <?= $Q ?>>Produk Sample QC</option>
-                        <option value="17" <?= $R ?>>Plasma Kuning</option>
-                        <option value="18" <?= $S ?>>Plasma Merah</option>
-                        <option value="19" <?= $T ?>>Plasma Hijau</option>
-                        <option value="20" <?= $U ?>>Selang Pendek</option>
-                        <option value="21" <?= $V ?>>Selang Merah</option>
-                        <option value="22" <?= $W ?>>Volume Lebih</option>
-                        <option value="23" <?= $X ?>>Volume Kurang</option>
-                        <option value="24" <?= $Y ?>>ABS Positif</option>
-                        <option value="25" <?= $Z ?>>Menggumpal</option>
-                        <option value="26" <?= $AA ?>>Clot</option>
-                        <option value="27" <?= $AB ?>>Jejak IMLTD Reaktif</option>
+                        <?php foreach ($alasanList as $kode => $nama) { ?>
+                        <option value="<?php echo e($kode); ?>"
+                            <?php echo ($alasan !== '' && $alasan == $kode) ? 'selected' : ''; ?>>
+                            <?php echo e($nama); ?>
+                        </option>
+                        <?php } ?>
                     </select>
                 </td>
                 <td>Masukkan Nomor Kantong</td>
-                <!--td><input type=text name="nomorkantong" id="nomorkantong" autofocus onkeypress="return handleEnter(this, event)"></td-->
-                <td><input type=text name="nomorkantong" id="nomorkantong"></td>
-
-                <td><input type="submit" name="submit1" value="Ok" class="swn_button_red" style="color: #ffff00"></td>
+                <td><input type="text" name="nomorkantong" id="nomorkantong"></td>
+                <td><input type="submit" name="submit1" value="Ok" class="swn_button_red" style="color: #ffff00"
+                        onclick="return validasiInputList();"></td>
             </tr>
             <tr>
                 <td style="height: 30px">Status Proses</td>
-                <td colspan="7"><?= $message ?></td>
+                <td colspan="4"><?php echo $message; ?></td>
             </tr>
         </table>
 
-
         <br>
+
         <table id="serahterima" width="100%"
             style="border-collapse: collapse;border: 1px solid #808080;box-shadow: 1px 2px 2px #000000;">
-            <tr style="font-size: 12px">
-
-
-
-
+            <tr style="font-size: 12px; ">
                 <th style="height: 40px;text-align: center;font-weight: bold">No</th>
                 <th style="height: 40px;text-align: center;font-weight: bold">No Kantong</th>
                 <th style="height: 40px;text-align: center;font-weight: bold">Jenis<br>Ktg</th>
@@ -472,213 +580,52 @@ $nodokumen = "-";
                 <th style="height: 40px;text-align: center;font-weight: bold">Kode Donor</th>
                 <th style="height: 40px;text-align: center;font-weight: bold">Alasan Pemusnahan</th>
                 <th style="height: 40px;text-align: center;font-weight: bold">Aksi</th>
-
             </tr>
             <?php
-            $no = 0;
-            //CAri dari table temporary
-            $qry = "SELECT * from ar_stokkantongtemp where bagian='$level' order by inserr_on DESC";
-            //echo $qry;
-            //echo "$qry";
+            $qry = "SELECT * FROM ar_stokkantongtemp WHERE bagian='$level' AND user='$namauser' ORDER BY inserr_on DESC";
             $sql = mysqli_query($dbi, $qry);
-            $no = mysqli_num_rows($sql) + 1;
-            while ($tmp = mysqli_fetch_assoc($sql)) {
-                $no--;
-                switch ($tmp['Status']) {
-                    case '0':
-                        $ckt_status = "Kosong";
-                        break;
-                    case '1':
-                        if ($tmp['dst_sahktg'] == "0") {
-                            $ckt_status = "Aftap";
-                        } else {
-                            $ckt_status = "Karantina";
-                        }
-                        break;
-                    case '2':
-                        $ckt_status = "Sehat";
-                        break;
-                    case '3':
-                        $ckt_status = "Keluar";
-                        break;
-                    case '4':
-                        $ckt_status = "Rusak-Reaktif";
-                        break;
-                    case '5':
-                        $ckt_status = "Rusak-Gagal";
-                        break;
-                    case '6':
-                        $ckt_status = "Rusak-Dimusnahkan";
-                        break;
-                    default:
-                        $ckt_status = "Kantong Belum Terdaftar";
-                        break;
+
+            $rows = array();
+            if ($sql) {
+                while ($r = mysqli_fetch_assoc($sql)) {
+                    $rows[] = $r;
                 }
-
-                switch ($tmp['alasan_buang']) {
-                    case '0':
-                        $alsn = "Gagal Aftap";
-                        break;
-                    case '1':
-                        $alsn = "Lisis";
-                        break;
-                    case '2':
-                        $alsn = "Kadaluwarsa";
-                        break;
-                    case '3':
-                        $alsn = "Plebotomi";
-                        break;
-                    case '4':
-                        $alsn = "Reaktif Buang";
-                        break;
-                    case '5':
-                        $alsn = "Lifemik";
-                        break;
-                    case '6':
-                        $alsn = "Greyzone";
-                        break;
-                    case '7':
-                        $alsn = "DCT Positif";
-                        break;
-                    case '8':
-                        $alsn = "Kantong Bocor";
-                        break;
-                    case '9':
-                        $alsn = "Satelit Rusak";
-                        break;
-                    case '10':
-                        $alsn = "Bekas Pembuatan WE";
-                        break;
-                    case '11':
-                        $alsn = "Reaktif Dirujuk Ke UTDP";
-                        break;
-                    case '12':
-                        $alsn = "Hematokrit Tinggi";
-                        break;
-                    case '13':
-                        $alsn = "Plasma Sisa PRC";
-                        break;
-                    case '14':
-                        $alsn = "Leukosit Tinggi";
-                        break;
-                    case '15':
-                        $alsn = "Produk Rusak";
-                        break;
-                    case '16':
-                        $alsn = "Produk Sample QC";
-                        break;
-                    case '17':
-                        $alsn = "Plasma Kuning";
-                        break;
-                    case '18':
-                        $alsn = "Plasma Merah";
-                        break;
-                    case '19':
-                        $alsn = "Plasma Hijau";
-                        break;
-                    case '20':
-                        $alsn = "Selang Pendek";
-                        break;
-                    case '21':
-                        $alsn = "Selang Merah";
-                        break;
-                    case '22':
-                        $alsn = "Volume Lebih";
-                        break;
-                    case '23':
-                        $alsn = "Volume Kurang";
-                        break;
-                    case '24':
-                        $alsn = "ABS Positif";
-                        break;
-                    case '25':
-                        $alsn = "Menggumpal";
-                        break;
-                    case '26':
-                        $alsn = "Clot";
-                        break;
-                    case '27':
-                        $alsn = "Jejak IMLTD Reaktif";
-                        break;
-                    default:
-                        $alsn = "Kantong Belum Terdaftar";
-                        break;
-                }
-
-            ?>
-                <tr style="font-size: 12px">
-                    <td align="right"><?= $no ?>.</td>
-                    <td><?= $tmp['noKantong'] ?></td>
-                    <td align="center"><?= $tmp['jenis'] ?></td>
-                    <td><?= $tmp['merk'] ?></td>
-                    <td><?= $ckt_status ?></td>
-                    <td style="text-align: center"><?= $tmp['gol_darah'] . $tmp['RhesusDrh'] ?></td>
-                    <td align="center"><?= $tmp['tgl_Aftap'] ?></td>
-                    <td align="center"><?= $tmp['kodePendonor'] ?></td>
-                    <td align="center"><?= $alsn ?></td>
-                    <?php if ($level == "komponen") { ?>
-                        <td><a href="pmikomponen.php?module=musnahdelrow&op=del&ktg=<?= $tmp['noKantong'] ?>&usr=<?= $namauser ?>&bagian=<?= $level ?>"
-                                onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?= $tmp['noKantong'] ?> ?');">Hapus</a>
-                        </td>
-                    <?php } else { ?>
-                        <td><a href="pmiqa.php?module=musnahdelrow&op=del&ktg=<?= $tmp['noKantong'] ?>&usr=<?= $namauser ?>&bagian=<?= $level ?>"
-                                onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?= $tmp['noKantong'] ?> ?');">Hapus</a>
-                        </td>
-                    <?php } ?>
-
-
-                </tr>
-            <?php
             }
+
+            $no = count($rows) + 1;
+            foreach ($rows as $tmp) {
+                $no--;
+
+                $ckt_status = getStatusKantong($tmp['Status'], isset($tmp['dst_sahktg']) ? $tmp['dst_sahktg'] : '');
+                $alsn = getAlasanLabel($tmp['alasan_buang'], $dbi);
             ?>
-            <!-- <tr>
-                <td style="vertical-align: top;" colspan="7">
-                    <table id="serahterima">
-			<tr>
-			    <th>Lampiran Berita Acara<label style="color:red;">*</label></th>
-			    <td><input type="file" name="upload_berita_acara" accept=".jpg, .jpeg, .png, .pdf"/><br>
-                    	<label>Format File: .PDF, .JPEG, .JPG, .PNG</label><br/>
-			<label>Max File Size 5MB</label></td>
-			</tr> -->
-
-            <!-- <tr>
-                            <th>Instansi Pengelola Limbah</th>
-                            <td><select name="instansi" id="ptg_menyerahkan">
-                                    <option value="">-</option>
-                                    <?
-                                    $usr    = mysqli_query($dbi, "select * from supplier where jenis='4' order by Nama Asc");
-                                    while ($usr1    = mysqli_fetch_assoc($usr)) {
-                                    ?><option value="<?= $usr1[Kode] ?>"><?= $usr1['Nama'] ?><?
-                                                                                            }
-                                                                                                ?>
-                                </select></td>
-                        </tr>
-                        <tr>
-                            <th>Petugas Instansi Pengelola Limbah</th>
-                            <td><input name="ptg_penerima" type="text"></td>
-                        </tr> -->
+            <tr style="font-size: 12px">
+                <td align="right"><?php echo $no; ?>.</td>
+                <td><?php echo e($tmp['noKantong']); ?></td>
+                <td align="center"><?php echo e($tmp['jenis']); ?></td>
+                <td><?php echo e($tmp['merk']); ?></td>
+                <td><?php echo e($ckt_status); ?></td>
+                <td style="text-align: center"><?php echo e($tmp['gol_darah'] . $tmp['RhesusDrh']); ?></td>
+                <td align="center"><?php echo e($tmp['tgl_Aftap']); ?></td>
+                <td align="center"><?php echo e($tmp['kodePendonor']); ?></td>
+                <td align="center"><?php echo e($alsn); ?></td>
+                <td>
+                    <a href="pmi<?php echo e($level); ?>.php?module=musnahdelrow&op=del&ktg=<?php echo urlencode($tmp['noKantong']); ?>&usr=<?php echo urlencode($namauser); ?>&bagian=<?php echo urlencode($level); ?>"
+                        onclick="return confirm('PERHATIAN \n \nYakin akan menghapus Nomor kantong \n<?php echo e($tmp['noKantong']); ?> ?');">
+                        Hapus
+                    </a>
+                </td>
+            </tr>
+            <?php } ?>
         </table>
-        </td>
-        <!-- <td style="vertical-align: top;" colspan="11">
-                    <table id="serahterima" style="border: 0px; width: 100%;">
-                        <tr>
-                            <th colspan="2"><b>CATATAN</b></th>
-                        </tr>
-                        <tr>
-                            <th>Instansi Pengelola Limbah</th>
-                            <td>Jika Pilihan Instansi Pengelola Limbah Tidak/Belum Ada, Silahkan Input Data terlebih Dahulu di Level Logistik - Menu Transaksi - Sub Menu Data Kontak</td>
-                        </tr>
-                    </table>
-                </td> -->
-        </tr>
 
-        </table>
         <hr style="width: 100%;text-align:left;margin-left:0; line-height: 1px">
+
         <input type="submit" name="submit2" value="Simpan Transaksi Pemusnahan"
             onclick="return confirm('PERHATIAN \n \nSimpan transaksi pemusnahan darah ini?');" class="swn_button_blue">
-        <a href="pmi<?php echo $level; ?>.php?module=musnahbatal&op=batal&usr=<?= $namauser ?>&bagian=<?= $level ?>"
+
+        <a href="pmi<?php echo e($level); ?>.php?module=musnahbatal&op=batal&usr=<?php echo urlencode($namauser); ?>&bagian=<?php echo urlencode($level); ?>"
             onclick="return confirm('PERHATIAN \n \nYakin akan membatalkan transaksi pemusnahan darah ini?');"
             class="swn_button_blue">Batalkan Transaksi Pemusnahan</a>
     </form>
-    <div style="font-size:10px; color:#000000; font-family: " Helvetica Neue", Helvetica, Arial, sans-serif;">Build :
-        21-08-2024</div>
+</body>

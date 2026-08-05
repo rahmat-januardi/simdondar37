@@ -10,42 +10,42 @@
 <link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
 
 <style>
-    #serahterima {
-        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-        font-size: 16px;
-        border-collapse: collapse;
-    }
+#serahterima {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    border-collapse: collapse;
+}
 
-    #serahterima td,
-    #serahterima th {
-        border: 1px solid #ddd;
-        padding: 5px;
-    }
+#serahterima td,
+#serahterima th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
 
-    #serahterima tr:nth-child(even) {
-        background-color: #ffe6e6;
-    }
+#serahterima tr:nth-child(even) {
+    background-color: #ffe6e6;
+}
 
-    #serahterima tr:hover {
-        background-color: #ddd;
-    }
+#serahterima tr:hover {
+    background-color: #ddd;
+}
 
-    #serahterima th {
-        padding-top: 3px;
-        padding-bottom: 3px;
-        text-align: left;
-        font-weight: lighter;
-        background-color: #ff9999;
-        color: #000000;
-    }
+#serahterima th {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: left;
+    font-weight: lighter;
+    background-color: #ff9999;
+    color: #000000;
+}
 
-    #serahterima input {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        text-align: left;
-        background-color: lightyellow;
-        color: #000000;
-    }
+#serahterima input {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    text-align: left;
+    background-color: lightyellow;
+    color: #000000;
+}
 </style>
 
 <?php
@@ -221,7 +221,7 @@ $notransaksi    = $_GET['no'];
             </tr>
             <tr>
                 <th>Berat (Kg)</th>
-                <td><input name="berat" type="text" required></td>
+                <td><input name="berat" type="text" value="<?php echo $sql_h1['berat']; ?>"></td>
             </tr>
             <tr>
                 <th>Instansi Pengelola Limbah</th>
@@ -232,7 +232,7 @@ $notransaksi    = $_GET['no'];
                         $usr    = mysqli_query($dbi, "select * from supplier where jenis='4' order by Nama Asc");
                         while ($usr1    = mysqli_fetch_assoc($usr)) {
                         ?>
-                            <option value="<?= $usr1[Kode] ?>"><?= $usr1['Nama'] ?>
+                        <option value="<?= $usr1[Kode] ?>"><?= $usr1['Nama'] ?>
                             <?
                         }
                             ?>

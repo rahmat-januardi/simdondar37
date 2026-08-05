@@ -7,16 +7,16 @@ if (empty($_SESSION['namauser']) and empty($_SESSION['passuser'])) {
 }
 if (($_SESSION['leveluser']) == 'admin') {
 ?>
-	<!doctype html>
-	<html>
+<!doctype html>
+<html>
 
-	<head>
-		<title>SIMDONDAR</title>
-		<script language=javascript src="idcard.js" type="text/javascript"> </script>
-		<script language=javascript src="util.js" type="text/javascript"> </script>
-		<link href="css/style.css" rel="stylesheet" type="text/css" />
-	</head>
-	<?php
+<head>
+    <title>SIMDONDAR</title>
+    <script language=javascript src="idcard.js" type="text/javascript"> </script>
+    <script language=javascript src="util.js" type="text/javascript"> </script>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<?php
 	switch (@$_GET['act']) {
 		default:
 			if (@$_GET['rstock'] == '1')
@@ -419,6 +419,10 @@ if (($_SESSION['leveluser']) == 'admin') {
 				include "modul/edit_transaksi.php";
 			} elseif ($_GET[module] == 'edit_cross') {
 				include "modul/edit_cross.php";
+
+				// Master Alasan Pemusnahan
+			} elseif ($_GET[module] == 'master_musnah') {
+				include "musnah/master_alasan_musnah.php";
 			}
 	}
 }
