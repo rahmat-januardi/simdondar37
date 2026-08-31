@@ -380,6 +380,8 @@ if ($_GET["module"] == "home" && $_GET["level"] == "laboratorium") {
 	echo '<iframe src="pmifraksionasi.php?module=puf_dashboard" name="isiadmin" width="100%" height="100%" frameborder="0"></iframe>';
 } elseif ($_GET["module"] == "home" && $_GET["level"] == "mk") {
 	echo '<iframe src="pmimk.php?module=notifikasi_dokumen" name="isiadmin" width="100%" height="100%" frameborder="0"></iframe>';
+} elseif ($_GET["module"] == "home" && $_GET["level"] == "dokumen") {
+	echo '<iframe src="dokumen/notifikasi_sosialisasi_dokumen.php" name="isiadmin" width="100%" height="100%" frameborder="0"></iframe>';
 } else {
 	echo '<iframe name="isiadmin" width="100%" height="100%" frameborder="0"></iframe>';
 }
