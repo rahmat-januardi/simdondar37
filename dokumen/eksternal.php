@@ -3,68 +3,94 @@ include "koneksi.php";
 session_start();
 $namauser = $_SESSION['namauser'];
 
+// ==================== EXPORT EXCEL ====================
+if (isset($_GET['export_excel'])) {
+    header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
+    header('Content-Disposition: attachment; filename="dokumen_eksternal.xls"');
+
+    function export_excel_escape($value)
+    {
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    }
+
+    $qExport = mysql_query("SELECT * FROM eksternal WHERE aktif='0' ORDER BY id ASC");
+    echo '<table border="1">';
+    echo '<tr><th>No</th><th>Judul Dokumen</th><th>Tingkat</th><th>Nomor &amp; Tahun</th><th>File</th><th>Petugas</th></tr>';
+    $noExport = 1;
+    while ($dataExport = mysql_fetch_array($qExport)) {
+        echo '<tr>';
+        echo '<td>' . $noExport++ . '</td>';
+        echo '<td>' . export_excel_escape($dataExport['nama']) . '</td>';
+        echo '<td>' . export_excel_escape($dataExport['tingkat']) . '</td>';
+        echo '<td>' . export_excel_escape($dataExport['no_tahun_dokumen']) . '</td>';
+        echo '<td>' . export_excel_escape($dataExport['fileku']) . '</td>';
+        echo '<td>' . export_excel_escape($dataExport['petugas']) . '</td>';
+        echo '</tr>';
+    }
+    echo '</table>';
+    exit;
+}
+
 // ==================== CREATE ====================
 if (isset($_POST['tambah'])) {
 
-	$nama   = $_POST['nama'];
-	$tingkat = $_POST['tingkat'];
-	$nomor  = $_POST['no_tahun'];
-	$petugas = $_POST['petugas'];
+    $nama   = $_POST['nama'];
+    $tingkat = $_POST['tingkat'];
+    $nomor  = $_POST['no_tahun'];
+    $petugas = $_POST['petugas'];
 
-	// Pastikan folder upload ada
-if (!is_dir("upload")) {
-    mkdir("upload", 0777, true);
-}
-
-// ambil file lama
-$fileku = $_POST['file_lama'];
-
-// jika ada file baru
-if (!empty($_FILES['fileku']['name'])) {
-
-    // hapus file lama jika ada
-    if (!empty($fileku) && file_exists("upload/" . $fileku)) {
-        unlink("upload/" . $fileku);
+    // Pastikan folder upload ada
+    if (!is_dir("upload")) {
+        mkdir("upload", 0777, true);
     }
 
-    // BERSIHKAN nama file baru (Wajib)
-    $nama_asli = $_FILES['fileku']['name'];
-    $nama_bersih = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $nama_asli);
+    // ambil file lama
+    $fileku = $_POST['file_lama'];
 
-    // Buat nama final
-    $fileku = time() . "_" . $nama_bersih;
+    // jika ada file baru
+    if (!empty($_FILES['fileku']['name'])) {
 
-    // Upload
-    if (move_uploaded_file($_FILES['fileku']['tmp_name'], "upload/" . $fileku)) {
-        mysql_query("INSERT INTO eksternal (nama, tingkat, no_tahun_dokumen, petugas, fileku, aktif)
+        // hapus file lama jika ada
+        if (!empty($fileku) && file_exists("upload/" . $fileku)) {
+            unlink("upload/" . $fileku);
+        }
+
+        // BERSIHKAN nama file baru (Wajib)
+        $nama_asli = $_FILES['fileku']['name'];
+        $nama_bersih = preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $nama_asli);
+
+        // Buat nama final
+        $fileku = time() . "_" . $nama_bersih;
+
+        // Upload
+        if (move_uploaded_file($_FILES['fileku']['tmp_name'], "upload/" . $fileku)) {
+            mysql_query("INSERT INTO eksternal (nama, tingkat, no_tahun_dokumen, petugas, fileku, aktif)
 			VALUES ('$nama', '$tingkat', '$nomor', '$petugas', '$fileku', '0')");
 
 
-	echo "<script>alert('Dokumen berhasil ditambahkan');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
-    } else {
-        echo "<script>alert('GAGAL upload file!');</script>";
+            echo "<script>alert('Dokumen berhasil ditambahkan');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
+        } else {
+            echo "<script>alert('GAGAL upload file!');</script>";
+        }
     }
-}
-
-	
 }
 
 // ==================== DELETE ====================
 if (isset($_GET['delete'])) {
 
-	$id = $_GET['delete'];
+    $id = $_GET['delete'];
 
-	// ambil nama file
-	$q = mysql_query("SELECT fileku FROM eksternal WHERE id='$id'");
-	$d = mysql_fetch_array($q);
+    // ambil nama file
+    $q = mysql_query("SELECT fileku FROM eksternal WHERE id='$id'");
+    $d = mysql_fetch_array($q);
 
-	if (!empty($d['fileku']) && file_exists("upload/" . $d['fileku'])) {
-		unlink("upload/" . $d['fileku']);
-	}
+    if (!empty($d['fileku']) && file_exists("upload/" . $d['fileku'])) {
+        unlink("upload/" . $d['fileku']);
+    }
 
-	mysql_query("DELETE FROM eksternal WHERE id='$id'");
+    mysql_query("DELETE FROM eksternal WHERE id='$id'");
 
-	echo "<script>alert('Dokumen berhasil dihapus');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
+    echo "<script>alert('Dokumen berhasil dihapus');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
 }
 
 // ==================== GET DATA FOR EDIT ====================
@@ -72,35 +98,35 @@ $editMode = false;
 $editData = array();
 
 if (isset($_GET['edit'])) {
-	$editMode = true;
-	$id = $_GET['edit'];
-	$q = mysql_query("SELECT * FROM eksternal WHERE id='$id'");
-	$editData = mysql_fetch_array($q);
+    $editMode = true;
+    $id = $_GET['edit'];
+    $q = mysql_query("SELECT * FROM eksternal WHERE id='$id'");
+    $editData = mysql_fetch_array($q);
 }
 
 // ==================== UPDATE ====================
 if (isset($_POST['update'])) {
-	$id = $_POST['id'];
-	$nama = $_POST['nama'];
-	$tingkat = $_POST['tingkat'];
-	$nomor = $_POST['no_tahun'];
-	$petugas = $_POST['petugas'];
+    $id = $_POST['id'];
+    $nama = $_POST['nama'];
+    $tingkat = $_POST['tingkat'];
+    $nomor = $_POST['no_tahun'];
+    $petugas = $_POST['petugas'];
 
 
-	// cek file baru
-	$fileku = $_POST['file_lama'];
-	if (!empty($_FILES['fileku']['name'])) {
+    // cek file baru
+    $fileku = $_POST['file_lama'];
+    if (!empty($_FILES['fileku']['name'])) {
 
-		// hapus file lama
-		if (!empty($fileku) && file_exists("upload/" . $fileku)) {
-			unlink("upload/" . $fileku);
-		}
+        // hapus file lama
+        if (!empty($fileku) && file_exists("upload/" . $fileku)) {
+            unlink("upload/" . $fileku);
+        }
 
-		$fileku = time() . "_" . $_FILES['fileku']['name'];
-		move_uploaded_file($_FILES['fileku']['tmp_name'], "upload/" . $fileku);
-	}
+        $fileku = time() . "_" . $_FILES['fileku']['name'];
+        move_uploaded_file($_FILES['fileku']['tmp_name'], "upload/" . $fileku);
+    }
 
-	mysql_query("UPDATE eksternal SET
+    mysql_query("UPDATE eksternal SET
              nama='$nama',
              tingkat='$tingkat',
              no_tahun_dokumen='$nomor',
@@ -109,7 +135,7 @@ if (isset($_POST['update'])) {
              WHERE id='$id'");
 
 
-	echo "<script>alert('Perubahan berhasil disimpan');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
+    echo "<script>alert('Perubahan berhasil disimpan');window.location.href='" . $_SERVER['PHP_SELF'] . "';</script>";
 }
 ?>
 <!DOCTYPE html>
@@ -192,6 +218,9 @@ if (isset($_POST['update'])) {
 
     <!-- ===================== TABEL ===================== -->
     <input id="myInput" type="text" class="form-control mb-3" placeholder="Search...">
+    <a href="?export_excel=1" class="btn btn-success mb-3">
+        <i class="fas fa-file-excel"></i> Export Excel
+    </a>
 
     <table class="table table-bordered table-striped">
         <thead>
@@ -208,10 +237,10 @@ if (isset($_POST['update'])) {
 
         <tbody id="myTable">
             <?php
-			$q = mysql_query("SELECT * FROM eksternal WHERE aktif='0' ORDER BY id ASC");
-			$no = 1;
-			while ($data = mysql_fetch_array($q)) {
-			?>
+            $q = mysql_query("SELECT * FROM eksternal WHERE aktif='0' ORDER BY id ASC");
+            $no = 1;
+            while ($data = mysql_fetch_array($q)) {
+            ?>
             <tr>
                 <td><?= $no++ ?></td>
                 <td><?= $data['nama'] ?></td>
