@@ -102,11 +102,12 @@ try {
                 $nokantong = (string) $value;
                 $beratUkur = isset($berat[$index]) ? (float) $berat[$index] : 0.0;
 
+                $modulTimbang = 'PENGOLAHAN';
                 $stmtCekTimbang->bind_param("s", $nokantong);
                 $stmtCekTimbang->execute();
-                $result = $stmtCekTimbang->get_result();
+                $stmtCekTimbang->store_result();
 
-                if ($result->num_rows > 0) {
+                if ($stmtCekTimbang->num_rows > 0) {
                     // jika ada, update datanya
                     $updateTimbang_sql = "UPDATE timbang_darah SET berat_ukur = ? WHERE nokantong = ?";
                     if ($stmtUpdateTimbang = $dbi->prepare($updateTimbang_sql)) {
@@ -121,7 +122,7 @@ try {
                         $aksi_timbang = 'UPDATE TIMBANG DARAH';
                         $keterangan_timbang = 'No.Kantong: ' . $nokantong . ', berat_ukur: ' . $beratUkur;
                         $tempat_timbang = 'DG';
-                        $stmtLogTimbang->bind_param('sssssss', $time_aksi, $clip, $nmus, 'PENGOLAHAN', $aksi_timbang, $keterangan_timbang, $tempat_timbang);
+                        $stmtLogTimbang->bind_param('sssssss', $time_aksi, $clip, $nmus, $modulTimbang, $aksi_timbang, $keterangan_timbang, $tempat_timbang);
                         if (!$stmtLogTimbang->execute()) {
                             throw new Exception("Gagal mencatat user_log update timbang_darah untuk nokantong: $nokantong");
                         }
@@ -152,7 +153,7 @@ try {
                         $aksi_timbang = 'CREATE TIMBANG DARAH';
                         $keterangan_timbang = 'No.Kantong: ' . $nokantong . ', berat_ukur: ' . $beratUkur;
                         $tempat_timbang = 'DG';
-                        $stmtLogTimbang->bind_param('sssssss', $time_aksi, $clip, $nmus, 'PENGOLAHAN', $aksi_timbang, $keterangan_timbang, $tempat_timbang);
+                        $stmtLogTimbang->bind_param('sssssss', $time_aksi, $clip, $nmus, $modulTimbang, $aksi_timbang, $keterangan_timbang, $tempat_timbang);
                         if (!$stmtLogTimbang->execute()) {
                             throw new Exception("Gagal mencatat user_log create timbang_darah untuk nokantong: $nokantong");
                         }
@@ -163,7 +164,7 @@ try {
                     }
                 }
 
-                $result->free();
+                $stmtCekTimbang->free_result();
             }
             $stmtLogTimbang->close();
             $stmtCekTimbang->close();
@@ -173,11 +174,28 @@ try {
 
 
 
-        // Statement untuk insert ke dpengolahan
+// Statement untuk update maupun insert ke dpengolahan
+        $kPetugas_sql = mysqli_real_escape_string($dbi, $kPetugas);
+        // Kantong yang sudah pernah diproses (sudah ada di dpengolahan) -> UPDATE data lama
+        $update_dpengolahan_sql = "UPDATE dpengolahan d
+            JOIN dpengolahan_temp t ON t.noKantong = d.noKantong
+            SET d.NoTrans = t.NoTrans, d.Produk = t.Produk, d.petugas = t.petugas, d.tgl = t.tgl,
+                d.tglPengerjaan = t.tglPengerjaan, d.aPutar = t.aPutar, d.aPisah = t.aPisah,
+                d.aBeku = t.aBeku, d.pcepat = t.pcepat, d.psuhu = t.psuhu, d.pwaktu = t.pwaktu,
+                d.pisah = t.pisah, d.metode = t.metode, d.noseri = t.noseri, d.goldarah = t.goldarah,
+                d.rhesus = t.rhesus, d.jenis = t.jenis, d.up_data = t.up_data, d.shift = t.shift,
+                d.mulaiPutar = t.mulaiPutar, d.selesaiPutar = t.selesaiPutar, d.mulaiPisah = t.mulaiPisah,
+                d.selesaiPisah = t.selesaiPisah, d.mulaiBeku = t.mulaiBeku, d.SelesaiBeku = t.SelesaiBeku,
+                d.mulai = t.mulai, d.selesai = t.selesai, d.bstatus = t.bstatus, d.bsuhu = t.bsuhu,
+                d.verifikator = t.verifikator, d.musnah = t.musnah
+            WHERE t.petugas = '$kPetugas_sql'";
+
+        // Kantong baru -> INSERT
         $insert_sql = "INSERT INTO dpengolahan 
         (NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, SelesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah)
-        SELECT NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah
-        FROM dpengolahan_temp";
+        SELECT NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, SelesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah
+        FROM dpengolahan_temp t WHERE t.petugas = '$kPetugas_sql'
+        AND NOT EXISTS (SELECT 1 FROM dpengolahan d WHERE d.noKantong = t.noKantong)";
 
         // $selDTemp = "SELECT NoTrans, noKantong, Produk, petugas, tgl, tglPengerjaan, aPutar, aPisah, aBeku, pcepat, psuhu, pwaktu, pisah, metode, noseri, goldarah, rhesus, jenis, up_data, shift, mulaiPutar, selesaiPutar, mulaiPisah, selesaiPisah, mulaiBeku, selesaiBeku, mulai, selesai, bstatus, bsuhu, verifikator, musnah, CONCAT(DATE(tgl), ' ', TIME(selesai)) AS tglPengolahan  FROM dpengolahan_temp WHERE noKantong = '$noKantong'";
 
@@ -309,8 +327,8 @@ try {
         }
 
 
-        // Eksekusi insert dan cek hasilnya
-        if ($dbi->query($insert_sql)) {
+        // Eksekusi update (bila sudah pernah diproses) dilanjutkan insert (kantong baru), cek hasilnya
+        if ($dbi->query($update_dpengolahan_sql) && $dbi->query($insert_sql)) {
             // Hapus data dari tabel pengolahan_temp setelah insert berhasil
             $delete_sql = "DELETE FROM dpengolahan_temp WHERE petugas = ?";
 

@@ -137,7 +137,7 @@ $defaultValues = array(
     'aPutar' => '',
     'aPisah' => '',
     'aBeku'  => '',
-    'tglPengerjaan' => '',
+    'tglPengerjaan' => date('Y-m-d H:i'),
     'mPutar' => '',
     'sPutar' => '',
     'mPisah' => '',
@@ -151,7 +151,7 @@ if ($result->num_rows > 0) {
     $aPutar = $row['aPutar'];
     $aPisah = $row['aPisah'];
     $aBeku  = $row['aBeku'];
-    $tglPengerjaan = $row['tglPengerjaan'];
+    $tglPengerjaan = (!empty($row['tglPengerjaan']) && substr($row['tglPengerjaan'], 0, 10) != '0000-00-00') ? $row['tglPengerjaan'] : date('Y-m-d H:i');
     $mPutar = substr($row['mulaiPutar'], 0, 5);
     $sPutar = substr($row['selesaiPutar'], 0, 5);
     $mPisah = substr($row['mulaiPisah'], 0, 5);
@@ -448,6 +448,26 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Lanjutkan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #17a2b8; color: white;">
+                    <h5 class="modal-title" id="infoModalLabel">Pemberitahuan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Pesan pemberitahuan diisi di sini -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>

@@ -340,10 +340,14 @@ if ($result->num_rows > 0) {
             $pVol = $row['volume'];
         }
 
-        $start = new DateTime($row['mulaiPutar']);
-        $end = new DateTime($row['selesaiPutar']);
-        $interval = $start->diff($end);
-        $waktuPutar = ($interval->h * 60) + $interval->i;
+        try {
+            $start = new DateTime($row['mulaiPutar']);
+            $end = new DateTime($row['selesaiPutar']);
+            $interval = $start->diff($end);
+            $waktuPutar = ($interval->h * 60) + $interval->i;
+        } catch (Exception $e) {
+            $waktuPutar = 0;
+        }
 
         $no++;
 

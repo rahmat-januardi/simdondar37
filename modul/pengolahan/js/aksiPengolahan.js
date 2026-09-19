@@ -18,20 +18,20 @@ function handleKeyPress(event) {
   let tglPengerjaanRaw = document.getElementById("tglPengerjaan").value;
   let tglPengerjaan = "";
   if (tglPengerjaanRaw) {
-    let d = new Date(tglPengerjaanRaw);
-    if (!isNaN(d.getTime())) {
+    let m = tglPengerjaanRaw.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?)?$/);
+    if (m) {
       tglPengerjaan =
-        d.getFullYear() +
+        m[1] +
         "-" +
-        ("0" + (d.getMonth() + 1)).slice(-2) +
+        m[2] +
         "-" +
-        ("0" + d.getDate()).slice(-2) +
+        m[3] +
         " " +
-        ("0" + d.getHours()).slice(-2) +
+        (m[4] || "00") +
         ":" +
-        ("0" + d.getMinutes()).slice(-2) +
+        (m[5] || "00") +
         ":" +
-        ("0" + d.getSeconds()).slice(-2);
+        (m[6] || "00");
     }
   }
 
@@ -101,7 +101,20 @@ function insertData(
         if (response.status === "error") {
           showModal(response.message); // Tampilkan modal dengan pesan error
         } else if (response.status === "success") {
-          window.location.reload(); // Refresh halaman jika sukses
+          if (response.sudahDiolah) {
+            // Kantong sudah pernah diolah sebelumnya -> notifikasi mode UPDATE
+            showInfoModal(
+              "Kantong <b>" +
+                nomorKantong +
+                "</b> sudah pernah diolah sebelumnya.<br>" +
+                "Data sebelumnya akan diperbarui (mode UPDATE) setelah disimpan.",
+              function () {
+                window.location.reload();
+              }
+            );
+          } else {
+            window.location.reload(); // Refresh halaman jika sukses
+          }
         }
       } catch (e) {
         console.error("JSON Parse error:", e);
@@ -148,4 +161,16 @@ function insertData(
 function showModal(message) {
   $("#errorModal .modal-body").html(message);
   $("#errorModal").modal("show");
+}
+
+function showInfoModal(message, onClose) {
+  $("#infoModal .modal-body").html(message);
+  $("#infoModal")
+    .off("hidden.bs.modal")
+    .on("hidden.bs.modal", function () {
+      if (typeof onClose === "function") {
+        onClose();
+      }
+    });
+  $("#infoModal").modal("show");
 }
