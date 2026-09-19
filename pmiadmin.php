@@ -417,6 +417,8 @@ if (($_SESSION['leveluser']) == 'admin') {
 				include "modul/edit_kantong.php";
 			} elseif ($_GET[module] == 'edit_transaksi') {
 				include "modul/edit_transaksi.php";
+			} elseif ($_GET[module] == 'edit_mcu') {
+				include "modul/edit_mcu.php";
 			} elseif ($_GET[module] == 'edit_cross') {
 				include "modul/edit_cross.php";
 

@@ -59,9 +59,11 @@ if (($_SESSION['leveluser']) == 'qc') {
             } elseif ($_GET['module'] == 'komponen') {
                 include "modul/komponen.php";
             } elseif ($_GET['module'] == 'input_qc') {
-                include "qc_input.php";
+                // include "qc_input.php";
+                include "QC/qc_input_produk.php";
             } elseif ($_GET['module'] == 'qc_laporan') {
-                include "qc_laporan.php";
+                // include "qc_laporan.php";
+                include "QC/reportqc.php";
             } elseif ($_GET['module'] == 'penambahan_kantong') {
                 include "modul/penambahan_kantong.php";
             } elseif ($_GET['module'] == 'pengesahan_kantong') {

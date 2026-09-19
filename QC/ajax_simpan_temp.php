@@ -51,6 +51,7 @@ $nokantong = preg_replace("/[^A-Za-z0-9]/", "", strtoupper($nokantong));
 
 $produk   = isset($_POST['produk']) ? $_POST['produk'] : '';
 $volume   = isset($_POST['volume']) ? $_POST['volume'] : '';
+$vol_kantong_luar = isset($_POST['vol_kantong_luar']) ? $_POST['vol_kantong_luar'] : '';
 $goldarah = isset($_POST['goldarah']) ? $_POST['goldarah'] : '';
 $rhesus   = isset($_POST['rh']) ? $_POST['rh'] : '';
 $tglaftap = isset($_POST['tglaftap']) ? $_POST['tglaftap'] : '';
@@ -85,11 +86,12 @@ if (mysql_num_rows($cek) > 0) {
 }
 
 $sql = "INSERT INTO registrasi_luarqc_temp
-        (nokantong, produk, volume, goldarah, rhesus, tglaftap, tgl_pengolahan, kadaluwarsa, pengirim, merk, jenis, asal_utd, user_input)
+        (nokantong, produk, volume, vol_kantong_luar, goldarah, rhesus, tglaftap, tgl_pengolahan, kadaluwarsa, pengirim, merk, jenis, asal_utd, user_input)
         VALUES
         ('" . clean($nokantong) . "',
          '" . clean($produk) . "',
          '" . clean($volume) . "',
+         '" . clean($vol_kantong_luar) . "',
          '" . clean($goldarah) . "',
          '" . clean($rhesus) . "',
          '" . clean($tglaftap) . "',
@@ -113,7 +115,11 @@ if (!$q) {
 $html = '';
 $no = 1;
 
-$list = mysql_query("SELECT * FROM registrasi_luarqc_temp WHERE user_input='" . clean($namauser) . "' ORDER BY id ASC");
+$list = mysql_query("SELECT t.*, u.nama AS nama_utd
+        FROM registrasi_luarqc_temp t
+        LEFT JOIN utd u ON u.id = t.asal_utd
+        WHERE t.user_input='$namauser'
+        ORDER BY t.id ASC");
 if (!$list) {
     echo json_encode(array(
         'status' => 'error',
@@ -130,6 +136,7 @@ while ($d = mysql_fetch_assoc($list)) {
         <td>" . $no++ . "</td>
         <td>" . htmlspecialchars($d['nokantong']) . "</td>
         <td>" . htmlspecialchars($d['volume']) . "</td>
+        <td>" . htmlspecialchars($d['vol_kantong_luar']) . "</td>
         <td>" . htmlspecialchars($d['merk']) . "</td>
         <td>" . htmlspecialchars(getJenisLabel($d['jenis'])) . "</td>
         <td>" . htmlspecialchars($asalDisplay) . "</td>

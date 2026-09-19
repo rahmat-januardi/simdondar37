@@ -1,416 +1,506 @@
 <?php
-require_once('clogin.php');
-require_once('config/db_connect.php');
-$namauser=$_SESSION[namauser];
-$namalengkap=$_SESSION[nama_lengkap];
-$tglsebelum = mktime(0,0,0,date("m"),1,date("Y"));
-$tglawal=date("Y-m-d");
-$hariini = date("Y-m-d");
+
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include('clogin.php');
+include('config/db_connect.php');
+
+$level = $_SESSION['leveluser'];
+
+$today = date("Y-m-d");
+$show_table = false;
+$tanggal_mulai = $today;
+$tanggal_selesai = $today;
+$asal_kantong = '';
+$sql_utd = mysql_query("SELECT id, nama FROM utd ORDER BY nama ASC");
+$sql_data = false;
+
+function normalizeProduk($value)
+{
+	$produk = trim(strtoupper((string) $value));
+
+	if (preg_match('/^(PRC|WB)\b/', $produk)) {
+		$produk = preg_replace('/\s*\d+(\.\d+)?$/', '', $produk);
+		$produk = trim($produk);
+	}
+
+	return $produk;
+}
+
+if (isset($_POST['submit_tampil'])) {
+	$show_table = true;
+	$tanggal_mulai = isset($_POST['tanggal_mulai']) ? $_POST['tanggal_mulai'] : $today;
+	$tanggal_selesai = isset($_POST['tanggal_selesai']) ? $_POST['tanggal_selesai'] : $today;
+	$asal_kantong = isset($_POST['asal_kantong']) ? $_POST['asal_kantong'] : '';
+	$where = " WHERE rq.up_data = '1' ";
+
+	// var_dump($tanggal_mulai);
+	// var_dump($tanggal_selesai);
+	// var_dump($asal_kantong);
+
+	if ($tanggal_mulai != '' && $tanggal_selesai != '') {
+		$where .= " AND DATE(qc.qctgl) BETWEEN '" . mysql_real_escape_string($tanggal_mulai) . "' AND '" . mysql_real_escape_string($tanggal_selesai) . "' ";
+	}
+
+	if ($asal_kantong != '') {
+		$where .= " AND rq.asal_utd = '" . mysql_real_escape_string($asal_kantong) . "' ";
+	}
+
+	$sql_data = mysql_query("
+    SELECT rq.*, qc.qctgl, u.nama AS nama_utd
+    FROM registrasi_qc rq
+    LEFT JOIN utd u ON u.id = rq.asal_utd
+    LEFT JOIN qc ON qc.nokantong = rq.nokantong
+    $where
+    ORDER BY rq.id DESC
+") or die(mysql_error());
+}
+
 ?>
-<link type="text/css" href="css/calender.css" rel="stylesheet" />
-<script type="text/javascript" src="js/tgl_rekap.js"></script>
-<link type="text/css" href="css/blitzer/jquery-ui-1.8.9.custom.css" rel="stylesheet" />
-<link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
-<script type="text/javascript" language="javascript" src="js/jquery-1.5.2.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/jquery-ui-1.8.9.custom.min.js"></script>
-<script type="text/javascript" src="js/tgl_rekap.js"></script>
-<script language=javascript src="util.js" type="text/javascript"> </script>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<style>
-    tr { background-color: #ffffff;}
-    .initial { background-color: #ffffff; color:#000000 }
-    .normal { background-color: #ffffff; }
-    .highlight { background-color: #7CFC00 }
-</style>
-<style type="text/css">.styled-select select {background-color: #FCF9F9; border: none;width: auto;padding: 3px;font-size: 15px;cursor: pointer; }</style>
-<style>
-    table {
-        border-collapse: collapse;
-    }
-    table, th, td {
-        border: 1px solid brown;
-    }
-</style>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<style>body {font-family: "Lato", sans-serif;}</style>
+
+<!DOCTYPE html>
+
+<html lang="id">
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>SIMDONDAR</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>Laporan QC</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_red.css">
+
+    <style>
+    body {
+        background: #f6f7fb;
+    }
+
+    .card-header h4 {
+        margin-bottom: 0;
+        font-weight: 700;
+    }
+
+    .card-header p {
+        margin-bottom: 0;
+        opacity: 0.9;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 38px;
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 36px;
+        padding-left: 12px;
+        color: #212529;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px;
+    }
+
+    .table thead th,
+    .table td {
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .checkbox-col {
+        width: 45px;
+        text-align: center;
+    }
+
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 1rem;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 1rem;
+    }
+    </style>
+
+
 </head>
 
 <body>
-	<?
-		if (isset($_POST[waktu])) {$tglawal=$_POST[waktu];$hariini=$hariini;}
-		if ($_POST[waktu1]!='') $hariini=$_POST[waktu1];
-		if ($_POST[hasilqc]!='') $src_hasilqc=$_POST[hasilqc];
-		if ($_POST[utd]!='') $src_utd=$_POST[utd];
-        $status=$_POST['status'];
-        $petugas=$_POST['petugas'];   
+    <div class="container-fluid p-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center py-3">
+                <div>
+                    <h4>Laporan QC</h4>
+                    <p>Lembar data analisa Uji Mutu</p>
+                </div>
+                <!-- <a href="javascript:history.back()" class="btn btn-light btn-sm">Kembali</a> -->
+            </div>
 
-        $utd=mysql_fetch_assoc(mysql_query("select nama from utd where id = '$src_utd' "));
-	$utdpilih=$utd[nama];
-	
-    
-	?>
-    <a name="atas" id="atas"></a>
-	<font size="4" color=00008B>LEMBAR DATA ANALISA UJI MUTU <b> KOMPONEN DARAH LENGKAP (WB)</b></font><br><br>
-	<form name="cari" method="POST" action="<?echo $PHPSELF?>">
-		<table cellpadding=1 cellspacing="0" border="0">
-            <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-				<td align="left" nowrap>Tanggal <input name="waktu" id="datepicker"  value="<?=$tglawal?>" type=text size="10" style="font-family:monospace"></td>
-				<td align="right" nowrap>s/d <input name="waktu1" id="datepicker1" value="<?=$hariini?>" type=text size="10" style="font-family:monospace"></td>
 
-    <td align="right" nowrap>&nbsp;Nama UTD
-    <select name="utd">
-        <option value="nama" selected>-Pilih-</option>
-            <?php
-            $ql= mysql_query("select * from utd order by nama DESC ");
-            while ($rowl1 = mysql_fetch_array($ql)){
-                echo "<option value=$rowl1[id]>$rowl1[nama]</option>";
+            <div class="card-body">
+                <form method="POST" action="" autocomplete="off">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Tanggal Mulai</label>
+                            <input type="text" id="tanggal_mulai" name="tanggal_mulai" class="form-control"
+                                value="<?php echo $tanggal_mulai; ?>">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Tanggal Selesai</label>
+                            <input type="text" id="tanggal_selesai" name="tanggal_selesai" class="form-control"
+                                value="<?php echo $tanggal_selesai; ?>">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="asal_kantong" class="form-label">Asal Kantong</label>
+                            <select name="asal_kantong" id="asal_kantong" class="form-select">
+                                <option value="">Semua Asal Kantong</option>
+                                <?php
+								if ($sql_utd && mysql_num_rows($sql_utd) > 0) {
+									while ($row_utd = mysql_fetch_assoc($sql_utd)) {
+										$id_utd   = $row_utd['id'];
+										$nama_utd = $row_utd['nama'];
+										$selected = ($asal_kantong == $id_utd) ? 'selected="selected"' : '';
+										echo '<option value="' . htmlspecialchars($id_utd, ENT_QUOTES) . '" ' . $selected . '>' .
+											htmlspecialchars($nama_utd, ENT_QUOTES) .
+											'</option>';
+									}
+								}
+								?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" name="submit_tampil" class="btn btn-primary w-100">
+                                Tampilkan
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div id="table_container" class="table-responsive"
+                        style="<?php echo $show_table ? '' : 'display:none;'; ?>">
+                        <table class="table table-bordered table-striped table-hover table-sm align-middle w-100"
+                            id="dtable">
+                            <thead class="table-danger text-center">
+                                <tr>
+                                    <th class="checkbox-col"></th>
+                                    <th>No</th>
+                                    <th>No. Kantong</th>
+                                    <th>Gol Darah</th>
+                                    <th>Rhesus</th>
+                                    <th>Produk</th>
+                                    <th>Tgl Aftap</th>
+                                    <th>Tgl Kadaluwarsa</th>
+                                    <th>Tgl Penerimaan Sampel</th>
+                                    <th>Petugas Yg Menyerahkan</th>
+                                    <th>Petugas Yg Menerima</th>
+                                    <th>Asal Sampel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+								if ($show_table) {
+									if ($sql_data && mysql_num_rows($sql_data) > 0) {
+										$no = 1;
+										while ($row = mysql_fetch_assoc($sql_data)) {
+								?>
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" class="qc-check" name="pilih[]"
+                                            value="<?php echo htmlspecialchars($row['id'], ENT_QUOTES); ?>"
+                                            data-produk="<?php echo htmlspecialchars(normalizeProduk($row['produk']), ENT_QUOTES); ?>"
+                                            data-asal="<?php echo htmlspecialchars($row['asal_utd'], ENT_QUOTES); ?>">
+                                    </td>
+                                    <td class="text-center"><?php echo $no++; ?></td>
+                                    <td><?php echo htmlspecialchars($row['nokantong'], ENT_QUOTES); ?></td>
+                                    <td class="text-center">
+                                        <?php echo htmlspecialchars($row['goldarah'], ENT_QUOTES); ?></td>
+                                    <td class="text-center"><?php echo htmlspecialchars($row['rhesus'], ENT_QUOTES); ?>
+                                    </td>
+                                    <td><?php echo htmlspecialchars(normalizeProduk($row['produk']), ENT_QUOTES); ?>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($row['tglaftap'], ENT_QUOTES); ?></td>
+                                    <td><?php echo htmlspecialchars($row['kadaluwarsa'], ENT_QUOTES); ?></td>
+                                    <td><?php echo htmlspecialchars($row['tgl'], ENT_QUOTES); ?></td>
+                                    <td><?php echo htmlspecialchars($row['petugas_serah'], ENT_QUOTES); ?>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($row['petugas_terima'], ENT_QUOTES); ?></td>
+                                    <td><?php echo htmlspecialchars($row['nama_utd'], ENT_QUOTES); ?></td>
+                                </tr>
+                                <?php
+										}
+									}
+								}
+								?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 d-none justify-content-end gap-2" id="action_area">
+                        <button type="button" class="btn btn-outline-primary" id="btn_pilih_grup">
+                            Pilih Semua Grup Ini
+                        </button>
+
+                        <button type="button" class="btn btn-success" id="btn_cetak_laporan">
+                            Cetak Laporan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCetak" tabindex="-1" aria-labelledby="modalCetakLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalCetakLabel">Cetak Laporan QC</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Pakai Sertifikat?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="pakai_sertifikat" id="sertifikat_tidak"
+                                value="0" checked>
+                            <label class="form-check-label" for="sertifikat_tidak">Tidak</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="pakai_sertifikat" id="sertifikat_ya"
+                                value="1">
+                            <label class="form-check-label" for="sertifikat_ya">Ya</label>
+                        </div>
+                    </div>
+
+                    <div id="box_sertifikat" style="display:none;">
+                        <div class="mb-3">
+                            <label for="no_sertifikat" class="form-label">Nomor Sertifikat</label>
+                            <input type="text" class="form-control" id="no_sertifikat" name="no_sertifikat"
+                                placeholder="Opsional">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tgl_sertifikat" class="form-label">Tanggal Sertifikat</label>
+                            <input type="text" class="form-control" id="tgl_sertifikat" name="tgl_sertifikat"
+                                placeholder="Opsional">
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mb-0">
+                        Data cetak untuk list yang dipilih akan diproses setelah tombol cetak dikonfirmasi.
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="btn_lanjut_cetak">Lanjut Cetak</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="form_proses_cetak" method="POST" action="QC/proses_cetak_qc.php" style="display:none;">
+        <input type="hidden" name="selected_ids" id="selected_ids">
+        <input type="hidden" name="pakai_sertifikat" id="hidden_pakai_sertifikat">
+        <input type="hidden" name="no_sertifikat" id="hidden_no_sertifikat">
+        <input type="hidden" name="tgl_sertifikat" id="hidden_tgl_sertifikat">
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+    $(function() {
+
+        $('#asal_kantong').select2({
+            width: '100%',
+            placeholder: 'Pilih Asal Kantong',
+            allowClear: true
+        });
+
+        <?php if ($show_table): ?>
+        $('#dtable').DataTable({
+            pageLength: 10,
+            lengthMenu: [
+                [10, 25, 50, 100],
+                [10, 25, 50, 100]
+            ],
+            autoWidth: false,
+            scrollX: true,
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ data",
+                info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                zeroRecords: "Data tidak ditemukan",
+                paginate: {
+                    first: "Awal",
+                    last: "Akhir",
+                    next: "Berikutnya",
+                    previous: "Sebelumnya"
+                }
             }
-            ?>
-    </select>
-
-    <td align="right" nowrap>&nbsp;Hasil QC
-    <select name="hasilqc">
-            <option value="" selected>- SEMUA -</option>
-            <option value="Lulus">Lulus</option>
-            <option value="Tidak Lulus">Tidak Lulus</option>
-            
-    </select>
-    </td>
-				
-                
-				&nbsp;<td><input type=submit name=submit class="swn_button_blue" value="Tampilkan data">
-                	
-                	<a href="pmiqc.php?module=qc_laporan"class="swn_button_blue">Kembali</a></td>
-			</tr>
-		</table>	
-	</form>
-
-	<!--Awal Header kop surat-->
-	<table border=1 cellpadding=4  style="border-collapse:collapse">
-        <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-	    <th rowspan="4" style="width:200px;">UDD PUSAT PMI</th>
-  	    <th colspan="2" style="width:300px; height:30px;">LEMBAR DATA ANALISA UJI MUTU KOMPONEN DARAH LENGKAP (WB)</th>
-	    <th rowspan="2" align="left" style="width:155px;">Halaman <br/>Nomor <br/>Versi <br/>Tanggal Berlaku <br/>Tanggal Kajiulang</th>
-	    <th rowspan="2" align="left" style="width:190px;">: 1 dari 1 <br/>: UDDP-PM-L3-046 <br/>: 004 <br/>: 01/07/2018 <br/>: 01/07/2020</th>
-	    
-	</tr>
-	
-        <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-            <th rowspan="2" style="width:300px;">Bidang Litbang & Produksi</th>
-	    <th rowspan="2" style="width:300px;">Sub. Bidang Pengawasan Mutu</th>
-	    	
-	 </tr>
-
-	<tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-	 </tr>
-	 </table><br/>
-	 <!--Akhir Header kop surat-->
-
-	<!--awal nama utd-->
-	<?php
-	
-	$detail=mysql_fetch_assoc(mysql_query("SELECT q.`qcchecker`, q.`qcuser`, q.`qctgl`, q.`jenis`, q.`nokantong`, q.`gol_darah`, q.`RhesusDrh`, q.`tglaftap`,
-        q.`kadaluwarsa`, q.`berat_isi`, q.`volume`, q.`hemolisis`, q.`hemolisis_manual`, q.`hemoglobin`, q.`aerob`, q.`anaerob`, 
-	q.`anaerob` , a.`asal_utd`, a.`tgl`, s.`nama`
-                FROM `qc` q
-                LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong`
-                LEFT JOIN utd s ON a.`asal_utd` = s.id
-                WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' and q.`qc_status` like '$src_hasilqc%' and a.`asal_utd` like '$src_utd%'
-                order by q.`notrans` asc"));
-	//tgl terima
-   	if ($detail[tgl]==NULL) $tglterima='-';
-   	if ($detail[tgl]) $tglterima=date("d F Y",strtotime($detail[tgl]));
-
-	//periode
-   	if ($detail[tgl]==NULL) $periode='-';
-   	if ($detail[tgl]) $periode=date("F Y",strtotime($detail[tgl]));
-
-	
- 
-	// menghitung jumlah sample
-	$detail_count=mysql_query("SELECT q.`qcchecker`, q.`qcuser`, q.`qctgl`, q.`jenis`, q.`nokantong`, q.`gol_darah`, q.`RhesusDrh`, q.`tglaftap`,
-        q.`kadaluwarsa`, q.`berat_isi`, q.`volume`, q.`hemolisis`, q.`hemolisis_manual`, q.`hemoglobin`, q.`aerob`, q.`anaerob`, 
-	q.`anaerob` , a.`asal_utd`, a.`tgl`, s.`nama`
-                FROM `qc` q
-                LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong`
-                LEFT JOIN utd s ON a.`asal_utd` = s.id
-                WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' and q.`qc_status` like '$src_hasilqc%' and a.`asal_utd` like '$src_utd%'
-                order by q.`notrans` asc");
-	
-	?>
-	<table style="border:0px;">
-	<!--<tr>
-	<font size="2" color=black>Nama UDD &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <b> <?=$detail['nama']?></b></font><br><br>
-	</tr>-->
-	<tr>
-	<font size="2" color=black>Tanggal Terima &nbsp; : <b> <?=$tglterima?></b></font><br><br>
-	</tr>
-	<tr>
-	<font size="2" color=black>Periode &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
-	 <b>Bulan <?=$periode?></b></font><br><br>
-	</tr>
-	<tr>
-	<font size="2" color=black>Jumlah Sampel &nbsp;:
-	 <b><?=mysql_num_rows($detail_count)?> Kantong</b></font><br><br>
-	</tr>
-	</table>
-	<!--akhir nama utd-->
-
-	
+        });
+        <?php endif; ?>
 
 
-	<table border=1 cellpadding=4  style="border-collapse:collapse">
-        <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-	    <th rowspan="4">No.</th>
-	    <th rowspan="4">Asal Sampel</th>
-	    <th rowspan="4">Tanggal Periksa</th>
-  	    <th colspan="8">Pemeriksaan Fisik</th>
-	    <th rowspan="2">Pemeriksaan Hematologi</th>
-	    <th colspan="2" rowspan="2">Pemeriksaan Kontaminasi Bakteri</th>
-	    
-	</tr>
+        flatpickr("#tanggal_mulai", {
+            dateFormat: "Y-m-d",
+            defaultDate: "<?php echo $tanggal_mulai; ?>",
+            allowInput: true
+        });
 
-	
+        flatpickr("#tanggal_selesai", {
+            dateFormat: "Y-m-d",
+            defaultDate: "<?php echo $tanggal_selesai; ?>",
+            allowInput: true
+        });
 
-        <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-            <th rowspan="2">Jenis Kantong</th>
-	    <th rowspan="2">No. Kantong</th>
-	    <th rowspan="2">Gol Darah</th>
-	    <th rowspan="2">Tgl Pengambilan</th>
-	    <th rowspan="2">Tgl Kedaluwarsa</th>
-	    <th rowspan="2">Berat <br/> (gr)</th>
-	    <th rowspan="2">Volume<br/> 350 &plusmn 10%<br/> (315 - 385 mL)<br/> 450 &plusmn 10%</th>
-	    <th rowspan="2">Inspeksi Hemolisis<br/> <0,8%</th>
-	    
-	 </tr>
+        flatpickr("#tgl_sertifikat", {
+            dateFormat: "Y-m-d",
+            allowInput: true
+        });
 
-	<tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-            
-	    <th>Hemoglobin<br/> > 35 g/unit (350 mL)<br/> > 45 g/unit (450 mL)</th>
-	    <th>Aerob</th>
-	    <th>An-Aerob</th>
-	    
-	 </tr>
+        function normalizeProduk(value) {
+            var produk = String(value || '').trim().toUpperCase();
 
-	<?php
-	$no=0;
-	$notrans     = $_GET['nokantong'];
+            if (/^(PRC|WB)\b/.test(produk)) {
+                produk = produk.replace(/\s*\d+(\.\d+)?$/, '').trim();
+            }
 
-	$sql="SELECT q.`qcchecker`, q.`qcuser`, q.`qctgl`, q.`jenis`, q.`nokantong`, q.`gol_darah`, q.`RhesusDrh`, q.`tglaftap`,
-        q.`kadaluwarsa`, q.`berat_isi`, q.`volume`, q.`hemolisis`, q.`hemolisis_manual`, q.`hemoglobin`, q.`aerob`, q.`anaerob`, 
-	q.`anaerob` , a.`asal_utd`, a.`tgl`, s.`nama`
-                FROM `qc` q
-                LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong`
-                LEFT JOIN utd s ON a.`asal_utd` = s.id
-                WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' and q.`qc_status` like '$src_hasilqc%' and a.`asal_utd` like '$src_utd%'
-                order by q.`notrans` asc";
-
-	
-
-	//echo "$sql";
-	$qraw=mysql_query($sql);
-    $statusrelease='';
-	while($tmp=mysql_fetch_assoc($qraw)){$no++;
-        switch ($tmp['status']){
-            case '0' : $statusrelease='Lulus';break;
-            case '1' : $statusrelease='Tidak Lulus';break;
-            case '2' : $statusrelease='Lulus dengan Catatan';break;
-            default  : $statusrelease='-';
-
-	//tgl aftap
-   	if ($tmp[tglaftap]==NULL) $aftap='-';
-   	if ($tmp[tglaftap]) $aftap=date("d-m-Y",strtotime($tmp[tglaftap]));
-
-	//tgl kadaluwarsa
-   	if ($tmp[kadaluwarsa]==NULL) $exp='-';
-   	if ($tmp[kadaluwarsa]) $exp=date("d-m-Y",strtotime($tmp[kadaluwarsa]));
-
-	//tgl periksa
-   	if ($tmp[qctgl]==NULL) $periksa='-';
-   	if ($tmp[qctgl]) $periksa=date("d-m-Y",strtotime($tmp[qctgl]));
-	
-	//nama udd
-	$nama_udd=mysql_fetch_assoc(mysql_query("select * from utd where id='$tmp[asal_utd]'"));
-
+            return produk;
         }
-		?><tr></tr><tr></tr>
-        <tr style="font-size:11px; color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
-	    <td align="center"><?=$no.'.'?></td>
-	    <td align="left"><?=$nama_udd['nama']?></td>
-	    <td align="center"><?=$periksa?></td>
-	    <td align="center"><?=$tmp['jenis']?></td>
-	    <td align="center"><?=$tmp['nokantong']?></td>
-	    <td align="center"><?=$tmp['gol_darah']?> <?=$tmp['RhesusDrh']?></td>
-	    <td align="center"><?=$aftap?></td>	
-	    <td align="center"><?=$exp?></td>
-	    <td align="center"><?=$tmp['berat_isi']?></td>
-	    <td align="center"><?=$tmp['volume']?></td>
-	    <td align="center"><?=$tmp['hemolisis']?></td>
-	    <td align="center"><?=$tmp['hemoglobin']?></td>
-	    <td align="center"><?=$tmp['aerob']?></td>
-            <td align="center"><?=$tmp['anaerob']?></td>		
-            
 
-	   
+        function resetCheckboxGroup() {
+            $('.qc-check').prop('disabled', false);
+            $('.qc-check').prop('checked', false);
+            updateActionArea();
+        }
 
-		</tr>
-	<?}
-	if ($no==0){?>
-        <tr style="font-size:14px; color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
-			<td colspan=31 align="center">Tidak ada data pemeriksaan QC</td>
-	<?}?>
+        function updateActionArea() {
+            var checkedCount = $('.qc-check:checked').length;
 
-	    
-	    <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-            <th colspan="9" align="right">% Lulus</th>
-	    <th>75%</th>
-	    <th>75%</th>
-	    <th>75%</th>
-	    <th>100%</th>
-	    <th>100%</th>
-	    </tr>
-	    
-	    <?
+            if (checkedCount > 0) {
+                $('#action_area').removeClass('d-none').addClass('d-flex');
+            } else {
+                $('#action_area').removeClass('d-flex').addClass('d-none');
+            }
+        }
 
-$sqlwb=mysql_query("SELECT * FROM `qc` q LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong` 
-WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' and q.`qc_status` like '$src_hasilqc%' and a.`asal_utd` like '$src_utd%'") or die(mysql_error());
-$jumbariswb=mysql_num_rows($sqlwb);
+        function lockByGroup($cb) {
+            var produk = normalizeProduk($cb.data('produk'));
+            var asal = String($cb.data('asal'));
 
+            $('.qc-check').each(function() {
+                var $item = $(this);
+                var itemProduk = normalizeProduk($item.data('produk'));
+                var itemAsal = String($item.data('asal'));
 
-//$sqlwb1=mysql_query("SELECT * FROM `qc`WHERE DATE(qctgl)>='$tglawal' AND date(qctgl)<='$hariini' and produk like '%WB%' and volume > 385 ") or die(mysql_error());
-//$wb1=mysql_num_rows($sqlwb1);
+                var sameGroup = (produk === itemProduk && asal === itemAsal);
 
-//$sqlwb2=mysql_query("SELECT * FROM `qc`WHERE DATE(qctgl)>='$tglawal' AND date(qctgl)<='$hariini' and produk like '%WB%' and volume > 385 and volume > 385 ") or die(mysql_error());
-//$vollebihwb=mysql_num_rows($sqlwb2);
+                if (sameGroup) {
+                    $item.prop('disabled', false);
+                } else {
+                    $item.prop('checked', false);
+                    $item.prop('disabled', true);
+                }
+            });
+        }
 
-//volume
-$sqlwb3=mysql_query("SELECT * FROM `qc` q LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong` 
-WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' AND q.`volume` >= 315 AND q.`volume` <=385 and a.`asal_utd` like '$src_utd%' ") or die(mysql_error());
-$volkurangwb=mysql_num_rows($sqlwb3);
+        function getSelectedGroup() {
+            var $checked = $('.qc-check:checked').first();
+            if ($checked.length === 0) return null;
 
+            return {
+                produk: $checked.data('produk'),
+                asal: $checked.data('asal')
+            };
+        }
 
-//hemolisis automatic
-$sqlwb4=mysql_query("SELECT * FROM `qc` q LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong`
-WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' AND q.`hemolisis` <= 0.8
-and a.`asal_utd` like '$src_utd%' ") or die(mysql_error());
-$hemolisiswb=mysql_num_rows($sqlwb4);
+        $(document).on('change', '.qc-check', function() {
+            var checkedCount = $('.qc-check:checked').length;
 
-//hemolisis manual
-$sqlwb41=mysql_query("SELECT * FROM `qc` q LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong` 
-WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' AND 
-q.`hemolisis_manual` <= 0.8 and a.`asal_utd` like '$src_utd%'") or die(mysql_error());
-$hemolisiswb_manual=mysql_num_rows($sqlwb41);
+            if (checkedCount > 0) {
+                lockByGroup($('.qc-check:checked').first());
+            } else {
+                resetCheckboxGroup();
+            }
 
-//hemoglobin
-$sqlwb5=mysql_query("SELECT * FROM `qc` q LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong` 
-WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' AND q.`hemoglobin` >= 35 
-and a.`asal_utd` like '$src_utd%'") or die(mysql_error());
-$hbwb=mysql_num_rows($sqlwb5);
+            updateActionArea();
+        });
 
-//aerob
-$sqlwb6=mysql_query("SELECT * FROM `qc` q LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong` 
-WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' AND q.`aerob`='negatif' 
-and a.`asal_utd` like '$src_utd%'") or die(mysql_error());
-$aerobwb=mysql_num_rows($sqlwb6);
+        $('#btn_pilih_grup').on('click', function() {
+            var grp = getSelectedGroup();
+            if (!grp) return;
 
-//anaerob
-$sqlwb7=mysql_query("SELECT * FROM `qc` q LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong` 
-WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' AND q.`anaerob`='negatif' 
-and a.`asal_utd` like '$src_utd%'") or die(mysql_error());
-$anaerobwb=mysql_num_rows($sqlwb7);
+            $('.qc-check').each(function() {
+                var $item = $(this);
+                var itemProduk = normalizeProduk($item.data('produk'));
+                var itemAsal = String($item.data('asal'));
 
+                if (itemProduk === normalizeProduk(grp.produk) && itemAsal === String(grp
+                        .asal)) {
+                    $item.prop('checked', true);
+                }
+            });
 
+            updateActionArea();
+        });
 
-$jumkolomwb=2;
-$persenwb=100;
+        $('input[name="pakai_sertifikat"]').on('change', function() {
+            if ($('#sertifikat_ya').is(':checked')) {
+                $('#box_sertifikat').slideDown(150);
+            } else {
+                $('#box_sertifikat').slideUp(150);
+                $('#no_sertifikat').val('');
+                $('#tgl_sertifikat').val('');
+            }
+        });
 
-//$kaliwb=$jumbariswb * $jumkolomwb;//
-//$bagiwb= $persenwb / $kaliwb;//
-//$ihwb=$wb1 * $bagiwb;
-//$hslihwb=$persenwb - $ihwb;
-//$volwb1=$vollebihwb * $bagiwb;
-//$volwb2=$volkurangwb * $bagiwb;
-//$hslwb1=$hslihwb - $volwb1;
-//$hslakhrwb=$hslwb1-$volwb2;
+        $('#btn_cetak_laporan').on('click', function() {
+            var modalCetak = new bootstrap.Modal(document.getElementById('modalCetak'));
+            modalCetak.show();
+        });
 
-//persentase hasil volume
-$vol=$persenwb / $jumbariswb;
-$vol1= $vol * $volkurangwb;
+        $('#btn_lanjut_cetak').on('click', function() {
+            var selectedIds = [];
+            $('.qc-check:checked').each(function() {
+                selectedIds.push($(this).val());
+            });
 
-//persentase hasil hemolisis automatic 
-$persenhgb=$persenwb / $jumbariswb;
-$hemowb= $persenhgb * $hemolisiswb;
+            if (selectedIds.length === 0) {
+                alert('Silahkan pilih minimal 1 data terlebih dahulu.');
+                return;
+            }
 
-//persentase hasil hemolisis manual
-$persenhgb=$persenwb / $jumbariswb;
-$hemowb_manual= $persenhgb * $hemolisiswb_manual;
+            $('#selected_ids').val(selectedIds.join(','));
+            $('#hidden_pakai_sertifikat').val($('input[name="pakai_sertifikat"]:checked').val());
+            $('#hidden_no_sertifikat').val($('#no_sertifikat').val());
+            $('#hidden_tgl_sertifikat').val($('#tgl_sertifikat').val());
 
-//persentase hasil hemoglobin
-$persenhb=$persenwb / $jumbariswb;
-$hbwb1= $persenhb * $hbwb;
+            $('#form_proses_cetak').submit();
+            console.log('Form submitted with selected IDs:', selectedIds.join(','));
+        });
 
-//persentase hasil aerob
-$persenhb=$persenwb / $jumbariswb;
-$aerobwb= $persenhb * $aerobwb;
-
-//persentase hasil anaerob
-$persenhb=$persenwb / $jumbariswb;
-$anaerobwb= $persenhb * $anaerobwb;
+        updateActionArea();
+    });
+    </script>
 
 
-
-
-
-?>
-<tr style="background-color:mistyrose; font-size:12px; color:#000000;">
-<td colspan="9" align="right"><b>Hasil</b></td>
-<td align="center"><b><? echo number_format ($vol1,2); ?>%</b></td>
-<td align="center"><b><? echo number_format ($hemowb,2); ?>%</b></td>
-<td align="center"><b><? echo number_format ($hbwb1,2); ?>%</b></td>
-<td align="center"><b><? echo number_format ($aerobwb,2); ?>%</b></td>
-<td align="center"><b><? echo number_format ($anaerobwb,2); ?>%</b></td>
-
-</tr>
-
-</table><br>
-
-<!--awal petugas-->
-	<?php
-	$petugas=mysql_fetch_assoc(mysql_query("SELECT q.`qcchecker`, q.`qcuser`, q.`qctgl`, q.`jenis`, q.`nokantong`, q.`gol_darah`, q.`RhesusDrh`, q.`tglaftap`,
-        q.`kadaluwarsa`, q.`berat_isi`, q.`volume`, q.`hemolisis`, q.`hemolisis_manual`, q.`hemoglobin`, q.`aerob`, q.`anaerob`, 
-	q.`anaerob` , a.`asal_utd`, a.`tgl`, s.`nama`
-                FROM `qc` q
-                LEFT JOIN `registrasi_qc` a on q.`nokantong`=a.`nokantong`
-                LEFT JOIN utd s ON a.`asal_utd` = s.id
-                WHERE DATE(q.`qctgl`)>='$tglawal' AND date(q.`qctgl`)<='$hariini' and q.`produk` like '%WB%' and q.`qc_status` like '$src_hasilqc%' and a.`asal_utd` like '$src_utd%'
-                order by q.`notrans` asc"));
-	?>
-<table style="border:0px;">
-<tr>
-<font size="2" color=black>Diperiksa Oleh &nbsp; : <b> <?=$petugas['qcchecker']?></b></font><br><br>
-</tr>
-<tr>
-<font size="2" color=black>Dicek Oleh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <b> <?=$petugas['qcuser']?></b></font><br><br>
-</tr>
-
-</table><br>
-<!--akhir petugas-->
-
-	<a href="pmiqc.php?module=qc_laporan"class="swn_button_blue">Kembali</a>
-	<?
-		if ($no!==0){
-		?>
-		<a href="pmiqc.php?module=cetak_rekap&tgl1=<?=$tglawal?>&tgl2=<?=$hariini?>&stts=<?=$status?>&ptgs=<?=$petugas?>&hasil=<?=$src_hasilqc?>&utd=<?=$src_utd?>" class="swn_button_blue">Download Data Per UTD</a>
-		<a href="pmiqc.php?module=cetak_rekap_all&tgl1=<?=$tglawal?>&tgl2=<?=$hariini?>&stts=<?=$status?>&ptgs=<?=$petugas?>&hasil=<?=$src_hasilqc?>&utd=<?=$src_utd?>" class="swn_button_green">Download Semua Data</a><?
-		}
-	?>
-    
-    <a name="bawah" id="bawah"></a>
-	<?
-?>
 </body>
-</html>
 
+</html>

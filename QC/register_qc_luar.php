@@ -6,25 +6,25 @@ $namauser = $_SESSION['namauser'];
 
 function getJenisLabel($jenis)
 {
-	$map = array(
-		'1' => 'Single',
-		'2' => 'Double',
-		'3' => 'Triple',
-		'4' => 'Quadruple',
-		'6' => 'Pediatrik'
-	);
+    $map = array(
+        '1' => 'Single',
+        '2' => 'Double',
+        '3' => 'Triple',
+        '4' => 'Quadruple',
+        '6' => 'Pediatrik'
+    );
 
-	$jenis = trim((string)$jenis);
-	return isset($map[$jenis]) ? $map[$jenis] : $jenis;
+    $jenis = trim((string)$jenis);
+    return isset($map[$jenis]) ? $map[$jenis] : $jenis;
 }
 
 function renderTempRows($namauser)
 {
-	$namauser = mysql_real_escape_string($namauser);
-	$no = 1;
-	$html = '';
+    $namauser = mysql_real_escape_string($namauser);
+    $no = 1;
+    $html = '';
 
-	$q = mysql_query("
+    $q = mysql_query("
         SELECT t.*, u.nama AS nama_utd
         FROM registrasi_luarqc_temp t
         LEFT JOIN utd u ON u.id = t.asal_utd
@@ -32,14 +32,15 @@ function renderTempRows($namauser)
         ORDER BY t.id ASC
     ");
 
-	while ($d = mysql_fetch_assoc($q)) {
-		$asalDisplay = !empty($d['nama_utd']) ? $d['nama_utd'] : $d['asal_utd'];
+    while ($d = mysql_fetch_assoc($q)) {
+        $asalDisplay = !empty($d['nama_utd']) ? $d['nama_utd'] : $d['asal_utd'];
 
-		$html .= "<tr>
+        $html .= "<tr>
             <td><input type='checkbox' name='pilih[]' value='" . htmlspecialchars($d['id']) . "'></td>
             <td>" . $no++ . "</td>
             <td>" . htmlspecialchars($d['nokantong']) . "</td>
             <td>" . htmlspecialchars($d['volume']) . "</td>
+            <td>" . htmlspecialchars($d['vol_kantong_luar']) . "</td>
             <td>" . htmlspecialchars($d['merk']) . "</td>
             <td>" . htmlspecialchars(getJenisLabel($d['jenis'])) . "</td>
             <td>" . htmlspecialchars($asalDisplay) . "</td>
@@ -51,9 +52,9 @@ function renderTempRows($namauser)
             <td>" . htmlspecialchars($d['rhesus']) . "</td>
             <td>" . htmlspecialchars($d['pengirim']) . "</td>
         </tr>";
-	}
+    }
 
-	return $html;
+    return $html;
 }
 ?>
 <!DOCTYPE html>
@@ -75,10 +76,77 @@ function renderTempRows($namauser)
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script type="text/javascript">
-    function setFocus() {
-        document.tambahkantong.nokantong.focus();
-    }
+        function setFocus() {
+            document.tambahkantong.nokantong.focus();
+        }
     </script>
+    <style>
+        .modal-barcode-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 9999;
+        }
+
+        .modal-barcode-box {
+            width: 92%;
+            height: 92%;
+            background: #fff;
+            margin: 2% auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-barcode-header {
+            padding: 12px 16px;
+            background: #f4f4f4;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-barcode-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .modal-barcode-close {
+            border: 0;
+            background: #c62828;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 32px;
+        }
+
+        .modal-barcode-body {
+            flex: 1;
+            padding: 10px;
+        }
+
+        .modal-barcode-body iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .modal-barcode-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            background: #fafafa;
+        }
+    </style>
 </head>
 
 <body onload="setFocus()">
@@ -111,13 +179,13 @@ function renderTempRows($namauser)
                                         <select name="merk" id="merk" class="select2 control">
                                             <option value="" selected>--Pilih Merk--</option>
                                             <?php
-											$permintaan1 = "SELECT * FROM merk_kantong";
-											$do1 = mysql_query($permintaan1);
-											while ($data1 = mysql_fetch_assoc($do1)) {
-											?>
-                                            <option value="<?= htmlspecialchars($data1['mk_merk']) ?>">
-                                                <?= htmlspecialchars($data1['mk_merk']) ?>
-                                            </option>
+                                            $permintaan1 = "SELECT * FROM merk_kantong";
+                                            $do1 = mysql_query($permintaan1);
+                                            while ($data1 = mysql_fetch_assoc($do1)) {
+                                            ?>
+                                                <option value="<?= htmlspecialchars($data1['mk_merk']) ?>">
+                                                    <?= htmlspecialchars($data1['mk_merk']) ?>
+                                                </option>
                                             <?php } ?>
                                             <option value="lainnya">Lainnya...</option>
                                         </select>
@@ -126,15 +194,23 @@ function renderTempRows($namauser)
                                             class="control sub-input">
                                     </div>
 
-                                    <div class="input-field">
-                                        <label>Jenis Kantong</label>
-                                        <select name="jenis2" id="jenis2" class="control">
-                                            <option value="1">Single</option>
-                                            <option value="2">Double</option>
-                                            <option value="3">Triple</option>
-                                            <option value="4">Quadruple</option>
-                                            <option value="6">Pediatrik</option>
-                                        </select>
+                                    <div class="row-two">
+                                        <div class="input-field">
+                                            <label>Jenis Kantong</label>
+                                            <select name="jenis2" id="jenis2" class="control">
+                                                <option value="1">Single</option>
+                                                <option value="2">Double</option>
+                                                <option value="3">Triple</option>
+                                                <option value="4">Quadruple</option>
+                                                <option value="6">Pediatrik</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="input-field">
+                                            <label>Berat Kantong</label>
+                                            <input type="text" name="volume" id="volume" class="control"
+                                                placeholder="350/450/500">
+                                        </div>
                                     </div>
 
                                     <div class="input-field">
@@ -142,13 +218,13 @@ function renderTempRows($namauser)
                                         <select name="produk" id="produk" class="select2 control">
                                             <option value="" selected>--Pilih Produk--</option>
                                             <?php
-											$permintaan1 = "SELECT * FROM produk ORDER BY Nama DESC";
-											$do1 = mysql_query($permintaan1);
-											while ($data1 = mysql_fetch_assoc($do1)) {
-											?>
-                                            <option value="<?= htmlspecialchars($data1['Nama']) ?>">
-                                                <?= htmlspecialchars($data1['Nama']) ?>
-                                            </option>
+                                            $permintaan1 = "SELECT * FROM produk ORDER BY Nama DESC";
+                                            $do1 = mysql_query($permintaan1);
+                                            while ($data1 = mysql_fetch_assoc($do1)) {
+                                            ?>
+                                                <option value="<?= htmlspecialchars($data1['Nama']) ?>">
+                                                    <?= htmlspecialchars($data1['Nama']) ?>
+                                                </option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -176,8 +252,9 @@ function renderTempRows($namauser)
 
                                 <div class="input-col">
                                     <div class="input-field">
-                                        <label>Volume</label>
-                                        <input type="text" name="volume" id="volume" class="control">
+                                        <label>Volume Kantong</label>
+                                        <input type="text" name="vol_kantong_luar" id="vol_kantong_luar"
+                                            class="control">
                                     </div>
 
                                     <div class="input-field">
@@ -202,11 +279,11 @@ function renderTempRows($namauser)
                                         <select name="asal_sampel" id="asal_sampel" class="select2 control">
                                             <option value="" selected>--Pilih UDD--</option>
                                             <?php
-											$ql = mysql_query("SELECT * FROM utd ORDER BY daerah ASC");
-											while ($rowl1 = mysql_fetch_array($ql)) {
-												echo "<option value='" . htmlspecialchars($rowl1['id']) . "'>" . htmlspecialchars($rowl1['nama']) . "</option>";
-											}
-											?>
+                                            $ql = mysql_query("SELECT * FROM utd ORDER BY daerah ASC");
+                                            while ($rowl1 = mysql_fetch_array($ql)) {
+                                                echo "<option value='" . htmlspecialchars($rowl1['id']) . "'>" . htmlspecialchars($rowl1['nama']) . "</option>";
+                                            }
+                                            ?>
                                             <option value="lainnya">Lainnya...</option>
                                         </select>
                                         <input type="text" name="asal_sampel_lainnya" id="asal_sampel_lainnya"
@@ -228,7 +305,8 @@ function renderTempRows($namauser)
                                     <div class="input-field">
                                         <label>No Kantong</label>
                                         <input type="text" name="nokantong" id="nokantong"
-                                            placeholder="Masukkan No.Kantong" class="control">
+                                            placeholder="Masukkan No.Kantong" class="control"
+                                            style="text-transform: uppercase;">
                                     </div>
                                 </div>
                             </div>
@@ -243,7 +321,8 @@ function renderTempRows($namauser)
                                             <th></th>
                                             <th>No</th>
                                             <th>No Kantong</th>
-                                            <th>Volume</th>
+                                            <th>Berat Kantong</th>
+                                            <th>Volume Isi Kantong</th>
                                             <th>Merk</th>
                                             <th>Jenis</th>
                                             <th>Asal UTD</th>
@@ -264,7 +343,8 @@ function renderTempRows($namauser)
 
                             <div class="actions" id="table-actions"
                                 style="display:none; width:100%; justify-content:flex-end;">
-                                <input type="button" value="Simpan" onclick="simpanFinal()" class="swn_button_blue">
+                                <input type="button" value="Preview Barcode" onclick="previewBarcode()"
+                                    class="swn_button_green">
                                 <input type="button" value="Delete Row" onclick="deleteRow('list-kantong')"
                                     class="swn_button_red">
                             </div>
@@ -275,226 +355,270 @@ function renderTempRows($namauser)
         </div>
     </div>
 
+    <div id="modalBarcode" class="modal-barcode-overlay">
+        <div class="modal-barcode-box">
+            <div class="modal-barcode-header">
+                <h3>Preview Cetak Barcode</h3>
+                <button type="button" class="modal-barcode-close" onclick="closeBarcodeModal()">X</button>
+            </div>
+
+            <div class="modal-barcode-body">
+                <iframe id="barcodeFrame" src="about:blank"></iframe>
+            </div>
+
+            <div class="modal-barcode-footer">
+                <input type="button" value="Tutup" class="swn_button_red" onclick="closeBarcodeModal()">
+                <input type="button" value="Lanjut Simpan" class="swn_button_blue" onclick="lanjutSimpanFinal()">
+            </div>
+        </div>
+    </div>
+
     <script>
-    function showNotif(type, msg) {
-        $('#notif').removeClass('sukses gagal').addClass(type).html(msg).show();
-    }
-
-    function hideNotif() {
-        $('#notif').hide().text('');
-    }
-
-    function toggleTableActions() {
-        var rowCount = $('#tbody-kantong tr').length;
-        if (rowCount > 0) {
-            $('#table-actions').css('display', 'flex');
-        } else {
-            $('#table-actions').hide();
-        }
-    }
-
-    function deleteRow(tableID) {
-        var ids = [];
-
-        $('#tbody-kantong input[type="checkbox"]:checked').each(function() {
-            ids.push($(this).val());
-        });
-
-        if (ids.length === 0) {
-            showNotif('gagal', 'Pilih data yang mau dihapus terlebih dahulu.');
-            return;
+        function showNotif(type, msg) {
+            $('#notif').removeClass('sukses gagal').addClass(type).html(msg).show();
         }
 
-        if (!confirm('Hapus data yang dipilih dari tabel sementara?')) {
-            return;
+        function hideNotif() {
+            $('#notif').hide().text('');
         }
 
-        $.ajax({
-            url: 'QC/ajax_delete_temp.php',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                ids: ids
-            },
-            success: function(res) {
-                console.log(res);
-
-                if (res.status === 'success') {
-                    $('#tbody-kantong').html(res.html);
-                    toggleTableActions();
-                    showNotif('sukses', res.msg);
-                } else {
-                    showNotif('gagal', res.msg);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
+        function toggleTableActions() {
+            var rowCount = $('#tbody-kantong tr').length;
+            if (rowCount > 0) {
+                $('#table-actions').css('display', 'flex');
+            } else {
+                $('#table-actions').hide();
             }
-        });
-    }
-
-    function getFormData() {
-        return {
-            merk: $('#merk').val(),
-            merk_lainnya: $('#merk_lainnya').val(),
-            jenis2: $('#jenis2').val(),
-            produk: $('#produk').val(),
-            goldarah: $('#goldarah').val(),
-            rh: $('#rh').val(),
-            volume: $('#volume').val(),
-            asal_sampel: $('#asal_sampel').val(),
-            asal_sampel_lainnya: $('#asal_sampel_lainnya').val(),
-            pengirim: $('#pengirim').val(),
-            tglaftap: $('#tglaftap').val(),
-            tglkad: $('#tglkad').val(),
-            tglolah: $('#tglolah').val(),
-            cetakkantong: $('#cetakkantong').val(),
-            nokantong: $('#nokantong').val()
-        };
-    }
-
-    function validasiForm(data) {
-        if (!data.merk) return 'Merk belum dipilih';
-        if (!data.produk) return 'Produk belum dipilih';
-        if (!data.volume) return 'Volume belum diisi';
-        if (!data.asal_sampel) return 'Asal sampel belum dipilih';
-        if (!data.pengirim) return 'Nama pengirim belum diisi';
-        if (!data.tglaftap) return 'Tgl Aftap belum diisi';
-        if (!data.tglkad) return 'Tgl Kadaluarsa belum diisi';
-        if (!data.tglolah) return 'Tgl Pengolahan belum diisi';
-        if (!data.nokantong) return 'No kantong belum diisi';
-        return '';
-    }
-
-    function simpanTemp() {
-        hideNotif();
-
-        var data = getFormData();
-        var cek = validasiForm(data);
-        if (cek !== '') {
-            showNotif('gagal', cek);
-            return;
         }
 
-        $.ajax({
-            url: 'QC/ajax_simpan_temp.php',
-            type: 'POST',
-            data: data,
-            dataType: 'json',
-            success: function(res) {
-                console.log(res);
+        function deleteRow(tableID) {
+            var ids = [];
 
-                if (res.status === 'success') {
-                    $('#tbody-kantong').html(res.html);
-                    toggleTableActions();
-                    showNotif('sukses', res.msg);
-                    $('#nokantong').val('').focus();
-                } else {
-                    showNotif('gagal', res.msg);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
+            $('#tbody-kantong input[type="checkbox"]:checked').each(function() {
+                ids.push($(this).val());
+            });
+
+            if (ids.length === 0) {
+                showNotif('gagal', 'Pilih data yang mau dihapus terlebih dahulu.');
+                return;
             }
-        });
-    }
 
-    function simpanFinal() {
-        hideNotif();
+            if (!confirm('Hapus data yang dipilih dari tabel sementara?')) {
+                return;
+            }
 
-        if (!confirm('Simpan semua data ke registrasi QC?')) {
-            return;
+            $.ajax({
+                url: 'QC/ajax_delete_temp.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    ids: ids
+                },
+                success: function(res) {
+                    console.log(res);
+
+                    if (res.status === 'success') {
+                        $('#tbody-kantong').html(res.html);
+                        toggleTableActions();
+                        showNotif('sukses', res.msg);
+                    } else {
+                        showNotif('gagal', res.msg);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
+                }
+            });
         }
 
-        $.ajax({
-            url: 'QC/ajax_simpan_final_qc_luar.php',
-            type: 'POST',
-            dataType: 'json',
-            cache: false,
-            success: function(res) {
-                console.log('RESP FINAL:', res);
-                console.log('HTML FINAL:', res.html);
+        function getFormData() {
+            return {
+                merk: $('#merk').val(),
+                merk_lainnya: $('#merk_lainnya').val(),
+                jenis2: $('#jenis2').val(),
+                produk: $('#produk').val(),
+                goldarah: $('#goldarah').val(),
+                rh: $('#rh').val(),
+                volume: $('#volume').val(),
+                vol_kantong_luar: $('#vol_kantong_luar').val(),
+                asal_sampel: $('#asal_sampel').val(),
+                asal_sampel_lainnya: $('#asal_sampel_lainnya').val(),
+                pengirim: $('#pengirim').val(),
+                tglaftap: $('#tglaftap').val(),
+                tglkad: $('#tglkad').val(),
+                tglolah: $('#tglolah').val(),
+                cetakkantong: $('#cetakkantong').val(),
+                nokantong: $('#nokantong').val()
+            };
+        }
 
-                if (res.status === 'success' || res.status === 'partial') {
-                    // update isi list sesuai sisa data temp
-                    $('#tbody-kantong').html(res.html || '');
+        function validasiForm(data) {
+            if (!data.merk) return 'Merk belum dipilih';
+            if (!data.produk) return 'Produk belum dipilih';
+            if (!data.volume) return 'Volume belum diisi';
+            if (!data.vol_kantong_luar) return 'Volume Kantong Isi belum diisi';
+            if (!data.asal_sampel) return 'Asal sampel belum dipilih';
+            if (!data.pengirim) return 'Nama pengirim belum diisi';
+            if (!data.tglaftap) return 'Tgl Aftap belum diisi';
+            if (!data.tglkad) return 'Tgl Kadaluarsa belum diisi';
+            if (!data.tglolah) return 'Tgl Pengolahan belum diisi';
+            if (!data.nokantong) return 'No kantong belum diisi';
+            return '';
+        }
 
-                    // pastikan tombol tampil/hilang sesuai isi tabel
-                    toggleTableActions();
+        function simpanTemp() {
+            hideNotif();
 
-                    // kalau masih ada data gagal, tampilkan daftar gagal
-                    if (res.status === 'partial' && res.gagal && res.gagal.length > 0) {
-                        var html = '<div>' + res.msg + '</div>';
-                        html += '<div style="margin-top:8px;font-weight:700;">Data yang gagal:</div>';
-                        html += '<ul style="margin:6px 0 0 18px;padding:0;">';
+            var data = getFormData();
+            var cek = validasiForm(data);
+            if (cek !== '') {
+                showNotif('gagal', cek);
+                return;
+            }
 
-                        for (var i = 0; i < res.gagal.length; i++) {
-                            html += '<li><b>' + res.gagal[i].nokantong + '</b> - ' + res.gagal[i].alasan +
-                                '</li>';
+            $.ajax({
+                url: 'QC/ajax_simpan_temp.php',
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: function(res) {
+                    console.log(res);
+
+                    if (res.status === 'success') {
+                        $('#tbody-kantong').html(res.html);
+                        toggleTableActions();
+                        showNotif('sukses', res.msg);
+                        $('#nokantong').val('').focus();
+                    } else {
+                        showNotif('gagal', res.msg);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
+                }
+            });
+        }
+
+        function simpanFinal() {
+            hideNotif();
+
+            if (!confirm('Simpan semua data ke registrasi QC?')) {
+                return;
+            }
+
+            $.ajax({
+                url: 'QC/ajax_simpan_final_qc_luar.php',
+                type: 'POST',
+                dataType: 'json',
+                cache: false,
+                success: function(res) {
+                    console.log('RESP FINAL:', res);
+                    console.log('HTML FINAL:', res.html);
+
+                    if (res.status === 'success' || res.status === 'partial') {
+                        // update isi list sesuai sisa data temp
+                        $('#tbody-kantong').html(res.html || '');
+
+                        // pastikan tombol tampil/hilang sesuai isi tabel
+                        toggleTableActions();
+
+                        // kalau masih ada data gagal, tampilkan daftar gagal
+                        if (res.status === 'partial' && res.gagal && res.gagal.length > 0) {
+                            var html = '<div>' + res.msg + '</div>';
+                            html += '<div style="margin-top:8px;font-weight:700;">Data yang gagal:</div>';
+                            html += '<ul style="margin:6px 0 0 18px;padding:0;">';
+
+                            for (var i = 0; i < res.gagal.length; i++) {
+                                html += '<li><b>' + res.gagal[i].nokantong + '</b> - ' + res.gagal[i].alasan +
+                                    '</li>';
+                            }
+
+                            html += '</ul>';
+
+                            $('#notif').removeClass('sukses gagal').addClass('gagal').html(html).show();
+                        } else {
+                            showNotif('sukses', res.msg);
                         }
 
-                        html += '</ul>';
-
-                        $('#notif').removeClass('sukses gagal').addClass('gagal').html(html).show();
-                    } else {
-                        showNotif('sukses', res.msg);
+                        return;
                     }
 
-                    return;
+                    showNotif('gagal', res.msg);
+                },
+                error: function(xhr, status, error) {
+                    console.log('STATUS:', status);
+                    console.log('ERROR:', error);
+                    console.log('RESPONSE:', xhr.responseText);
+                    showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
                 }
+            });
+        }
 
-                showNotif('gagal', res.msg);
-            },
-            error: function(xhr, status, error) {
-                console.log('STATUS:', status);
-                console.log('ERROR:', error);
-                console.log('RESPONSE:', xhr.responseText);
-                showNotif('gagal', 'AJAX ERROR: ' + status + ' | ' + error);
+
+
+        $(document).ready(function() {
+            $('.select2').select2({
+                width: '100%',
+                minimumResultsForSearch: 0
+            });
+
+            flatpickr(".datetime", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true
+            });
+
+            $('#merk').on('change', function() {
+                if ($(this).val() === 'lainnya') {
+                    $('#merk_lainnya').show().focus();
+                } else {
+                    $('#merk_lainnya').hide().val('');
+                }
+            });
+
+            $('#asal_sampel').on('change', function() {
+                if ($(this).val() === 'lainnya') {
+                    $('#asal_sampel_lainnya').show().focus();
+                } else {
+                    $('#asal_sampel_lainnya').hide().val('');
+                }
+            });
+
+            $('#nokantong').on('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    simpanTemp();
+                }
+            });
+
+            toggleTableActions();
+        });
+
+        function previewBarcode() {
+            hideNotif();
+
+            var rowCount = $('#tbody-kantong tr').length;
+            if (rowCount === 0) {
+                showNotif('gagal', 'Tidak ada data sementara untuk dipreview.');
+                return;
             }
-        });
-    }
 
+            var url = 'QC/barcode1baris2023auto_temp.php?ts=' + new Date().getTime();
+            $('#barcodeFrame').attr('src', url);
+            $('#modalBarcode').fadeIn(150);
+        }
 
+        function closeBarcodeModal() {
+            $('#modalBarcode').fadeOut(150);
+            $('#barcodeFrame').attr('src', 'about:blank');
+        }
 
-    $(document).ready(function() {
-        $('.select2').select2({
-            width: '100%',
-            minimumResultsForSearch: 0
-        });
-
-        flatpickr(".datetime", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            time_24hr: true
-        });
-
-        $('#merk').on('change', function() {
-            if ($(this).val() === 'lainnya') {
-                $('#merk_lainnya').show().focus();
-            } else {
-                $('#merk_lainnya').hide().val('');
-            }
-        });
-
-        $('#asal_sampel').on('change', function() {
-            if ($(this).val() === 'lainnya') {
-                $('#asal_sampel_lainnya').show().focus();
-            } else {
-                $('#asal_sampel_lainnya').hide().val('');
-            }
-        });
-
-        $('#nokantong').on('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                simpanTemp();
-            }
-        });
-
-        toggleTableActions();
-    });
+        function lanjutSimpanFinal() {
+            closeBarcodeModal();
+            simpanFinal();
+        }
     </script>
 </body>
 

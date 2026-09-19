@@ -56,22 +56,22 @@ if (isset($_POST['utd']) && $_POST['utd'] != '') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
 
     <style>
-    tr {
-        background-color: #FDF5E6;
-    }
+        tr {
+            background-color: #FDF5E6;
+        }
 
-    .initial {
-        background-color: #FDF5E6;
-        color: #000000;
-    }
+        .initial {
+            background-color: #FDF5E6;
+            color: #000000;
+        }
 
-    .normal {
-        background-color: #FDF5E6;
-    }
+        .normal {
+            background-color: #FDF5E6;
+        }
 
-    .highlight {
-        background-color: #7FFF00;
-    }
+        .highlight {
+            background-color: #7FFF00;
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -185,27 +185,32 @@ if (isset($_POST['utd']) && $_POST['utd'] != '') {
             if (isset($statusQC['statQC']) && $statusQC['statQC'] == '1') {
                 $status = 'Sudah QC';
             } else {
-                $status = 'Belum QC';
+                $cekQC = mysql_fetch_assoc(mysql_query("SELECT * FROM registrasi_qc WHERE nokantong='" . $datatransaksipermintaan['nokantong'] . "'"));
+                if ($cekQC['up_data'] == '1') {
+                    $status = 'Sudah QC';
+                } else {
+                    $status = 'Belum QC';
+                }
             }
         ?>
-        <tr style="font-size:11px; color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight'"
-            onMouseOut="this.className='normal'">
-            <td align="center"><?php echo $no; ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['nokantong']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['goldarah']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['rhesus']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['produk']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['tglaftap']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['kadaluwarsa']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['tgl']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['petugas_terima']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['petugas_serah']); ?></td>
-            <td align="center"><?php echo htmlspecialchars($utd); ?></td>
-            <td align="center"
-                style="background-color: <?php echo ($status == 'Sudah QC' ? 'lightgreen' : 'lightcoral'); ?>;">
-                <?php echo $status; ?>
-            </td>
-        </tr>
+            <tr style="font-size:11px; color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight'"
+                onMouseOut="this.className='normal'">
+                <td align="center"><?php echo $no; ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['nokantong']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['goldarah']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['rhesus']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['produk']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['tglaftap']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['kadaluwarsa']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['tgl']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['petugas_terima']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($datatransaksipermintaan['petugas_serah']); ?></td>
+                <td align="center"><?php echo htmlspecialchars($utd); ?></td>
+                <td align="center"
+                    style="background-color: <?php echo ($status == 'Sudah QC' ? 'lightgreen' : 'lightcoral'); ?>;">
+                    <?php echo $status; ?>
+                </td>
+            </tr>
         <?php
             $no++;
         }
@@ -213,24 +218,24 @@ if (isset($_POST['utd']) && $_POST['utd'] != '') {
     </table>
 
     <script>
-    $(function() {
-        if ($.fn.datepicker) {
-            $('#datepicker').datepicker({
-                dateFormat: 'yy-mm-dd'
-            });
+        $(function() {
+            if ($.fn.datepicker) {
+                $('#datepicker').datepicker({
+                    dateFormat: 'yy-mm-dd'
+                });
 
-            $('#datepicker1').datepicker({
-                dateFormat: 'yy-mm-dd'
-            });
-        }
+                $('#datepicker1').datepicker({
+                    dateFormat: 'yy-mm-dd'
+                });
+            }
 
-        if ($.fn.select2) {
-            $('.select2').select2({
-                width: '300px',
-                minimumResultsForSearch: 0
-            });
-        }
-    });
+            if ($.fn.select2) {
+                $('.select2').select2({
+                    width: '300px',
+                    minimumResultsForSearch: 0
+                });
+            }
+        });
     </script>
 
 </body>

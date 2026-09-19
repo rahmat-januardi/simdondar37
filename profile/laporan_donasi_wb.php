@@ -87,7 +87,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="panel-title pull-right">
-                                    <form class="form-inline" method="POST" action="pmitatausaha.php?module=lap_donasi_wb">
+                                    <form class="form-inline" method="POST"
+                                        action="pmitatausaha.php?module=lap_donasi_wb">
                                         <div class="form-group">
                                             Bulan
                                             <?php
@@ -187,15 +188,22 @@
                                                         break;
                                                 }
                                                 ?>
-                                                <option value='<?php echo $tahun - 5; ?>' <?php echo $s1; ?>> <?php echo $tahun - 5 ?> </option>
-                                                <option value='<?php echo $tahun - 4; ?>' <?php echo $s2; ?>> <?php echo $tahun - 4 ?> </option>
-                                                <option value='<?php echo $tahun - 3; ?>' <?php echo $s3; ?>> <?php echo $tahun - 3 ?> </option>
-                                                <option value='<?php echo $tahun - 2; ?>' <?php echo $s4; ?>> <?php echo $tahun - 2 ?> </option>
-                                                <option value='<?php echo $tahun - 1; ?>' <?php echo $s5; ?>> <?php echo $tahun - 1 ?> </option>
-                                                <option value='<?php echo $tahun; ?>' <?php echo $s6; ?>> <?php echo $tahun ?> </option>
+                                                <option value='<?php echo $tahun - 5; ?>' <?php echo $s1; ?>>
+                                                    <?php echo $tahun - 5 ?> </option>
+                                                <option value='<?php echo $tahun - 4; ?>' <?php echo $s2; ?>>
+                                                    <?php echo $tahun - 4 ?> </option>
+                                                <option value='<?php echo $tahun - 3; ?>' <?php echo $s3; ?>>
+                                                    <?php echo $tahun - 3 ?> </option>
+                                                <option value='<?php echo $tahun - 2; ?>' <?php echo $s4; ?>>
+                                                    <?php echo $tahun - 2 ?> </option>
+                                                <option value='<?php echo $tahun - 1; ?>' <?php echo $s5; ?>>
+                                                    <?php echo $tahun - 1 ?> </option>
+                                                <option value='<?php echo $tahun; ?>' <?php echo $s6; ?>>
+                                                    <?php echo $tahun ?> </option>
                                             </select>
                                         </div>
-                                        <button class="btn btn-default" type="submit" id="shadow2"><i class="fa fa-check mr-1"></i> OK</button>
+                                        <button class="btn btn-default" type="submit" id="shadow2"><i
+                                                class="fa fa-check mr-1"></i> OK</button>
                                     </form>
                                 </div>
                             </div>
@@ -246,31 +254,62 @@
                                     <table class="table table-bordered table-responsive table-condensed">
                                         <thead class="pmi">
                                             <tr>
-                                                <th class="text-center" colspan="6" style="vertical-align: middle;">Jumlah Donasi Berdasarkan</th>
-                                                <th class="text-center" colspan="15" style="vertical-align: middle;">Jumlah Donasi Menurut</th>
+                                                <th class="text-center" colspan="6" style="vertical-align: middle;">
+                                                    Jumlah Donasi Berdasarkan</th>
+                                                <th class="text-center" colspan="15" style="vertical-align: middle;">
+                                                    Jumlah Donasi Menurut</th>
                                             </tr>
                                             <tr>
-                                                <th class="text-center" colspan="3" style="vertical-align: middle;">Jenis Donor</th>
-                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">Jumlah Total Donasi</th>
-                                                <th class="text-center" colspan="2" style="vertical-align: middle;">Riwayat Donasi</th>
-                                                <th class="text-center" colspan="2" style="vertical-align: middle;">Tempat</th>
-                                                <th class="text-center" colspan="2" style="vertical-align: middle;">Jenis Kelamin</th>
-                                                <th class="text-center" colspan="3" style="vertical-align: middle;">Kelompok Umur</th>
-                                                <th class="text-center" colspan="8" style="vertical-align: middle;">Golongan dan Rhesus Darah</th>
+                                                <th class="text-center" colspan="3" style="vertical-align: middle;">
+                                                    Jenis Donor</th>
+                                                <th class="text-center" rowspan="3" style="vertical-align: middle;">
+                                                    Jumlah Total Donasi</th>
+                                                <th class="text-center" colspan="2" style="vertical-align: middle;">
+                                                    Riwayat Donasi</th>
+                                                <th class="text-center" colspan="2" style="vertical-align: middle;">
+                                                    Tempat</th>
+                                                <th class="text-center" colspan="2" style="vertical-align: middle;">
+                                                    Jenis Kelamin</th>
+                                                <th class="text-center" colspan="3" style="vertical-align: middle;">
+                                                    Kelompok Umur</th>
+                                                <th class="text-center" colspan="8" style="vertical-align: middle;">
+                                                    Golongan dan Rhesus Darah</th>
                                             </tr>
                                             <tr>
-                                                <th class="text-center" style="vertical-align: middle;">Donor Sukarela</th>
-                                                <th class="text-center" style="vertical-align: middle;">Donor Pengganti</th>
-                                                <th class="text-center" style="vertical-align: middle;">Donor Bayaran</th>
-                                                <th class="text-center" style="vertical-align: middle;">Baru</th>
-                                                <th class="text-center" style="vertical-align: middle;">Ulang</th>
-                                                <th class="text-center" style="vertical-align: middle;">Dalam Gedung</th>
-                                                <th class="text-center" style="vertical-align: middle;">Mobile Unit</th>
-                                                <th class="text-center" style="vertical-align: middle;">Laki-laki</th>
-                                                <th class="text-center" style="vertical-align: middle;">Perempuan</th>
-                                                <th class="text-center" style="vertical-align: middle;">17-20 Tahun</th>
-                                                <th class="text-center" style="vertical-align: middle;">21-50 Tahun</th>
-                                                <th class="text-center" style="vertical-align: middle;">>50 Tahun</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    Donor Sukarela</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    Donor Pengganti</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    Donor Bayaran</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">Baru
+                                                </th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    Ulang</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    Dalam Gedung</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    Mobile Unit</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    Laki-laki</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    Perempuan</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    17-20 Tahun</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">
+                                                    21-50 Tahun</th>
+                                                <th class="text-center" rowspan="2" style="vertical-align: middle;">>50
+                                                    Tahun</th>
+                                                <th class="text-center" colspan="2" style="vertical-align: middle;">A
+                                                </th>
+                                                <th class="text-center" colspan="2" style="vertical-align: middle;">B
+                                                </th>
+                                                <th class="text-center" colspan="2" style="vertical-align: middle;">AB
+                                                </th>
+                                                <th class="text-center" colspan="2" style="vertical-align: middle;">O
+                                                </th>
+                                            </tr>
+                                            <tr>
                                                 <th class="text-center" style="vertical-align: middle;">Pos</th>
                                                 <th class="text-center" style="vertical-align: middle;">Neg</th>
                                                 <th class="text-center" style="vertical-align: middle;">Pos</th>
@@ -283,32 +322,54 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td class="text-center">&nbsp;<br><?php echo !empty($q_dnr['dg_ds']) ? $q_dnr['dg_ds'] : 0; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['dg_dp']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo !empty($q_dnr['dg_ds']) ? $q_dnr['dg_ds'] : 0; ?><br>&nbsp;
+                                                </td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['dg_dp']; ?><br>&nbsp;</td>
                                                 <td class="text-center">&nbsp;<br>0<br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['total']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['dnr_baru']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['dnr_ulang']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['dnr_dg']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['dnr_mu']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['lk']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['pr']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['u1720']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['u2150']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['u51']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['a_pos']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['a_neg']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['b_pos']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['b_neg']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['ab_pos']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['ab_neg']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['o_pos']; ?><br>&nbsp;</td>
-                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['o_neg']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['total']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['dnr_baru']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['dnr_ulang']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['dnr_dg']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['dnr_mu']; ?><br>&nbsp;</td>
+                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['lk']; ?><br>&nbsp;
+                                                </td>
+                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['pr']; ?><br>&nbsp;
+                                                </td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['u1720']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['u2150']; ?><br>&nbsp;</td>
+                                                <td class="text-center">&nbsp;<br><?php echo $q_dnr['u51']; ?><br>&nbsp;
+                                                </td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['a_pos']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['a_neg']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['b_pos']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['b_neg']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['ab_pos']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['ab_neg']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['o_pos']; ?><br>&nbsp;</td>
+                                                <td class="text-center">
+                                                    &nbsp;<br><?php echo $q_dnr['o_neg']; ?><br>&nbsp;</td>
                                             </tr>
                                         </tbody>
 
                                     </table>
-                                </div> <!--Overflow table -->
+                                </div>
+                                <!--Overflow table -->
                             </div>
                             <div class="col-lg-8">
                                 <?php
@@ -333,7 +394,8 @@
                                     <thead class="pmi">
                                         <tr>
                                             <th class="text-center" style="vertical-align: middle;">No</th>
-                                            <th class="text-center" style="vertical-align: middle;">Alasan Penolakan</th>
+                                            <th class="text-center" style="vertical-align: middle;">Alasan Penolakan
+                                            </th>
                                             <th class="text-center" style="vertical-align: middle;">Jumlah</th>
                                         </tr>
                                     </thead>
@@ -355,23 +417,29 @@
                                         </tr>
                                         <tr>
                                             <td class="text-right">4.</td>
-                                            <td class="text-left">Riwayat Medis Lain (Hipertensi, Hipotensi, Minum Obat, Pasca Operasi, Kadar Hb Tinggi > 17 Gr/dl)</td>
-                                            <td class="text-center"><?php echo $q_btl['a4_tensi_rendah'] + $q_btl['a4_tensi_tinggi'] + $q_btl['a4_hb_tinggi'] + $q_btl['a4_obat'] + $q_btl['a4_medis']; ?></td>
+                                            <td class="text-left">Riwayat Medis Lain (Hipertensi, Hipotensi, Minum Obat,
+                                                Pasca Operasi, Kadar Hb Tinggi > 17 Gr/dl)</td>
+                                            <td class="text-center">
+                                                <?php echo $q_btl['a4_tensi_rendah'] + $q_btl['a4_tensi_tinggi'] + $q_btl['a4_hb_tinggi'] + $q_btl['a4_obat'] + $q_btl['a4_medis']; ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="text-right">5.</td>
-                                            <td class="text-left">Perilaku Beresiko Tinggi (Homo Seksual, Tato/Tindik Kurang dari 6 Bulan, Sex Bebas, Penasun, Napi)</td>
+                                            <td class="text-left">Perilaku Beresiko Tinggi (Homo Seksual, Tato/Tindik
+                                                Kurang dari 6 Bulan, Sex Bebas, Penasun, Napi)</td>
                                             <td class="text-center"><?php echo $q_btl['a5_prilaku']; ?></td>
                                         </tr>
                                         <tr>
                                             <td class="text-right">6.</td>
-                                            <td class="text-left">Riwayat Bepergian ( Daerah Endemis Malaria, Negara dengan Kasus HIV Tinggi, Negara Dengan Kasus Sapi Gila)</td>
+                                            <td class="text-left">Riwayat Bepergian ( Daerah Endemis Malaria, Negara
+                                                dengan Kasus HIV Tinggi, Negara Dengan Kasus Sapi Gila)</td>
                                             <td class="text-center"><?php echo $q_btl['a6_bepergian']; ?></td>
                                         </tr>
                                         <tr>
                                             <td class="text-right">7.</td>
                                             <td class="text-left">Alasan Lain (Gagal pengambilan darah)</td>
-                                            <td class="text-center"><?php echo $q_btl['a7_gagal_aftap'] + $q_btl['a7_lain_lain']; ?></td>
+                                            <td class="text-center">
+                                                <?php echo $q_btl['a7_gagal_aftap'] + $q_btl['a7_lain_lain']; ?></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
@@ -449,9 +517,16 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                        <a href="pmitatausaha.php?module=upload&mdl=musnah&t=<?php echo $v_tahun; ?>&b=<?php echo $v_periode; ?>&t1=<?php echo $tanggalawal; ?>&t2=<?php echo $tanggalakhir; ?>" class="btn btn-default" id="shadow2" title="Upload Laporan ke UDD Pusat. Yang dapat diupload adalah periode Bulanan"><i class="fa fa-cloud-upload" aria-hidden="true"></i>&nbsp;&nbsp;Upload ke Pusat</a>
-                        <a href="pmitatausaha.php?module=rpt_donasi_wb&thn=<?php echo $v_tahun; ?>&bln=<?php echo $v_bulan; ?>" class="btn btn-default" id="shadow2"><i class="fa fa-print" aria-hidden="true" title="Cetak Laporan"></i>&nbsp;&nbsp;Cetak Laporan</a>
-                        <a href="pmitatausaha.php?module=laporan" class="btn btn-default" id="shadow2" title="Kembali ke Menu Laporan"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Kembali</a>
+                        <a href="pmitatausaha.php?module=upload&mdl=musnah&t=<?php echo $v_tahun; ?>&b=<?php echo $v_periode; ?>&t1=<?php echo $tanggalawal; ?>&t2=<?php echo $tanggalakhir; ?>"
+                            class="btn btn-default" id="shadow2"
+                            title="Upload Laporan ke UDD Pusat. Yang dapat diupload adalah periode Bulanan"><i
+                                class="fa fa-cloud-upload" aria-hidden="true"></i>&nbsp;&nbsp;Upload ke Pusat</a>
+                        <a href="pmitatausaha.php?module=rpt_donasi_wb&thn=<?php echo $v_tahun; ?>&bln=<?php echo $v_bulan; ?>"
+                            class="btn btn-default" id="shadow2"><i class="fa fa-print" aria-hidden="true"
+                                title="Cetak Laporan"></i>&nbsp;&nbsp;Cetak Laporan</a>
+                        <a href="pmitatausaha.php?module=laporan" class="btn btn-default" id="shadow2"
+                            title="Kembali ke Menu Laporan"><i class="fa fa-home"
+                                aria-hidden="true"></i>&nbsp;&nbsp;Kembali</a>
                     </div>
                 </div>
             </div>

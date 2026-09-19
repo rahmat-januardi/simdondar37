@@ -3,7 +3,8 @@
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
   session_start();
   include '../adm/config.php';
-  $kode   	= $_POST['kode'];
+  $kode   	= trim($_POST['kode']);
+  $kode_sql	= mysqli_real_escape_string($con, $kode);
   $idudd  	= $_SESSION['idudd'];
   $ip		= $_SESSION['ipserver'];
   $namautd            = mysqli_fetch_assoc(mysqli_query($con,"SELECT id,nama,alamat,daerah,telp from utd where aktif='1' limit 1"));
@@ -149,7 +150,7 @@ Telp. <?php echo $namautd['telp'];?><br>
 		echo "Jumlah Data adalah = ".$jmlpd;
 		echo "<br>kode Pendonor ".$kode." ke IP Adress ".$ip." gagal eksekusi ";*/
 		
-		$query = mysqli_query($con,"select * from pendonor where (tglkembali <= curdate() OR tglkembali_apheresis <= curdate()) and `Kode`='$kode'   AND Cekal='0'  limit 1");
+		$query = mysqli_query($con,"select * from pendonor where (tglkembali = '0000-00-00' OR tglkembali <= curdate()) AND (tglkembali_apheresis = '0000-00-00' OR tglkembali_apheresis <= curdate()) and (`Kode`='$kode_sql' OR `NoKTP`='$kode_sql' OR `telp`='$kode_sql') AND Cekal='0' limit 1");
 		$jmlpd = mysqli_num_rows($query);
 		
         if($jmlpd > 0){

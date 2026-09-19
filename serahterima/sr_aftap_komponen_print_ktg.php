@@ -186,8 +186,7 @@ $utd            = $utd['nama'];
 
 FROM `serahterima_detail` sd
 LEFT JOIN `stokkantong` st ON sd.`dst_nokantong` = st.`noKantong`
-WHERE sd.`dst_notrans` = '$notransaksi'
-ORDER BY dst_jenisktg ASC, dst_golda ASC";
+WHERE sd.`dst_notrans` = '$notransaksi'";
     //echo "$sql_d<br>";
     $sql_d1 = mysql_query($sql_d);
     ?>

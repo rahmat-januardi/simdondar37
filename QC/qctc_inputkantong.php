@@ -38,7 +38,7 @@ $hariini = date("Y-m-d");
         $nkt = $_POST[noktg];
         $sql = "select * from stokkantong where upper(nokantong)=upper('$nkt')";
         $stokkantong = mysql_fetch_assoc(mysql_query($sql));
-        if (($stokkantong['Status'] == '2' || $stokkantong['Status'] == '3') and ($stokkantong['sah'] == '1') and ($stokkantong['statQC'] == '0') and ($stokkantong['statKonfirmasi'] == '1') and ($stokkantong['produk'] == 'TC')) {
+        if (($stokkantong['produk'] == 'TC')) {
             $URL = "pmiqc.php?module=qctc_proses&nokantong=$nkt&mode=2";
             header("Location: $URL");
         } else {

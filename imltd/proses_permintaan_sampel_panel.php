@@ -3,11 +3,11 @@ ob_start();
 session_start();
 require_once('config/db_connect.php');
 
-// date_default_timezone_set('Asia/Jakarta');
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
 $namauser = isset($_SESSION['namauser']) ? $_SESSION['namauser'] : '';
+$leveluser = isset($_SESSION['leveluser']) ? $_SESSION['leveluser'] : '';
 
 $pkField     = 'id';
 $tableHeader = 'sampel_panel_trans';
@@ -43,7 +43,8 @@ if (!isset($_SESSION['panel_proses'])) {
     $_SESSION['panel_proses'] = array();
 }
 
-$redirect = "pmikomponen.php?module=proses_permintaan_sampel_panel";
+$redirect = "pmi$leveluser.php?module=proses_permintaan_sampel_panel";
+
 
 /* =========================
    START PROSES
@@ -198,8 +199,8 @@ if (isset($_POST['form_action']) && $_POST['form_action'] == 'tambah_kantong') {
         'created'      => date('Y-m-d H:i:s')
     );
 
-    // // Audit trail
-    // $log_mdl  = 'KOMPONEN';
+    // Audit trail
+    // $log_mdl  = 'DISTRIBUSI';
     // $log_aksi = 'Menambahkan kantong ' . $stok['NoKantong'] . ' ke proses Permintaan Sampel Panel No Transaksi: ' . $_SESSION['panel_proses']['notrans'];
     // include("user_log.php");
 
@@ -221,7 +222,7 @@ if (isset($_POST['form_action']) && $_POST['form_action'] == 'hapus_session') {
         $_SESSION['panel_proses']['items'] = array_values($_SESSION['panel_proses']['items']);
 
         // // Audit trail
-        // $log_mdl  = 'KOMPONEN';
+        // $log_mdl  = 'DISTRIBUSI';
         // $log_aksi = 'Menghapus kantong ' . $hapus_nokantong . ' dari daftar proses Permintaan Sampel Panel No Transaksi: ' . $_SESSION['panel_proses']['notrans'];
         // include("user_log.php");
 
@@ -236,11 +237,11 @@ if (isset($_POST['form_action']) && $_POST['form_action'] == 'hapus_session') {
    BATAL PROSES
 ========================= */
 if (isset($_POST['form_action']) && $_POST['form_action'] == 'reset_proses') {
-    if (isset($_SESSION['panel_proses']['notrans'])) {
-        $log_mdl  = 'KOMPONEN';
-        $log_aksi = 'Membatalkan proses Permintaan Sampel Panel No Transaksi: ' . $_SESSION['panel_proses']['notrans'];
-        include("user_log.php");
-    }
+    // if (isset($_SESSION['panel_proses']['notrans'])) {
+    //     $log_mdl  = 'KOMPONEN';
+    //     $log_aksi = 'Membatalkan proses Permintaan Sampel Panel No Transaksi: ' . $_SESSION['panel_proses']['notrans'];
+    //     include("user_log.php");
+    // }
 
     unset($_SESSION['panel_proses']);
     // setFlash('success', 'Berhasil', 'Proses dibatalkan.');
@@ -316,7 +317,7 @@ if (isset($_POST['form_action']) && $_POST['form_action'] == 'simpan_detail') {
         mysql_query("COMMIT");
 
         // Audit trail
-        $log_mdl  = 'KOMPONEN';
+        $log_mdl  = 'DISTRIBUSI';
         $log_aksi = 'Menyimpan detail Permintaan Sampel Panel untuk No Transaksi: ' . $notrans;
         include("user_log.php");
 
@@ -378,26 +379,26 @@ for ($i = 0; $i < count($panel_items); $i++) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-    body {
-        background: #f4f7fb;
-    }
+        body {
+            background: #f4f7fb;
+        }
 
-    .card {
-        margin: 20px;
-    }
+        .card {
+            margin: 20px;
+        }
 
-    #myTable,
-    #detailTable {
-        width: 100% !important;
-    }
+        #myTable,
+        #detailTable {
+            width: 100% !important;
+        }
 
-    #myTable th,
-    #myTable td,
-    #detailTable th,
-    #detailTable td {
-        white-space: nowrap;
-        vertical-align: middle;
-    }
+        #myTable th,
+        #myTable td,
+        #detailTable th,
+        #detailTable td {
+            white-space: nowrap;
+            vertical-align: middle;
+        }
     </style>
 </head>
 
@@ -405,129 +406,129 @@ for ($i = 0; $i < count($panel_items); $i++) {
 
     <?php if ($panel_active) { ?>
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Proses Permintaan Sampel Panel</h4>
-            <form method="POST" action="" style="margin:0;">
-                <input type="hidden" name="form_action" value="reset_proses">
-                <button type="submit" class="btn btn-secondary">Batal Proses</button>
-            </form>
-        </div>
-
-        <div class="card-body">
-            <div class="row g-3 mb-3">
-                <div class="col-md-4">
-                    <div class="alert alert-info mb-0">
-                        <strong>No Transaksi:</strong><br>
-                        <?php echo h($_SESSION['panel_proses']['notrans']); ?>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="alert alert-warning mb-0">
-                        <strong>Jumlah Permintaan Kantong/Sampel Reaktif:</strong> <?php echo $targetReaktif; ?><br>
-                        <strong>Terinput:</strong> <?php echo $countReaktif; ?>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="alert alert-warning mb-0">
-                        <strong>Jumlah Permintaan Kantong/Sampel NonReaktif:</strong>
-                        <?php echo $targetNonreaktif; ?><br>
-                        <strong>Terinput:</strong> <?php echo $countNonreaktif; ?>
-                    </div>
-                </div>
+        <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Proses Permintaan Sampel Panel</h4>
+                <form method="POST" action="" style="margin:0;">
+                    <input type="hidden" name="form_action" value="reset_proses">
+                    <button type="submit" class="btn btn-secondary">Batal Proses</button>
+                </form>
             </div>
 
-            <form method="POST" action="" class="row g-3 mb-4">
-                <input type="hidden" name="form_action" value="tambah_kantong">
-
-                <div class="col-md-8">
-                    <label class="form-label">Nomor Kantong</label>
-                    <input type="text" name="nokantong" id="nokantong" class="form-control"
-                        placeholder="Scan / Input No Kantong" autocomplete="off" autofocus>
+            <div class="card-body">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <div class="alert alert-info mb-0">
+                            <strong>No Transaksi:</strong><br>
+                            <?php echo h($_SESSION['panel_proses']['notrans']); ?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="alert alert-warning mb-0">
+                            <strong>Jumlah Permintaan Kantong/Sampel Reaktif:</strong> <?php echo $targetReaktif; ?><br>
+                            <strong>Terinput:</strong> <?php echo $countReaktif; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="alert alert-warning mb-0">
+                            <strong>Jumlah Permintaan Kantong/Sampel NonReaktif:</strong>
+                            <?php echo $targetNonreaktif; ?><br>
+                            <strong>Terinput:</strong> <?php echo $countNonreaktif; ?>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-md-4 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary w-100">Tambah Kantong</button>
-                </div>
-            </form>
+                <form method="POST" action="" class="row g-3 mb-4">
+                    <input type="hidden" name="form_action" value="tambah_kantong">
 
-            <table id="detailTable" class="table table-striped table-bordered align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th>No</th>
-                        <th>No Kantong</th>
-                        <th>Produk</th>
-                        <th>Jenis Sampel</th>
-                        <th>Tanggal Input</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
+                    <div class="col-md-8">
+                        <label class="form-label">Nomor Kantong</label>
+                        <input type="text" name="nokantong" id="nokantong" class="form-control"
+                            placeholder="Scan / Input No Kantong" autocomplete="off" autofocus>
+                    </div>
+
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Tambah Kantong</button>
+                    </div>
+                </form>
+
+                <table id="detailTable" class="table table-striped table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>No</th>
+                            <th>No Kantong</th>
+                            <th>Produk</th>
+                            <th>Jenis Sampel</th>
+                            <th>Tanggal Input</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
                         if (count($panel_items) > 0) {
                             for ($i = 0; $i < count($panel_items); $i++) {
                         ?>
-                    <tr>
-                        <td><?php echo $i + 1; ?></td>
-                        <td><?php echo h($panel_items[$i]['nokantong']); ?></td>
-                        <td><?php echo h($panel_items[$i]['produk']); ?></td>
-                        <td>
-                            <?php if ($panel_items[$i]['jenis_sampel'] == 'REAKTIF') { ?>
-                            <span class="badge bg-danger">REAKTIF</span>
-                            <?php } else { ?>
-                            <span class="badge bg-success">NONREAKTIF</span>
-                            <?php } ?>
-                        </td>
-                        <td><?php echo h($panel_items[$i]['created']); ?></td>
-                        <td>
-                            <form method="POST" action="" style="margin:0;">
-                                <input type="hidden" name="form_action" value="hapus_session">
-                                <input type="hidden" name="hapus_idx" value="<?php echo $i; ?>">
-                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <?php
+                                <tr>
+                                    <td><?php echo $i + 1; ?></td>
+                                    <td><?php echo h($panel_items[$i]['nokantong']); ?></td>
+                                    <td><?php echo h($panel_items[$i]['produk']); ?></td>
+                                    <td>
+                                        <?php if ($panel_items[$i]['jenis_sampel'] == 'REAKTIF') { ?>
+                                            <span class="badge bg-danger">REAKTIF</span>
+                                        <?php } else { ?>
+                                            <span class="badge bg-success">NONREAKTIF</span>
+                                        <?php } ?>
+                                    </td>
+                                    <td><?php echo h($panel_items[$i]['created']); ?></td>
+                                    <td>
+                                        <form method="POST" action="" style="margin:0;">
+                                            <input type="hidden" name="form_action" value="hapus_session">
+                                            <input type="hidden" name="hapus_idx" value="<?php echo $i; ?>">
+                                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                        <?php
                             }
                         }
                         ?>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            <form method="POST" action="" class="mt-3">
-                <input type="hidden" name="form_action" value="simpan_detail">
-                <button type="submit" class="btn btn-success">Simpan</button>
-            </form>
+                <form method="POST" action="" class="mt-3">
+                    <input type="hidden" name="form_action" value="simpan_detail">
+                    <button type="submit" class="btn btn-success">Simpan</button>
+                </form>
+            </div>
         </div>
-    </div>
 
     <?php } else { ?>
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Permintaan Sampel Panel</h4>
-            <button type="button" class="btn btn-primary" aria-label="Rekap"
-                onclick="window.location.href='pmikomponen.php?module=rekap_sampel_panel'">
-                Rekap
-            </button>
-        </div>
+        <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Permintaan Sampel Panel</h4>
+                <button type="button" class="btn btn-primary" aria-label="Rekap"
+                    onclick="window.location.href='pmi<?= $leveluser ?>.php?module=rekap_sampel_panel'">
+                    Rekap
+                </button>
+            </div>
 
-        <div class="card-body">
-            <table id="myTable" class="table table-striped align-middle w-100">
-                <thead class="table-light">
-                    <tr>
-                        <th>No</th>
-                        <th>No Transaksi</th>
-                        <th>Reaktif</th>
-                        <th>NonReaktif</th>
-                        <th>Tgl Permintaan</th>
-                        <th>Petugas</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
+            <div class="card-body">
+                <table id="myTable" class="table table-striped align-middle w-100">
+                    <thead class="table-light">
+                        <tr>
+                            <th>No</th>
+                            <th>No Transaksi</th>
+                            <th>Reaktif</th>
+                            <th>NonReaktif</th>
+                            <th>Tgl Permintaan</th>
+                            <th>Petugas</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
                         $no = 1;
                         while ($row = mysql_fetch_assoc($result_sampel_panel)) {
                             $rowId = isset($row[$pkField]) ? $row[$pkField] : '';
@@ -541,83 +542,83 @@ for ($i = 0; $i < count($panel_items); $i++) {
                                 $statusBadge = '<span class="badge bg-secondary">Belum dipenuhi</span>';
                             }
                         ?>
-                    <tr>
-                        <td><?php echo $no++; ?></td>
-                        <td><?php echo h($row['notrans']); ?></td>
-                        <td><?php echo (int)$row['reaktif']; ?></td>
-                        <td><?php echo (int)$row['nonreaktif']; ?></td>
-                        <td><?php echo $tglTampil; ?></td>
-                        <td><?php echo h($row['petugas']); ?></td>
-                        <td><?php echo $statusBadge; ?></td>
-                        <td>
-                            <form method="POST" action="" style="margin:0;">
-                                <input type="hidden" name="header_id" value="<?php echo h($rowId); ?>">
-                                <button type="submit" name="submit" value="proses" class="btn btn-primary btn-sm">
-                                    Proses
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
+                            <tr>
+                                <td><?php echo $no++; ?></td>
+                                <td><?php echo h($row['notrans']); ?></td>
+                                <td><?php echo (int)$row['reaktif']; ?></td>
+                                <td><?php echo (int)$row['nonreaktif']; ?></td>
+                                <td><?php echo $tglTampil; ?></td>
+                                <td><?php echo h($row['petugas']); ?></td>
+                                <td><?php echo $statusBadge; ?></td>
+                                <td>
+                                    <form method="POST" action="" style="margin:0;">
+                                        <input type="hidden" name="header_id" value="<?php echo h($rowId); ?>">
+                                        <button type="submit" name="submit" value="proses" class="btn btn-primary btn-sm">
+                                            Proses
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
 
     <?php } ?>
 
     <script>
-    $(document).ready(function() {
-        if ($('#myTable').length) {
-            $('#myTable').DataTable({
-                scrollX: true,
-                autoWidth: false,
-                responsive: false,
-                language: {
-                    emptyTable: "Data belum ada"
-                }
-            });
-        }
+        $(document).ready(function() {
+            if ($('#myTable').length) {
+                $('#myTable').DataTable({
+                    scrollX: true,
+                    autoWidth: false,
+                    responsive: false,
+                    language: {
+                        emptyTable: "Data belum ada"
+                    }
+                });
+            }
 
-        if ($('#detailTable').length) {
-            $('#detailTable').DataTable({
-                scrollX: true,
-                autoWidth: false,
-                responsive: false,
-                paging: false,
-                searching: false,
-                info: false,
-                language: {
-                    emptyTable: "Data belum ada"
-                }
-            });
-        }
-    });
+            if ($('#detailTable').length) {
+                $('#detailTable').DataTable({
+                    scrollX: true,
+                    autoWidth: false,
+                    responsive: false,
+                    paging: false,
+                    searching: false,
+                    info: false,
+                    language: {
+                        emptyTable: "Data belum ada"
+                    }
+                });
+            }
+        });
     </script>
 
     <script>
-    function fokusKantong() {
-        setTimeout(function() {
-            $('#nokantong').focus();
-            $('#nokantong').select();
-        }, 200);
-    }
+        function fokusKantong() {
+            setTimeout(function() {
+                $('#nokantong').focus();
+                $('#nokantong').select();
+            }, 200);
+        }
 
-    $(document).ready(function() {
-        fokusKantong();
-    });
+        $(document).ready(function() {
+            fokusKantong();
+        });
     </script>
 
     <?php if (!empty($flash['title'])) { ?>
-    <script>
-    Swal.fire({
-        icon: '<?php echo $flash['icon']; ?>',
-        title: '<?php echo addslashes($flash['title']); ?>',
-        text: '<?php echo addslashes($flash['text']); ?>'
-    }).then(function() {
-        fokusKantong();
-    });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $flash['icon']; ?>',
+                title: '<?php echo addslashes($flash['title']); ?>',
+                text: '<?php echo addslashes($flash['text']); ?>'
+            }).then(function() {
+                fokusKantong();
+            });
+        </script>
     <?php } ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

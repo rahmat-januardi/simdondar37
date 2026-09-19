@@ -35,6 +35,7 @@ try {
         $edProduk = $_POST['ed_produk'];
         $pCepat = $_POST['pcepat'];
         $pSuhu = $_POST['psuhu'];
+        $berat = $_POST['berat'];
         $volume = $_POST['volume'];
         $metode = $_POST['metode'];
         $bStatus = isset($_POST['bstatus']) ? $_POST['bstatus'] : array();
@@ -78,6 +79,99 @@ try {
         // logging pada error log php
         // error_log("POST Data: " . print_r($_POST, true));
 
+        // Cek apakah nokantong ada pada timbang_darah
+        $cekTimbang_sql = "SELECT nokantong FROM timbang_darah WHERE nokantong = ?";
+        if ($stmtCekTimbang = $dbi->prepare($cekTimbang_sql)) {
+            if (session_id() == '') {
+                session_start();
+            }
+
+            $logTimbangSql = "INSERT INTO `user_log`(`time_aksi`,`komputer`, `user`, `modul`, `aksi_user`, `keterangan`, `tempat`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmtLogTimbang = $dbi->prepare($logTimbangSql);
+            if (!$stmtLogTimbang) {
+                throw new Exception("Gagal menyiapkan statement untuk user_log timbang_darah: " . $dbi->error);
+            }
+
+            $maxTrans_sql = "SELECT MAX(notrans) as maxTrans FROM timbang_darah";
+            $maxTransResult = mysqli_query($dbi, $maxTrans_sql);
+            $maxTransRow = mysqli_fetch_assoc($maxTransResult);
+            $maxTransValue = isset($maxTransRow['maxTrans']) ? (int) $maxTransRow['maxTrans'] : 0;
+            $nextTransTimbang = $maxTransValue + 1;
+
+            foreach ($noKantong as $index => $value) {
+                $nokantong = (string) $value;
+                $beratUkur = isset($berat[$index]) ? (float) $berat[$index] : 0.0;
+
+                $stmtCekTimbang->bind_param("s", $nokantong);
+                $stmtCekTimbang->execute();
+                $result = $stmtCekTimbang->get_result();
+
+                if ($result->num_rows > 0) {
+                    // jika ada, update datanya
+                    $updateTimbang_sql = "UPDATE timbang_darah SET berat_ukur = ? WHERE nokantong = ?";
+                    if ($stmtUpdateTimbang = $dbi->prepare($updateTimbang_sql)) {
+                        $stmtUpdateTimbang->bind_param("ds", $beratUkur, $nokantong);
+                        if (!$stmtUpdateTimbang->execute()) {
+                            throw new Exception("Gagal mengupdate berat pada timbang_darah untuk nokantong: $nokantong. Error: " . $stmtUpdateTimbang->error);
+                        }
+
+                        $time_aksi = date('Y-m-d H:i:s');
+                        $clip = isset($_SESSION['client_ip']) ? $_SESSION['client_ip'] : '';
+                        $nmus = isset($_SESSION['namauser']) ? $_SESSION['namauser'] : '';
+                        $aksi_timbang = 'UPDATE TIMBANG DARAH';
+                        $keterangan_timbang = 'No.Kantong: ' . $nokantong . ', berat_ukur: ' . $beratUkur;
+                        $tempat_timbang = 'DG';
+                        $stmtLogTimbang->bind_param('sssssss', $time_aksi, $clip, $nmus, 'PENGOLAHAN', $aksi_timbang, $keterangan_timbang, $tempat_timbang);
+                        if (!$stmtLogTimbang->execute()) {
+                            throw new Exception("Gagal mencatat user_log update timbang_darah untuk nokantong: $nokantong");
+                        }
+
+                        $stmtUpdateTimbang->close();
+                    } else {
+                        throw new Exception("Gagal menyiapkan statement untuk update timbang_darah: " . $dbi->error);
+                    }
+                } else {
+                    // jika tidak ada, tambahkan ke tabel timbang_darah
+                    $timbang_sql = "INSERT INTO timbang_darah (kode_alat, user, bagian, nokantong, berat_ukur, konfirm, waktu_konfirm, notrans) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    if ($stmtTimbang = $dbi->prepare($timbang_sql)) {
+                        $kodeAlat = 'Timbangan Darah';
+                        $user = $kPetugas;
+                        $bagian = 'Penyediaan darah';
+                        $konfirm = 1; // Asumsikan konfirmasi selalu 1
+                        $waktuKonfirm = date('Y-m-d H:i:s');
+                        $notrans_timbang = $nextTransTimbang++;
+
+                        $stmtTimbang->bind_param("ssssssss", $kodeAlat, $user, $bagian, $nokantong, $beratUkur, $konfirm, $waktuKonfirm, $notrans_timbang);
+                        if (!$stmtTimbang->execute()) {
+                            throw new Exception("Gagal menambahkan berat pada timbang_darah untuk nokantong: $nokantong. Error: " . $stmtTimbang->error);
+                        }
+
+                        $time_aksi = date('Y-m-d H:i:s');
+                        $clip = isset($_SESSION['client_ip']) ? $_SESSION['client_ip'] : '';
+                        $nmus = isset($_SESSION['namauser']) ? $_SESSION['namauser'] : '';
+                        $aksi_timbang = 'CREATE TIMBANG DARAH';
+                        $keterangan_timbang = 'No.Kantong: ' . $nokantong . ', berat_ukur: ' . $beratUkur;
+                        $tempat_timbang = 'DG';
+                        $stmtLogTimbang->bind_param('sssssss', $time_aksi, $clip, $nmus, 'PENGOLAHAN', $aksi_timbang, $keterangan_timbang, $tempat_timbang);
+                        if (!$stmtLogTimbang->execute()) {
+                            throw new Exception("Gagal mencatat user_log create timbang_darah untuk nokantong: $nokantong");
+                        }
+
+                        $stmtTimbang->close();
+                    } else {
+                        throw new Exception("Gagal menyiapkan statement untuk insert timbang_darah: " . $dbi->error);
+                    }
+                }
+
+                $result->free();
+            }
+            $stmtLogTimbang->close();
+            $stmtCekTimbang->close();
+        } else {
+            throw new Exception("Gagal menyiapkan statement untuk cek timbang_darah: " . $dbi->error);
+        }
+
+
 
         // Statement untuk insert ke dpengolahan
         $insert_sql = "INSERT INTO dpengolahan 
@@ -98,7 +192,9 @@ try {
 
             // Query to insert a log entry into the user_log table
             $logq = "INSERT INTO `user_log`(`time_aksi`,`komputer`, `user`, `modul`, `aksi_user`, `keterangan`, `tempat`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            session_start();
+            if (session_id() == '') {
+                session_start();
+            }
             if ($insLog = $dbi->prepare($logq)) {
                 $time_aksi = date('Y-m-d H:i:s');
                 $clip = isset($_SESSION['client_ip']) ? $_SESSION['client_ip'] : '';
@@ -237,7 +333,7 @@ try {
             $response['noTrans'] = $noTrans;
 
             //======= Audit Trial =================================================================================
-            $time_aksi = 'PENGOLAHAN'; // Ini tampaknya salah, seharusnya date, tapi sesuai asli
+            $time_aksi = date('Y-m-d H:i:s'); // Ini tampaknya salah, seharusnya date, tapi sesuai asli
             $log_mdl = 'PENGOLAHAN';
             $logUnix = $noKantongRes;
             $tempat = "DG";

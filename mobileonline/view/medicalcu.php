@@ -96,7 +96,7 @@ if ($unit == "" || $id === "") {
                         `rhesus`='$v_rhesus_a'
                     WHERE (`NoTrans`='$notrans')";
 
-    $update_pendonor=mysqli_query($con,"UPDATE pendonor SET GolDarah='$v_goldarah_a',Rhesus='$v_rhesus_a' WHERE Kode='$kodep'");
+    $update_pendonor = mysqli_query($con, "UPDATE pendonor SET GolDarah='$v_goldarah_a',Rhesus='$v_rhesus_a' WHERE Kode='$kodep'");
     //echo $sql_transaksi;
     $tambah     = mysqli_query($con, $sql_transaksi);
     //=======Audit Trial====================================================================================
@@ -107,27 +107,27 @@ if ($unit == "" || $id === "") {
     //=====================================================================================================
 
     if ($tambah) {
-  $msg .= '- Medical Checkup berhasil disimpan<br>';
-  
-  if ($v_lolos == '0') { // Lolos
-    echo $msg . "Silahkan Lanjutkan Pengambilan Darah";
-    ?>
-    <META http-equiv="refresh" content="3; url=?page=aftap&NoTrans=<?php echo $notrans; ?>&kodep=<?php echo $kodep; ?>">
-    <?php
-    exit; // penting: hentikan eksekusi lebih lanjut
-  } else { // Tidak Lolos
-    echo $msg . "Donor Tidak Lolos Seleksi Medical Checkup";
-    ?>
-    <META http-equiv="refresh" content="5; url=?page=dash">
-    <?php
-    exit;
-  }
-} else {
-  echo "Gagal menyimpan data Medical Checkup";
-  ?>
-  <META http-equiv="refresh" content="5; url=?page=dash">
-  <?php
-}
+      $msg .= '- Medical Checkup berhasil disimpan<br>';
+
+      if ($v_lolos == '0') { // Lolos
+        echo $msg . "Silahkan Lanjutkan Pengambilan Darah";
+?>
+<META http-equiv="refresh" content="3; url=?page=aftap&NoTrans=<?php echo $notrans; ?>&kodep=<?php echo $kodep; ?>">
+<?php
+        exit; // penting: hentikan eksekusi lebih lanjut
+      } else { // Tidak Lolos
+        echo $msg . "Donor Tidak Lolos Seleksi Medical Checkup";
+      ?>
+<META http-equiv="refresh" content="5; url=?page=dash">
+<?php
+        exit;
+      }
+    } else {
+      echo "Gagal menyimpan data Medical Checkup";
+      ?>
+<META http-equiv="refresh" content="5; url=?page=dash">
+<?php
+    }
     //mysqli_close;
   }
 
@@ -137,17 +137,18 @@ if ($unit == "" || $id === "") {
 
 
   ?>
-  <!DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SIMDONDAR</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
@@ -168,12 +169,12 @@ if ($unit == "" || $id === "") {
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 
     <link rel="stylesheet" href="code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    
-     <!-- Edit -->
-	<script type="text/javascript" src="../../tpk/medical_checkup.js"></script>
+
+    <!-- Edit -->
+    <script type="text/javascript" src="../../tpk/medical_checkup.js"></script>
 
     <script>
-      function hbmeter() {
+    function hbmeter() {
         const hbInput = document.getElementById("hemoglobin").value.trim();
         const hb = parseFloat(hbInput);
         const warning = document.getElementById("warning_hb");
@@ -181,114 +182,119 @@ if ($unit == "" || $id === "") {
         console.log("Nilai HB:", hb);
 
         if (hbInput === "" || isNaN(hb)) {
-          warning.textContent = "";
-          return;
+            warning.textContent = "";
+            return;
         }
 
         if (hb < 12.5 || hb > 17.0) {
-          warning.textContent = "Nilai hemoglobin di luar batas normal (12.5 - 17.0 g/dL)";
+            warning.textContent = "Nilai hemoglobin di luar batas normal (12.5 - 17.0 g/dL)";
         } else {
-          warning.textContent = "";
+            warning.textContent = "";
         }
 
         chb(hb);
-      }
+    }
     </script>
     <!-- End -->
 
 
 
-  </head>
+</head>
 
-  <style>
-    .body {
-      font-size: 12px;
-    }
+<style>
+.body {
+    font-size: 12px;
+}
 
-    .padding {
+.padding {
 
-      background-image: url('dist/img/white.jpg');
-      background-size: cover;
-    }
+    background-image: url('dist/img/white.jpg');
+    background-size: cover;
+}
 
-    .box {
+.box {
 
-      height: 25px;
-      padding: 20px;
-    }
+    height: 25px;
+    padding: 20px;
+}
 
-    .box2 {
+.box2 {
 
-      height: 25px;
-      padding: 20px;
-    }
+    height: 25px;
+    padding: 20px;
+}
 
-    .box3 {
+.box3 {
 
-      height: 100px;
+    height: 100px;
 
-    }
+}
 
-    .copyright {
-      bottom: 0;
-      width: 100%;
-      position: fixed;
-      height: 40px;
-      line-height: 50px;
-      background: RED;
-      color: #fff;
-      padding-left: 10px;
-    }
+.copyright {
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+    height: 40px;
+    line-height: 50px;
+    background: RED;
+    color: #fff;
+    padding-left: 10px;
+}
 
-    .input-tanggal {
-      padding: 10px;
-      font-size: 14pt;
-    }
-  </style>
+.input-tanggal {
+    padding: 10px;
+    font-size: 14pt;
+}
+</style>
 
-  <body class="padding">
+<body class="padding">
 
 
 
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="dist/img/logo.png" alt="AdminLTELogo" height="60" width="60">
+        <img class="animation__shake" src="dist/img/logo.png" alt="AdminLTELogo" height="60" width="60">
     </div>
     <p>
     <div class="card-header">
-      <h4 class="text-center" style="font-size:24px; font-weight:bold;color:#ff0000;text-shadow: 1px 1px 1px #000000; font-family:Helvetica, Arial, san-serif;">MEDICAL CHECKUP PENDONOR<br><?php echo $ins['nama']; ?></h4>
-      <a href="?page=searchmcu"><button name="baru" class="btn btn-info float-right"><i class="nav-icon ion ion-android-arrow-back"></i> Kembali</button></a>
+        <h4 class="text-center"
+            style="font-size:24px; font-weight:bold;color:#ff0000;text-shadow: 1px 1px 1px #000000; font-family:Helvetica, Arial, san-serif;">
+            MEDICAL CHECKUP PENDONOR<br><?php echo $ins['nama']; ?></h4>
+        <a href="?page=searchmcu"><button name="baru" class="btn btn-info float-right"><i
+                    class="nav-icon ion ion-android-arrow-back"></i> Kembali</button></a>
     </div>
 
     <div class="col-12 col-sm-12">
-      <div class="card-body">
-        <!--content-->
-        <form method="post" action="">
-          <div class="row">
-            <div class="col-lg-6">
-              <?php
+        <div class="card-body">
+            <!--content-->
+            <form method="post" action="">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <?php
               ($dtdonor['Jk'] == '0') ? $kel = "Laki-laki" : $kel = "Perempuan";
               ($dtdonor['Status'] == '0') ? $status = "Belum Menikah" : $status = "Sudah Menikah";
               ?>
-              <div class="table-responsive" id="shadow1">
-                <table class="table borderless table-striped table-hover">
-                  <tr>
-                    <td>Kode</td>
-                    <td><?php echo $dtdonor['Kode']; ?></td>
-                  </tr>
-                  <tr>
-                    <td>NIK</td>
-                    <td><?php echo $dtdonor['NoKTP']; ?></td>
-                  </tr>
-                  <tr>
-                    <td>Nama</td>
-                    <td><strong><?php echo $dtdonor['Nama']; ?></strong></td>
-                  </tr>
-                  <tr>
-                    <td>Gol</td>
-                    <td>
-                      <input type="hidden" name="abo_pendonor" value="<?php echo $dtdonor['GolDarah']; ?>">
-                      <input type="hidden" name="rh_pendonor" value="<?php echo $dtdonor['Rhesus']; ?>">
-                      <?
+                        <div class="table-responsive" id="shadow1">
+                            <table class="table borderless table-striped table-hover">
+                                <tr>
+                                    <td>Kode</td>
+                                    <td><?php echo $dtdonor['Kode']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>NIK</td>
+                                    <td><?php echo $dtdonor['NoKTP']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td><strong><?php echo $dtdonor['Nama']; ?></strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Gol</td>
+                                    <td>
+                                        <input type="hidden" name="abo_pendonor"
+                                            value="<?php echo $dtdonor['GolDarah']; ?>">
+                                        <input type="hidden" name="rh_pendonor"
+                                            value="<?php echo $dtdonor['Rhesus']; ?>">
+                                        <?
                       $sA = '';
                       $sB = '';
                       $sAB = '';
@@ -299,183 +305,199 @@ if ($unit == "" || $id === "") {
                       if ($dtdonor['GolDarah'] == 'O') $sO = 'selected';
                       if ($dtdonor['GolDarah'] == 'X') $sX = 'selected';
                       ?>
-                      <select name="goldarah" required>
-                        <option value="" >--Pilih--</option>
-                        <option value="A" <?= $sA ?>>A</option>
-                        <option value="B" <?= $sB ?>>B</option>
-                        <option value="AB" <?= $sAB ?>>AB</option>
-                        <option value="O" <?= $sO ?>>O</option>
-                        
-                      </select>
-                      Rh &nbsp;
+                                        <select name="goldarah" required>
+                                            <option value="">--Pilih--</option>
+                                            <option value="A" <?= $sA ?>>A</option>
+                                            <option value="B" <?= $sB ?>>B</option>
+                                            <option value="AB" <?= $sAB ?>>AB</option>
+                                            <option value="O" <?= $sO ?>>O</option>
 
-                      <?
+                                        </select>
+                                        Rh &nbsp;
+
+                                        <?
                       $rn = '';
                       $rp = '';
                       if ($dtdonor['Rhesus'] == "-") $rn = 'selected';
                       if ($dtdonor['Rhesus'] == "+") $rp = 'selected';
                       ?>
-                      <select name="rhesus" required>
-                        <option value="+" <?= $rp ?>>(+)</option>
-                        <option value="-" <?= $rn ?>>(-)</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Kelamin</td>
-                    <td><?php echo $kel; ?>, Status : <?php echo $status; ?></td>
-                  </tr>
-                  <tr>
-                    <td>Tempat Lahir</td>
-                    <td><?php echo $dtdonor['TempatLhr']; ?></td>
-                  </tr>
-                  <tr>
-                    <td>Tanggal Lahir</td>
-                    <td><?php echo $dtdonor['TglLhr']; ?></td>
-                  </tr>
-                  <tr>
-                    <td>Jumlah Donasi</td>
-                    <td><?php echo $dtdonor['jumDonor']; ?></td>
-                  </tr>
-                  <tr>
-                    <td>Tgl Kembali Donor</td>
-                    <td><?php echo $dtdonor['tglkembali']; ?></td>
-                  </tr>
-                  <tr>
-                    <td>Tgl Kembali Apheresis</td>
-                    <td><?php echo $dtdonor['tglkembali_apheresis']; ?></td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="table-responsive">
-                <table class="table borderless table-striped table-hover" id="shadow1">
-                  <tr>
-                    <td>Berat Badan<sup style="color:red;"><strong>*</strong></sup></td>
-                    <td><input name="reqberat_badan" id="berat_badan" type="text" style="width:15mm;" onChange="berat(this.value)" maxlength="3" required> kg</td>
-                  </tr>
-                  <tr>
-                    <td>Tinggi Badan</td>
-                    <td><input name="tinggi_badan" type="text" style="width:15mm;" maxlength="3" required> cm</td>
-                  </tr>
-                  <tr>
-                    <td>Tensi<sup style="color:red;"><strong>*</strong></sup></td>
-                    <td><input name="reqtensi_sistol" id="tensi_sistol" type="text" style="width:15mm;" onChange="sistol(this.value)" maxlength="3" required> /
-                      <input name="reqtensi_diastol" id="tensi_diastol" type="text" style="width:15mm;" onChange="diastol(this.value)" maxlength="3" required> mmHg
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Suhu<sup style="color:red;"><strong>*</strong></sup></td>
-                    <td><input name="reqtemperatur" id="temperature" type="text" style="width:15mm;" maxlength="5" onChange="suhutubuh(this.value)" required>&nbsp;<sup>o</sup>C</td>
-                  </tr>
-                  <tr>
-                    <td>Nadi<sup style="color:red;"><strong>*</strong></sup></td>
-                    <td><input name="reqnadi" type="text" style="width:15mm;" maxlength="3" required> BPM</td>
-                  </tr>
-                    
-                     <!-- Edit -->
-                 <tr>
-                    <td>Hemoglobin<sup style="color:red;"><strong>*</strong></sup></td>
-                    <td style="white-space:nowrap;"><input style='width:15mm' name="reqhemoglobin" id="hemoglobin" type="text" maxlength="5" onChange="hbmeter()" required> g/dL
-                      <br>
-                      <span id="warning_hb" style="font-size: 12px; color: red;"></span>
-                    </td>
-                  </tr>
-                     <!-- End -->
-            
-                  <tr>
-                    <td>Ptg Anamnesa</td>
-                    <td>
-                      <select name="id_dokter" style="width:70mm;" required>
-                        <?
+                                        <select name="rhesus" required>
+                                            <option value="+" <?= $rp ?>>(+)</option>
+                                            <option value="-" <?= $rn ?>>(-)</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Kelamin</td>
+                                    <td><?php echo $kel; ?>, Status : <?php echo $status; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Tempat Lahir</td>
+                                    <td><?php echo $dtdonor['TempatLhr']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Lahir</td>
+                                    <td><?php echo $dtdonor['TglLhr']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Jumlah Donasi</td>
+                                    <td><?php echo $dtdonor['jumDonor']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Tgl Kembali Donor</td>
+                                    <td><?php echo $dtdonor['tglkembali']; ?></td>
+                                </tr>
+                                <tr>
+                                    <td>Tgl Kembali Apheresis</td>
+                                    <td><?php echo $dtdonor['tglkembali_apheresis']; ?></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="table-responsive">
+                            <table class="table borderless table-striped table-hover" id="shadow1">
+                                <tr>
+                                    <td>Berat Badan<sup style="color:red;"><strong>*</strong></sup></td>
+                                    <td><input name="reqberat_badan" id="berat_badan" type="text" style="width:15mm;"
+                                            onChange="berat(this.value)" maxlength="3" required> kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Tinggi Badan</td>
+                                    <td><input name="tinggi_badan" type="text" style="width:15mm;" maxlength="3"
+                                            required> cm</td>
+                                </tr>
+                                <tr>
+                                    <td>Tensi<sup style="color:red;"><strong>*</strong></sup></td>
+                                    <td><input name="reqtensi_sistol" id="tensi_sistol" type="text" style="width:15mm;"
+                                            onChange="sistol(this.value)" maxlength="3" required> /
+                                        <input name="reqtensi_diastol" id="tensi_diastol" type="text"
+                                            style="width:15mm;" onChange="diastol(this.value)" maxlength="3" required>
+                                        mmHg
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Suhu<sup style="color:red;"><strong>*</strong></sup></td>
+                                    <td><input name="reqtemperatur" id="temperature" type="text" style="width:15mm;"
+                                            maxlength="5" onChange="suhutubuh(this.value)" required>&nbsp;<sup>o</sup>C
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Nadi<sup style="color:red;"><strong>*</strong></sup></td>
+                                    <td><input name="reqnadi" type="text" style="width:15mm;" maxlength="3" required>
+                                        BPM</td>
+                                </tr>
+
+                                <!-- Edit -->
+                                <tr>
+                                    <td>Hemoglobin<sup style="color:red;"><strong>*</strong></sup></td>
+                                    <td style="white-space:nowrap;"><input style='width:15mm' name="reqhemoglobin"
+                                            id="hemoglobin" type="text" maxlength="5" onChange="hbmeter()" required>
+                                        g/dL
+                                        <br>
+                                        <span id="warning_hb" style="font-size: 12px; color: red;"></span>
+                                    </td>
+                                </tr>
+                                <!-- End -->
+
+                                <tr>
+                                    <td>Ptg Anamnesa</td>
+                                    <td>
+                                        <select name="id_dokter" style="width:70mm;" required>
+                                            <?
                         $usr = mysqli_query($con, "select * from v_petugasmu where (date(TglPenjadwalan)=curdate()) AND kodeinstansi='$id' AND (jabatan between 1 AND 4) ORDER BY nama ASC");
 
                         while ($data = mysqli_fetch_array($usr)) { ?>
 
-                          <option value="<?php echo $data['nama']; ?>" selected> <?php echo $data['nama']; ?></option>
-                        <?php } ?>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Ptgs Tensi</td>
-                    <td>
-                      <select name="id_tensi" style="width:70mm;" required>
-                        <?
+                                            <option value="<?php echo $data['nama']; ?>" selected>
+                                                <?php echo $data['nama']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ptgs Tensi</td>
+                                    <td>
+                                        <select name="id_tensi" style="width:70mm;" required>
+                                            <?
                         $usr = mysqli_query($con, "select * from v_petugasmu where (date(TglPenjadwalan)=curdate()) AND kodeinstansi='$id' AND (jabatan between 1 AND 4) ORDER BY nama ASC");
 
                         while ($data = mysqli_fetch_array($usr)) { ?>
 
-                          <option value="<?php echo $data['nama']; ?>" selected><?php echo $data['nama']; ?></option>
-                        <?php } ?>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Ptgs HB</td>
-                    <td>
-                      <select name="id_hb" style="width:70mm;" required>
-                        <?
+                                            <option value="<?php echo $data['nama']; ?>" selected>
+                                                <?php echo $data['nama']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ptgs HB</td>
+                                    <td>
+                                        <select name="id_hb" style="width:70mm;" required>
+                                            <?
                         $usr = mysqli_query($con, "select * from v_petugasmu where (date(TglPenjadwalan)=curdate()) AND kodeinstansi='$id' AND (jabatan between 1 AND 4) ORDER BY nama ASC");
 
                         while ($data = mysqli_fetch_array($usr)) { ?>
 
-                          <option value="<?php echo $data['nama']; ?>" selected> <?php echo $data['nama']; ?></option>
-                        <?php } ?>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="form-group">
-                        <label>Hasil Seleksi : </label>
-                        <label class="radio-inline"><input type="radio" checked value="0" name="h_medical" id="h_medical" style="margin-top:1px;">Lolos</label>
-                        <label class="radio-inline"><input type="radio" value="1" name="h_medical" id="h_medical" style="margin-top:1px;">Tidak Lolos</label>
-                    </td>
-                    <td>
-                      <select name="alasan" style="width:50mm;">
-                        <option value="">-</option>
-                        <option value="0">Tensi Rendah</option>
-                        <option value="1">Tensi Tinggi</option>
-                        <option value="2">HB Rendah</option>
-                        <option value="4">HB Tinggi</option>
-                        <option value="5">BB Kurang</option>
-                        <option value="6">Habis Minum Obat</option>
-                        <option value="7">Riwayat Bepergian</option>
-                        <option value="8">Kondisi Medis Lain</option>
-                        <option value="9">Perilaku Beresiko</option>
-                        <option value="10">Alasan Lain</option>
-                        <option value="11">Titer Antibody Covid-19 Rendah</option>
-                        <option value="12">Hasil IMLTD Reaktif</option>
-                        <option value="13">Syarat Apheresis/TPK tidak terpenuhi</option>
-                      </select>
+                                            <option value="<?php echo $data['nama']; ?>" selected>
+                                                <?php echo $data['nama']; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            <label>Hasil Seleksi : </label>
+                                            <label class="radio-inline"><input type="radio" checked value="0"
+                                                    name="h_medical" id="h_medical"
+                                                    style="margin-top:1px;">Lolos</label>
+                                            <label class="radio-inline"><input type="radio" value="1" name="h_medical"
+                                                    id="h_medical" style="margin-top:1px;">Tidak Lolos</label>
+                                    </td>
+                                    <td>
+                                        <select name="alasan" style="width:50mm;">
+                                            <option value="">-</option>
+                                            <option value="0">Tensi Rendah</option>
+                                            <option value="1">Tensi Tinggi</option>
+                                            <option value="2">HB Rendah</option>
+                                            <option value="4">HB Tinggi</option>
+                                            <option value="5">BB Kurang</option>
+                                            <option value="6">Habis Minum Obat</option>
+                                            <option value="7">Riwayat Bepergian</option>
+                                            <option value="8">Kondisi Medis Lain</option>
+                                            <option value="9">Perilaku Beresiko</option>
+                                            <!-- <option value="10">Alasan Lain</option> -->
+                                            <option value="11">Titer Antibody Covid-19 Rendah</option>
+                                            <option value="12">Hasil IMLTD Reaktif</option>
+                                            <option value="13">Syarat Apheresis/TPK tidak terpenuhi</option>
+                                        </select>
 
-                    </td>
-              </div>
-              </td>
-              </tr>
-              </table>
-              <div class="col-lg-12" align="right">
-                <input type=submit name="simpan" value="Proses" class="btn btn-success">
-              </div>
-            </div>
+                                    </td>
+                        </div>
+                        </td>
+                        </tr>
+                        </table>
+                        <div class="col-lg-12" align="right">
+                            <input type=submit name="simpan" value="Proses" class="btn btn-success">
+                        </div>
+                    </div>
 
-          </div>
-
-
+                </div>
 
 
-      </div>
-      </form>
-      <!--content-->
+
+
+        </div>
+        </form>
+        <!--content-->
     </div>
     </div>
     <p class="box3">
     <div class="copyright">
-      <p align="center"><a href="https://pmi.or.id">
-          <font style="color:white">Copyright @ 2022 | PALANG MERAH INDONESIA
-        </a>
+        <p align="center"><a href="https://pmi.or.id">
+                <font style="color:white">Copyright @ 2022 | PALANG MERAH INDONESIA
+            </a>
     </div>
 
 
@@ -530,74 +552,76 @@ if ($unit == "" || $id === "") {
 
     <!-- Page specific script -->
     <script>
-      $(function() {
+    $(function() {
         //Initialize Select2 Elements
         $('.select2').select2()
 
         //Initialize Select2 Elements
         $('.select2bs4').select2({
-          theme: 'bootstrap4'
+            theme: 'bootstrap4'
         })
 
         //Datemask dd/mm/yyyy
         $('#datemask').inputmask('dd/mm/yyyy', {
-          'placeholder': 'dd/mm/yyyy'
+            'placeholder': 'dd/mm/yyyy'
         })
         //Datemask2 mm/dd/yyyy
         $('#datemask2').inputmask('mm/dd/yyyy', {
-          'placeholder': 'mm/dd/yyyy'
+            'placeholder': 'mm/dd/yyyy'
         })
         //Money Euro
         $('[data-mask]').inputmask()
 
         //Date picker
         $('#reservationdate').datetimepicker({
-          format: 'yyyy-MM-DD'
+            format: 'yyyy-MM-DD'
         });
 
         //Date picker
         $('#reservationdate2').datetimepicker({
-          format: 'yyyy-MM-DD'
+            format: 'yyyy-MM-DD'
         });
 
         //Date and time picker
         $('#reservationdatetime').datetimepicker({
-          icons: {
-            time: 'far fa-clock'
-          }
+            icons: {
+                time: 'far fa-clock'
+            }
         });
 
         //Date range picker
         $('#reservation').daterangepicker()
         //Date range picker with time picker
         $('#reservationtime').daterangepicker({
-          timePicker: true,
-          timePickerIncrement: 30,
-          locale: {
-            format: 'MM/DD/YYYY hh:mm A'
-          }
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
         })
         //Date range as a button
         $('#daterange-btn').daterangepicker({
-            ranges: {
-              'Today': [moment(), moment()],
-              'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-              'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-              'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-              'This Month': [moment().startOf('month'), moment().endOf('month')],
-              'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                        'month').endOf('month')]
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
             },
-            startDate: moment().subtract(29, 'days'),
-            endDate: moment()
-          },
-          function(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-          }
+            function(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format(
+                    'MMMM D, YYYY'))
+            }
         )
 
         //Timepicker
         $('#timepicker').datetimepicker({
-          format: 'LT'
+            format: 'LT'
         })
 
 
@@ -611,29 +635,29 @@ if ($unit == "" || $id === "") {
         $('.my-colorpicker2').colorpicker()
 
         $('.my-colorpicker2').on('colorpickerChange', function(event) {
-          $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+            $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
         })
 
         $("input[data-bootstrap-switch]").each(function() {
-          $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
         })
 
-      })
-      // BS-Stepper Init
-      document.addEventListener('DOMContentLoaded', function() {
+    })
+    // BS-Stepper Init
+    document.addEventListener('DOMContentLoaded', function() {
         window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-      })
+    })
 
-      // DropzoneJS Demo Code Start
-      Dropzone.autoDiscover = false
+    // DropzoneJS Demo Code Start
+    Dropzone.autoDiscover = false
 
-      // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
-      var previewNode = document.querySelector("#template")
-      previewNode.id = ""
-      var previewTemplate = previewNode.parentNode.innerHTML
-      previewNode.parentNode.removeChild(previewNode)
+    // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+    var previewNode = document.querySelector("#template")
+    previewNode.id = ""
+    var previewTemplate = previewNode.parentNode.innerHTML
+    previewNode.parentNode.removeChild(previewNode)
 
-      var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+    var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
         url: "/target-url", // Set the url
         thumbnailWidth: 80,
         thumbnailHeight: 80,
@@ -642,77 +666,77 @@ if ($unit == "" || $id === "") {
         autoQueue: false, // Make sure the files aren't queued until manually added
         previewsContainer: "#previews", // Define the container to display the previews
         clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-      })
+    })
 
-      myDropzone.on("addedfile", function(file) {
+    myDropzone.on("addedfile", function(file) {
         // Hookup the start button
         file.previewElement.querySelector(".start").onclick = function() {
-          myDropzone.enqueueFile(file)
+            myDropzone.enqueueFile(file)
         }
-      })
+    })
 
-      // Update the total progress bar
-      myDropzone.on("totaluploadprogress", function(progress) {
+    // Update the total progress bar
+    myDropzone.on("totaluploadprogress", function(progress) {
         document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
-      })
+    })
 
-      myDropzone.on("sending", function(file) {
+    myDropzone.on("sending", function(file) {
         // Show the total progress bar when upload starts
         document.querySelector("#total-progress").style.opacity = "1"
         // And disable the start button
         file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
-      })
+    })
 
-      // Hide the total progress bar when nothing's uploading anymore
-      myDropzone.on("queuecomplete", function(progress) {
+    // Hide the total progress bar when nothing's uploading anymore
+    myDropzone.on("queuecomplete", function(progress) {
         document.querySelector("#total-progress").style.opacity = "0"
-      })
+    })
 
-      // Setup the buttons for all transfers
-      // The "add files" button doesn't need to be setup because the config
-      // `clickable` has already been specified.
-      document.querySelector("#actions .start").onclick = function() {
+    // Setup the buttons for all transfers
+    // The "add files" button doesn't need to be setup because the config
+    // `clickable` has already been specified.
+    document.querySelector("#actions .start").onclick = function() {
         myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
-      }
-      document.querySelector("#actions .cancel").onclick = function() {
+    }
+    document.querySelector("#actions .cancel").onclick = function() {
         myDropzone.removeAllFiles(true)
-      }
-      // DropzoneJS Demo Code End
+    }
+    // DropzoneJS Demo Code End
     </script>
     <!-- Page specific script -->
 
     <script>
-      $(function() {
+    $(function() {
         $("#example1").DataTable({
-          "responsive": true,
-          "lengthChange": false,
-          "autoWidth": false,
-          "buttons": ["copy", "excel", "pdf", "print"]
-          //"buttons": ["pdf", "print"]
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "excel", "pdf", "print"]
+            //"buttons": ["pdf", "print"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         $('#example2').DataTable({
-          "paging": true,
-          "lengthChange": false,
-          "searching": false,
-          "ordering": true,
-          "info": true,
-          "autoWidth": false,
-          "responsive": true,
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
         });
-      });
+    });
     </script>
     <script type="text/javascript">
-      $(document).on("click", "#batal", function() {
+    $(document).on("click", "#batal", function() {
         var id = $(this).data('id');
 
         $("#batal-edit #id").val(id);
 
-      })
+    })
     </script>
 
-  </body>
+</body>
 
-  </html>
+</html>
 
 
 <?php } ?>

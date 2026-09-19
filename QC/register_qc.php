@@ -64,12 +64,12 @@ if (isset($_POST['submit'])) {
     <link type="text/css" href="css/terima_qc.css" rel="stylesheet" />
 
     <script type="text/javascript">
-    jQuery(document).ready(function() {
-        $('#instansi').autocomplete({
-            source: 'modul/suggest_bdrs.php',
-            minLength: 2
+        jQuery(document).ready(function() {
+            $('#instansi').autocomplete({
+                source: 'modul/suggest_bdrs.php',
+                minLength: 2
+            });
         });
-    });
     </script>
 </head>
 
@@ -137,7 +137,7 @@ if (isset($_POST['submit'])) {
                                 <select id="petugas2" name="petugas2" class="select-modern" required>
                                     <option value="">-- Pilih Petugas --</option>
                                     <?
-                                    $user1 = "select * from user where level like '%komponen%' order by nama_lengkap ASC";
+                                    $user1 = "select * from user where level like '%komponen%' and aktif = 0 order by nama_lengkap ASC";
                                     $do1 = mysql_query($user1);
                                     while ($data1 = mysql_fetch_assoc($do1)) {
                                         if ($data1[id_user] == $data_combo[petugas1]) {
@@ -145,9 +145,9 @@ if (isset($_POST['submit'])) {
                                         } else {
                                             $select = "";
                                         } ?>
-                                    <option value="<?= $data1[nama_lengkap] ?>" <?= $select ?>>
-                                        <?= $data1[nama_lengkap] ?>
-                                    </option>
+                                        <option value="<?= $data1[nama_lengkap] ?>" <?= $select ?>>
+                                            <?= $data1[nama_lengkap] ?>
+                                        </option>
                                     <?
                                     } ?>
                                 </select>

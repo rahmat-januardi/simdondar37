@@ -1,8 +1,8 @@
 <?php
 require_once('clogin.php');
 require_once('config/db_connect.php');
-$namauser    = $_SESSION[namauser];
-$namalengkap = $_SESSION[nama_lengkap];
+$namauser    = $_SESSION['namauser'];
+$namalengkap = $_SESSION['nama_lengkap'];
 $tglawal     = date("Y-m-d", mktime(0, 0, 0, date("m"), 1, date("Y")));
 $hariini     = date("Y-m-d");
 ?>
@@ -13,48 +13,70 @@ $hariini     = date("Y-m-d");
 <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
 <script type="text/javascript" src="js/tgl_rekap.js"></script>
 <script language="javascript" src="util.js" type="text/javascript"></script>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>SIMDONDAR – Rekap Komponen</title>
+    <title>SIMDONDAR â€“ Rekap Komponen</title>
 </head>
 <style>
-    body {
-        font-family: "Lato", sans-serif;
-    }
+body {
+    font-family: "Lato", sans-serif;
+}
 
-    table {
-        border-collapse: collapse;
-    }
+table {
+    border-collapse: collapse;
+}
 
-    tr {
-        background-color: #ffffff;
-    }
+tr {
+    background-color: #ffffff;
+}
 
-    .highlight {
-        background-color: #7CFC00;
-    }
+.highlight {
+    background-color: #7CFC00;
+}
 
-    .normal {
-        background-color: #ffffff;
-    }
+.normal {
+    background-color: #ffffff;
+}
 
-    .styled-select select {
-        background-color: #FCF9F9;
-        border: none;
-        width: auto;
-        padding: 3px;
-        font-size: 15px;
-        cursor: pointer;
-    }
+.styled-select select {
+    background-color: #FCF9F9;
+    border: none;
+    width: auto;
+    padding: 3px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    max-height: 120px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: auto;
+    max-width: 600px;
+    background: #fff;
+}
+
+.checkbox-item {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    font-size: 11px;
+    white-space: nowrap;
+}
 </style>
 
 <body>
     <?php
     /* ------------------------------------------------------------------ */
-    /*  FILTER BUILDER                                                      */
+    /* FILTER BUILDER                                                      */
     /* ------------------------------------------------------------------ */
     $filterTanggal = "";
 
@@ -76,78 +98,119 @@ $hariini     = date("Y-m-d");
         $filterTanggal = "AND DATE(r.rtgl) >= '$tglawal' AND DATE(r.rtgl) <= '$hariini'";
     }
 
-    $status      = isset($_POST['status'])      ? $_POST['status']      : '';
-    $jenisProduk = isset($_POST['jenisProduk']) ? $_POST['jenisProduk'] : '';
-    $golDar      = isset($_POST['golDar'])      ? $_POST['golDar']      : '';
-    $rhesus      = isset($_POST['rhesus'])      ? $_POST['rhesus']      : '';
-    $gold_rhe    = $golDar . $rhesus;
+    $status          = isset($_POST['status']) ? $_POST['status'] : '';
+    // Menangkap input checkbox berupa array
+    $jenisProdukArr  = isset($_POST['jenisProduk']) && is_array($_POST['jenisProduk']) ? $_POST['jenisProduk'] : array();
+    $golDar          = isset($_POST['golDar']) ? $_POST['golDar'] : '';
+    $rhesus          = isset($_POST['rhesus']) ? $_POST['rhesus'] : '';
+    $gold_rhe        = $golDar . $rhesus;
+
+    /* 1. Logika Filter Query untuk Checkbox Banyak Produk */
+    $filterProduk = "";
+    if (!empty($jenisProdukArr)) {
+        $sanitizedProduk = array();
+        foreach ($jenisProdukArr as $prod) {
+            $sanitizedProduk[] = "'" . mysql_real_escape_string($prod) . "'";
+        }
+        $filterProduk = "AND r.rproduk IN (" . implode(",", $sanitizedProduk) . ")";
+    }
+
+    /* 2. Logika Filter Query Berdasarkan rsatus_ket */
+    $filterStatus = "";
+    if ($status !== '') {
+        $filterStatus = "AND r.rsatus_ket LIKE '%" . mysql_real_escape_string($status) . "%'";
+    }
     ?>
 
     <a name="atas" id="atas"></a>
-    <font size="4" color="00008B"><b>Rekap Komponen Darah – Volume Rilis &amp; Volume Komponen</b></font><br><br>
+    <font size="4" color="00008B"><b>Rekap Komponen Darah â€“ Volume Rilis &amp; Volume Komponen</b></font><br><br>
 
-    <form name="cari" method="POST" action="<? echo $PHPSELF ?>">
+    <form name="cari" method="POST" action="">
         <table cellpadding="1" cellspacing="0" border="0">
 
-            <!-- Baris 1: Tanggal Release & Tanggal Produksi -->
             <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
                 <td>Tanggal&nbsp;Release</td>
                 <td>
-                    <input name="waktu" id="datepicker" value="<?= $tglawal ?>" type="text" size="10" style="font-family:monospace">
+                    <input name="waktu" id="datepicker" value="<?= $tglawal ?>" type="text" size="10"
+                        style="font-family:monospace">
                     s/d
-                    <input name="waktu1" id="datepicker1" value="<?= $hariini ?>" type="text" size="10" style="font-family:monospace">
+                    <input name="waktu1" id="datepicker1" value="<?= $hariini ?>" type="text" size="10"
+                        style="font-family:monospace">
                 </td>
                 <td>&nbsp;&nbsp;Tanggal&nbsp;Produksi</td>
                 <td>
-                    <input name="tglProduksi" value="<?= htmlspecialchars(isset($startProduksi) ? $startProduksi : '') ?>" type="date" style="font-family:monospace">
+                    <input name="tglProduksi"
+                        value="<?= htmlspecialchars(isset($startProduksi) ? $startProduksi : '') ?>" type="date"
+                        style="font-family:monospace">
                     s/d
-                    <input name="tglProduksi1" value="<?= htmlspecialchars(isset($endProduksi) ? $endProduksi : '') ?>" type="date" style="font-family:monospace">
+                    <input name="tglProduksi1" value="<?= htmlspecialchars(isset($endProduksi) ? $endProduksi : '') ?>"
+                        type="date" style="font-family:monospace">
                 </td>
             </tr>
 
-            <!-- Baris 2: Tanggal Aftap -->
             <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
                 <td>Tanggal&nbsp;Aftap</td>
                 <td>
-                    <input name="tglAftap" value="<?= htmlspecialchars(isset($startAftap) ? $startAftap : '') ?>" type="date" style="font-family:monospace">
+                    <input name="tglAftap" value="<?= htmlspecialchars(isset($startAftap) ? $startAftap : '') ?>"
+                        type="date" style="font-family:monospace">
                     s/d
-                    <input name="tglAftap1" value="<?= htmlspecialchars(isset($endAftap) ? $endAftap : '') ?>" type="date" style="font-family:monospace">
+                    <input name="tglAftap1" value="<?= htmlspecialchars(isset($endAftap) ? $endAftap : '') ?>"
+                        type="date" style="font-family:monospace">
                 </td>
                 <td>&nbsp;&nbsp;Tanggal&nbsp;Kadaluwarsa</td>
                 <td>
-                    <input name="tglKadaluwarsa" value="<?= htmlspecialchars(isset($startKadaluwarsa) ? $startKadaluwarsa : '') ?>" type="date" style="font-family:monospace">
+                    <input name="tglKadaluwarsa"
+                        value="<?= htmlspecialchars(isset($startKadaluwarsa) ? $startKadaluwarsa : '') ?>" type="date"
+                        style="font-family:monospace">
                     s/d
-                    <input name="tglKadaluwarsa1" value="<?= htmlspecialchars(isset($endKadaluwarsa) ? $endKadaluwarsa : '') ?>" type="date" style="font-family:monospace">
+                    <input name="tglKadaluwarsa1"
+                        value="<?= htmlspecialchars(isset($endKadaluwarsa) ? $endKadaluwarsa : '') ?>" type="date"
+                        style="font-family:monospace">
                 </td>
             </tr>
 
-            <!-- Baris 3: Jenis Produk & Golongan Darah -->
             <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
                 <td>Jenis&nbsp;Produk</td>
                 <td>
-                    <?php
-                    $prodOpts = array(
-                        '' => 'SEMUA',
-                        'PRC' => 'PRC',
-                        'WB' => 'WB',
-                        'FFP' => 'FFP',
-                        'FP 72' => 'FP72',
-                        'LP' => 'LP',
-                        'TC' => 'TC'
-                    );
-                    ?>
-                    <select name="jenisProduk" class="styled-select">
-                        <?php foreach ($prodOpts as $val => $label): ?>
-                            <option value="<?= $val ?>" <?= ($jenisProduk == $val ? 'selected' : '') ?>><?= $label ?></option>
+                    <div class="checkbox-container">
+                        <?php
+                        $prodOpts = array(
+                            'PRC'         => 'PRC',
+                            'TC'          => 'TC',
+                            'LP'          => 'LP',
+                            'FFP'         => 'FFP',
+                            'FP'          => 'FP',
+                            'FP 24'       => 'FP 24',
+                            'FP 24 450'   => 'FP 24 450',
+                            'FP 72'       => 'FP 72',
+                            'PRC 450'     => 'PRC 450',
+                            'PRP'         => 'PRP',
+                            'WB'          => 'WB',
+                            'WB 450'      => 'WB 450',
+                            'AHF'         => 'AHF',
+                            'WE'          => 'WE',
+                            'BC'          => 'BC',
+                            'PRC Leuco'   => 'PRC Leuco',
+                            'TC Pool'     => 'TC Pool'
+                        );
+                        foreach ($prodOpts as $val => $label):
+                            $checked = in_array($val, $jenisProdukArr) ? 'checked' : '';
+                        ?>
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" name="jenisProduk[]" value="<?= $val ?>" <?= $checked ?>>
+                                <?= $label ?>
+                            </label>
+                        </div>
                         <?php endforeach; ?>
-                    </select>
+                    </div>
                 </td>
                 <td>&nbsp;&nbsp;Golongan&nbsp;Darah</td>
                 <td>
                     <select name="golDar" class="styled-select">
                         <option value="">SEMUA</option>
                         <?php foreach (array('A', 'B', 'AB', 'O') as $g): ?>
-                            <option value="<?= $g ?>" <?= ($golDar == $g ? 'selected' : '') ?>><?= $g ?></option>
+                        <option value="<?= $g ?>" <?= ($golDar == $g ? 'selected' : '') ?>><?= $g ?></option>
                         <?php endforeach; ?>
                     </select>
                     <select name="rhesus" class="styled-select">
@@ -158,15 +221,15 @@ $hariini     = date("Y-m-d");
                 </td>
             </tr>
 
-            <!-- Baris 4: Status Release & tombol -->
             <tr style="background-color:mistyrose; font-size:12px; color:#000000;">
                 <td>Status&nbsp;Release</td>
                 <td>
                     <select name="status" class="styled-select">
-                        <option value="" <?= ($status == ''  ? 'selected' : '') ?>>SEMUA</option>
-                        <option value="0" <?= ($status == '0' ? 'selected' : '') ?>>LULUS</option>
-                        <option value="1" <?= ($status == '1' ? 'selected' : '') ?>>TIDAK LULUS</option>
-                        <option value="2" <?= ($status == '2' ? 'selected' : '') ?>>LULUS DENGAN CATATAN</option>
+                        <option value="" <?= ($status == '' ? 'selected' : '') ?>>SEMUA</option>
+                        <option value="LULUS" <?= ($status == 'LULUS' ? 'selected' : '') ?>>LULUS</option>
+                        <option value="TIDAK" <?= ($status == 'TIDAK' ? 'selected' : '') ?>>TIDAK LULUS</option>
+                        <option value="CATATAN" <?= ($status == 'CATATAN' ? 'selected' : '') ?>>LULUS DENGAN CATATAN
+                        </option>
                     </select>
                 </td>
                 <td colspan="2">
@@ -179,9 +242,6 @@ $hariini     = date("Y-m-d");
         </table>
     </form>
 
-    <!-- ================================================================ -->
-    <!--  TABEL HASIL                                                      -->
-    <!-- ================================================================ -->
     <br>
     <table border="1" cellpadding="4" style="border-collapse:collapse; font-size:11px;">
         <tr style="background-color:mistyrose; font-size:12px; color:#000000; text-align:center;">
@@ -200,12 +260,6 @@ $hariini     = date("Y-m-d");
         <?php
         $no = 0;
 
-        /*
-     * JOIN release (alias r) dengan stokkantong (alias sk)
-     * berdasarkan no. kantong.
-     * Volume rilis   : r.rvolume
-     * Volume komponen: sk.volume
-     */
         $sql = "SELECT
                 r.rnokantong,
                 r.rproduk,
@@ -221,70 +275,64 @@ $hariini     = date("Y-m-d");
             LEFT JOIN `stokkantong` sk ON sk.nokantong = r.rnokantong
             WHERE 1=1
               $filterTanggal
-              AND r.rproduk  LIKE '%$jenisProduk%'
-              AND r.rgolda   LIKE '%$gold_rhe%'
-              AND r.rstatus  LIKE '%$status%'
+              $filterProduk
+              $filterStatus
+              AND r.rgolda LIKE '%$gold_rhe%'
             ORDER BY r.rnokantong ASC";
-
-        // echo "<!-- DEBUG: $sql -->"; // aktifkan saat debugging
 
         $qraw = mysql_query($sql);
 
         while ($tmp = mysql_fetch_assoc($qraw)):
             $no++;
 
-            switch ($tmp['rstatus']) {
-                case '0':
-                    $statusLabel = 'Lulus';
-                    $statusColor = '#d4edda';
-                    break;
-                case '1':
-                    $statusLabel = 'Tidak Lulus';
-                    $statusColor = '#f8d7da';
-                    break;
-                case '2':
-                    $statusLabel = 'Lulus dg Catatan';
-                    $statusColor = '#fff3cd';
-                    break;
-                default:
-                    $statusLabel = '-';
-                    $statusColor = '#ffffff';
+            // Konversi teks rsatus_ket ke lowercase untuk pengecekan yang aman
+            $ketLower = strtolower($tmp['rsatus_ket']);
+
+            if (strpos($ketLower, 'tidak lulus') !== false || strpos($ketLower, 'gagal') !== false) {
+                $statusLabel = 'Tidak Lulus';
+                $statusColor = '#f8d7da';
+            } elseif (strpos($ketLower, 'catatan') !== false) {
+                $statusLabel = 'Lulus dg Catatan';
+                $statusColor = '#fff3cd';
+            } elseif (strpos($ketLower, 'lulus') !== false) {
+                $statusLabel = 'Lulus';
+                $statusColor = '#d4edda';
+            } else {
+                // Jika kosong atau teks lainnya, tampilkan teks aslinya
+                $statusLabel = !empty($tmp['rsatus_ket']) ? htmlspecialchars($tmp['rsatus_ket']) : '-';
+                $statusColor = '#ffffff';
             }
 
             $volRilis     = ($tmp['vol_rilis']     !== null) ? number_format((float)$tmp['vol_rilis'],     2) . ' ml' : '-';
             $volKomponen  = ($tmp['vol_komponen']  !== null) ? number_format((float)$tmp['vol_komponen'],  2) . ' ml' : '-';
         ?>
-            <tr style="color:#000000; font-family:Verdana;"
-                onMouseOver="this.className='highlight'" onMouseOut="this.className='normal'">
-                <td align="right"><?= $no . '.' ?></td>
-                <td align="left" nowrap><?= htmlspecialchars($tmp['rnokantong']) ?></td>
-                <td align="center"><?= htmlspecialchars($tmp['rproduk']) ?></td>
-                <td align="center"><?= htmlspecialchars($tmp['rgolda']) ?></td>
-                <td align="center" nowrap><?= $tmp['rtgl_aftap'] ?></td>
-                <td align="center" nowrap><?= $tmp['rtgl_olah']  ?></td>
-                <td align="center" nowrap><?= $tmp['rtgl_ed']    ?></td>
-                <td align="right"><?= $volRilis ?></td>
-                <td align="right"><?= $volKomponen ?></td>
-                <td align="center" style="background-color:<?= $statusColor ?>;"><?= $statusLabel ?></td>
-            </tr>
+        <tr style="color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight'"
+            onMouseOut="this.className='normal'">
+            <td align="right"><?= $no . '.' ?></td>
+            <td align="left" nowrap><?= htmlspecialchars($tmp['rnokantong']) ?></td>
+            <td align="center"><?= htmlspecialchars($tmp['rproduk']) ?></td>
+            <td align="center"><?= htmlspecialchars($tmp['rgolda']) ?></td>
+            <td align="center" nowrap><?= $tmp['rtgl_aftap'] ?></td>
+            <td align="center" nowrap><?= $tmp['rtgl_olah']  ?></td>
+            <td align="center" nowrap><?= $tmp['rtgl_ed']    ?></td>
+            <td align="right"><?= $volRilis ?></td>
+            <td align="right"><?= $volKomponen ?></td>
+            <td align="center" style="background-color:<?= $statusColor ?>;"><?= $statusLabel ?></td>
+        </tr>
         <?php endwhile; ?>
 
         <?php if ($no == 0): ?>
-            <tr>
-                <td colspan="10" align="center" style="font-size:13px; padding:10px;">
-                    Tidak ada data untuk filter yang dipilih.
-                </td>
-            </tr>
+        <tr>
+            <td colspan="10" align="center" style="font-size:13px; padding:10px;">
+                Tidak ada data untuk filter yang dipilih.
+            </td>
+        </tr>
         <?php endif; ?>
 
     </table>
     <br>
 
     <a href="pmikomponen.php?module=laborat_komponen" class="swn_button_blue">Kembali</a>
-    <!-- <?php if ($no > 0): ?>
-        &nbsp;<a href="pmiqa.php?module=cetak_rekap_komponen&tgl1=<?= $tglawal ?>&tgl2=<?= $hariini ?>&stts=<?= $status ?>"
-            class="swn_button_blue">Export ke Excel</a>
-    <?php endif; ?> -->
     &nbsp;<a href="#atas" class="swn_button_blue">Ke Atas</a>
 
     <a name="bawah" id="bawah"></a>

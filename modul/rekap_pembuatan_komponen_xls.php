@@ -19,7 +19,8 @@ $shift   = $_POST['shift'];
 $filterTrans = ($trs != '') ? "AND trans = '$trs'" : "AND (trans IS NULL OR trans LIKE '%%')";
 $filterShift = ($shift != '') ? "AND shift = '$shift'" : "AND (shift IS NULL OR shift LIKE '%%')";
 ?>
-<h5>Rekap Pembuatan Komponen Dari Tanggal : <?= $pertgl ?> - <?= $perbln ?> - <?= $perthn ?> sampai <?= $pertgl1 ?> - <?= $perbln1 ?> - <?= $perthn1 ?></h5>
+<h5>Rekap Pembuatan Komponen Dari Tanggal : <?= $pertgl ?> - <?= $perbln ?> - <?= $perthn ?> sampai <?= $pertgl1 ?> -
+	<?= $perbln1 ?> - <?= $perthn1 ?></h5>
 
 
 <!-- ============================================================ -->
@@ -201,9 +202,14 @@ $filterShift = ($shift != '') ? "AND shift = '$shift'" : "AND (shift IS NULL OR 
 		$namaAlat = $row['nama_alat'];
 
 		$bAlat = "FROM dpengolahan WHERE CAST(tgl as date) >= '$today' AND CAST(tgl as date) <= '$today1' $filterShift $filterTrans";
-		if ($kategori == 'Pemutar')      $bAlat .= " AND aPutar='$namaAlat'";
-		elseif ($kategori == 'Pemisah')  $bAlat .= " AND aPisah='$namaAlat'";
-		elseif ($kategori == 'Pembeku')  $bAlat .= " AND aBeku='$namaAlat'";
+		if ($kategori == 'Pemutar') {
+			$bAlat .= " AND aPutar='$namaAlat'";
+		} elseif ($kategori == 'Pemisah') {
+			$bAlat .= " AND aPisah='$namaAlat'";
+		} elseif ($kategori == 'Pembeku') {
+			$bAlat .= " AND aBeku='$namaAlat'";
+			$bAlat .= " AND Produk NOT LIKE '%PRC%' AND Produk NOT LIKE '%WB%'";
+		}
 
 		$prc    = mysql_result(mysql_query("SELECT COUNT(DISTINCT noKantong) $bAlat AND Produk='PRC'"), 0);
 		$tc     = mysql_result(mysql_query("SELECT COUNT(DISTINCT noKantong) $bAlat AND Produk='TC'"), 0);

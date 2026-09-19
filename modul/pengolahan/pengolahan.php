@@ -349,7 +349,9 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                 <div class="form-group">
                     <label for="tglPengerjaan">Tanggal & Waktu Pengerjaan:</label>
                     <input type="text" id="tglPengerjaan" name="tglPengerjaan" class="form-control"
-                        value="<?php echo htmlspecialchars($tglPengerjaan); ?>">
+                        style="font-size: 0.8rem; background-color: #FFFFFF;"
+                        placeholder="Pilih Tanggal & Waktu Pengerjaan"
+                        value="<?php echo htmlspecialchars($tglPengerjaan); ?>" required>
 
 
                 </div>
@@ -376,6 +378,7 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                         <th rowspan="2">Tanggal Pengerjaan</th>
                         <th rowspan="2">Gol. Darah</th>
                         <th colspan="3">Jenis</th>
+                        <th rowspan="2">Berat (Gram)</th>
                         <th rowspan="2">Volume</th>
                         <th colspan="4" class="col-pemutaran">Pemutaran</th>
                         <th colspan="4" class="col-pengolahan">Pengolahan</th>
@@ -501,6 +504,7 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
 
         function simpanDanLanjutkan() {
             var formData = new FormData(document.getElementById('pengolahanForm'));
+            console.log("Form Data:", Array.from(formData.entries())); // Debug: Log form data
             $.ajax({
                 url: 'modul/pengolahan/prosesPengolahan.php',
                 // url: 'prosesPengolahan.php',
@@ -511,7 +515,7 @@ if ($mBeku == "00:00" && $mPutar != "00:00") {
                 success: function(response) {
                     try {
                         var jsonResponse = response;
-
+                        console.log("Server Response:", jsonResponse); // Debug: Log server response
                         if (jsonResponse.status === 'success') {
                             $('#suksesModal .modal-body').html(jsonResponse.message);
                             $('#suksesModal').modal('show');

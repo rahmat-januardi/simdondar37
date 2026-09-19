@@ -20,32 +20,32 @@
 
     <script type="text/javascript" src="tpk/medical_checkup.js"></script>
     <script type="text/javascript">
-        function chb(hb) {
-            hb = parseFloat(hb)
-            if (hb != 1) {
-                setCheckedValue(document.periksa.elements['h_medical'], '1');
-            } else {
-                if (document.periksa.h_medical == '0') setCheckedValue(document.periksa.elements['h_medical'], '0');
-            }
+    function chb(hb) {
+        hb = parseFloat(hb)
+        if (hb != 1) {
+            setCheckedValue(document.periksa.elements['h_medical'], '1');
+        } else {
+            if (document.periksa.h_medical == '0') setCheckedValue(document.periksa.elements['h_medical'], '0');
         }
+    }
 
-        function berat(hb) {
-            hb = parseFloat(hb)
-            if (hb < 45) {
-                setCheckedValue(document.periksa.elements['h_medical'], '1');
-            } else {
-                if (document.periksa.h_medical == '0') setCheckedValue(document.periksa.elements['h_medical'], '0');
-            }
+    function berat(hb) {
+        hb = parseFloat(hb)
+        if (hb < 45) {
+            setCheckedValue(document.periksa.elements['h_medical'], '1');
+        } else {
+            if (document.periksa.h_medical == '0') setCheckedValue(document.periksa.elements['h_medical'], '0');
         }
+    }
 
-        function cek(hb) {
-            hb = parseFloat(hb)
-            if (hb < 12.5) {
-                //  setCheckedValue(document.periksa.elements['cuso4'],'2');
-            } else {
-                //  setCheckedValue(document.periksa.elements['cuso4'],'1');
-            }
+    function cek(hb) {
+        hb = parseFloat(hb)
+        if (hb < 12.5) {
+            //  setCheckedValue(document.periksa.elements['cuso4'],'2');
+        } else {
+            //  setCheckedValue(document.periksa.elements['cuso4'],'1');
         }
+    }
     </script>
 
     <!-- Select2 -->
@@ -371,7 +371,9 @@ if ($ln > 0) {
 <div class="container-fluid" style="margin:20px;">
     <div class="row">
         <div class="col-6 pull-left">
-            <div style="font-size:20px; font-weight:bold;color:#ff0000;text-shadow: 1px 1px 1px #000000; font-family:Helvetica, Arial, san-serif;">MEDICAL CHECK UP - <?php echo $msg; ?></div>
+            <div
+                style="font-size:20px; font-weight:bold;color:#ff0000;text-shadow: 1px 1px 1px #000000; font-family:Helvetica, Arial, san-serif;">
+                MEDICAL CHECK UP - <?php echo $msg; ?></div>
         </div>
         <div class="col-6 pull-right">
             <div class="text-danger blink" id="alert1"></div>
@@ -460,8 +462,10 @@ if ($ln > 0) {
                                         <tr>
                                             <td>Golongan Darah dan Rhesus</td>
                                             <td>
-                                                <input type="hidden" name="abo_pendonor" value="<?php echo $dtdonor['GolDarah']; ?>">
-                                                <input type="hidden" name="rh_pendonor" value="<?php echo $dtdonor['Rhesus']; ?>">
+                                                <input type="hidden" name="abo_pendonor"
+                                                    value="<?php echo $dtdonor['GolDarah']; ?>">
+                                                <input type="hidden" name="rh_pendonor"
+                                                    value="<?php echo $dtdonor['Rhesus']; ?>">
                                                 <?
                                                 $sA = '';
                                                 $sB = '';
@@ -496,29 +500,37 @@ if ($ln > 0) {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2"><b>Pemeriksaan Hemoglobin</b><i> ( Pilih Salah Satu )</i></td>
+                                            <td colspan="2"><b>Pemeriksaan Hemoglobin</b><i> ( Pilih Salah Satu )</i>
+                                            </td>
                                         </tr>
                                         <!-- EDIT SHIN MENDISABLE RADIO DAN MENAMBAH ONCHANGE HB METER-->
                                         <tr>
                                             <td>1. BJ1053</sub></td>
                                             <td class="input">
-                                                <input type="radio" name="cuso4" value="1" onclick="chb(this.value)" disabled>Tenggelam
-                                                <input type="radio" name="cuso4" value="2" onclick="chb(this.value)" disabled>Melayang
-                                                <input type="radio" name="cuso4" value="3" onclick="chb(this.value)" disabled>Mengapung
+                                                <input type="radio" name="cuso4" value="1" onclick="chb(this.value)"
+                                                    disabled>Tenggelam
+                                                <input type="radio" name="cuso4" value="2" onclick="chb(this.value)"
+                                                    disabled>Melayang
+                                                <input type="radio" name="cuso4" value="3" onclick="chb(this.value)"
+                                                    disabled>Mengapung
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>2. BJ1062</sub></td>
                                             <td class="input">
-                                                <input type="radio" name="cuso41" value="1" onclick="chb1(this.value)" disabled>Tenggelam
-                                                <input type="radio" name="cuso41" value="2" onclick="chb1(this.value)" disabled>Melayang
-                                                <input type="radio" name="cuso41" value="3" onclick="chb1(this.value)" disabled>Mengapung
+                                                <input type="radio" name="cuso41" value="1" onclick="chb1(this.value)"
+                                                    disabled>Tenggelam
+                                                <input type="radio" name="cuso41" value="2" onclick="chb1(this.value)"
+                                                    disabled>Melayang
+                                                <input type="radio" name="cuso41" value="3" onclick="chb1(this.value)"
+                                                    disabled>Mengapung
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>3. HB Meter</td>
                                             <td class="input">
-                                                <input type="text" name="hb" id="hb" size="6" onChange="hbmeter()" required> g/dL <br>
+                                                <input type="text" name="hb" id="hb" size="6" onChange="hbmeter()"
+                                                    required> g/dL <br>
                                                 <span id="warning_hb" style="font-size: 12px; color: red;"></span>
                                             </td>
                                         </tr>
@@ -548,19 +560,23 @@ if ($ln > 0) {
                                         <?php
                                         //JIKA Pemeriksaan Dokter Sudah Dilakukan
                                         if ($qtrans['cek_dokter'] == '1') { ?>
-                                            <tr>
-                                                <td><b>Lanjutkan ke Aftap </b></td>
+                                        <tr>
+                                            <td><b>Lanjutkan ke Aftap </b></td>
 
-                                                <td>
-                                                    <div class="onoffswitch">
-                                                        <input type="hidden" name="lanjutaftap" value="0">
-                                                        <input type="checkbox" name="lanjutaftap" class="onoffswitch-checkbox" id="lanjutaftap" tabindex="1" value="1" disabled>
-                                                        <label class="onoffswitch-label" for="lanjutaftap"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <td>
+                                                <div class="onoffswitch">
+                                                    <input type="hidden" name="lanjutaftap" value="0">
+                                                    <input type="checkbox" name="lanjutaftap"
+                                                        class="onoffswitch-checkbox" id="lanjutaftap" tabindex="1"
+                                                        value="1" disabled>
+                                                    <label class="onoffswitch-label" for="lanjutaftap"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         <?php } else { ?>
-                                            <input type="hidden" name="lanjutaftap" value="0">
+                                        <input type="hidden" name="lanjutaftap" value="0">
                                         <?php } ?>
 
                                         <!--tr><td>Ptgs Tensi</td>
@@ -609,8 +625,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no1" value="0">
-                                                    <input type="checkbox" name="no1" class="onoffswitch-checkbox" id="no1" tabindex="1" value="1" <?php echo switchvalue($dtIC['satu']); ?>>
-                                                    <label class="onoffswitch-label" for="no1"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no1" class="onoffswitch-checkbox"
+                                                        id="no1" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['satu']); ?>>
+                                                    <label class="onoffswitch-label" for="no1"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -620,8 +640,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no2" value="0">
-                                                    <input type="checkbox" name="no2" class="onoffswitch-checkbox" id="no2" tabindex="1" value="1" <?php echo switchvalue($dtIC['dua']); ?>>
-                                                    <label class="onoffswitch-label" for="no2"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no2" class="onoffswitch-checkbox"
+                                                        id="no2" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['dua']); ?>>
+                                                    <label class="onoffswitch-label" for="no2"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -631,19 +655,28 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no3" value="0">
-                                                    <input type="checkbox" name="no3" class="onoffswitch-checkbox" id="no3" tabindex="1" value="1" <?php echo switchvalue($dtIC['tiga']); ?>>
-                                                    <label class="onoffswitch-label" for="no3"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no3" class="onoffswitch-checkbox"
+                                                        id="no3" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['tiga']); ?>>
+                                                    <label class="onoffswitch-label" for="no3"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
-                                            <td>Apakah anda sedang minum aspirin atau obat yang mengandung aspirin ?</td>
+                                            <td>Apakah anda sedang minum aspirin atau obat yang mengandung aspirin ?
+                                            </td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no4" value="0">
-                                                    <input type="checkbox" name="no4" class="onoffswitch-checkbox" id="no4" tabindex="1" value="1" <?php echo switchvalue($dtIC['empat']); ?>>
-                                                    <label class="onoffswitch-label" for="no4"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no4" class="onoffswitch-checkbox"
+                                                        id="no4" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['empat']); ?>>
+                                                    <label class="onoffswitch-label" for="no4"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -653,8 +686,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no5" value="0">
-                                                    <input type="checkbox" name="no5" class="onoffswitch-checkbox" id="no5" tabindex="1" value="1" <?php echo switchvalue($dtIC['lima']); ?>>
-                                                    <label class="onoffswitch-label" for="no5"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no5" class="onoffswitch-checkbox"
+                                                        id="no5" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['lima']); ?>>
+                                                    <label class="onoffswitch-label" for="no5"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -664,8 +701,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no6" value="0">
-                                                    <input type="checkbox" name="no6" class="onoffswitch-checkbox" id="no6" tabindex="1" value="1" <?php echo switchvalue($dtIC['enam']); ?>>
-                                                    <label class="onoffswitch-label" for="no6"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no6" class="onoffswitch-checkbox"
+                                                        id="no6" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['enam']); ?>>
+                                                    <label class="onoffswitch-label" for="no6"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -675,8 +716,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no7" value="0">
-                                                    <input type="checkbox" name="no7" class="onoffswitch-checkbox" id="no7" tabindex="1" value="1" <?php echo switchvalue($dtIC['tujuh']); ?>>
-                                                    <label class="onoffswitch-label" for="no7"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no7" class="onoffswitch-checkbox"
+                                                        id="no7" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['tujuh']); ?>>
+                                                    <label class="onoffswitch-label" for="no7"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -686,30 +731,44 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no8" value="0">
-                                                    <input type="checkbox" name="no8" class="onoffswitch-checkbox" id="no8" tabindex="1" value="1" <?php echo switchvalue($dtIC['delapan']); ?>>
-                                                    <label class="onoffswitch-label" for="no8"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no8" class="onoffswitch-checkbox"
+                                                        id="no8" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['delapan']); ?>>
+                                                    <label class="onoffswitch-label" for="no8"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>9</td>
-                                            <td>Apakah anda pernah kontak dengan orang yang menerima vaksinasi smallpox/cacar air ? </td>
+                                            <td>Apakah anda pernah kontak dengan orang yang menerima vaksinasi
+                                                smallpox/cacar air ? </td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no9" value="0">
-                                                    <input type="checkbox" name="no9" class="onoffswitch-checkbox" id="no9" tabindex="1" value="1" <?php echo switchvalue($dtIC['sembilan']); ?>>
-                                                    <label class="onoffswitch-label" for="no9"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no9" class="onoffswitch-checkbox"
+                                                        id="no9" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['sembilan']); ?>>
+                                                    <label class="onoffswitch-label" for="no9"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>10</td>
-                                            <td>Apakah anda mendonorkan 2 kantong sel darah merah melalui proses aferesis ?</td>
+                                            <td>Apakah anda mendonorkan 2 kantong sel darah merah melalui proses
+                                                aferesis ?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no10" value="0">
-                                                    <input type="checkbox" name="no10" class="onoffswitch-checkbox" id="no10" tabindex="1" value="1" <?php echo switchvalue($dtIC['sepuluh']); ?>>
-                                                    <label class="onoffswitch-label" for="no10"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no10" class="onoffswitch-checkbox"
+                                                        id="no10" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['sepuluh']); ?>>
+                                                    <label class="onoffswitch-label" for="no10"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -719,8 +778,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no11" value="0">
-                                                    <input type="checkbox" name="no11" class="onoffswitch-checkbox" id="no11" tabindex="1" value="1" <?php echo switchvalue($dtIC['sebls']); ?>>
-                                                    <label class="onoffswitch-label" for="no11"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no11" class="onoffswitch-checkbox"
+                                                        id="no11" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['sebls']); ?>>
+                                                    <label class="onoffswitch-label" for="no11"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -730,19 +793,28 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no12" value="0">
-                                                    <input type="checkbox" name="no12" class="onoffswitch-checkbox" id="no12" tabindex="1" value="1" <?php echo switchvalue($dtIC['duabls']); ?>>
-                                                    <label class="onoffswitch-label" for="no12"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no12" class="onoffswitch-checkbox"
+                                                        id="no12" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['duabls']); ?>>
+                                                    <label class="onoffswitch-label" for="no12"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>13</td>
-                                            <td>Apakah anda pernah mendapat transplantasi, organ, jaringan atau sumsum tulang ?</td>
+                                            <td>Apakah anda pernah mendapat transplantasi, organ, jaringan atau sumsum
+                                                tulang ?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no13" value="0">
-                                                    <input type="checkbox" name="no13" class="onoffswitch-checkbox" id="no13" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigabls']); ?>>
-                                                    <label class="onoffswitch-label" for="no13"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no13" class="onoffswitch-checkbox"
+                                                        id="no13" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['tigabls']); ?>>
+                                                    <label class="onoffswitch-label" for="no13"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -752,8 +824,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no14" value="0">
-                                                    <input type="checkbox" name="no14" class="onoffswitch-checkbox" id="no14" tabindex="1" value="1" <?php echo switchvalue($dtIC['empatbls']); ?>>
-                                                    <label class="onoffswitch-label" for="no14"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no14" class="onoffswitch-checkbox"
+                                                        id="no14" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['empatbls']); ?>>
+                                                    <label class="onoffswitch-label" for="no14"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -763,63 +839,92 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no15" value="0">
-                                                    <input type="checkbox" name="no15" class="onoffswitch-checkbox" id="no15" tabindex="1" value="1" <?php echo switchvalue($dtIC['limabls']); ?>>
-                                                    <label class="onoffswitch-label" for="no15"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no15" class="onoffswitch-checkbox"
+                                                        id="no15" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['limabls']); ?>>
+                                                    <label class="onoffswitch-label" for="no15"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>16</td>
-                                            <td>Apakah anda pernah berhubungan seksual dengan orang dengan HIV/AIDS ?</td>
+                                            <td>Apakah anda pernah berhubungan seksual dengan orang dengan HIV/AIDS ?
+                                            </td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no16" value="0">
-                                                    <input type="checkbox" name="no16" class="onoffswitch-checkbox" id="no16" tabindex="1" value="1" <?php echo switchvalue($dtIC['enambls']); ?>>
-                                                    <label class="onoffswitch-label" for="no16"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no16" class="onoffswitch-checkbox"
+                                                        id="no16" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['enambls']); ?>>
+                                                    <label class="onoffswitch-label" for="no16"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>17</td>
-                                            <td>Apakah anda pernah berhubungan seksual dengan pekerja seks komersial ?</td>
+                                            <td>Apakah anda pernah berhubungan seksual dengan pekerja seks komersial ?
+                                            </td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no17" value="0">
-                                                    <input type="checkbox" name="no17" class="onoffswitch-checkbox" id="no17" tabindex="1" value="1" <?php echo switchvalue($dtIC['tujuhbls']); ?>>
-                                                    <label class="onoffswitch-label" for="no17"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no17" class="onoffswitch-checkbox"
+                                                        id="no17" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['tujuhbls']); ?>>
+                                                    <label class="onoffswitch-label" for="no17"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>18</td>
-                                            <td>Apakah anda pernah berhubungan seksual dengan pengguna narkoba jarum suntik ?</td>
+                                            <td>Apakah anda pernah berhubungan seksual dengan pengguna narkoba jarum
+                                                suntik ?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no18" value="0">
-                                                    <input type="checkbox" name="no18" class="onoffswitch-checkbox" id="no18" tabindex="1" value="1" <?php echo switchvalue($dtIC['delapanbls']); ?>>
-                                                    <label class="onoffswitch-label" for="no18"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no18" class="onoffswitch-checkbox"
+                                                        id="no18" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['delapanbls']); ?>>
+                                                    <label class="onoffswitch-label" for="no18"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>19</td>
-                                            <td>Apakah anda pernah berhubungan seksual dengan pengguna konsentrat faktor pembekuan?</td>
+                                            <td>Apakah anda pernah berhubungan seksual dengan pengguna konsentrat faktor
+                                                pembekuan?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no19" value="0">
-                                                    <input type="checkbox" name="no19" class="onoffswitch-checkbox" id="no19" tabindex="1" value="1" <?php echo switchvalue($dtIC['sembilanbls']); ?>>
-                                                    <label class="onoffswitch-label" for="no19"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no19" class="onoffswitch-checkbox"
+                                                        id="no19" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['sembilanbls']); ?>>
+                                                    <label class="onoffswitch-label" for="no19"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>20</td>
-                                            <td>Donor wanita ? apakah anda pernah berhubungan seksual dengan laki-laki yang biseksual ?</td>
+                                            <td>Donor wanita ? apakah anda pernah berhubungan seksual dengan laki-laki
+                                                yang biseksual ?</td>
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no20" value="0">
-                                                    <input type="checkbox" name="no20" class="onoffswitch-checkbox" id="no20" tabindex="1" value="1" <?php echo switchvalue($dtIC['duapuluh']); ?>>
-                                                    <label class="onoffswitch-label" for="no20"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no20" class="onoffswitch-checkbox"
+                                                        id="no20" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['duapuluh']); ?>>
+                                                    <label class="onoffswitch-label" for="no20"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -829,8 +934,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no21" value="0">
-                                                    <input type="checkbox" name="no21" class="onoffswitch-checkbox" id="no21" tabindex="1" value="1" <?php echo switchvalue($dtIC['duasatu']); ?>>
-                                                    <label class="onoffswitch-label" for="no21"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no21" class="onoffswitch-checkbox"
+                                                        id="no21" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['duasatu']); ?>>
+                                                    <label class="onoffswitch-label" for="no21"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -840,8 +949,12 @@ if ($ln > 0) {
                                             <td>
                                                 <div class="onoffswitch">
                                                     <input type="hidden" name="no22" value="0">
-                                                    <input type="checkbox" name="no22" class="onoffswitch-checkbox" id="no22" tabindex="1" value="1" <?php echo switchvalue($dtIC['duadua']); ?>>
-                                                    <label class="onoffswitch-label" for="no22"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                    <input type="checkbox" name="no22" class="onoffswitch-checkbox"
+                                                        id="no22" tabindex="1" value="1"
+                                                        <?php echo switchvalue($dtIC['duadua']); ?>>
+                                                    <label class="onoffswitch-label" for="no22"><span
+                                                            class="onoffswitch-inner"></span><span
+                                                            class="onoffswitch-switch"></span></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -855,8 +968,11 @@ if ($ln > 0) {
                                         <tr><td>23</td><td>Apakah anda memiliki tatto ?</td>
                                         <td><div class=" onoffswitch">
                                         <input type="hidden" name="no23" value="0">
-                                        <input type="checkbox" name="no23" class="onoffswitch-checkbox" id="no23" tabindex="1" value="1" <?php echo switchvalue($dtIC['duatiga']); ?>>
-                                        <label class="onoffswitch-label" for="no23"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                        <input type="checkbox" name="no23" class="onoffswitch-checkbox" id="no23"
+                                            tabindex="1" value="1" <?php echo switchvalue($dtIC['duatiga']); ?>>
+                                        <label class="onoffswitch-label" for="no23"><span
+                                                class="onoffswitch-inner"></span><span
+                                                class="onoffswitch-switch"></span></label>
                                 </div>
                                 </td>
                                 </tr>
@@ -866,19 +982,26 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no24" value="0">
-                                            <input type="checkbox" name="no24" class="onoffswitch-checkbox" id="no24" tabindex="1" value="1" <?php echo switchvalue($dtIC['duaempat']); ?>>
-                                            <label class="onoffswitch-label" for="no24"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no24" class="onoffswitch-checkbox" id="no24"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['duaempat']); ?>>
+                                            <label class="onoffswitch-label" for="no24"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>25</td>
-                                    <td>Apakah anda sedang atau pernah mendapat pengobatan si?lis atau GO (kencing nanah) ?</td>
+                                    <td>Apakah anda sedang atau pernah mendapat pengobatan si?lis atau GO (kencing
+                                        nanah) ?</td>
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no25" value="0">
-                                            <input type="checkbox" name="no25" class="onoffswitch-checkbox" id="no25" tabindex="1" value="1" <?php echo switchvalue($dtIC['dualima']); ?>>
-                                            <label class="onoffswitch-label" for="no25"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no25" class="onoffswitch-checkbox" id="no25"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['dualima']); ?>>
+                                            <label class="onoffswitch-label" for="no25"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -888,8 +1011,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no26" value="0">
-                                            <input type="checkbox" name="no26" class="onoffswitch-checkbox" id="no26" tabindex="1" value="1" <?php echo switchvalue($dtIC['duaenam']); ?>>
-                                            <label class="onoffswitch-label" for="no26"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no26" class="onoffswitch-checkbox" id="no26"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['duaenam']); ?>>
+                                            <label class="onoffswitch-label" for="no26"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -899,8 +1025,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no27" value="0">
-                                            <input type="checkbox" name="no27" class="onoffswitch-checkbox" id="no27" tabindex="1" value="1" <?php echo switchvalue($dtIC['duatujuh']); ?>>
-                                            <label class="onoffswitch-label" for="no27"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no27" class="onoffswitch-checkbox" id="no27"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['duatujuh']); ?>>
+                                            <label class="onoffswitch-label" for="no27"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -910,8 +1039,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no28" value="0">
-                                            <input type="checkbox" name="no28" class="onoffswitch-checkbox" id="no28" tabindex="1" value="1" <?php echo switchvalue($dtIC['duadelapan']); ?>>
-                                            <label class="onoffswitch-label" for="no28"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no28" class="onoffswitch-checkbox" id="no28"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['duadelapan']); ?>>
+                                            <label class="onoffswitch-label" for="no28"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -921,8 +1053,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no29" value="0">
-                                            <input type="checkbox" name="no29" class="onoffswitch-checkbox" id="no29" tabindex="1" value="1" <?php echo switchvalue($dtIC['duasembilan']); ?>>
-                                            <label class="onoffswitch-label" for="no29"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no29" class="onoffswitch-checkbox" id="no29"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['duasembilan']); ?>>
+                                            <label class="onoffswitch-label" for="no29"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -932,8 +1067,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no30" value="0">
-                                            <input type="checkbox" name="no30" class="onoffswitch-checkbox" id="no30" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigapuluh']); ?>>
-                                            <label class="onoffswitch-label" for="no30"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no30" class="onoffswitch-checkbox" id="no30"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigapuluh']); ?>>
+                                            <label class="onoffswitch-label" for="no30"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -943,8 +1081,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no31" value="0">
-                                            <input type="checkbox" name="no31" class="onoffswitch-checkbox" id="no31" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigasatu']); ?>>
-                                            <label class="onoffswitch-label" for="no31"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no31" class="onoffswitch-checkbox" id="no31"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigasatu']); ?>>
+                                            <label class="onoffswitch-label" for="no31"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -954,19 +1095,26 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no32" value="0">
-                                            <input type="checkbox" name="no32" class="onoffswitch-checkbox" id="no32" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigadua']); ?>>
-                                            <label class="onoffswitch-label" for="no32"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no32" class="onoffswitch-checkbox" id="no32"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigadua']); ?>>
+                                            <label class="onoffswitch-label" for="no32"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>33</td>
-                                    <td>Laki-laki ? Apakah anda pernah berhubungan seksual dengan laki-laki, walaupun sekali? </td>
+                                    <td>Laki-laki ? Apakah anda pernah berhubungan seksual dengan laki-laki, walaupun
+                                        sekali? </td>
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no33" value="0">
-                                            <input type="checkbox" name="no33" class="onoffswitch-checkbox" id="no33" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigatiga']); ?>>
-                                            <label class="onoffswitch-label" for="no33"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no33" class="onoffswitch-checkbox" id="no33"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigatiga']); ?>>
+                                            <label class="onoffswitch-label" for="no33"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -976,8 +1124,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no34" value="0">
-                                            <input type="checkbox" name="no34" class="onoffswitch-checkbox" id="no34" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigaempat']); ?>>
-                                            <label class="onoffswitch-label" for="no34"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no34" class="onoffswitch-checkbox" id="no34"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigaempat']); ?>>
+                                            <label class="onoffswitch-label" for="no34"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -987,19 +1138,26 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no35" value="0">
-                                            <input type="checkbox" name="no35" class="onoffswitch-checkbox" id="no35" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigalima']); ?>>
-                                            <label class="onoffswitch-label" for="no35"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no35" class="onoffswitch-checkbox" id="no35"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigalima']); ?>>
+                                            <label class="onoffswitch-label" for="no35"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>36</td>
-                                    <td>Menggunakan jarum suntik untuk obat-obatan, Steroid yang tidak diresepkan dokter?</td>
+                                    <td>Menggunakan jarum suntik untuk obat-obatan, Steroid yang tidak diresepkan
+                                        dokter?</td>
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no36" value="0">
-                                            <input type="checkbox" name="no36" class="onoffswitch-checkbox" id="no36" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigaenam']); ?>>
-                                            <label class="onoffswitch-label" for="no36"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no36" class="onoffswitch-checkbox" id="no36"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigaenam']); ?>>
+                                            <label class="onoffswitch-label" for="no36"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1009,8 +1167,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no37" value="0">
-                                            <input type="checkbox" name="no37" class="onoffswitch-checkbox" id="no37" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigatujuh']); ?>>
-                                            <label class="onoffswitch-label" for="no37"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no37" class="onoffswitch-checkbox" id="no37"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigatujuh']); ?>>
+                                            <label class="onoffswitch-label" for="no37"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1020,8 +1181,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no38" value="0">
-                                            <input type="checkbox" name="no38" class="onoffswitch-checkbox" id="no38" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigadelapan']); ?>>
-                                            <label class="onoffswitch-label" for="no38"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no38" class="onoffswitch-checkbox" id="no38"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['tigadelapan']); ?>>
+                                            <label class="onoffswitch-label" for="no38"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1031,8 +1195,12 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no39" value="0">
-                                            <input type="checkbox" name="no39" class="onoffswitch-checkbox" id="no39" tabindex="1" value="1" <?php echo switchvalue($dtIC['tigasembilan']); ?>>
-                                            <label class="onoffswitch-label" for="no39"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no39" class="onoffswitch-checkbox" id="no39"
+                                                tabindex="1" value="1"
+                                                <?php echo switchvalue($dtIC['tigasembilan']); ?>>
+                                            <label class="onoffswitch-label" for="no39"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1042,8 +1210,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no40" value="0">
-                                            <input type="checkbox" name="no40" class="onoffswitch-checkbox" id="no40" tabindex="1" value="1" <?php echo switchvalue($dtIC['empatpuluh']); ?>>
-                                            <label class="onoffswitch-label" for="no40"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no40" class="onoffswitch-checkbox" id="no40"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['empatpuluh']); ?>>
+                                            <label class="onoffswitch-label" for="no40"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1053,19 +1224,26 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no41" value="0">
-                                            <input type="checkbox" name="no41" class="onoffswitch-checkbox" id="no41" tabindex="1" value="1" <?php echo switchvalue($dtIC['empatsatu']); ?>>
-                                            <label class="onoffswitch-label" for="no41"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no41" class="onoffswitch-checkbox" id="no41"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['empatsatu']); ?>>
+                                            <label class="onoffswitch-label" for="no41"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>42</td>
-                                    <td>Apakah anda pernah menderita pendarahan atau penyakit berhubungan dengan darah ?</td>
+                                    <td>Apakah anda pernah menderita pendarahan atau penyakit berhubungan dengan darah ?
+                                    </td>
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no42" value="0">
-                                            <input type="checkbox" name="no42" class="onoffswitch-checkbox" id="no42" tabindex="1" value="1" <?php echo switchvalue($dtIC['empatdua']); ?>>
-                                            <label class="onoffswitch-label" for="no42"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no42" class="onoffswitch-checkbox" id="no42"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['empatdua']); ?>>
+                                            <label class="onoffswitch-label" for="no42"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1075,8 +1253,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no43" value="0">
-                                            <input type="checkbox" name="no43" class="onoffswitch-checkbox" id="no43" tabindex="1" value="1" <?php echo switchvalue($dtIC['empattiga']); ?>>
-                                            <label class="onoffswitch-label" for="no43"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no43" class="onoffswitch-checkbox" id="no43"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['empattiga']); ?>>
+                                            <label class="onoffswitch-label" for="no43"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1086,8 +1267,11 @@ if ($ln > 0) {
                                     <td>
                                         <div class="onoffswitch">
                                             <input type="hidden" name="no44" value="0">
-                                            <input type="checkbox" name="no44" class="onoffswitch-checkbox" id="no44" tabindex="1" value="1" <?php echo switchvalue($dtIC['empattiga']); ?>>
-                                            <label class="onoffswitch-label" for="no44"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                            <input type="checkbox" name="no44" class="onoffswitch-checkbox" id="no44"
+                                                tabindex="1" value="1" <?php echo switchvalue($dtIC['empattiga']); ?>>
+                                            <label class="onoffswitch-label" for="no44"><span
+                                                    class="onoffswitch-inner"></span><span
+                                                    class="onoffswitch-switch"></span></label>
                                         </div>
                                     </td>
                                 </tr>
@@ -1123,7 +1307,8 @@ if ($ln > 0) {
 
                                     <tr>
                                         <td>Antibody Screening</td>
-                                        <td colspan="3" style="white-space:nowrap;" id="abs"><?php echo $ex_sampleinfo[8]; ?></td>
+                                        <td colspan="3" style="white-space:nowrap;" id="abs">
+                                            <?php echo $ex_sampleinfo[8]; ?></td>
                                     </tr>
                                 </table>
                             </div>
@@ -1133,34 +1318,46 @@ if ($ln > 0) {
                             <div class="table-responsive" id="shadow1">
                                 <table class="table table-striped table-hover">
                                     <tr>
-                                        <td colspan="4" style="font-size:110%;font-weight:bold;">HASIL DARAH LENGKAP</td>
+                                        <td colspan="4" style="font-size:110%;font-weight:bold;">HASIL DARAH LENGKAP
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Hematokrit<sup style="color:red;"><strong>*</strong></sup></td>
-                                        <td style="white-space:nowrap;"><input style='width:15mm' name="reqhematokrit" id="hematokrit" type="text" maxlength="3" value="<?php echo $ex_sampleinfo[5]; ?>"> %</td>
+                                        <td style="white-space:nowrap;"><input style='width:15mm' name="reqhematokrit"
+                                                id="hematokrit" type="text" maxlength="3"
+                                                value="<?php echo $ex_sampleinfo[5]; ?>"> %</td>
                                         <td>Hemoglobin<sup style="color:red;"><strong>*</strong></sup></td>
-                                        <td style="white-space:nowrap;"><input style='width:15mm' name="reqhemoglobin" id="hemoglobin" type="text" maxlength="5" value="<?php echo $ex_sampleinfo[4]; ?>"> g/dL</td>
+                                        <td style="white-space:nowrap;"><input style='width:15mm' name="reqhemoglobin"
+                                                id="hemoglobin" type="text" maxlength="5"
+                                                value="<?php echo $ex_sampleinfo[4]; ?>"> g/dL</td>
                                     </tr>
                                     <tr>
                                         <td>Trombosit<sup style="color:red;"><strong>*</strong></sup></td>
-                                        <td style="white-space:nowrap;"><input style='width:15mm' name="reqtrombosit" id="trombosit" type="text" maxlength="5" value="<?php echo $ex_sampleinfo[6]; ?>">10<sup>3</sup>/&micro;l</td>
+                                        <td style="white-space:nowrap;"><input style='width:15mm' name="reqtrombosit"
+                                                id="trombosit" type="text" maxlength="5"
+                                                value="<?php echo $ex_sampleinfo[6]; ?>">10<sup>3</sup>/&micro;l</td>
                                         <td>Leukosit<sup style="color:red;"><strong>*</strong></sup></td>
-                                        <td><input style='width:15mm' name="reqleukosit" id="leukosit" type="text" maxlength="5" value="<?php echo $ex_sampleinfo[7]; ?>">10<sup>3</sup>/&micro;l</td>
+                                        <td><input style='width:15mm' name="reqleukosit" id="leukosit" type="text"
+                                                maxlength="5"
+                                                value="<?php echo $ex_sampleinfo[7]; ?>">10<sup>3</sup>/&micro;l</td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" style="font-size:110%;font-weight:bold;">UJI SARING & KGD</td>
                                     </tr>
                                     <tr>
                                         <td>IMLTD Elisa/Chlia</td>
-                                        <td colspan="3" style="white-space:nowrap;" id="imltd"><?php echo $ex_sampleinfo[0]; ?></td>
+                                        <td colspan="3" style="white-space:nowrap;" id="imltd">
+                                            <?php echo $ex_sampleinfo[0]; ?></td>
                                     </tr>
                                     <tr>
                                         <td>IMLTD NAT</td>
-                                        <td colspan="3" style="white-space:nowrap;" id="nat"><?php echo $ex_sampleinfo[1]; ?></td>
+                                        <td colspan="3" style="white-space:nowrap;" id="nat">
+                                            <?php echo $ex_sampleinfo[1]; ?></td>
                                     </tr>
                                     <tr>
                                         <td>Konfirmasi Gol Darah</td>
-                                        <td colspan="3" style="white-space:nowrap;" id="kgd"><?php echo $ex_sampleinfo[2]; ?></td>
+                                        <td colspan="3" style="white-space:nowrap;" id="kgd">
+                                            <?php echo $ex_sampleinfo[2]; ?></td>
                                     </tr>
                                 </table>
                             </div>
@@ -1178,15 +1375,21 @@ if ($ln > 0) {
                                 <table class="table borderless table-striped">
                                     <tr>
                                         <td>Tgl Pos Covid-19<sup style="color:red;"><strong>*</strong></sup></td>
-                                        <td><input type="text" name="tgl_positif" id="datepicker" class="form-control input-sm" value="<?php echo $attTPK['tgl_pdp']; ?>"></td>
+                                        <td><input type="text" name="tgl_positif" id="datepicker"
+                                                class="form-control input-sm" value="<?php echo $attTPK['tgl_pdp']; ?>">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Pernah Donor biasa</td>
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="pernahdonor" value="0">
-                                                <input type="checkbox" name="pernahdonor" class="onoffswitch-checkbox" id="pernahdonor" tabindex="0" value="1" <?php echo switchvalue($attTPK['f_donor']); ?>>
-                                                <label class="onoffswitch-label" for="pernahdonor"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="pernahdonor" class="onoffswitch-checkbox"
+                                                    id="pernahdonor" tabindex="0" value="1"
+                                                    <?php echo switchvalue($attTPK['f_donor']); ?>>
+                                                <label class="onoffswitch-label" for="pernahdonor"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1195,8 +1398,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="pernahdonor_a" value="0">
-                                                <input type="checkbox" name="pernahdonor_a" class="onoffswitch-checkbox" id="pernahdonor_a" tabindex="1" value="1" <?php echo switchvalue($attTPK['f_donor_a']); ?>>
-                                                <label class="onoffswitch-label" for="pernahdonor_a"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="pernahdonor_a" class="onoffswitch-checkbox"
+                                                    id="pernahdonor_a" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['f_donor_a']); ?>>
+                                                <label class="onoffswitch-label" for="pernahdonor_a"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1205,8 +1412,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="pernahdonor_t" value="0">
-                                                <input type="checkbox" name="pernahdonor_t" class="onoffswitch-checkbox" id="pernahdonor_t" tabindex="1" value="1" <?php echo switchvalue($attTPK['r_transf']); ?>>
-                                                <label class="onoffswitch-label" for="pernahdonor_t"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="pernahdonor_t" class="onoffswitch-checkbox"
+                                                    id="pernahdonor_t" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['r_transf']); ?>>
+                                                <label class="onoffswitch-label" for="pernahdonor_t"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1241,15 +1452,20 @@ if ($ln > 0) {
 
                                 <table class="table borderless  table-striped">
                                     <tr>
-                                        <td colspan="2" class="bg-danger"><strong>Penyakit penyerta/komorbid</strong></td>
+                                        <td colspan="2" class="bg-danger"><strong>Penyakit penyerta/komorbid</strong>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Penyakit jantung</td>
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="jantung" value="0">
-                                                <input type="checkbox" name="jantung" class="onoffswitch-checkbox" id="jantung" tabindex="1" value="1" <?php echo switchvalue($attTPK['p_jantung']); ?>>
-                                                <label class="onoffswitch-label" for="jantung"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="jantung" class="onoffswitch-checkbox"
+                                                    id="jantung" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['p_jantung']); ?>>
+                                                <label class="onoffswitch-label" for="jantung"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1258,8 +1474,12 @@ if ($ln > 0) {
                                         <td style="width:15mm;">
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="hipertensi" value="0">
-                                                <input type="checkbox" name="hipertensi" class="onoffswitch-checkbox" id="hipertensi" tabindex="1" value="1" <?php echo switchvalue($attTPK['p_hipertns']); ?>>
-                                                <label class="onoffswitch-label" for="hipertensi"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="hipertensi" class="onoffswitch-checkbox"
+                                                    id="hipertensi" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['p_hipertns']); ?>>
+                                                <label class="onoffswitch-label" for="hipertensi"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1268,8 +1488,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="paru" value="0">
-                                                <input type="checkbox" name="paru" class="onoffswitch-checkbox" id="paru" tabindex="1" value="1" <?php echo switchvalue($attTPK['p_paru']); ?>>
-                                                <label class="onoffswitch-label" for="paru"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="paru" class="onoffswitch-checkbox"
+                                                    id="paru" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['p_paru']); ?>>
+                                                <label class="onoffswitch-label" for="paru"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1278,8 +1502,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="hati" value="0">
-                                                <input type="checkbox" name="hati" class="onoffswitch-checkbox" id="hati" tabindex="1" value="1" <?php echo switchvalue($attTPK['p_hati']); ?>>
-                                                <label class="onoffswitch-label" for="hati"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="hati" class="onoffswitch-checkbox"
+                                                    id="hati" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['p_hati']); ?>>
+                                                <label class="onoffswitch-label" for="hati"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1288,8 +1516,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="ginjal" value="0">
-                                                <input type="checkbox" name="ginjal" class="onoffswitch-checkbox" id="ginjal" tabindex="1" value="1" <?php echo switchvalue($attTPK['p_ginjal']); ?>>
-                                                <label class="onoffswitch-label" for="ginjal"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="ginjal" class="onoffswitch-checkbox"
+                                                    id="ginjal" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['p_ginjal']); ?>>
+                                                <label class="onoffswitch-label" for="ginjal"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1298,8 +1530,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="kronik" value="0">
-                                                <input type="checkbox" name="kronik" class="onoffswitch-checkbox" id="kronik" tabindex="1" value="1" <?php echo switchvalue($attTPK['p_kronik']); ?>>
-                                                <label class="onoffswitch-label" for="kronik"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="kronik" class="onoffswitch-checkbox"
+                                                    id="kronik" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['p_kronik']); ?>>
+                                                <label class="onoffswitch-label" for="kronik"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1308,8 +1544,11 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="hiv" value="0">
-                                                <input type="checkbox" name="hiv" class="onoffswitch-checkbox" id="hiv" tabindex="1" value="1" <?php echo switchvalue($attTPK['p_hiv']); ?>>
-                                                <label class="onoffswitch-label" for="hiv"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="hiv" class="onoffswitch-checkbox" id="hiv"
+                                                    tabindex="1" value="1" <?php echo switchvalue($attTPK['p_hiv']); ?>>
+                                                <label class="onoffswitch-label" for="hiv"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1327,8 +1566,12 @@ if ($ln > 0) {
                                         <td style="width:15mm;">
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="panas" value="0">
-                                                <input type="checkbox" name="panas" class="onoffswitch-checkbox" id="panas" tabindex="0" value="1" <?php echo switchvalue($attTPK['g_demam']); ?>>
-                                                <label class="onoffswitch-label" for="panas"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="panas" class="onoffswitch-checkbox"
+                                                    id="panas" tabindex="0" value="1"
+                                                    <?php echo switchvalue($attTPK['g_demam']); ?>>
+                                                <label class="onoffswitch-label" for="panas"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1337,8 +1580,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="batuk" value="0">
-                                                <input type="checkbox" name="batuk" class="onoffswitch-checkbox" id="batuk" tabindex="1" value="1" <?php echo switchvalue($attTPK['g_batuk']); ?>>
-                                                <label class="onoffswitch-label" for="batuk"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="batuk" class="onoffswitch-checkbox"
+                                                    id="batuk" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['g_batuk']); ?>>
+                                                <label class="onoffswitch-label" for="batuk"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1347,8 +1594,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="tenggorokan" value="0">
-                                                <input type="checkbox" name="tenggorokan" class="onoffswitch-checkbox" id="tenggorokan" tabindex="1" value="1" <?php echo switchvalue($attTPK['g_tenggrk']); ?>>
-                                                <label class="onoffswitch-label" for="tenggorokan"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="tenggorokan" class="onoffswitch-checkbox"
+                                                    id="tenggorokan" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['g_tenggrk']); ?>>
+                                                <label class="onoffswitch-label" for="tenggorokan"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1357,8 +1608,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="sesak" value="0">
-                                                <input type="checkbox" name="sesak" class="onoffswitch-checkbox" id="sesak" tabindex="1" value="1" <?php echo switchvalue($attTPK['g_sesak']); ?>>
-                                                <label class="onoffswitch-label" for="sesak"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="sesak" class="onoffswitch-checkbox"
+                                                    id="sesak" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['g_sesak']); ?>>
+                                                <label class="onoffswitch-label" for="sesak"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1367,8 +1622,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="pilek" value="0">
-                                                <input type="checkbox" name="pilek" class="onoffswitch-checkbox" id="pilek" tabindex="1" value="1" <?php echo switchvalue($attTPK['g_pilek']); ?>>
-                                                <label class="onoffswitch-label" for="pilek"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="pilek" class="onoffswitch-checkbox"
+                                                    id="pilek" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['g_pilek']); ?>>
+                                                <label class="onoffswitch-label" for="pilek"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1377,8 +1636,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="lesu" value="0">
-                                                <input type="checkbox" name="lesu" class="onoffswitch-checkbox" id="lesu" tabindex="1" value="1" <?php echo switchvalue($attTPK['g_lesu']); ?>>
-                                                <label class="onoffswitch-label" for="lesu"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="lesu" class="onoffswitch-checkbox"
+                                                    id="lesu" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['g_lesu']); ?>>
+                                                <label class="onoffswitch-label" for="lesu"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1387,8 +1650,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="kepala" value="0">
-                                                <input type="checkbox" name="kepala" class="onoffswitch-checkbox" id="kepala" tabindex="1" value="1" <?php echo switchvalue($attTPK['g_pusing']); ?>>
-                                                <label class="onoffswitch-label" for="kepala"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="kepala" class="onoffswitch-checkbox"
+                                                    id="kepala" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['g_pusing']); ?>>
+                                                <label class="onoffswitch-label" for="kepala"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1398,8 +1665,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="diare" value="0">
-                                                <input type="checkbox" name="diare" class="onoffswitch-checkbox" id="diare" tabindex="1" value="1" <?php echo switchvalue($attTPK['g_diare']); ?>>
-                                                <label class="onoffswitch-label" for="diare"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="diare" class="onoffswitch-checkbox"
+                                                    id="diare" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['g_diare']); ?>>
+                                                <label class="onoffswitch-label" for="diare"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1408,8 +1679,12 @@ if ($ln > 0) {
                                         <td>
                                             <div class="onoffswitch">
                                                 <input type="hidden" name="muntah" value="0">
-                                                <input type="checkbox" name="muntah" class="onoffswitch-checkbox" id="muntah" tabindex="1" value="1" <?php echo switchvalue($attTPK['g_mual']); ?>>
-                                                <label class="onoffswitch-label" for="muntah"><span class="onoffswitch-inner"></span><span class="onoffswitch-switch"></span></label>
+                                                <input type="checkbox" name="muntah" class="onoffswitch-checkbox"
+                                                    id="muntah" tabindex="1" value="1"
+                                                    <?php echo switchvalue($attTPK['g_mual']); ?>>
+                                                <label class="onoffswitch-label" for="muntah"><span
+                                                        class="onoffswitch-inner"></span><span
+                                                        class="onoffswitch-switch"></span></label>
                                             </div>
                                         </td>
                                     </tr>
@@ -1420,9 +1695,11 @@ if ($ln > 0) {
                     <div id="tab_riwayat" class="tab-pane fade">
                         <div class="col-xs-12">
                             <div class="table-responsive" id="shadow1">
-                                <table class="table table-striped table-hover table-bordered table-condensed" style="height:100%;">
+                                <table class="table table-striped table-hover table-bordered table-condensed"
+                                    style="height:100%;">
                                     <tr>
-                                        <td colspan="8" class="bg-danger" style="font-size:16px;font-weight:bold;">Catatan Donasi sebelumnya</td>
+                                        <td colspan="8" class="bg-danger" style="font-size:16px;font-weight:bold;">
+                                            Catatan Donasi sebelumnya</td>
                                     </tr>
                                     <tr class="text-center">
                                         <th>No</th>
@@ -1468,8 +1745,10 @@ if ($ln > 0) {
                             <tr>
                                 <td><label>Hasil Seleksi </label></td>
                                 <td>: </td>
-                                <td><label class="radio-inline"><input type="radio" checked value="0" name="h_medical" id="h_medicall" style="margin-top:1px;">Lolos</label>
-                                    <label class="radio-inline"><input type="radio" value="1" name="h_medical" id="h_medicalt" style="margin-top:1px;">Tidak Lolos</label>
+                                <td><label class="radio-inline"><input type="radio" checked value="0" name="h_medical"
+                                            id="h_medicall" style="margin-top:1px;">Lolos</label>
+                                    <label class="radio-inline"><input type="radio" value="1" name="h_medical"
+                                            id="h_medicalt" style="margin-top:1px;">Tidak Lolos</label>
                                 </td>
                             </tr>
                             <tr>
@@ -1487,7 +1766,7 @@ if ($ln > 0) {
                                         <option value="7">Riwayat Bepergian</option>
                                         <option value="8">Kondisi Medis Lain</option>
                                         <option value="9">Perilaku Beresiko</option>
-                                        <option value="10">Alasan Lain</option>
+                                        <!-- <option value="10">Alasan Lain</option> -->
                                         <option value="11">Titer Antibody Covid-19 Rendah</option>
                                         <option value="12">Hasil IMLTD Reaktif</option>
                                         <option value="13">Syarat Apheresis/TPK tidak terpenuhi</option>
@@ -1496,14 +1775,16 @@ if ($ln > 0) {
                             <tr>
                                 <td><label id="kembalitl">Kembali Tanggal</label></td>
                                 <td>: </td>
-                                <td><input type="text" name="kembalidonor" id="kembali" size="22" value=<?= $today ?>></td>
+                                <td><input type="text" name="kembalidonor" id="kembali" size="22" value=<?= $today ?>>
+                                </td>
                             </tr>
                         </table>
 
                     </div>
                     <div class="col-6 pull-right" style="margin-right:20px;">
                         <input type=submit name="simpan" value="Proses" class="btn btn-primary bayangan">
-                        <a href="<?= $lv0 ?>.php?module=hb&jenis=1" class="btn btn-danger bayangan" style="color: black;">Kembali</a>
+                        <a href="<?= $lv0 ?>.php?module=hb&jenis=1" class="btn btn-danger bayangan"
+                            style="color: black;">Kembali</a>
                     </div>
                 </div>
             </div>
@@ -1516,131 +1797,131 @@ if ($ln > 0) {
 </html>
 
 <script>
-    $(document).ready(function() {
-        $('#id_hb').select2();
+$(document).ready(function() {
+    $('#id_hb').select2();
+    document.getElementById("kembali").disabled = true;
+    document.getElementById("alasan").disabled = true;
+
+    document.getElementById('h_medicalt').addEventListener('click', () => {
+        document.getElementById("kembali").disabled = false;
+        document.getElementById("alasan").disabled = false;
+        document.getElementById("alasan").required = true;
+        document.getElementById("kembali").required = true;
+        document.getElementById("alasan").focus();
+    });
+
+    document.getElementById('h_medicall').addEventListener('click', () => {
         document.getElementById("kembali").disabled = true;
         document.getElementById("alasan").disabled = true;
-
-        document.getElementById('h_medicalt').addEventListener('click', () => {
-            document.getElementById("kembali").disabled = false;
-            document.getElementById("alasan").disabled = false;
-            document.getElementById("alasan").required = true;
-            document.getElementById("kembali").required = true;
-            document.getElementById("alasan").focus();
-        });
-
-        document.getElementById('h_medicall').addEventListener('click', () => {
-            document.getElementById("kembali").disabled = true;
-            document.getElementById("alasan").disabled = true;
-        });
-
     });
 
-    function konfirmasi() {
-        var tolak = $("input[name='h_medical']:checked").val();
-        if (tolak == "0") {
-            return confirm('Apakah data sudah benar?');
-        } else if (tolak == "1") {
-            return confirm('Hasil Seleksi Tidak Lolos?');
-        } else {
-            alert('Pilih Hasil Seleksi!');
-        }
+});
+
+function konfirmasi() {
+    var tolak = $("input[name='h_medical']:checked").val();
+    if (tolak == "0") {
+        return confirm('Apakah data sudah benar?');
+    } else if (tolak == "1") {
+        return confirm('Hasil Seleksi Tidak Lolos?');
+    } else {
+        alert('Pilih Hasil Seleksi!');
     }
+}
 </script>
 <script>
-    $(function() {
-        $("#kembali").datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            format: 'yyyy-mm-dd',
-            language: 'id'
-        });
+$(function() {
+    $("#kembali").datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd',
+        language: 'id'
     });
+});
 </script>
 
 <style>
-    .top-buffer {
-        margin-top: 20px;
-    }
+.top-buffer {
+    margin-top: 20px;
+}
 
-    a:link {
-        color: white;
-        background-color: transparent;
-        text-decoration: none;
-    }
+a:link {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
 
-    a:visited {
-        color: pink;
-        background-color: transparent;
-        text-decoration: none;
-    }
+a:visited {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+}
 
-    a:hover {
-        color: red;
-        background-color: transparent;
-        text-decoration: underline;
-    }
+a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+}
 
-    a:active {
-        color: yellow;
-        background-color: transparent;
-        text-decoration: underline;
-    }
+a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+}
 
-    .blink {
-        animation: blinker 1.7s linear infinite;
-        color: red;
-        font-size: 16px;
-        font-weight: bold;
-    }
+.blink {
+    animation: blinker 1.7s linear infinite;
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+}
 
-    @keyframes blinker {
-        50% {
-            opacity: 0;
-        }
+@keyframes blinker {
+    50% {
+        opacity: 0;
     }
+}
 </style>
 
 <!-- EDIT SHIN MENAMBAH SCRIPT UNTUK ONCHANGE HB METER -->
 <script type="text/javascript">
-    function hbmeter() {
-        let hbInput = document.getElementById("hb").value.trim();
-        const warning = document.getElementById("warning_hb");
+function hbmeter() {
+    let hbInput = document.getElementById("hb").value.trim();
+    const warning = document.getElementById("warning_hb");
 
-        // Ganti koma dengan titik agar bisa diparse
-        hbInput = hbInput.replace(",", ".");
+    // Ganti koma dengan titik agar bisa diparse
+    hbInput = hbInput.replace(",", ".");
 
-        const hb = parseFloat(hbInput);
+    const hb = parseFloat(hbInput);
 
-        let pesan = [];
-        let warna = "red";
+    let pesan = [];
+    let warna = "red";
 
-        // Abaikan jika kosong atau bukan angka
-        if (hbInput === "" || isNaN(hb)) {
-            warning.textContent = "";
-            return;
-        }
-
-        // Cek panjang hanya 1 digit
-        if (hbInput.length === 1) {
-            pesan.push(`? Nilai Hemoglobin (${hbInput}) hanya 1 digit. Tidak valid.`);
-            setCheckedValue(document.periksa.elements["h_medical"], "1");
-        }
-        // Validasi rentang normal
-        else if (hb < 12.5 || hb > 17.0) {
-            pesan.push(`?? Nilai Hemoglobin (${hb}) di luar batas normal 12.5 – 17.0 g/dL. Pendonor tidak lolos.`);
-            warna = "blue";
-            setCheckedValue(document.periksa.elements["h_medical"], "1");
-        } else {
-            // Lolos
-            warning.textContent = "";
-            setCheckedValue(document.periksa.elements["h_medical"], "0");
-            return;
-        }
-
-        // Tampilkan pesan warning
-        warning.innerHTML = pesan.join("<br>");
-        warning.style.color = warna;
+    // Abaikan jika kosong atau bukan angka
+    if (hbInput === "" || isNaN(hb)) {
+        warning.textContent = "";
+        return;
     }
+
+    // Cek panjang hanya 1 digit
+    if (hbInput.length === 1) {
+        pesan.push(`? Nilai Hemoglobin (${hbInput}) hanya 1 digit. Tidak valid.`);
+        setCheckedValue(document.periksa.elements["h_medical"], "1");
+    }
+    // Validasi rentang normal
+    else if (hb < 12.5 || hb > 17.0) {
+        pesan.push(`?? Nilai Hemoglobin (${hb}) di luar batas normal 12.5 ï¿½ 17.0 g/dL. Pendonor tidak lolos.`);
+        warna = "blue";
+        setCheckedValue(document.periksa.elements["h_medical"], "1");
+    } else {
+        // Lolos
+        warning.textContent = "";
+        setCheckedValue(document.periksa.elements["h_medical"], "0");
+        return;
+    }
+
+    // Tampilkan pesan warning
+    warning.innerHTML = pesan.join("<br>");
+    warning.style.color = warna;
+}
 </script>
 <!-- END EDIT -->

@@ -200,6 +200,24 @@ if (($_SESSION['leveluser']) == 'konfirmasi') {
             } elseif ($_GET['module'] == 'abs_rekapmanual') {
                 include "abs/abs_manualrekap.php";
             }
+
+            // Pemusnahan
+            elseif ($_GET['module'] == 'komponen_musnah') {
+                include "laborat_musnah.php";
+            } elseif ($_GET['module'] == 'musnah') {
+                include "musnah/musnah24.php";
+            } elseif ($_GET['module'] == 'musnahdelrow') {
+                include "musnah/musnah_proses.php";
+            } elseif ($_GET['module'] == 'musnahbatal') {
+                include "musnah/musnah_proses.php";
+            } elseif ($_GET['module'] == 'musnahlist') {
+                include "musnah/musnah_list.php";
+            } elseif ($_GET['module'] == 'musnah_rpt_view') {
+                include "musnah/musnah_view.php";
+            } elseif ($_GET['module'] == 'musnah_cetakberita') {
+                include "musnah/musnah_cetakberita.php";
+            } elseif ($_GET['module'] == 'musnah_serahterima') {
+                include "musnah/musnah_serah.php";
+            }
     }
 }
-?>

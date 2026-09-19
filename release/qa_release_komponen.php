@@ -66,7 +66,38 @@ $cekInput = mysql_fetch_assoc(mysql_query($q));
 
         $jenis = mysql_fetch_assoc(mysql_query("SELECT jenis FROM stokkantong where noKantong ='$nkt'"));
 
-        $tampilkanBeku = (strtolower($lastChar) != 'a') || ($jenis['jenis'] == 1);
+        // ====================== ATURAN TAMPILAN KOLOM PEMUTARAN/PEMISAHAN/PEMBEKUAN ======================
+        // 1. Jika jenis = 1              -> hanya tampilkan waktu Pembekuan
+        // 2. Jika akhiran kantong = 'A'  -> hanya tampilkan waktu Pemutaran & Pemisahan
+        // 3. Jika akhiran kantong = 'B':
+        //      - Produk LP               -> hanya tampilkan waktu Pemutaran & Pemisahan
+        //      - Produk selain LP (FFP, FP24, dll) -> tampilkan Pemutaran, Pemisahan, DAN Pembekuan
+        $komponenProduk = strtoupper(trim($komp['komponen']));
+
+        if ($jenis['jenis'] == 1) {
+            $showPutarPisah = false;
+            $showBeku       = true;
+        } elseif (strtolower($lastChar) == 'a') {
+            $showPutarPisah = true;
+            $showBeku       = false;
+        } elseif (strtolower($lastChar) == 'b') {
+            if ($komponenProduk == 'LP') {
+                $showPutarPisah = true;
+                $showBeku       = false;
+            } else {
+                // FFP, FP24, dan produk lain dari kantong B
+                $showPutarPisah = true;
+                $showBeku       = true;
+            }
+        } else {
+            // fallback ke perilaku lama jika akhiran bukan A/B
+            $showPutarPisah = ($jenis['jenis'] != 1);
+            $showBeku       = !$showPutarPisah;
+        }
+
+        // Dipakai untuk menghitung selisih waktu total pengolahan:
+        // jika waktu beku ditampilkan, hitung sampai selesai beku, kalau tidak sampai selesai pisah
+        $tampilkanBeku = $showBeku;
 
         // Hitung selisih
         $selisih = $tampilkanBeku
@@ -82,33 +113,33 @@ $cekInput = mysql_fetch_assoc(mysql_query($q));
 
         $petugas = isset($nmLengkap['nama_lengkap']) ? $nmLengkap['nama_lengkap'] : $komp['user'];
     ?>
-        <tr style="font-size:16px; color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight'"
-            onMouseOut="this.className='normal'">
-            <? $no++; ?>
-            <td align="right"><?php echo $no; ?></td>
-            <td align="left"><?php echo $komp['notrans']; ?></td>
-            <td><?= $nkt ?></td>
-            <td><?= $tglKomponen; ?></td>
-            <td><?= $HasilSelisih ?></td>
-            <td><?= $komp['komponen']; ?></td>
-            <td><?= $komp['metode']; ?></td>
-            <td><?= $tampilkanBeku ? '-' : $putar; ?></td>
-            <td><?= $tampilkanBeku ? '-' : date('H:i', strtotime($komp['mulaiPutar'])) ?></td>
-            <td><?= $tampilkanBeku ? '-' : date('H:i', strtotime($komp['selesaiPutar'])) ?></td>
-            <td><?= $tampilkanBeku ? '-' : $pisah; ?></td>
-            <td><?= $tampilkanBeku ? '-' : date('H:i', strtotime($komp['mulaiPisah'])) ?></td>
-            <td><?= $tampilkanBeku ? '-' : date('H:i', strtotime($komp['selesaiPisah'])) ?></td>
-            <td><?= $tampilkanBeku ? $beku : '-'; ?></td>
-            <td><?= $tampilkanBeku ? date('H:i', strtotime($komp['mulaiBeku'])) : '-' ?></td>
-            <td><?= $tampilkanBeku ? date('H:i', strtotime($komp['selesaiBeku'])) : '-' ?>
-            </td>
-            <td><?= $tampilkanBeku ? $komp['bsuhu'] . '&deg;C' : '-'; ?></td>
-            <td><?= $petugas; ?></td>
-        </tr>
+    <tr style="font-size:16px; color:#000000; font-family:Verdana;" onMouseOver="this.className='highlight'"
+        onMouseOut="this.className='normal'">
+        <? $no++; ?>
+        <td align="right"><?php echo $no; ?></td>
+        <td align="left"><?php echo $komp['notrans']; ?></td>
+        <td><?= $nkt ?></td>
+        <td><?= $tglKomponen; ?></td>
+        <td><?= $HasilSelisih ?></td>
+        <td><?= $komp['komponen']; ?></td>
+        <td><?= $komp['metode']; ?></td>
+        <td><?= $showPutarPisah ? $putar : '-'; ?></td>
+        <td><?= $showPutarPisah ? date('H:i', strtotime($komp['mulaiPutar'])) : '-' ?></td>
+        <td><?= $showPutarPisah ? date('H:i', strtotime($komp['selesaiPutar'])) : '-' ?></td>
+        <td><?= $showPutarPisah ? $pisah : '-'; ?></td>
+        <td><?= $showPutarPisah ? date('H:i', strtotime($komp['mulaiPisah'])) : '-' ?></td>
+        <td><?= $showPutarPisah ? date('H:i', strtotime($komp['selesaiPisah'])) : '-' ?></td>
+        <td><?= $showBeku ? $beku : '-'; ?></td>
+        <td><?= $showBeku ? date('H:i', strtotime($komp['mulaiBeku'])) : '-' ?></td>
+        <td><?= $showBeku ? date('H:i', strtotime($komp['selesaiBeku'])) : '-' ?>
+        </td>
+        <td><?= $showBeku ? $komp['bsuhu'] . '&deg;C' : '-'; ?></td>
+        <td><?= $petugas; ?></td>
+    </tr>
     <?php }
     if ($no == "0") {
     ?><tr style="color:#000000;" onMouseOver="this.className='highlight';" onMouseOut="this.className='normal';">
-            <td colspan="23" class=input align="center">TIDAK ADA DATA PENGOLAHAN DARAH</td>
-        </tr>
+        <td colspan="23" class=input align="center">TIDAK ADA DATA PENGOLAHAN DARAH</td>
+    </tr>
     <?php } ?>
 </table>

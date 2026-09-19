@@ -65,27 +65,20 @@ if (isset($_POST['nomorkantong'])) {
     dst_stat_receive1 !='0' AND
     dst_date_receive1 IS NOT NULL");
 
-    //Theo 210121 Ubah berat menjadi vol (parameter tb master_kantong)
+    // Theo 210121 Ubah berat menjadi vol (parameter tb master_kantong)
+    // REVISI: field 'beratkantong' sekarang diisi otomatis oleh
+    // ambil_volume.php (fetch dari timbang_darah) yang SUDAH mengembalikan
+    // volume darah dalam mL (bukan lagi berat kotor kantong dalam gram).
+    // Karena itu $bk TIDAK BOLEH dikonversi ulang di sini -- jika dikonversi
+    // ulang akan terjadi double-conversion (mis. 336 mL -> tersimpan 218 mL).
+    // Konversi berat->volume kini hanya dilakukan sekali, di ambil_volume.php.
 
-    $cariktg    = mysql_fetch_assoc(mysql_query("SELECT merk,jenis from stokkantong where noKantong='$nknk' limit 1"));
-    $merk        = $cariktg['merk'];
-    $jenis        = $cariktg['jenis'];
-    $msktg        = mysql_fetch_assoc(mysql_query("SELECT (`berat_ku`+`berat_s1`+`berat_s2`+`berat_s3`+`berat_s4`+`berat_s5`+`berat_s6`+`berat_s7`+`antikoagulant`) as bkantong FROM `master_kantong` WHERE `merk`='$merk' AND `jenis`='$jenis' limit 1"));
-    $btemp        = $msktg['bkantong'];
-    $bktg        = round($btemp, 0);
-    $volcc        = ($bk - $bktg) / 1.055;
-    $volktg        = round($volcc, 0);
-    $stupd        = mysql_query("UPDATE stokkantong set volume='$volktg' where noKantong='$nknk'");
+    $volktg = round($bk, 0);
+    $stupd  = mysql_query("UPDATE stokkantong set volume='$volktg' where noKantong='$nknk'");
     //********************************
 
     if (mysql_num_rows($supd) == 1) {
 
-
-        echo "$merk<br>";
-        echo "$jenis<br>";
-        echo "$btemp<br>";
-        echo "$bktg<br>";
-        echo "$volcc<br>";
         echo "$volktg<br>";
         $updatedst = mysql_query("UPDATE
         serahterima_detail
@@ -150,104 +143,131 @@ if (isset($_POST['nomorkantong'])) {
     <script type="text/javascript" src="js/jquery-ui-1.8.9.custom.min.js"></script>
     <link type="text/css" href="css/blitzer/suwena.css" rel="stylesheet" />
     <style>
-        .awesomeText {
-            color: #000;
-            font-size: 100%;
-        }
+    .awesomeText {
+        color: #000;
+        font-size: 100%;
+    }
 
-        #serahterima {
-            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            border-collapse: collapse;
-        }
+    #serahterima {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        border-collapse: collapse;
+    }
 
-        #serahterima td,
-        #serahterima th {
-            border: 1px solid #ddd;
-            padding: 3px;
-        }
+    #serahterima td,
+    #serahterima th {
+        border: 1px solid #ddd;
+        padding: 3px;
+    }
 
-        #serahterima tr:nth-child(even) {
-            background-color: #ffe6e6;
-        }
+    #serahterima tr:nth-child(even) {
+        background-color: #ffe6e6;
+    }
 
-        #serahterima tr:hover {
-            background-color: #ddd;
-        }
+    #serahterima tr:hover {
+        background-color: #ddd;
+    }
 
-        #serahterima th {
-            padding-top: 2px;
-            padding-bottom: 2px;
-            text-align: left;
-            font-weight: lighter;
-            background-color: #ff9999;
-            color: #000000;
-        }
+    #serahterima th {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: left;
+        font-weight: lighter;
+        background-color: #ff9999;
+        color: #000000;
+    }
 
-        #serahterima input {
-            padding-top: 2px;
-            padding-bottom: 2px;
-            text-align: left;
-            background-color: lightyellow;
-            color: #000000;
-        }
+    #serahterima input {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: left;
+        background-color: lightyellow;
+        color: #000000;
+    }
 
-        #entrybox {
-            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            border-collapse: collapse;
-        }
+    #entrybox {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        border-collapse: collapse;
+    }
 
-        #entrybox td,
-        #entrybox th {
-            border: 1px solid #ddd;
-            background-color: #ffe6e6;
-            padding: 3px;
-        }
+    #entrybox td,
+    #entrybox th {
+        border: 1px solid #ddd;
+        background-color: #ffe6e6;
+        padding: 3px;
+    }
 
-        #entrybox th {
-            padding-top: 2px;
-            padding-bottom: 2px;
-            text-align: left;
-            font-weight: lighter;
-            background-color: #ffe6e6;
-            color: #000000;
-        }
+    #entrybox th {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: left;
+        font-weight: lighter;
+        background-color: #ffe6e6;
+        color: #000000;
+    }
 
-        #entrybox input {
-            padding-top: 2px;
-            padding-bottom: 2px;
-            text-align: left;
-            font-weight: bold;
-            background-color: #e6ffe6;
-            color: #000000;
-        }
+    #entrybox input {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: left;
+        font-weight: bold;
+        background-color: #e6ffe6;
+        color: #000000;
+    }
     </style>
     <script language="javascript">
-        function setFocus() {
-            document.serahterima.nomorkantong.focus();
-        }
+    function setFocus() {
+        document.serahterima.nomorkantong.focus();
+    }
 
 
-        /***********************************************
-         * Disable "Enter" key in Form script- By Nurul Fadilah(nurul@REMOVETHISvolmedia.com)
-         * This notice must stay intact for use
-         * Visit http://www.dynamicdrive.com/ for full source code
-         ***********************************************/
+    /***********************************************
+     * Disable "Enter" key in Form script- By Nurul Fadilah(nurul@REMOVETHISvolmedia.com)
+     * This notice must stay intact for use
+     * Visit http://www.dynamicdrive.com/ for full source code
+     ***********************************************/
 
-        function handleEnter(field, event) {
-            var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
-            if (keyCode == 13) {
-                var i;
-                for (i = 0; i < field.form.elements.length; i++)
-                    if (field == field.form.elements[i])
-                        break;
-                i = (i + 1) % field.form.elements.length;
-                field.form.elements[i].focus();
-                return false;
-            } else
-                return true;
-        }
+    function handleEnter(field, event) {
+        var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+        if (keyCode == 13) {
+            var i;
+            for (i = 0; i < field.form.elements.length; i++)
+                if (field == field.form.elements[i])
+                    break;
+            i = (i + 1) % field.form.elements.length;
+            field.form.elements[i].focus();
+            return false;
+        } else
+            return true;
+    }
+
+    // Ambil volume kantong otomatis dari server (stokkantong.volumeasal
+    // atau hitung dari timbang_darah.berat_ukur), dipanggil saat user
+    // selesai mengetik Nomor Kantong.
+    function ambilVolumeOtomatis() {
+        var nokantong = document.getElementById('nomorkantong').value.trim();
+        var elVolume = document.getElementById('beratkantong');
+        var elInfo = document.getElementById('info_volume');
+        if (nokantong === '') return;
+
+        fetch('ambil_volume.php?nokantong=' + encodeURIComponent(nokantong))
+            .then(function(res) {
+                return res.json();
+            })
+            .then(function(data) {
+                if (data.volume !== '' && data.volume !== null) {
+                    elVolume.value = data.volume;
+                    if (elInfo) elInfo.textContent = 'Sumber: ' + data.sumber;
+                } else {
+                    if (elInfo) elInfo.textContent = data.pesan || 'Volume tidak ditemukan, isi manual';
+                }
+            })
+            .catch(function(err) {
+                console.error(err);
+                if (elInfo) elInfo.textContent = 'Gagal mengambil volume, isi manual';
+            });
+    }
     </script>
 
 <body onLoad=setFocus();>
@@ -271,8 +291,12 @@ if (isset($_POST['nomorkantong'])) {
         ?>
         <table class="list" border="0" cellpadding="2" cellspacing="2" width="100%" style="border-collapse:collapse">
             <tr style="font-family: 'trebuchet ms', Impact, Arial, Helvetica, sans-serif;font-size: 10px;">
-                <td style="text-align: left"><? echo $utd; ?></td>
-                <td style="text-align: right"><? echo $nodokumen; ?></td>
+                <td style="text-align: left">
+                    <? echo $utd; ?>
+                </td>
+                <td style="text-align: right">
+                    <? echo $nodokumen; ?>
+                </td>
             </tr>
             <tr style="font-family: 'trebuchet ms', Impact, Arial, Helvetica, sans-serif;font-size: 11px;">
                 <td style="text-align: left">Formulir Serah Terima Darah Komponen</td>
@@ -281,13 +305,17 @@ if (isset($_POST['nomorkantong'])) {
         </table>
         <hr>
         <form name="serahterima" method="post">
-            <table id="serahterima" class="list" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse">
+            <table id="serahterima" class="list" border="0" cellpadding="0" cellspacing="0" width="100%"
+                style="border-collapse:collapse">
                 <tr>
-                    <td style="height: 40px;font-size: 16px;font-weight: bold; text-align: center; font-family: 'trebuchet ms', Impact, Arial, Helvetica, sans-serif;" colspan="2">SERAH TERIMA DARAH</td>
+                    <td style="height: 40px;font-size: 16px;font-weight: bold; text-align: center; font-family: 'trebuchet ms', Impact, Arial, Helvetica, sans-serif;"
+                        colspan="2">SERAH TERIMA DARAH</td>
                 </tr>
-                <tr style="font-size:12px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                <tr
+                    style="font-size:12px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                     <td style="vertical-align: top; width=50%;">
-                        <table id="serahterima" class="list" border=1 cellpadding="2" cellspacing="2" width="100%" style="border-collapse:collapse">
+                        <table id="serahterima" class="list" border=1 cellpadding="2" cellspacing="2" width="100%"
+                            style="border-collapse:collapse">
                             <tr>
                                 <td style="text-align: left">Tanggal transaksi</td>
                                 <td><?php echo $sql_h1['hst_tgl']; ?></td>
@@ -307,7 +335,8 @@ if (isset($_POST['nomorkantong'])) {
                         </table>
                     </td>
                     <td style="vertical-align: top;width=50%">
-                        <table class="list" border=1 cellpadding="2" cellspacing="2" width="100%" style="border-collapse:collapse">
+                        <table class="list" border=1 cellpadding="2" cellspacing="2" width="100%"
+                            style="border-collapse:collapse">
                             <tr>
                                 <td style="text-align: left">Asal Kantong Darah</td>
                                 <td><?php echo $sql_h1['hst_asal']; ?></td>
@@ -329,7 +358,8 @@ if (isset($_POST['nomorkantong'])) {
                 </tr>
             </table>
             <br>
-            <table id="entrybox" style="border-collapse: collapse;border: 2px solid #ff0000;width: 100%; box-shadow: 1px 2px 2px #800000;">
+            <table id="entrybox"
+                style="border-collapse: collapse;border: 2px solid #ff0000;width: 100%; box-shadow: 1px 2px 2px #800000;">
                 <tr>
                     <td>Status serah terima</td>
                     <td><select name="sr_status" id="sr_status" onkeypress="return handleEnter(this, event)">
@@ -337,10 +367,15 @@ if (isset($_POST['nomorkantong'])) {
                             <option value="2">Tidak Sah</option>
                         </select></td>
                     <td>Masukkan Nomor Kantong</td>
-                    <td><input type=text name=nomorkantong id=nomorkantong autofocus onkeypress="return handleEnter(this, event)"></td>
+                    <td><input type=text name=nomorkantong id=nomorkantong autofocus
+                            onkeypress="return handleEnter(this, event)" onblur="ambilVolumeOtomatis()"></td>
                     <td>Volume Kantong (ml)</td>
-                    <td><input type=text name=beratkantong id=beratkantong value="350" onkeypress="return handleEnter(this, event)"></td>
-                    <td><input type="submit" name="submit1" value="Ok" class="swn_button_blue" style="color: #ffffff"></td>
+                    <td><input type=text name=beratkantong id=beratkantong value="" placeholder="350"
+                            onkeypress="return handleEnter(this, event)">
+                        <br><small id="info_volume" style="color:#555;"></small>
+                    </td>
+                    <td><input type="submit" name="submit1" value="Ok" class="swn_button_blue" style="color: #ffffff">
+                    </td>
                 </tr>
                 <tr>
                     <td style="height: 30px">Status Proses</td>
@@ -381,8 +416,10 @@ if (isset($_POST['nomorkantong'])) {
             $sql_d1 = mysql_query($sql_d);
             ?>
             <table class="list" border=1 cellpadding="2" cellspacing="2" width="100%" style="border-collapse:collapse">
-                <thead style="background-color:#DCDCDC;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
-                    <tr style="background-color: #FF9999;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                <thead
+                    style="background-color:#DCDCDC;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                    <tr
+                        style="background-color: #FF9999;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                         <th style="text-align: center; height: 40px">No</th>
                         <th style="text-align: center; height: 40px">Nomor Kantong</th>
                         <th style="text-align: center; height: 40px">Nomor Aftap</th>
@@ -404,31 +441,33 @@ if (isset($_POST['nomorkantong'])) {
                     while ($sgd = mysql_fetch_assoc($sql_d1)) {
                         $no++;
                     ?>
-                        <tr style="background-color: #FFE6E6; font-size:12px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
-                            <td style="text-align: right;"> <?php echo $no . '.'; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_nokantong']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_no_aftap']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_jenisktg']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_lama_aftap']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_merk']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_statusktg']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_ptgaftap']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_golda']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_rh']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_dsdp']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sgd['dst_stat_receive1']; ?> </td>
-                            <?php
+                    <tr
+                        style="background-color: #FFE6E6; font-size:12px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                        <td style="text-align: right;"> <?php echo $no . '.'; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_nokantong']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_no_aftap']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_jenisktg']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_lama_aftap']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_merk']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_statusktg']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_ptgaftap']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_golda']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_rh']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_dsdp']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sgd['dst_stat_receive1']; ?> </td>
+                        <?php
                             if (empty($sgd['dst_receive1']) and (empty($sgd['dst_date_receive1']) or $sgd['dst_date_receive1'] == '0000-00-00 00:00:00')) {
                             ?>
-                                <td style="text-align: center;"><input type="checkbox" onclick="return false" readonly></td>
-                            <?php
+                        <td style="text-align: center;"><input type="checkbox" onclick="return false" readonly></td>
+                        <?php
                             } else {
                             ?>
-                                <td style="text-align: center;"><input type="checkbox" onclick="return false" checked readonly></td>
-                            <?php
+                        <td style="text-align: center;"><input type="checkbox" onclick="return false" checked readonly>
+                        </td>
+                        <?php
                             }
                             ?>
-                        </tr>
+                    </tr>
                     <?php
                     }
                     ?>
@@ -450,15 +489,18 @@ if (isset($_POST['nomorkantong'])) {
             $no = 0;
             ?>
             <table class="list" border=1 cellpadding="2" cellspacing="2" width="50%" style="border-collapse:collapse">
-                <thead style="background-color:#DCDCDC;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
-                    <tr style="background-color: #FF9999;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                <thead
+                    style="background-color:#DCDCDC;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                    <tr
+                        style="background-color: #FF9999;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                         <th style="text-align: center;" rowspan="2">No</th>
                         <th style="text-align: center;" rowspan="2">Jenis Kantong</th>
                         <th style="text-align: center;" colspan="5">Rhesus Positif</th>
                         <th style="text-align: center;" colspan="5">Rhesue Negatif</th>
                         <th style="text-align: center;" rowspan="2">Jml</th>
                     </tr>
-                    <tr style="background-color: #FF9999;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                    <tr
+                        style="background-color: #FF9999;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                         <th style="text-align: center;">A</th>
                         <th style="text-align: center;">B</th>
                         <th style="text-align: center;">O</th>
@@ -521,21 +563,22 @@ if (isset($_POST['nomorkantong'])) {
                         }
 
                     ?>
-                        <tr style="background-color: #FFE6E6; font-size:12px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
-                            <td style="text-align: right;"> <?php echo $no . '.'; ?> </td>
-                            <td style="text-align: left;"> <?php echo $jenis; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sq_k1['Apos']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sq_k1['Bpos']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sq_k1['Opos'] ?> </td>
-                            <td style="text-align: center;"> <?php echo $sq_k1['ABpos']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $jmlrhp; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sq_k1['Aneg']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sq_k1['Bneg']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $sq_k1['Oneg'] ?> </td>
-                            <td style="text-align: center;"> <?php echo $sq_k1['ABneg']; ?> </td>
-                            <td style="text-align: center;"> <?php echo $jmlrhn; ?> </td>
-                            <td style="text-align: center;"> <?php echo $jmlrow; ?> </td>
-                        </tr>
+                    <tr
+                        style="background-color: #FFE6E6; font-size:12px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                        <td style="text-align: right;"> <?php echo $no . '.'; ?> </td>
+                        <td style="text-align: left;"> <?php echo $jenis; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sq_k1['Apos']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sq_k1['Bpos']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sq_k1['Opos'] ?> </td>
+                        <td style="text-align: center;"> <?php echo $sq_k1['ABpos']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $jmlrhp; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sq_k1['Aneg']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sq_k1['Bneg']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $sq_k1['Oneg'] ?> </td>
+                        <td style="text-align: center;"> <?php echo $sq_k1['ABneg']; ?> </td>
+                        <td style="text-align: center;"> <?php echo $jmlrhn; ?> </td>
+                        <td style="text-align: center;"> <?php echo $jmlrow; ?> </td>
+                    </tr>
                     <?
                     }
                     $jmlrhp = $jmlap + $jmlbp + $jmlop + $jmlabp;
@@ -543,19 +586,42 @@ if (isset($_POST['nomorkantong'])) {
                     $jmlrow = $jmlrhp + $jmlrhn;
                     ?>
 
-                    <tr style="font-size:12px; color:#000000;background-color: #FF9999; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                    <tr
+                        style="font-size:12px; color:#000000;background-color: #FF9999; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                         <td colspan="2" style="text-align: center">Jumlah</td>
-                        <td style="text-align: center"> <? echo $jmlap; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlbp; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlop; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlabp; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlrhp; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlan; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlbn; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlon; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlabn; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlrhn; ?> </td>
-                        <td style="text-align: center"> <? echo $jmlrow; ?> </td>
+                        <td style="text-align: center">
+                            <? echo $jmlap; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlbp; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlop; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlabp; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlrhp; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlan; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlbn; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlon; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlabn; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlrhn; ?>
+                        </td>
+                        <td style="text-align: center">
+                            <? echo $jmlrow; ?>
+                        </td>
                     </tr>
 
                 </tbody>
@@ -572,8 +638,8 @@ if (isset($_POST['nomorkantong'])) {
             ?>
             <br>
             <table class="list" border=1 cellpadding="5" cellspacing="5" style="border-collapse:collapse" width="100%">
-                <thead
-                    <tr style="background-color: #FF9999;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                <thead <tr
+                    style="background-color: #FF9999;font-wight:bold; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                     <th style="text-align: center;height: 30px;"></th>
                     <th style="text-align: center;height: 30px;" nowrap>Nama Petugas</th>
                     <th style="text-align: center;height: 30px;" nowrap>Tanda Tangan</th>
@@ -581,13 +647,15 @@ if (isset($_POST['nomorkantong'])) {
                     <th style="text-align: center;height: 30px;">Catatan</th>
                     </tr>
                 </thead>
-                <tr style="background-color: #FFE6E6; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                <tr
+                    style="background-color: #FFE6E6; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                     <td nowrap>Petugas Pencatat</td>
                     <td nowrap><?php echo $pencatat; ?></td>
                     <td></td>
                     <td></td>
                     <td rowspan="4" style="vertical-align:top;">
-                        <ol style="font-size:10px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                        <ol
+                            style="font-size:10px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                             <li>Jenis Donor = DS: Donor Sukarela; DP : Donor Pengganti</li>
                             <li>Donor UL/BR (Donor Ulang/Donor Baru) = UL: Donor Ulang; BR : Donor Baru</li>
                             <li>Jenis Kel (Kelamin) = LK: Laki-Laki; PR : Perempuan</li>
@@ -596,19 +664,22 @@ if (isset($_POST['nomorkantong'])) {
                     </td>
 
                 </tr>
-                <tr style="background-color: #FFE6E6; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                <tr
+                    style="background-color: #FFE6E6; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                     <td nowrap>Petugas Pengirim</td>
                     <td nowrap><?php echo $pengirim; ?></td>
                     <td></td>
                     <td></td>
                 </tr>
-                <tr style="background-color: #FFE6E6; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                <tr
+                    style="background-color: #FFE6E6; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                     <td nowrap>Petugas Penerima Bag Komponen</td>
                     <td nowrap><?php echo $penerima; ?></td>
                     <td></td>
                     <td></td>
                 </tr>
-                <tr style="background-color: #FFE6E6; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
+                <tr
+                    style="background-color: #FFE6E6; font-size:14px; color:#000000; font-family:'trebuchet ms', Impact, Arial, Helvetica, sans-serif;">
                     <td nowrap>Petugas Penerima Bag IMLTD</td>
                     <td nowrap><?php echo $sql_h1['hst_penerima2']; ?></td>
                     <td></td>

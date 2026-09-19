@@ -1,3 +1,30 @@
+29-07-2026|profile/grafik_pendonor.php -> menambahkan print dan download
+29-07-2026|profile/grafik_donasi.php -> menambahkan print dan download
+29-07-2026|profile/grafik_trend_donasi.php -> menambahkan print dan download
+29-07-2026|profile/grafik_distribusi.php -> menambahkan print dan download
+29-07-2026|profile/grafik_pengujian.php -> menambahkan print dan download
+29-07-2026|profile/grafik_komponen.php -> menambahkan print dan download
+29-07-2026|pimpinan_laporan.php -> mengganti menu pada laporan manajemen pimpinan
+29-07-2026|pmipimpinan.php -> decrypt code untuk level pimpinan
+28-07-2026|musnah/musnah_cetakberita.php -> update alasan pemusnahan dan berita acara pemusnahan
+28-07-2026|images/master_alasan_pemusnahan.png -> tambah gambar master alasan pemusnahan
+28-07-2026|musnah/master_alasan_musnah.php -> tambah menu master alasan pemusnahan
+28-07-2026|musnah/musnah_view.php -> update alasan pemusnahan dan berita acara pemusnahan
+28-07-2026|musnah/musnah_serah.php -> ambil dan tampilkan data berat total transaksi
+28-07-2026|musnah/musnah_rincian.php -> update filter alasan pemusnahan, dan update link pada list transaksi agar menjadi unduhan jika proses transaksi sudah dikerjakan
+28-07-2026|musnah/musnah_proses.php -> Fixcode penghapus list data inputan pemusnahan pada IMLTD
+28-07-2026|musnah/musnah_list.php -> hide transaksi yang isi produknya 0, dan update filternya
+28-07-2026|musnah/musnah24.php -> Fixcode input pemusnahan IMLTD dan update pilihan alasan pemusnahan
+28-07-2026|pmiadmin.php -> menambahkan route menu master alasan pemusnahan
+28-07-2026|admin_utility.php -> tambah menu untuk master alasan pemusnahan
+28-07-2026|DB: alasan_musnah.sql -> penambahan tabel untuk alasan pemusnahan
+22-07-2026|serahterima/sr_komponen.php -> perbaikan rumus volume
+15-07-2026|ambil_volume.php -> untuk ambil berat yang dikonversi ke mL untuk serah terima komponen
+15-07-2026|serahterima/sr_komponen.php -> update ambil hasil timbangan darah konversi dari gram ke mL
+29-06-2026|modul/pengolahan/pengolahan_list_rekap.php -> menambahkan rekap volume komponen
+06-07-2026|release/qa_release_komponen.php -> perbaiki tampilan pada rilis tab pengolahan komponen
+09-07-2026|serahterima/sr_aftap_komponen_print_ktg.php -> hapus order by ASC jenis kantong dan golongan darah
+02-07-2026|release/qa_release_inputkantong.php -> perbaiki pesan jika kantong tidak ditemukan
 18-06-2026|modul/rekap_transaksi_instansi.php -> tambah file untuk rekap donor instansi
 18-06-2026|p2d2s_rekap.php -> update untuk modul rekap donor instansi
 18-06-2026|pmip2d2s.php -> update untuk modul rekap donor instansi

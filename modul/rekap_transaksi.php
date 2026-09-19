@@ -11,260 +11,202 @@
 
 <h1 class="table">Rekap Transaksi Donor Darah MOBIL UNIT</h1>
 <form name="dinstansi" method="POST" action="<? echo $PHPSELF ?>">
-      <table class="form" cellspacing="0" cellpadding="0">
-            <tr>
-                  <td>Bulan Transaksi : </td>
-                  <td>
-                        <input class=input name="waktu" id="datepicker" type=text size=10 autocomplete=off> Sampai
-                        <input class=input name="waktu1" id="datepicker1" type=text size=10 autocomplete=off>
-                  </td>
-            </tr>
-      </table>
-      <input type=submit name=submit value="Search">
+    <table class="form" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>Bulan Transaksi : </td>
+            <td>
+                <input class=input name="waktu" id="datepicker" type=text size=10 autocomplete=off> Sampai
+                <input class=input name="waktu1" id="datepicker1" type=text size=10 autocomplete=off>
+            </td>
+        </tr>
+    </table>
+    <input type=submit name=submit value="Search">
 </form>
-<? if (isset($_POST[submit])) {
-      $perbln = substr($_POST[waktu], 5, 2);
-      $pertgl = substr($_POST[waktu], 8, 2);
-      $perthn = substr($_POST[waktu], 0, 4);
+<? if (isset($_POST['submit'])) {
+      $waktu = isset($_POST['waktu']) ? trim($_POST['waktu']) : '';
+      $waktu1 = isset($_POST['waktu1']) ? trim($_POST['waktu1']) : '';
 
-      $perbln1 = substr($_POST[waktu1], 5, 2);
-      $pertgl1 = substr($_POST[waktu1], 8, 2);
-      $perthn1 = substr($_POST[waktu1], 0, 4);
+      $perbln = substr($waktu, 5, 2);
+      $pertgl = substr($waktu, 8, 2);
+      $perthn = substr($waktu, 0, 4);
+
+      $perbln1 = substr($waktu1, 5, 2);
+      $pertgl1 = substr($waktu1, 8, 2);
+      $perthn1 = substr($waktu1, 0, 4);
+
+      $waktu_sql = mysql_real_escape_string($waktu);
+      $waktu1_sql = mysql_real_escape_string($waktu1);
 ?>
-      <h1 class="table">Periode <?= $pertgl ?> - <?= $perbln ?> - <?= $perthn ?> sampai dengan
-            <?= $pertgl1 ?> - <?= $perbln1 ?> - <?= $perthn1 ?></h1>
-      <table class=form border=1 cellpadding=0 cellspacing=0>
-            <tr>
-                  <td rowspan='4' align=center>No</td>
-                  <td rowspan='4' align="center">TGL DONOR</td>
-                  <td rowspan='4' align="center">NAMA INSTANSI</td>
-                  <td colspan='10' align=center>DONOR BERHASIL</td>
-                  <td colspan='10' align=center>DONOR GAGAL</td>
-                  <td colspan='10' align=center>DONOR BATAL</td>
-                  <td rowspan='4' align=center>JML <br>PENDONOR</td>
-            </tr>
-            <tr>
-                  <td colspan='7'>DARAH</td>
-                  <td colspan='2' rowspan='2' align="center">JK</td>
-                  <td rowspan='3' align="center">JML</td>
+<h1 class="table">Periode <?= $pertgl ?> - <?= $perbln ?> - <?= $perthn ?> sampai dengan
+    <?= $pertgl1 ?> - <?= $perbln1 ?> - <?= $perthn1 ?></h1>
+<table class=form border=1 cellpadding=0 cellspacing=0>
+    <tr>
+        <td rowspan='4' align=center>No</td>
+        <td rowspan='4' align="center">TGL DONOR</td>
+        <td rowspan='4' align="center">NAMA INSTANSI</td>
+        <td colspan='10' align=center>DONOR BERHASIL</td>
+        <td colspan='10' align=center>DONOR GAGAL</td>
+        <td colspan='10' align=center>DONOR BATAL</td>
+        <td rowspan='4' align=center>JML <br>PENDONOR</td>
+    </tr>
+    <tr>
+        <td colspan='7'>DARAH</td>
+        <td colspan='2' rowspan='2' align="center">JK</td>
+        <td rowspan='3' align="center">JML</td>
 
-                  <td colspan='7' align="center">DARAH</td>
-                  <td colspan='2' rowspan='2' align="center">JK</td>
-                  <td rowspan='3' align="center">JML</td>
+        <td colspan='7' align="center">DARAH</td>
+        <td colspan='2' rowspan='2' align="center">JK</td>
+        <td rowspan='3' align="center">JML</td>
 
-                  <td colspan='7' align="center">DARAH</td>
-                  <td colspan='2' rowspan='2' align="center">JK</td>
-                  <td rowspan='3' align="center">JML</td>
-            </tr>
-            <tr>
-                  <td colspan='5' align="center">GOLONGAN</td>
-                  <td colspan='2' align="center">RHESUS</td>
+        <td colspan='7' align="center">DARAH</td>
+        <td colspan='2' rowspan='2' align="center">JK</td>
+        <td rowspan='3' align="center">JML</td>
+    </tr>
+    <tr>
+        <td colspan='5' align="center">GOLONGAN</td>
+        <td colspan='2' align="center">RHESUS</td>
 
-                  <td colspan='5' align="center">GOLONGAN</td>
-                  <td colspan='2' align="center">RHESUS</td>
+        <td colspan='5' align="center">GOLONGAN</td>
+        <td colspan='2' align="center">RHESUS</td>
 
-                  <td colspan='5' align="center">GOLONGAN</td>
-                  <td colspan='2' align="center">RHESUS</td>
-            </tr>
+        <td colspan='5' align="center">GOLONGAN</td>
+        <td colspan='2' align="center">RHESUS</td>
+    </tr>
 
-            <tr>
-                  <td>A</td>
-                  <td>B</td>
-                  <td>AB</td>
-                  <td>O</td>
-                  <td>X</td>
-                  <td>POS</td>
-                  <td>NEG</td>
-                  <td>Laki<br>laki</td>
-                  <td>Perem<br>puan</td>
+    <tr>
+        <td>A</td>
+        <td>B</td>
+        <td>AB</td>
+        <td>O</td>
+        <td>X</td>
+        <td>POS</td>
+        <td>NEG</td>
+        <td>Laki<br>laki</td>
+        <td>Perem<br>puan</td>
 
-                  <td>A</td>
-                  <td>B</td>
-                  <td>AB</td>
-                  <td>O</td>
-                  <td>X</td>
-                  <td>POS</td>
-                  <td>NEG</td>
-                  <td>Laki<br>laki</td>
-                  <td>Perem<br>puan</td>
+        <td>A</td>
+        <td>B</td>
+        <td>AB</td>
+        <td>O</td>
+        <td>X</td>
+        <td>POS</td>
+        <td>NEG</td>
+        <td>Laki<br>laki</td>
+        <td>Perem<br>puan</td>
 
-                  <td>A</td>
-                  <td>B</td>
-                  <td>AB</td>
-                  <td>O</td>
-                  <td>X</td>
-                  <td>POS</td>
-                  <td>NEG</td>
-                  <td>Laki<br>laki</td>
-                  <td>Perem<br>puan</td>
+        <td>A</td>
+        <td>B</td>
+        <td>AB</td>
+        <td>O</td>
+        <td>X</td>
+        <td>POS</td>
+        <td>NEG</td>
+        <td>Laki<br>laki</td>
+        <td>Perem<br>puan</td>
 
-            </tr>
-            <?
+    </tr>
+    <?
             $no = 1;
-            $tgldonor0 = mysql_query("select CAST(Tgl as date) as tgl,Instansi from htransaksi where NoTrans like 'M%' and instansi!='' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' group by Instansi order by Tgl");
+            $query = "SELECT
+                        MIN(CAST(Tgl AS DATE)) AS tgl,
+                        Instansi,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND gol_darah='A' THEN KodePendonor END) AS berhasil_a,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND gol_darah='B' THEN KodePendonor END) AS berhasil_b,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND gol_darah='AB' THEN KodePendonor END) AS berhasil_ab,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND gol_darah='O' THEN KodePendonor END) AS berhasil_o,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND gol_darah='X' THEN KodePendonor END) AS berhasil_x,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND rhesus='+' THEN KodePendonor END) AS berhasil_pos,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND rhesus='-' THEN KodePendonor END) AS berhasil_neg,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND jk='0' THEN KodePendonor END) AS berhasil_laki,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' AND jk='1' THEN KodePendonor END) AS berhasil_perem,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='0' THEN KodePendonor END) AS berhasil_total,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND gol_darah='A' THEN KodePendonor END) AS gagal_a,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND gol_darah='B' THEN KodePendonor END) AS gagal_b,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND gol_darah='AB' THEN KodePendonor END) AS gagal_ab,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND gol_darah='O' THEN KodePendonor END) AS gagal_o,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND gol_darah='X' THEN KodePendonor END) AS gagal_x,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND rhesus='+' THEN KodePendonor END) AS gagal_pos,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND rhesus='-' THEN KodePendonor END) AS gagal_neg,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND jk='0' THEN KodePendonor END) AS gagal_laki,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' AND jk='1' THEN KodePendonor END) AS gagal_perem,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='2' THEN KodePendonor END) AS gagal_total,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND gol_darah='A' THEN KodePendonor END) AS batal_a,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND gol_darah='B' THEN KodePendonor END) AS batal_b,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND gol_darah='AB' THEN KodePendonor END) AS batal_ab,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND gol_darah='O' THEN KodePendonor END) AS batal_o,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND gol_darah='X' THEN KodePendonor END) AS batal_x,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND rhesus='+' THEN KodePendonor END) AS batal_pos,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND rhesus='-' THEN KodePendonor END) AS batal_neg,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND jk='0' THEN KodePendonor END) AS batal_laki,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' AND jk='1' THEN KodePendonor END) AS batal_perem,
+                        COUNT(DISTINCT CASE WHEN Pengambilan='1' THEN KodePendonor END) AS batal_total
+                      FROM htransaksi
+                      WHERE NoTrans LIKE 'M%' AND Instansi != ''
+                        AND CAST(Tgl AS DATE) >= '$waktu_sql' AND CAST(Tgl AS DATE) <= '$waktu1_sql'
+                      GROUP BY Instansi
+                      ORDER BY MIN(CAST(Tgl AS DATE)), Instansi";
+
+            $tgldonor0 = mysql_query($query);
             while ($tgldonor = mysql_fetch_assoc($tgldonor0)) {
-                  //Berhasil
-                  $gola = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as A 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and gol_darah='A'"));
-                  $golb = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as B 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and gol_darah='B'"));
-                  $golab = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as AB 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and gol_darah='AB'"));
-                  $golo = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as O 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and gol_darah='O'"));
-                  $golx = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as X 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and gol_darah='X'"));
-                  $rhp = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as POS 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and rhesus='+'"));
-                  $rhn = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as NEG 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and rhesus='-'"));
-                  $laki = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as P 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and jk='0'"));
-                  $perem = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as W 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' and jk='1'"));
-                  $jum = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as donor 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='0' and Instansi='$tgldonor[Instansi]' "));
-
-                  //GAGAL
-                  $golag = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as A 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and gol_darah='A'"));
-                  $golbg = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as B 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and gol_darah='B'"));
-                  $golabg = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as AB 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and gol_darah='AB'"));
-                  $golog = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as O 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and gol_darah='O'"));
-                  $golxg = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as X 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and gol_darah='X'"));
-                  $rhpg = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as POS 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and rhesus='+'"));
-                  $rhng = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as NEG 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and rhesus='-'"));
-                  $lakig = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as P 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and jk='0'"));
-                  $peremg = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as W 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' and jk='1'"));
-                  $jumg = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as donor 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='2' and Instansi='$tgldonor[Instansi]' "));
-
-                  //Batal
-                  $gola_b = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as A 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and gol_darah='A'"));
-                  $golbb = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as B 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and gol_darah='B'"));
-                  $golabb = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as AB 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and gol_darah='AB'"));
-                  $golob = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as O 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and gol_darah='O'"));
-                  $golxb = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as X 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and gol_darah='X'"));
-                  $rhpb = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as POS 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and rhesus='+'"));
-                  $rhnb = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as NEG 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and rhesus='-'"));
-                  $lakib = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as P 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and jk='0'"));
-                  $peremb = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as W 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' and jk='1'"));
-                  $jumb = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as donor 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and 
-Pengambilan='1' and Instansi='$tgldonor[Instansi]' "));
-
-                  $jumtot = mysql_fetch_assoc(mysql_query("select count(distinct KodePendonor) as total 
-from htransaksi where NoTrans like 'M%' and cast(Tgl as date)>='$_POST[waktu]' and cast(Tgl as date)<='$_POST[waktu1]' and Instansi='$tgldonor[Instansi]' "));
-
+                  $tanggal = !empty($tgldonor['tgl']) ? date('d-m-Y', strtotime($tgldonor['tgl'])) : '-';
             ?>
-                  <tr class="record">
-                        <?
-                        $perbln2 = substr($tgldonor[tgl], 5, 2);
-                        $pertgl2 = substr($tgldonor[tgl], 8, 2);
-                        $perthn2 = substr($tgldonor[tgl], 0, 4);
-                        $tanggal = $pertgl2 . "-" . $perbln2 . "-" . $perthn2;
-                        ?>
-                        <td class=input><?= $no++ ?></td>
-                        <td class=input><?= $tanggal ?></td>
-                        <td class=input><?= $tgldonor[Instansi] ?></td>
-                        <td class=input><?= $gola[A] ?></td>
-                        <td class=input><?= $golb[B] ?></td>
-                        <td class=input><?= $golab[AB] ?></td>
-                        <td class=input><?= $golo[O] ?></td>
-                        <td class=input><?= $golx[X] ?></td>
-                        <td class=input><?= $rhp[POS] ?></td>
-                        <td class=input><?= $rhn[NEG] ?></td>
-                        <td class=input><?= $laki[P] ?></td>
-                        <td class=input><?= $perem[W] ?></td>
-                        <td class=input><?= $jum[donor] ?></td>
+    <tr class="record">
+        <td class=input><?= $no++ ?></td>
+        <td class=input><?= $tanggal ?></td>
+        <td class=input><?= $tgldonor['Instansi'] ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_a']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_b']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_ab']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_o']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_x']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_pos']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_neg']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_laki']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_perem']) ?></td>
+        <td class=input><?= intval($tgldonor['berhasil_total']) ?></td>
 
-                        <td class=input><?= $golag[A] ?></td>
-                        <td class=input><?= $golbg[B] ?></td>
-                        <td class=input><?= $golabg[AB] ?></td>
-                        <td class=input><?= $golog[O] ?></td>
-                        <td class=input><?= $golxg[X] ?></td>
-                        <td class=input><?= $rhpg[POS] ?></td>
-                        <td class=input><?= $rhng[NEG] ?></td>
-                        <td class=input><?= $lakig[P] ?></td>
-                        <td class=input><?= $peremg[W] ?></td>
-                        <td class=input><?= $jumg[donor] ?></td>
+        <td class=input><?= intval($tgldonor['gagal_a']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_b']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_ab']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_o']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_x']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_pos']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_neg']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_laki']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_perem']) ?></td>
+        <td class=input><?= intval($tgldonor['gagal_total']) ?></td>
 
-                        <td class=input><?= $gola_b[A] ?></td>
-                        <td class=input><?= $golbb[B] ?></td>
-                        <td class=input><?= $golabb[AB] ?></td>
-                        <td class=input><?= $golob[O] ?></td>
-                        <td class=input><?= $golxb[X] ?></td>
-                        <td class=input><?= $rhpb[POS] ?></td>
-                        <td class=input><?= $rhnb[NEG] ?></td>
-                        <td class=input><?= $lakib[P] ?></td>
-                        <td class=input><?= $peremb[W] ?></td>
-                        <td class=input><?= $jumb[donor] ?></td>
+        <td class=input><?= intval($tgldonor['batal_a']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_b']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_ab']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_o']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_x']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_pos']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_neg']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_laki']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_perem']) ?></td>
+        <td class=input><?= intval($tgldonor['batal_total']) ?></td>
 
-                        <td class=input><?= $jumtot[total] ?></td>
-                  </tr>
-            <?
+        <td class=input><?= intval($tgldonor['berhasil_total'] + $tgldonor['gagal_total'] + $tgldonor['batal_total']) ?>
+        </td>
+    </tr>
+    <?
             }
 
             ?>
-      </table>
-      </br>
-      <form name=xls method=post action=modul/rekap_transaksi_xls.php>
-            <input type=hidden name=pertgl value='<?= $pertgl ?>'>
-            <input type=hidden name=perbln value='<?= $perbln ?>'>
-            <input type=hidden name=perthn value='<?= $perthn ?>'>
-            <input type=hidden name=pertgl1 value='<?= $pertgl1 ?>'>
-            <input type=hidden name=perbln1 value='<?= $perbln1 ?>'>
-            <input type=hidden name=perthn1 value='<?= $perthn1 ?>'>
-            <input type=hidden name=waktu value='<?= $_POST[waktu] ?>'>
-            <input type=hidden name=waktu1 value='<?= $_POST[waktu1] ?>'>
-            <input type=submit name=submit2 value='Print Rekap Transaksi Donor MU (.XLS)'>
-      </form>
+</table>
+</br>
+<form name=xls method=post action=modul/rekap_transaksi_xls.php>
+    <input type=hidden name=pertgl value='<?= $pertgl ?>'>
+    <input type=hidden name=perbln value='<?= $perbln ?>'>
+    <input type=hidden name=perthn value='<?= $perthn ?>'>
+    <input type=hidden name=pertgl1 value='<?= $pertgl1 ?>'>
+    <input type=hidden name=perbln1 value='<?= $perbln1 ?>'>
+    <input type=hidden name=perthn1 value='<?= $perthn1 ?>'>
+    <input type=hidden name=waktu value='<?= $_POST[waktu] ?>'>
+    <input type=hidden name=waktu1 value='<?= $_POST[waktu1] ?>'>
+    <input type=submit name=submit2 value='Print Rekap Transaksi Donor MU (.XLS)'>
+</form>
 <?
 }
 ?>

@@ -13,9 +13,9 @@ if (empty($level)) {
 
 <?php
 if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
-    $nkt_ajax = mysqli_real_escape_string($dbi, $_GET['noktg']);
+    $nkt_ajax = strtoupper(trim(mysqli_real_escape_string($dbi, $_GET['noktg'])));
 
-    $sql = "select * from stokkantong where upper(nokantong)=upper('$nkt_ajax')";
+    $sql = "SELECT * FROM stokkantong WHERE nokantong='$nkt_ajax' LIMIT 1";
     $stokkantong = mysqli_fetch_assoc(mysqli_query($dbi, $sql));
 
     if (!strlen($stokkantong['noKantong'])) {
@@ -24,14 +24,14 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
     }
 
     if (($stokkantong['AsalUTD'] == '-') || ($stokkantong['AsalUTD'] == '')) {
-        $asalutd = mysqli_fetch_assoc(mysqli_query($dbi, "select nama from utd where aktif='1'"));
+        $asalutd = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama FROM utd WHERE aktif='1' LIMIT 1"));
         $asalutd = $asalutd['nama'];
     } else {
-        $asalutd = mysqli_fetch_assoc(mysqli_query($dbi, "select nama from utd where id='$stokkantong[AsalUTD]'"));
+        $asalutd = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama FROM utd WHERE id='$stokkantong[AsalUTD]' LIMIT 1"));
         $asalutd = $asalutd['nama'];
     }
 
-    $produk = mysqli_fetch_assoc(mysqli_query($dbi, "select lengkap from produk where Nama='$stokkantong[produk]'"));
+    $produk = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT lengkap FROM produk WHERE Nama='$stokkantong[produk]' LIMIT 1"));
     $namaproduk = $produk['lengkap'];
     $produk = $stokkantong['produk'];
 
@@ -126,6 +126,12 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
         case '7':
             $statuskantong = 'Reaktif';
             break;
+        case '8':
+            $statuskantong = 'QC';
+            break;
+        case '9':
+            $statuskantong = 'Sampel Panel';
+            break;
         default:
             $statuskantong = '-';
     }
@@ -150,14 +156,14 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
     if ($kantongke == "A") {
         $lamaaftap = $stokkantong['lama_pengambilan'];
     } else {
-        $st_k = mysqli_query($dbi, "select * from stokkantong where nokantong='$no_kantonga'");
+        $st_k = mysqli_query($dbi, "SELECT * FROM stokkantong WHERE nokantong='$no_kantonga' LIMIT 1");
         $dt_k = mysqli_fetch_assoc($st_k);
         $lamaaftap = $dt_k['lama_pengambilan'];
     }
 
-    $qrel = "SELECT * FROM `release` WHERE `rnokantong`='$nkt_ajax'";
+    $qrel = "SELECT * FROM `release` WHERE `rnokantong`='$nkt_ajax' LIMIT 1";
     $release = mysqli_fetch_assoc(mysqli_query($dbi, $qrel));
-    $qkgd = "select * from `dkonfirmasi` where `NoKantong` = '$no_kantonga' order by NoKonfirmasi desc";
+    $qkgd = "SELECT * FROM `dkonfirmasi` WHERE `NoKantong` = '$no_kantonga' ORDER BY NoKonfirmasi DESC LIMIT 1";
     $konfirmasi = mysqli_fetch_assoc(mysqli_query($dbi, $qkgd));
 
     if ($hasilrelease == 'Tidak ada') {
@@ -202,157 +208,157 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
     <link type="text/css" href="css/table1.css" rel="stylesheet" />
 
     <style>
-        body {
-            background: #f5f5f5;
-            font-family: Arial, Helvetica, sans-serif;
-            padding: 10px;
-        }
+    body {
+        background: #f5f5f5;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 10px;
+    }
 
-        .top-panel {
-            background: linear-gradient(180deg, #b51d0b 0%, #a81808 100%);
-            border-radius: 4px;
-            padding: 10px 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
-            margin-bottom: 16px;
+    .top-panel {
+        background: linear-gradient(180deg, #b51d0b 0%, #a81808 100%);
+        border-radius: 4px;
+        padding: 10px 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+        margin-bottom: 16px;
+    }
+
+    .search-wrap {
+        max-width: 430px;
+    }
+
+    .search-wrap .input-group-text {
+        background: #f7c4be;
+        border: 0;
+        color: #000;
+        font-weight: 600;
+        min-width: 80px;
+        justify-content: center;
+    }
+
+    .search-wrap .form-control {
+        border: 0;
+        box-shadow: none;
+        height: 42px;
+        font-weight: 600;
+    }
+
+    .search-btn {
+        background: #f7c4be;
+        border: 0;
+        color: #000;
+        min-width: 45px;
+        font-weight: 700;
+    }
+
+    .search-btn:hover {
+        background: #efb0a8;
+        color: #000;
+    }
+
+    .panel-card {
+        border: 1px solid #d8d8d8;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    }
+
+    .panel-card-header {
+        background: linear-gradient(180deg, #c92010 0%, #c51e0e 100%);
+        color: #fff;
+        padding: 12px 14px;
+        font-size: 22px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .badge-round {
+        background: #fff;
+        color: #111;
+        border-radius: 20px;
+        padding: 7px 14px;
+        font-size: 14px;
+        font-weight: 700;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .15);
+    }
+
+    .panel-body {
+        padding: 16px;
+        background: #fff;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0a4aa3;
+        margin: 10px 0 12px;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+    }
+
+    .info-table td {
+        border: 1px solid #ddd;
+        padding: 10px 12px;
+        vertical-align: middle;
+        font-size: 15px;
+    }
+
+    .info-table td.label {
+        width: 42%;
+        background: #fff6f6;
+        color: #222;
+        font-weight: 500;
+    }
+
+    .info-table td.value {
+        width: 58%;
+        color: #111;
+        font-weight: 600;
+    }
+
+    .info-table tr:hover td {
+        background: #fff1f1;
+    }
+
+    .table-box {
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .text-muted-empty {
+        color: #888;
+        font-weight: 500;
+    }
+
+    @media (max-width: 767px) {
+        .panel-card-header {
+            font-size: 18px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
         }
 
         .search-wrap {
-            max-width: 430px;
-        }
-
-        .search-wrap .input-group-text {
-            background: #f7c4be;
-            border: 0;
-            color: #000;
-            font-weight: 600;
-            min-width: 80px;
-            justify-content: center;
-        }
-
-        .search-wrap .form-control {
-            border: 0;
-            box-shadow: none;
-            height: 42px;
-            font-weight: 600;
-        }
-
-        .search-btn {
-            background: #f7c4be;
-            border: 0;
-            color: #000;
-            min-width: 45px;
-            font-weight: 700;
-        }
-
-        .search-btn:hover {
-            background: #efb0a8;
-            color: #000;
-        }
-
-        .panel-card {
-            border: 1px solid #d8d8d8;
-            border-radius: 4px;
-            overflow: hidden;
-            background: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
-        }
-
-        .panel-card-header {
-            background: linear-gradient(180deg, #c92010 0%, #c51e0e 100%);
-            color: #fff;
-            padding: 12px 14px;
-            font-size: 22px;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .badge-round {
-            background: #fff;
-            color: #111;
-            border-radius: 20px;
-            padding: 7px 14px;
-            font-size: 14px;
-            font-weight: 700;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .15);
-        }
-
-        .panel-body {
-            padding: 16px;
-            background: #fff;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0a4aa3;
-            margin: 10px 0 12px;
-        }
-
-        .info-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
+            max-width: 100%;
         }
 
         .info-table td {
-            border: 1px solid #ddd;
-            padding: 10px 12px;
-            vertical-align: middle;
-            font-size: 15px;
+            font-size: 14px;
+            padding: 8px 10px;
         }
 
-        .info-table td.label {
-            width: 42%;
-            background: #fff6f6;
-            color: #222;
-            font-weight: 500;
+        .badge-kantong {
+            border: none;
+            cursor: pointer;
+            outline: none;
         }
-
-        .info-table td.value {
-            width: 58%;
-            color: #111;
-            font-weight: 600;
-        }
-
-        .info-table tr:hover td {
-            background: #fff1f1;
-        }
-
-        .table-box {
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .text-muted-empty {
-            color: #888;
-            font-weight: 500;
-        }
-
-        @media (max-width: 767px) {
-            .panel-card-header {
-                font-size: 18px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .search-wrap {
-                max-width: 100%;
-            }
-
-            .info-table td {
-                font-size: 14px;
-                padding: 8px 10px;
-            }
-
-            .badge-kantong {
-                border: none;
-                cursor: pointer;
-                outline: none;
-            }
-        }
+    }
     </style>
 </head>
 
@@ -367,7 +373,13 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                 <input type="text" name="noktg" class="form-control" placeholder="Nomor kantong"
                     style="text-transform:uppercase" minlength="5" required>
                 <div class="input-group-append">
-                    <button type="submit" name="cari" class="btn search-btn">⎙</button>
+                    <button type="submit" name="cari" class="btn search-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </form>
@@ -376,18 +388,33 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
 
     <?php
     if (isset($_POST['cari'])) {
-        $nkt = isset($_POST['noktg']) ? $_POST['noktg'] : '';
-        $sql = "select * from stokkantong where upper(nokantong)=upper('$nkt')";
+        $nkt = strtoupper(trim(isset($_POST['noktg']) ? $_POST['noktg'] : ''));
+        $sql = "SELECT * FROM stokkantong WHERE nokantong='$nkt' LIMIT 1";
         $stokkantong = mysqli_fetch_assoc(mysqli_query($dbi, $sql));
+
+        // Cek Kantong di table Sampel Panel
+        $sqlSampelPanel = "SELECT * FROM sampel_panel_detail WHERE nokantong='$stokkantong[noKantong]' LIMIT 1";
+        $sampelPanel = mysqli_fetch_assoc(mysqli_query($dbi, $sqlSampelPanel));
+        $sqlSampelPanelHeader = "SELECT * FROM sampel_panel_trans WHERE notrans='$sampelPanel[notrans]' LIMIT 1";
+        $sampelPanelHeader = mysqli_fetch_assoc(mysqli_query($dbi, $sqlSampelPanelHeader));
+        if ($sampelPanel['up_data'] == '1') {
+            $sampelPanelText = 'Sampel Panel - Sudah diverifikasi oleh Bagian IMLTD';
+        } else if ($sampelPanel['up_data'] == '0') {
+            $sampelPanelText = 'Sampel Panel - Sudah diinput oleh Bagian Distribusi, menunggu verifikasi Bagian IMLTD';
+        } else {
+            $sampelPanelText = '-';
+        }
+        $cek_sp = mysqli_num_rows(mysqli_query($dbi, $sqlSampelPanel));
+
         if (strlen($stokkantong['noKantong']) > 0) {
             if (($stokkantong['AsalUTD'] == '-') or ($stokkantong['AsalUTD'] == '')) {
-                $asalutd = mysqli_fetch_assoc(mysqli_query($dbi, "select nama from utd where aktif='1'"));
+                $asalutd = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama FROM utd WHERE aktif='1' LIMIT 1"));
                 $asalutd = $asalutd['nama'];
             } else {
-                $asalutd = mysqli_fetch_assoc(mysqli_query($dbi, "select nama from utd where id='$stokkantong[AsalUTD]'"));
+                $asalutd = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama FROM utd WHERE id='$stokkantong[AsalUTD]' LIMIT 1"));
                 $asalutd = $asalutd['nama'];
             }
-            $produk = mysqli_fetch_assoc(mysqli_query($dbi, "select lengkap from produk where Nama='$stokkantong[produk]'"));
+            $produk = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT lengkap FROM produk WHERE Nama='$stokkantong[produk]' LIMIT 1"));
             $namaproduk = $produk['lengkap'];
             $produk = $stokkantong['produk'];
             $kantongke = strtoupper(substr($nkt, -1));
@@ -504,6 +531,12 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                 case '7':
                     $statuskantong = 'Reaktif';
                     break;
+                case '8':
+                    $statuskantong = 'QC';
+                    break;
+                case '9':
+                    $statuskantong = 'Sampel Panel';
+                    break;
                 default:
                     $statuskantong = '-';
             }
@@ -535,15 +568,15 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
             if ($kantongke == "A") {
                 $lamaaftap = $stokkantong['lama_pengambilan'];
             } else {
-                $st_k = mysqli_query($dbi, "select * from stokkantong where nokantong='$no_kantonga'");
+                $st_k = mysqli_query($dbi, "SELECT * FROM stokkantong WHERE nokantong='$no_kantonga' LIMIT 1");
                 $dt_k = mysqli_fetch_assoc($st_k);
                 $lamaaftap = $dt_k['lama_pengambilan'];
             }
 
             //Menampilkan data Kantong
-            $qrel = "SELECT * FROM `release` WHERE `rnokantong`='$nkt'";
+            $qrel = "SELECT * FROM `release` WHERE `rnokantong`='$nkt' LIMIT 1";
             $release = mysqli_fetch_assoc(mysqli_query($dbi, $qrel));
-            $qkgd = "select * from `dkonfirmasi` where `NoKantong` = '$no_kantonga' order by NoKonfirmasi desc";
+            $qkgd = "SELECT * FROM `dkonfirmasi` WHERE `NoKantong` = '$no_kantonga' ORDER BY NoKonfirmasi DESC LIMIT 1";
             $konfirmasi = mysqli_fetch_assoc(mysqli_query($dbi, $qkgd));
             if ($hasilrelease == 'Tidak ada') {
                 $volume_darah = $stokkantong['volume'];
@@ -552,150 +585,203 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
             }
     ?>
 
-            <div class="panel-card">
-                <div class="panel-card-header">
-                    <div>Data Kantong</div>
-                    <div class="d-flex align-items-center flex-wrap" style="gap:8px;">
-                        <span class="mr-2" style="font-size: 15px;">Kantong terkait</span>
-                        <?php if (!empty($kantong_terkait)) : ?>
-                            <?php foreach ($kantong_terkait as $ktg) :
+    <div class="panel-card">
+        <div class="panel-card-header">
+            <div>Data Kantong</div>
+            <div class="d-flex align-items-center flex-wrap" style="gap:8px;">
+                <span class="mr-2" style="font-size: 15px;">Kantong terkait</span>
+                <?php if (!empty($kantong_terkait)) : ?>
+                <?php foreach ($kantong_terkait as $ktg) :
                                 $nokt_related = substr_replace($nkt, $ktg, -1, 1);
                             ?>
-                                <button type="button" class="badge-round badge-kantong btn-kantong"
-                                    data-nokantong="<?php echo $nokt_related; ?>">
-                                    <?php echo $ktg; ?>
-                                </button>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <span class="badge-round">-</span>
-                        <?php endif; ?>
-                    </div>
-                </div>
+                <button type="button" class="badge-round badge-kantong btn-kantong"
+                    data-nokantong="<?php echo $nokt_related; ?>">
+                    <?php echo $ktg; ?>
+                </button>
+                <?php endforeach; ?>
+                <?php else : ?>
+                <span class="badge-round">-</span>
+                <?php endif; ?>
+            </div>
+        </div>
 
-                <div class="panel-body row">
-                    <div class="col-lg-6 mb-3">
+        <div class="panel-body row">
+            <div class="col-lg-6 mb-3">
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Nomor kantong</td>
+                        <td class="value"><?php echo $nkt; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">UDD PMI</td>
+                        <td class="value"><?php echo $asalutd; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Produk</td>
+                        <td class="value"><?php echo $produk . ' - ' . $namaproduk; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Golongan Darah</td>
+                        <td class="value">
+                            <?php echo $stokkantong['gol_darah'] . ' Rh (' . $stokkantong['RhesusDrh'] . ')'; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Volume</td>
+                        <td class="value"><?php echo $volume_darah; ?> ml</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Status Kantong Darah</td>
+                        <td class="value"><?php echo $statuskantong; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Hasil Pelulusan</td>
+                        <td class="value"><?php echo $hasilrelease; ?></td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div class="col-lg-6 mb-3">
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Tgl Pengambilan</td>
+                        <td class="value"><?php echo $stokkantong['tgl_Aftap'] ? $stokkantong['tgl_Aftap'] : '-'; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl Uji Saring IMLTD</td>
+                        <td class="value"><?php echo $stokkantong['tglperiksa'] ? $stokkantong['tglperiksa'] : '-'; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl KGD</td>
+                        <td class="value"><?php echo $konfirmasi['tgl'] ? $konfirmasi['tgl'] : '-'; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl ABS</td>
+                        <td class="value"><?php echo $stokkantong['tgl_abs'] ? $stokkantong['tgl_abs'] : '-'; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl NAT</td>
+                        <td class="value"><?php echo $stokkantong['tgl_nat'] ? $stokkantong['tgl_nat'] : '-'; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl Pengolahan</td>
+                        <td class="value">
+                            <?php echo $stokkantong['tglpengolahan'] ? $stokkantong['tglpengolahan'] : '-'; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl Release</td>
+                        <td class="value"><?php echo $stokkantong['tgl_release'] ? $stokkantong['tgl_release'] : '-'; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl Kadaluarsa</td>
+                        <td class="value"><?php echo $tgledkomponen ? $tgledkomponen : '-'; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tgl Keluar</td>
+                        <td class="value"><?php echo $stokkantong['tgl_keluar'] ? $stokkantong['tgl_keluar'] : '-'; ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <?php
+            if ($levelUser != 'logistik' && $levelUser != 'p2d2s') {
+                // jika darah keluar
+
+                if ($stokkantong['Status'] == '9' || $stokkantong['Status'] == '6' || $stokkantong['Status'] == '7' || $cek_sp > 0) {
+            ?>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Distribusi - Sampel Panel</div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
                         <table class="info-table">
                             <tr>
-                                <td class="label">Nomor kantong</td>
-                                <td class="value"><?php echo $nkt; ?></td>
+                                <td class="label">No Transaksi Sampel Panel</td>
+                                <td class="value"><?php echo $sampelPanelHeader['notrans']; ?></td>
                             </tr>
                             <tr>
-                                <td class="label">UDD PMI</td>
-                                <td class="value"><?php echo $asalutd; ?></td>
+                                <td class="label">Tanggal Permintaan</td>
+                                <td class="value"><?php echo $sampelPanelHeader['tgl_permintaan']; ?></td>
                             </tr>
                             <tr>
-                                <td class="label">Produk</td>
-                                <td class="value"><?php echo $produk . ' - ' . $namaproduk; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Golongan Darah</td>
-                                <td class="value">
-                                    <?php echo $stokkantong['gol_darah'] . ' Rh (' . $stokkantong['RhesusDrh'] . ')'; ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">Volume</td>
-                                <td class="value"><?php echo $volume_darah; ?> ml</td>
-                            </tr>
-                            <tr>
-                                <td class="label">Status Kantong Darah</td>
-                                <td class="value"><?php echo $statuskantong; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Hasil Pelulusan</td>
-                                <td class="value"><?php echo $hasilrelease; ?></td>
+                                <td class="label">Petugas Permintaan</td>
+                                <td class="value"><?php echo $sampelPanelHeader['petugas']; ?></td>
                             </tr>
                         </table>
                     </div>
-
-
-                    <div class="col-lg-6 mb-3">
+                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
                         <table class="info-table">
                             <tr>
-                                <td class="label">Tgl Pengambilan</td>
-                                <td class="value"><?php echo $stokkantong['tgl_Aftap'] ? $stokkantong['tgl_Aftap'] : '-'; ?>
-                                </td>
+                                <td class="label">Status Sampel Panel</td>
+                                <td class="value"><?php echo $sampelPanelText; ?></td>
                             </tr>
                             <tr>
-                                <td class="label">Tgl Uji Saring IMLTD</td>
-                                <td class="value"><?php echo $stokkantong['tglperiksa'] ? $stokkantong['tglperiksa'] : '-'; ?>
-                                </td>
+                                <td class="label">Tanggal Pemenuhan Permintaan</td>
+                                <td class="value"><?php echo $sampelPanel['created']; ?></td>
                             </tr>
                             <tr>
-                                <td class="label">Tgl KGD</td>
-                                <td class="value"><?php echo $konfirmasi['tgl'] ? $konfirmasi['tgl'] : '-'; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Tgl ABS</td>
-                                <td class="value"><?php echo $stokkantong['tgl_abs'] ? $stokkantong['tgl_abs'] : '-'; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Tgl NAT</td>
-                                <td class="value"><?php echo $stokkantong['tgl_nat'] ? $stokkantong['tgl_nat'] : '-'; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Tgl Pengolahan</td>
-                                <td class="value">
-                                    <?php echo $stokkantong['tglpengolahan'] ? $stokkantong['tglpengolahan'] : '-'; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Tgl Release</td>
-                                <td class="value"><?php echo $stokkantong['tgl_release'] ? $stokkantong['tgl_release'] : '-'; ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">Tgl Kadaluarsa</td>
-                                <td class="value"><?php echo $tgledkomponen ? $tgledkomponen : '-'; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="label">Tgl Keluar</td>
-                                <td class="value"><?php echo $stokkantong['tgl_keluar'] ? $stokkantong['tgl_keluar'] : '-'; ?>
-                                </td>
+                                <td class="label">Petugas Pemenuhan Permintaan</td>
+                                <td class="value"><?php echo $sampelPanel['ptgs_komp']; ?></td>
                             </tr>
                         </table>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <?php
+                } else if ($stokkantong['Status'] == '3' && $stokkantong['stat2'] != '') {
+                ?>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Distribusi</div>
+            <div></div>
+        </div>
+        <div class="panel-body">
             <?php
-            if ($levelUser != 'logistik' && $levelUser != 'p2d2s') {
-                // jika darah keluar
-                if ($stokkantong['Status'] == '3' && $stokkantong['stat2'] != '') {
-            ?>
-                    <div class="panel-card mt-4">
-                        <div class="panel-card-header">
-                            <div>Data Distribusi</div>
-                            <div></div>
-                        </div>
-
-                        <div class="panel-body">
-                            <?php
                             if (substr($stokkantong['stat2'], 0, 1) == 'b') {
                                 // Distribusi ke BRDS
                                 $q = "SELECT `id`,`nokantong`,`bdrs`,`tgl`,`petugas`,`nama`, `nama_lengkap`
-                      FROM `kirimbdrs` k
-                      INNER JOIN `bdrs` b ON b.`kode` = k.`bdrs`
-                      INNER JOIN `user` u ON u.`id_user` = k.`petugas`
-                      WHERE `nokantong`='$nkt'
-                      ORDER BY `id` DESC";
+                                            FROM `kirimbdrs` k
+                                            INNER JOIN `bdrs` b ON b.`kode` = k.`bdrs`
+                                            INNER JOIN `user` u ON u.`id_user` = k.`petugas`
+                                            WHERE `nokantong`='$nkt'
+                                            ORDER BY `id` DESC";
                                 $kirimbdrs = mysqli_fetch_assoc(mysqli_query($dbi, $q));
                             ?>
-                                <div class="table-box">
-                                    <table class="info-table">
-                                        <tr>
-                                            <td class="label">Tanggal dikeluarkan</td>
-                                            <td class="value"><?php echo $kirimbdrs['tgl']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">BRDS Tujuan</td>
-                                            <td class="value"><?php echo $kirimbdrs['nama']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Petugas</td>
-                                            <td class="value"><?php echo $kirimbdrs['petugas'] . ' - ' . $kirimbdrs['nama_lengkap']; ?></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            <?php
+            <div class="table-box">
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Tanggal dikeluarkan</td>
+                        <td class="value"><?php echo $kirimbdrs['tgl']; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">BRDS Tujuan</td>
+                        <td class="value"><?php echo $kirimbdrs['nama']; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Petugas</td>
+                        <td class="value"><?php echo $kirimbdrs['petugas'] . ' - ' . $kirimbdrs['nama_lengkap']; ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <?php
                             } elseif (substr($stokkantong['stat2'], 0, 1) > '0') {
                                 // Distribusi ke UDD
                                 $q = "SELECT k.`id`,k.`nokantong`,k.`udd`,k.`tgl`,k.`petugas`,b.`nama`,u.`nama_lengkap`
@@ -706,25 +792,26 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                             ORDER BY k.`id` DESC";
                                 $kirimbdrs = mysqli_fetch_assoc(mysqli_query($dbi, $q));
                             ?>
-                                <div class="table-box">
-                                    <table class="info-table">
-                                        <tr>
-                                            <td class="label">Tanggal dikeluarkan</td>
-                                            <td class="value"><?php echo $kirimbdrs['tgl']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">UDD Tujuan</td>
-                                            <td class="value"><?php echo $kirimbdrs['nama']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Petugas</td>
-                                            <td class="value"><?php echo $kirimbdrs['petugas'] . ' - ' . $kirimbdrs['nama_lengkap']; ?></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            <?php
+            <div class="table-box">
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Tanggal dikeluarkan</td>
+                        <td class="value"><?php echo $kirimbdrs['tgl']; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">UDD Tujuan</td>
+                        <td class="value"><?php echo $kirimbdrs['nama']; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Petugas</td>
+                        <td class="value"><?php echo $kirimbdrs['petugas'] . ' - ' . $kirimbdrs['nama_lengkap']; ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <?php
                             } else {
-                                $s_dist = mysqli_fetch_assoc(mysqli_query($dbi, "select * from dtransaksipermintaan where NoKantong='$nkt'"));
+                                $s_dist = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT * FROM dtransaksipermintaan WHERE NoKantong='$nkt' LIMIT 1"));
                                 $data1 = mysqli_fetch_assoc(mysqli_query($dbi, "select * from htranspermintaan where noform='$s_dist[NoForm]'"));
 
                                 if ($data1['jenis_permintaan'] == '0') {
@@ -734,8 +821,7 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                 }
 
                                 $s_pasien = "SELECT `no_rm`, `nama`, `alamat`, `gol_darah`, `rhesus`, `kelamin`, `keluarga`, `tgl_lahir`, `tlppasien`, `umur`, `insert_on`
-                            FROM `pasien`
-                            WHERE `no_rm` ='$s_dist[no_rm]'";
+                                                FROM `pasien` WHERE `no_rm` ='$s_dist[no_rm]'";
                                 $pasien = mysqli_fetch_assoc(mysqli_query($dbi, $s_pasien));
 
                                 if ($pasien['kelamin'] == 'L') {
@@ -747,8 +833,8 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                 $usr = mysqli_fetch_assoc(mysqli_query($dbi, "select `nama_lengkap` from `user` where `id_user`='$data1[petugas]'"));
                                 $ptgs_terima_form = $usr['nama_lengkap'];
 
-                                $nmrs = mysqli_fetch_assoc(mysqli_query($dbi, "select NamaRs from rmhsakit where Kode='$data1[rs]'"));
-                                $layanan = mysqli_fetch_assoc(mysqli_query($dbi, "select nama from jenis_layanan where kode='$data1[jenis]'"));
+                                $nmrs = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT NamaRs FROM rmhsakit WHERE Kode='$data1[rs]' LIMIT 1"));
+                                $layanan = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama FROM jenis_layanan WHERE kode='$data1[jenis]' LIMIT 1"));
 
                                 if ($s_dist['Status'] == '0') $status_bawa = 'Dibawa';
                                 if ($s_dist['Status'] == '1') $status_bawa = 'Dititip';
@@ -768,141 +854,142 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                 $ptgs_cek = $usr['nama_lengkap'];
                             ?>
 
-                                <div class="row">
-                                    <div class="col-lg-6 mb-3">
-                                        <div class="table-box">
-                                            <table class="info-table">
-                                                <tr>
-                                                    <td class="label">Rumah Sakit</td>
-                                                    <td class="value"><?php echo $nmrs['NamaRs']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Bagian di RS</td>
-                                                    <td class="value"><?php echo $s_dist['bagian']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">No. Reg</td>
-                                                    <td class="value"><?php echo $data1['regrs']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Kode Pasien</td>
-                                                    <td class="value"><?php echo $pasien['no_rm']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Nama Pasien</td>
-                                                    <td class="value"><?php echo $pasien['nama']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Gol Darah Pasien</td>
-                                                    <td class="value"><?php echo $pasien['gol_darah'] . '(' . $pasien['rhesus'] . ')'; ?>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Jenis Kelamin</td>
-                                                    <td class="value"><?php echo $kelamin; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Umur</td>
-                                                    <td class="value"><?php echo $data1['umur']; ?> Tahun</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Jenis Layanan</td>
-                                                    <td class="value"><?php echo $layanan['nama']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Diagnosa</td>
-                                                    <td class="value"><?php echo $data1['diagnosa']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Hemoglobin</td>
-                                                    <td class="value"><?php echo $data1['hb']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Alasan transfusi</td>
-                                                    <td class="value"><?php echo $data1['alasan']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Jenis Permintaan</td>
-                                                    <td class="value"><?php echo $jenis_permintaan; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Petugas Penerima Formulir</td>
-                                                    <td class="value"><?php echo $ptgs_terima_form; ?></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Rumah Sakit</td>
+                                <td class="value"><?php echo $nmrs['NamaRs']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Bagian di RS</td>
+                                <td class="value"><?php echo $s_dist['bagian']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">No. Reg</td>
+                                <td class="value"><?php echo $data1['regrs']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Kode Pasien</td>
+                                <td class="value"><?php echo $pasien['no_rm']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Nama Pasien</td>
+                                <td class="value"><?php echo $pasien['nama']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Gol Darah Pasien</td>
+                                <td class="value">
+                                    <?php echo $pasien['gol_darah'] . '(' . $pasien['rhesus'] . ')'; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Jenis Kelamin</td>
+                                <td class="value"><?php echo $kelamin; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Umur</td>
+                                <td class="value"><?php echo $data1['umur']; ?> Tahun</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Jenis Layanan</td>
+                                <td class="value"><?php echo $layanan['nama']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Diagnosa</td>
+                                <td class="value"><?php echo $data1['diagnosa']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Hemoglobin</td>
+                                <td class="value"><?php echo $data1['hb']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Alasan transfusi</td>
+                                <td class="value"><?php echo $data1['alasan']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Jenis Permintaan</td>
+                                <td class="value"><?php echo $jenis_permintaan; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Penerima Formulir</td>
+                                <td class="value"><?php echo $ptgs_terima_form; ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
 
-                                    <div class="col-lg-6 mb-3">
-                                        <div class="table-box">
-                                            <table class="info-table">
-                                                <tr>
-                                                    <td class="label">Nomor Formulir</td>
-                                                    <td class="value"><?php echo $s_dist['NoForm']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Tanggal Permintaan</td>
-                                                    <td class="value"><?php echo $data1['tgl_register']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Tanggal Diperlukan</td>
-                                                    <td class="value"><?php echo $data1['tglminta']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Tanggal Uji Silang Serasi</td>
-                                                    <td class="value"><?php echo $cross['tgl']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Metode</td>
-                                                    <td class="value"><?php echo $cross['MetodeCross']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Aglutinasi</td>
-                                                    <td class="value"><?php echo $cross['aglutinasi']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Hasil</td>
-                                                    <td class="value"><?php echo $cross['stat2']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Keterangan</td>
-                                                    <td class="value"><?php echo $cross['ket']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Status pengeluaran</td>
-                                                    <td class="value"><?php echo $hasil_cross; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Status darah keluar</td>
-                                                    <td class="value"><?php echo $status_bawa; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Petugas Uji Silang Serasi</td>
-                                                    <td class="value"><?php echo $ptgs_cross; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Petugas Check</td>
-                                                    <td class="value"><?php echo $ptgs_cek; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Petugas Check</td>
-                                                    <td class="value"><?php echo $cross['mengesahkan']; ?></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Nomor Formulir</td>
+                                <td class="value"><?php echo $s_dist['NoForm']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tanggal Permintaan</td>
+                                <td class="value"><?php echo $data1['tgl_register']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tanggal Diperlukan</td>
+                                <td class="value"><?php echo $data1['tglminta']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tanggal Uji Silang Serasi</td>
+                                <td class="value"><?php echo $cross['tgl']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Metode</td>
+                                <td class="value"><?php echo $cross['MetodeCross']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Aglutinasi</td>
+                                <td class="value"><?php echo $cross['aglutinasi']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Hasil</td>
+                                <td class="value"><?php echo $cross['stat2']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Keterangan</td>
+                                <td class="value"><?php echo $cross['ket']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Status pengeluaran</td>
+                                <td class="value"><?php echo $hasil_cross; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Status darah keluar</td>
+                                <td class="value"><?php echo $status_bawa; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Uji Silang Serasi</td>
+                                <td class="value"><?php echo $ptgs_cross; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Check</td>
+                                <td class="value"><?php echo $ptgs_cek; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Check</td>
+                                <td class="value"><?php echo $cross['mengesahkan']; ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <?php
                             }
                             ?>
-                        </div>
-                    </div>
-            <?php
+        </div>
+    </div>
+    <?php
                 }
             }
             ?>
 
-            <?php
+    <?php
             if ($levelUser != 'logistik' && $levelUser != 'p2d2s') {
 
                 $musnah = "SELECT * FROM `ar_stokkantong` where `noKantong`='$nkt'";
@@ -999,37 +1086,37 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                 }
                 if ($dtabuang['noKantong'] == $nkt) {
             ?>
-                    <div class="panel-card mt-4">
-                        <div class="panel-card-header">
-                            <div>Data Pemusnahan</div>
-                            <div></div>
-                        </div>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Pemusnahan</div>
+            <div></div>
+        </div>
 
-                        <div class="panel-body">
-                            <div class="table-box">
-                                <table class="info-table">
-                                    <tr>
-                                        <td class="label">Tanggal Dimusnahkan</td>
-                                        <td class="value"><?php echo $dtabuang['tgl_buang']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Alasan Dimusnahkan</td>
-                                        <td class="value"><?php echo $alsn; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Petugas Pemusnahan</td>
-                                        <td class="value"><?php echo $dtabuang['user']; ?></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-            <?php
+        <div class="panel-body">
+            <div class="table-box">
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Tanggal Dimusnahkan</td>
+                        <td class="value"><?php echo $dtabuang['tgl_buang']; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Alasan Dimusnahkan</td>
+                        <td class="value"><?php echo $alsn; ?></td>
+                    </tr>
+                    <tr>
+                        <td class="label">Petugas Pemusnahan</td>
+                        <td class="value"><?php echo $dtabuang['user']; ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <?php
                 }
             }
             ?>
 
-            <?php
+    <?php
 
             $ptg_barcode0 = "SELECT `l`.`time_aksi`,`l`.`user`, `u`.`nama_lengkap` FROM `user_log` l inner join `user` u on `u`.`id_user`=`l`.`user` WHERE `aksi_user` like '%barcode%$no_kantonga%'";
 
@@ -1039,83 +1126,83 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
 
             $ptg_mutasi = mysqli_fetch_assoc(mysqli_query($dbi, $ptg_mutasi0));
             ?>
-            <br><br>
-            <div class="panel-card">
-                <div class="panel-card-header">
-                    <div>Data Logistik</div>
-                    <div></div>
+
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Logistik</div>
+            <div></div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Jenis Kantong</td>
+                                <td class="value"><?php echo $jeniskantong; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Merk Kantong</td>
+                                <td class="value"><?php echo $stokkantong['merk']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Volume Kantong</td>
+                                <td class="value"><?php echo $volumeasal; ?> ml</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Posisi Kantong</td>
+                                <td class="value"><?php echo $posisikantong; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Nomor Lot</td>
+                                <td class="value"><?php echo $stokkantong['nolot_ktg']; ?></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-6 mb-3">
-                            <div class="table-box">
-                                <table class="info-table">
-                                    <tr>
-                                        <td class="label">Jenis Kantong</td>
-                                        <td class="value"><?php echo $jeniskantong; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Merk Kantong</td>
-                                        <td class="value"><?php echo $stokkantong['merk']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Volume Kantong</td>
-                                        <td class="value"><?php echo $volumeasal; ?> ml</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Posisi Kantong</td>
-                                        <td class="value"><?php echo $posisikantong; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Nomor Lot</td>
-                                        <td class="value"><?php echo $stokkantong['nolot_ktg']; ?></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6 mb-3">
-                            <div class="table-box">
-                                <table class="info-table">
-                                    <tr>
-                                        <td class="label">Tgl Input/Barcode</td>
-                                        <td class="value"><?php echo $stokkantong['tglTerima']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Tgl Pengesahan</td>
-                                        <td class="value"><?php echo $stokkantong['tglmutasi']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Tgl ED Kantong</td>
-                                        <td class="value"><?php echo $stokkantong['kadaluwarsa_ktg']; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Petugas Barcode</td>
-                                        <td class="value">
-                                            <?php echo '(' . $ptg_barcode['user'] . ') - ' . $ptg_barcode['nama_lengkap']; ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="label">Petugas Pengesahan</td>
-                                        <td class="value">
-                                            <?php if ($ptg_mutasi) {
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Tgl Input/Barcode</td>
+                                <td class="value"><?php echo $stokkantong['tglTerima']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tgl Pengesahan</td>
+                                <td class="value"><?php echo $stokkantong['tglmutasi']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tgl ED Kantong</td>
+                                <td class="value"><?php echo $stokkantong['kadaluwarsa_ktg']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Barcode</td>
+                                <td class="value">
+                                    <?php echo '(' . $ptg_barcode['user'] . ') - ' . $ptg_barcode['nama_lengkap']; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Pengesahan</td>
+                                <td class="value">
+                                    <?php if ($ptg_mutasi) {
                                                 echo '(' . $ptg_mutasi['user'] . ') - ' . $ptg_mutasi['nama_lengkap'];
                                             } else {
                                                 echo $ptg_barcode['nama_lengkap'];
                                             }
                                             ?></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
-            <br>
+        </div>
+    </div>
+    <br>
 
-            <?php
-            $aftap = "select * from htransaksi where `NoKantong`='$no_kantonga'";
+    <?php
+            $aftap = "SELECT * FROM htransaksi WHERE `NoKantong`='$no_kantonga' LIMIT 1";
             $aftap = mysqli_fetch_assoc(mysqli_query($dbi, $aftap));
             $asaldonor = substr($aftap['NoTrans'], 0, 1);
             if ($asaldonor == 'M') {
@@ -1138,11 +1225,11 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
             $ptgtensi = $aftap['petugasTensi'];
             $ptgadmin = $aftap['user'];
             $kodedokter = $aftap['NamaDokter'];
-            $qpdokter = mysqli_fetch_assoc(mysqli_query($dbi, "select Nama from dokter_periksa where kode='$kodedokter'"));
-            $qptensi = mysqli_fetch_assoc(mysqli_query($dbi, "select nama_lengkap from `user` where `id_user`='$ptgtensi'"));
-            $qpaftap = mysqli_fetch_assoc(mysqli_query($dbi, "select nama_lengkap from `user` where `id_user`='$ptgaftap'"));
-            $qphb = mysqli_fetch_assoc(mysqli_query($dbi, "select nama_lengkap from `user` where `id_user`='$ptghb'"));
-            $qpinput = mysqli_fetch_assoc(mysqli_query($dbi, "select nama_lengkap from `user` where `id_user`='$ptgadmin'"));
+            $qpdokter = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT Nama FROM dokter_periksa WHERE kode='$kodedokter' LIMIT 1"));
+            $qptensi = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama_lengkap FROM `user` WHERE `id_user`='$ptgtensi' LIMIT 1"));
+            $qpaftap = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama_lengkap FROM `user` WHERE `id_user`='$ptgaftap' LIMIT 1"));
+            $qphb = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama_lengkap FROM `user` WHERE `id_user`='$ptghb' LIMIT 1"));
+            $qpinput = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT nama_lengkap FROM `user` WHERE `id_user`='$ptgadmin' LIMIT 1"));
             switch ($aftap['Pengambilan']) {
                 case '0':
                     $status_aftap = 'Berhasil';
@@ -1176,119 +1263,120 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                     break;
             }
             ?>
-            <div class="panel-card mt-4">
-                <div class="panel-card-header">
-                    <div>Data Pengambilan</div>
-                    <div></div>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Pengambilan</div>
+            <div></div>
+        </div>
+
+        <div class="panel-body">
+            <?php if ($aftap['NoTrans'] != ''): ?>
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">No. Transaksi</td>
+                                <td class="value"><?php echo $aftap['NoTrans']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tempat Pengambilan</td>
+                                <td class="value"><?php echo $asaldonor . ' ' . $aftap['Instansi']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tgl & Waktu Registrasi</td>
+                                <td class="value"><?php echo $aftap['Tgl']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tensi</td>
+                                <td class="value"><?php echo $aftap['tensi']; ?> mmHg</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Nadi</td>
+                                <td class="value"><?php echo $aftap['nadi']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Suhu</td>
+                                <td class="value"><?php echo $aftap['suhu']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Berat Badan</td>
+                                <td class="value"><?php echo $aftap['beratBadan']; ?> kg</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Hemoglobin</td>
+                                <td class="value"><?php echo $jumlah_hb; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Golongan Darah</td>
+                                <td class="value"><?php echo $aftap['gol_darah'] . ' Rh ' . $aftap['rhesus']; ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="panel-body">
-                    <?php if ($aftap['NoTrans'] != ''): ?>
-                        <div class="row">
-                            <div class="col-lg-6 mb-3">
-                                <div class="table-box">
-                                    <table class="info-table">
-                                        <tr>
-                                            <td class="label">No. Transaksi</td>
-                                            <td class="value"><?php echo $aftap['NoTrans']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Tempat Pengambilan</td>
-                                            <td class="value"><?php echo $asaldonor . ' ' . $aftap['Instansi']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Tgl & Waktu Registrasi</td>
-                                            <td class="value"><?php echo $aftap['Tgl']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Tensi</td>
-                                            <td class="value"><?php echo $aftap['tensi']; ?> mmHg</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Nadi</td>
-                                            <td class="value"><?php echo $aftap['nadi']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Suhu</td>
-                                            <td class="value"><?php echo $aftap['suhu']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Berat Badan</td>
-                                            <td class="value"><?php echo $aftap['beratBadan']; ?> kg</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Hemoglobin</td>
-                                            <td class="value"><?php echo $jumlah_hb; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Golongan Darah</td>
-                                            <td class="value"><?php echo $aftap['gol_darah'] . ' Rh ' . $aftap['rhesus']; ?></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6 mb-3">
-                                <div class="table-box">
-                                    <table class="info-table">
-                                        <tr>
-                                            <td class="label">Jenis Pengambilan</td>
-                                            <td class="value"><?php echo $caraambil; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Tgl & Waktu Pengambilan</td>
-                                            <td class="value"><?php echo $stokkantong['tgl_Aftap']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Volume Pengambilan</td>
-                                            <td class="value"><?php echo $aftap['volumekantong']; ?> ml</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Lama Pengambilan</td>
-                                            <td class="value"><?php echo $lamaaftap; ?> menit</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Status Pengambilan</td>
-                                            <td class="value"><?php echo $status_aftap; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Petugas Tensi</td>
-                                            <td class="value"><?php echo $ptgtensi . ' - ' . $qptensi['nama_lengkap']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Petugas Anamnesa</td>
-                                            <td class="value"><?php echo $qpdokter['Nama']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Petugas HB</td>
-                                            <td class="value"><?php echo $ptghb . ' - ' . $qphb['nama_lengkap']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Petugas Aftap</td>
-                                            <td class="value"><?php echo $ptgaftap . ' - ' . $qpaftap['nama_lengkap']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="label">Petugas Input data</td>
-                                            <td class="value"><?php echo $ptgadmin . ' - ' . $qpinput['nama_lengkap']; ?></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    <?php else: ?>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="alert alert-info" role="alert">
-                                    Data pengambilan belum dilakukan
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Jenis Pengambilan</td>
+                                <td class="value"><?php echo $caraambil; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tgl & Waktu Pengambilan</td>
+                                <td class="value"><?php echo $stokkantong['tgl_Aftap']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Volume Pengambilan</td>
+                                <td class="value"><?php echo $aftap['volumekantong']; ?> ml</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Lama Pengambilan</td>
+                                <td class="value"><?php echo $lamaaftap; ?> menit</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Status Pengambilan</td>
+                                <td class="value"><?php echo $status_aftap; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Tensi</td>
+                                <td class="value"><?php echo $ptgtensi . ' - ' . $qptensi['nama_lengkap']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Anamnesa</td>
+                                <td class="value"><?php echo $qpdokter['Nama']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas HB</td>
+                                <td class="value"><?php echo $ptghb . ' - ' . $qphb['nama_lengkap']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Aftap</td>
+                                <td class="value"><?php echo $ptgaftap . ' - ' . $qpaftap['nama_lengkap']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Input data</td>
+                                <td class="value"><?php echo $ptgadmin . ' - ' . $qpinput['nama_lengkap']; ?></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <br>
+            <?php else: ?>
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        Data pengambilan belum dilakukan
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <br>
 
-            <?php
+    <?php
             if ($levelUser != 'logistik' && $levelUser != 'p2d2s') {
 
                 if ($aftap['jk'] == '1') {
@@ -1310,139 +1398,139 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                 $pendonor = mysqli_fetch_assoc(mysqli_query($dbi, $s_donor));
                 if ($level == '1') {
             ?>
-                    <div class="panel-card mt-4">
-                        <div class="panel-card-header">
-                            <div>Data Pendonor</div>
-                            <div></div>
-                        </div>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Pendonor</div>
+            <div></div>
+        </div>
 
-                        <div class="panel-body">
+        <div class="panel-body">
 
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="table-box mt-2">
-                                        <table class="info-table">
-                                            <tr>
-                                                <td class="label">Nama Pendonor</td>
-                                                <td class="value"><?php echo $pendonor['Nama']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Nomor Identitas</td>
-                                                <td class="value"><?php echo $pendonor['NoKTP']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Alamat</td>
-                                                <td class="value">
-                                                    <?php echo $pendonor['Alamat'] . ' ' . $pendonor['kelurahan'] . ' ' . $pendonor['kecamatan'] . ' ' . $pendonor['KodePos']; ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Wilayah</td>
-                                                <td class="value"><?php echo $pendonor['Wilayah']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tempat Lahir</td>
-                                                <td class="value"><?php echo $pendonor['TempatLhr']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tgl Lahir</td>
-                                                <td class="value"><?php echo $pendonor['TglLhr']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Donasi</td>
-                                                <td class="value"><?php echo $pendonor['jumDonor']; ?> Kali</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Nomor Telp</td>
-                                                <td class="value"><?php echo $pendonor['telp']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Nomor HP</td>
-                                                <td class="value"><?php echo $pendonor['telp2']; ?></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-box mt-2">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Nama Pendonor</td>
+                                <td class="value"><?php echo $pendonor['Nama']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Nomor Identitas</td>
+                                <td class="value"><?php echo $pendonor['NoKTP']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Alamat</td>
+                                <td class="value">
+                                    <?php echo $pendonor['Alamat'] . ' ' . $pendonor['kelurahan'] . ' ' . $pendonor['kecamatan'] . ' ' . $pendonor['KodePos']; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Wilayah</td>
+                                <td class="value"><?php echo $pendonor['Wilayah']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tempat Lahir</td>
+                                <td class="value"><?php echo $pendonor['TempatLhr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tgl Lahir</td>
+                                <td class="value"><?php echo $pendonor['TglLhr']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Donasi</td>
+                                <td class="value"><?php echo $pendonor['jumDonor']; ?> Kali</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Nomor Telp</td>
+                                <td class="value"><?php echo $pendonor['telp']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Nomor HP</td>
+                                <td class="value"><?php echo $pendonor['telp2']; ?></td>
+                            </tr>
+                        </table>
                     </div>
-                <?php
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
                 } else {
                 ?>
-                    <div class="panel-card mt-4">
-                        <div class="panel-card-header">
-                            <div>Data Pendonor</div>
-                            <div></div>
-                        </div>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Pendonor</div>
+            <div></div>
+        </div>
 
-                        <div class="panel-body">
-                            <?php if ($aftap['NoTrans'] != ''): ?>
-                                <div class="row">
-                                    <div class="col-lg-6 mb-3">
-                                        <div class="table-box">
-                                            <table class="info-table">
-                                                <tr>
-                                                    <td class="label">Kode Pendonor</td>
-                                                    <td class="value"><?php echo $aftap['KodePendonor']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Jenis Kelamin</td>
-                                                    <td class="value"><?php echo $jeniskelamin; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Jenis Donor</td>
-                                                    <td class="value"><?php echo $jenisdonor; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Status Donor</td>
-                                                    <td class="value"><?php echo $statusdonor; ?></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6 mb-3">
-                                        <div class="table-box">
-                                            <table class="info-table">
-                                                <tr>
-                                                    <td class="label">Umur Donor</td>
-                                                    <td class="value"><?php echo $aftap['umur']; ?> tahun</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Donor ke</td>
-                                                    <td class="value"><?php echo $aftap['donorke']; ?> kali</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Pekerjaan</td>
-                                                    <td class="value"><?php echo $aftap['pekerjaan']; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="label">Gol Darah</td>
-                                                    <td class="value">
-                                                        <?php echo $pendonor['GolDarah'] . ' Rh ' . $pendonor['Rhesus']; ?>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php else: ?>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="alert alert-danger" role="alert">
-                                            Data pendonor belum dilakukan
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+        <div class="panel-body">
+            <?php if ($aftap['NoTrans'] != ''): ?>
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Kode Pendonor</td>
+                                <td class="value"><?php echo $aftap['KodePendonor']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Jenis Kelamin</td>
+                                <td class="value"><?php echo $jeniskelamin; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Jenis Donor</td>
+                                <td class="value"><?php echo $jenisdonor; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Status Donor</td>
+                                <td class="value"><?php echo $statusdonor; ?></td>
+                            </tr>
+                        </table>
                     </div>
-            <?php
+                </div>
+
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Umur Donor</td>
+                                <td class="value"><?php echo $aftap['umur']; ?> tahun</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Donor ke</td>
+                                <td class="value"><?php echo $aftap['donorke']; ?> kali</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Pekerjaan</td>
+                                <td class="value"><?php echo $aftap['pekerjaan']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Gol Darah</td>
+                                <td class="value">
+                                    <?php echo $pendonor['GolDarah'] . ' Rh ' . $pendonor['Rhesus']; ?>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <?php else: ?>
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-danger" role="alert">
+                        Data pendonor belum dilakukan
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php
                 }
             } ?>
 
 
-            <?php
+    <?php
             if ($levelUser != 'logistik' && $levelUser != 'p2d2s' && $levelUser != 'mobile') {
 
                 $s_sr = "SELECT `hst_id`, `hst_notrans`, `hst_bagpengirim`, `hst_bagpenerima`, `hst_tgl`, `hst_asal`, `hst_jenis_st`, `hst_user`, `hst_pengirim`, `hst_penerima`, `hst_penerima2`, `hst_kode_alat`, `hst_suhuterima`, `hst_kondisiumum`, `hst_peruntukan`, `hst_modul`, `hst_shift_pengirim`, `hst_shift_penerima`,
@@ -1473,114 +1561,114 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                 $penerima2 = $usr['nama_lengkap'];
             ?>
 
-                <div class="panel-card mt-4">
-                    <div class="panel-card-header">
-                        <div>Data Serah Terima</div>
-                        <div></div>
-                    </div>
-                    <div class="panel-body">
-                        <?php if ($sr['hst_notrans'] != '') : ?>
-                            <div class="row">
-                                <div class="col-lg-6 mb-3">
-                                    <div class="table-box">
-                                        <table class="info-table">
-                                            <tr>
-                                                <td class="label">Tgl Serah Terima</td>
-                                                <td class="value"><?php echo $sr['hst_tgl']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">No Transaksi</td>
-                                                <td class="value"><?php echo $sr['hst_notrans']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Bagian Pengiriman</td>
-                                                <td class="value"><?php echo $sr['hst_bagpengirim']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Bagian Penerima</td>
-                                                <td class="value"><?php echo $sr['hst_bagpenerima']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Asal Darah/Sample</td>
-                                                <td class="value"><?php echo $sr['hst_asal']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Kode Alat Pengiriman</td>
-                                                <td class="value"><?php echo $sr['hst_kode_alat']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Suhu saat diserahkan</td>
-                                                <td class="value"><?php echo $sr['hst_suhuterima']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Keadaan Umum</td>
-                                                <td class="value"><?php echo $sr['hst_kondisiumum']; ?></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 mb-3">
-                                    <div class="table-box">
-                                        <table class="info-table">
-                                            <tr>
-                                                <td class="label">Status Darah saat diterima</td>
-                                                <td class="value"><?php echo $sr['dst_statusktg']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Kesesuaian Kantong Darah</td>
-                                                <td class="value"><?php echo $sr['dst_sah']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Kesesuaian Sampel</td>
-                                                <td class="value"><?php echo $sr['dst_sample']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Petugas Input Data</td>
-                                                <td class="value"><?php echo $sr['hst_user'] . ' - ' . $pencatat; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Petugas Pengambilan</td>
-                                                <td class="value"><?php echo $sr['hst_pengirim'] . ' - ' . $pengirim; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Petugas penerima darah</td>
-                                                <td class="value"><?php echo $sr['hst_penerima'] . ' - ' . $penerima; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Petugas penerima sampel</td>
-                                                <td class="value"><?php echo $sr['hst_penerima2'] . ' - ' . $penerima2; ?></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php else : ?>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="alert alert-warning" role="alert">
-                                        Data serah terima belum dilakukan
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Serah Terima</div>
+            <div></div>
+        </div>
+        <div class="panel-body">
+            <?php if ($sr['hst_notrans'] != '') : ?>
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Tgl Serah Terima</td>
+                                <td class="value"><?php echo $sr['hst_tgl']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">No Transaksi</td>
+                                <td class="value"><?php echo $sr['hst_notrans']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Bagian Pengiriman</td>
+                                <td class="value"><?php echo $sr['hst_bagpengirim']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Bagian Penerima</td>
+                                <td class="value"><?php echo $sr['hst_bagpenerima']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Asal Darah/Sample</td>
+                                <td class="value"><?php echo $sr['hst_asal']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Kode Alat Pengiriman</td>
+                                <td class="value"><?php echo $sr['hst_kode_alat']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Suhu saat diserahkan</td>
+                                <td class="value"><?php echo $sr['hst_suhuterima']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Keadaan Umum</td>
+                                <td class="value"><?php echo $sr['hst_kondisiumum']; ?></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-            <? } ?>
 
-            <br>
-            <?php
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Status Darah saat diterima</td>
+                                <td class="value"><?php echo $sr['dst_statusktg']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Kesesuaian Kantong Darah</td>
+                                <td class="value"><?php echo $sr['dst_sah']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Kesesuaian Sampel</td>
+                                <td class="value"><?php echo $sr['dst_sample']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Input Data</td>
+                                <td class="value"><?php echo $sr['hst_user'] . ' - ' . $pencatat; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Pengambilan</td>
+                                <td class="value"><?php echo $sr['hst_pengirim'] . ' - ' . $pengirim; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas penerima darah</td>
+                                <td class="value"><?php echo $sr['hst_penerima'] . ' - ' . $penerima; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas penerima sampel</td>
+                                <td class="value"><?php echo $sr['hst_penerima2'] . ' - ' . $penerima2; ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <?php else : ?>
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-warning" role="alert">
+                        Data serah terima belum dilakukan
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php } ?>
+
+    <br>
+    <?php
             if ($levelUser != 'logistik' && $levelUser != 'p2d2s' && $levelUser != 'kasir' && $levelUser != 'aftap' && $levelUser != 'mobile'  && $levelUser != 'konfirmasi' && $levelUser != 'komponen'  && $levelUser != 'kasir2') {
             ?>
-                <div class="panel-card mt-4">
-                    <div class="panel-card-header">
-                        <div>Data Uji Saring IMLTD</div>
-                        <div></div>
-                    </div>
-                    <div class="panel-body">
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Uji Saring IMLTD</div>
+            <div></div>
+        </div>
+        <div class="panel-body">
 
-                        <div class="section-title mb-2">Pemeriksaan metode ELISA/CLHIA</div>
-                        <?php
+            <div class="section-title mb-2">Pemeriksaan metode ELISA/CLHIA</div>
+            <?php
                         $sq_elisa = mysqli_query($dbi, "SELECT `id`, `noKantong`, `OD`, `COV`, `notrans`,
                     CASE
                         WHEN `jenisPeriksa`='0' THEN 'HBsAg'
@@ -1598,40 +1686,40 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                     WHERE `noKantong`='$no_kantonga'
                     ORDER BY `id`");
                         ?>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm mb-4">
-                                <thead style="background-color: mistyrose; color: #000;">
-                                    <tr>
-                                        <th rowspan="2">ID</th>
-                                        <th rowspan="2">Kantong<br>Utama</th>
-                                        <th rowspan="2">Transaksi</th>
-                                        <th rowspan="2">Tanggal</th>
-                                        <th rowspan="2">Parameter</th>
-                                        <th rowspan="2">OD</th>
-                                        <th rowspan="2">Hasil</th>
-                                        <th colspan="3">Reagen</th>
-                                        <th rowspan="2">Run Time</th>
-                                        <th rowspan="2">Pencatat</th>
-                                        <th rowspan="2">Di Cek</th>
-                                        <th rowspan="2">Disahkan</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Lot</th>
-                                        <th>ED</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm mb-4">
+                    <thead style="background-color: mistyrose; color: #000;">
+                        <tr>
+                            <th rowspan="2">ID</th>
+                            <th rowspan="2">Kantong<br>Utama</th>
+                            <th rowspan="2">Transaksi</th>
+                            <th rowspan="2">Tanggal</th>
+                            <th rowspan="2">Parameter</th>
+                            <th rowspan="2">OD</th>
+                            <th rowspan="2">Hasil</th>
+                            <th colspan="3">Reagen</th>
+                            <th rowspan="2">Run Time</th>
+                            <th rowspan="2">Pencatat</th>
+                            <th rowspan="2">Di Cek</th>
+                            <th rowspan="2">Disahkan</th>
+                        </tr>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Lot</th>
+                            <th>ED</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
                                     $no = 0;
                                     while ($imltd = mysqli_fetch_assoc($sq_elisa)) {
                                         $no++;
                                         if (($imltd['Hasil'] == "Reaktif") or ($imltd['Hasil'] == "Grayzone")) {
                                             $var_imltd = '1';
                                         }
-                                        $sq_reagen = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `Nama`, `noLot`, `tglKad` FROM `reagen` WHERE kode='$imltd[noLot]'"));
+                                        $sq_reagen = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `Nama`, `noLot`, `tglKad` FROM `reagen` WHERE kode='$imltd[noLot]' LIMIT 1"));
                                         if ($sq_reagen['noLot'] == "") {
-                                            $sq_reagen = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `Nama`, `noLot`, `tglKad` FROM `reagen` WHERE noLot='$imltd[noLot]'"));
+                                            $sq_reagen = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `Nama`, `noLot`, `tglKad` FROM `reagen` WHERE noLot='$imltd[noLot]' LIMIT 1"));
                                         }
 
                                         // Ambil Run Time dari imltd_arc_konfirm sesuai parameter
@@ -1656,34 +1744,34 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                             $imltd_runtime = $sq_arcrt['runtime'];
                                         }
                                     ?>
-                                        <tr>
-                                            <td><?php echo $imltd['id']; ?></td>
-                                            <td><?php echo $imltd['noKantong']; ?></td>
-                                            <td><?php echo $imltd['notrans']; ?></td>
-                                            <td><?php echo $imltd['tglPeriksa']; ?></td>
-                                            <td><?php echo $imltd['Parameter']; ?></td>
-                                            <td><?php echo $imltd['OD']; ?></td>
-                                            <td><?php echo $imltd['Hasil']; ?></td>
-                                            <td><?php echo $sq_reagen['Nama']; ?></td>
-                                            <td><?php echo $sq_reagen['noLot']; ?></td>
-                                            <td><?php echo $sq_reagen['tglKad']; ?></td>
-                                            <td><?php echo $imltd_runtime; ?></td>
-                                            <td><?php echo $imltd['dicatatOleh']; ?></td>
-                                            <td><?php echo $imltd['dicekOleh']; ?></td>
-                                            <td><?php echo $imltd['DisahkanOleh']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    <?php if ($no == 0) { ?>
-                                        <tr>
-                                            <td colspan="14" class="text-center">TIDAK ADA DATA PEMERIKSAAN IMLTD METODE ELISA</td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
+                        <tr>
+                            <td><?php echo $imltd['id']; ?></td>
+                            <td><?php echo $imltd['noKantong']; ?></td>
+                            <td><?php echo $imltd['notrans']; ?></td>
+                            <td><?php echo $imltd['tglPeriksa']; ?></td>
+                            <td><?php echo $imltd['Parameter']; ?></td>
+                            <td><?php echo $imltd['OD']; ?></td>
+                            <td><?php echo $imltd['Hasil']; ?></td>
+                            <td><?php echo $sq_reagen['Nama']; ?></td>
+                            <td><?php echo $sq_reagen['noLot']; ?></td>
+                            <td><?php echo $sq_reagen['tglKad']; ?></td>
+                            <td><?php echo $imltd_runtime; ?></td>
+                            <td><?php echo $imltd['dicatatOleh']; ?></td>
+                            <td><?php echo $imltd['dicekOleh']; ?></td>
+                            <td><?php echo $imltd['DisahkanOleh']; ?></td>
+                        </tr>
+                        <?php } ?>
+                        <?php if ($no == 0) { ?>
+                        <tr>
+                            <td colspan="14" class="text-center">TIDAK ADA DATA PEMERIKSAAN IMLTD METODE ELISA</td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
 
-                        <div class="section-title mb-2">Pemeriksaan metode RAPID</div>
-                        <?php
+            <div class="section-title mb-2">Pemeriksaan metode RAPID</div>
+            <?php
                         $sq_rapid = mysqli_query($dbi, "SELECT `id`, `NoTrans`, `noKantong`, `Kontrol`,
                     CASE
                         WHEN `jenisperiksa`='0' THEN 'HBsAg'
@@ -1700,30 +1788,30 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                     WHERE `noKantong`='$nkt'
                     ORDER BY `id`");
                         ?>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm mb-4">
-                                <thead style="background-color: mistyrose; color: #000;">
-                                    <tr>
-                                        <th rowspan="2">ID</th>
-                                        <th rowspan="2">Kantong<br>Utama</th>
-                                        <th rowspan="2">Transaksi</th>
-                                        <th rowspan="2">Tanggal</th>
-                                        <th rowspan="2">Parameter</th>
-                                        <th rowspan="2">Kontrol</th>
-                                        <th rowspan="2">Hasil</th>
-                                        <th colspan="3">Reagen</th>
-                                        <th rowspan="2">Pencatat</th>
-                                        <th rowspan="2">Di Cek</th>
-                                        <th rowspan="2">Disahkan</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Lot</th>
-                                        <th>ED</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm mb-4">
+                    <thead style="background-color: mistyrose; color: #000;">
+                        <tr>
+                            <th rowspan="2">ID</th>
+                            <th rowspan="2">Kantong<br>Utama</th>
+                            <th rowspan="2">Transaksi</th>
+                            <th rowspan="2">Tanggal</th>
+                            <th rowspan="2">Parameter</th>
+                            <th rowspan="2">Kontrol</th>
+                            <th rowspan="2">Hasil</th>
+                            <th colspan="3">Reagen</th>
+                            <th rowspan="2">Pencatat</th>
+                            <th rowspan="2">Di Cek</th>
+                            <th rowspan="2">Disahkan</th>
+                        </tr>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Lot</th>
+                            <th>ED</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
                                     $no = 0;
                                     while ($imltd_r = mysqli_fetch_assoc($sq_rapid)) {
                                         $no++;
@@ -1732,33 +1820,33 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                         }
                                         $sq_reagen = mysqli_fetch_assoc(mysqli_query($dbi, "SELECT `Nama`, `noLot`, `tglKad` FROM `reagen` WHERE kode='$imltd_r[nolot]'"));
                                     ?>
-                                        <tr>
-                                            <td><?php echo $imltd_r['id']; ?></td>
-                                            <td><?php echo $imltd_r['noKantong']; ?></td>
-                                            <td><?php echo $imltd_r['NoTrans']; ?></td>
-                                            <td><?php echo $imltd_r['tgl_tes']; ?></td>
-                                            <td><?php echo $imltd_r['Parameter']; ?></td>
-                                            <td><?php echo $imltd_r['Kontrol']; ?></td>
-                                            <td><?php echo $imltd_r['Hasil']; ?></td>
-                                            <td><?php echo $sq_reagen['Nama']; ?></td>
-                                            <td><?php echo $sq_reagen['noLot']; ?></td>
-                                            <td><?php echo $sq_reagen['tglKad']; ?></td>
-                                            <td><?php echo $imltd_r['dicatatoleh']; ?></td>
-                                            <td><?php echo $imltd_r['dicekOleh']; ?></td>
-                                            <td><?php echo $imltd_r['DisahkanOleh']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    <?php if ($no == 0) { ?>
-                                        <tr>
-                                            <td colspan="13" class="text-center">TIDAK ADA DATA PEMERIKSAAN IMLTD METODE RAPID</td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
+                        <tr>
+                            <td><?php echo $imltd_r['id']; ?></td>
+                            <td><?php echo $imltd_r['noKantong']; ?></td>
+                            <td><?php echo $imltd_r['NoTrans']; ?></td>
+                            <td><?php echo $imltd_r['tgl_tes']; ?></td>
+                            <td><?php echo $imltd_r['Parameter']; ?></td>
+                            <td><?php echo $imltd_r['Kontrol']; ?></td>
+                            <td><?php echo $imltd_r['Hasil']; ?></td>
+                            <td><?php echo $sq_reagen['Nama']; ?></td>
+                            <td><?php echo $sq_reagen['noLot']; ?></td>
+                            <td><?php echo $sq_reagen['tglKad']; ?></td>
+                            <td><?php echo $imltd_r['dicatatoleh']; ?></td>
+                            <td><?php echo $imltd_r['dicekOleh']; ?></td>
+                            <td><?php echo $imltd_r['DisahkanOleh']; ?></td>
+                        </tr>
+                        <?php } ?>
+                        <?php if ($no == 0) { ?>
+                        <tr>
+                            <td colspan="13" class="text-center">TIDAK ADA DATA PEMERIKSAAN IMLTD METODE RAPID</td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
 
-                        <div class="section-title mb-2">Data Pemeriksaan NAT</div>
-                        <?php
+            <div class="section-title mb-2">Data Pemeriksaan NAT</div>
+            <?php
                         $sq_nat = mysqli_query($dbi, "SELECT *,
                         CASE
                             WHEN `Hasil`='0' THEN 'Non Reaktif'
@@ -1769,28 +1857,28 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                         WHERE `noKantong` = '$no_kantonga'
                         ORDER BY `id`");
                         ?>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm mb-0">
-                                <thead style="background-color: mistyrose; color: #000;">
-                                    <tr>
-                                        <th rowspan="2">ID</th>
-                                        <th rowspan="2">Kantong<br>Utama</th>
-                                        <th rowspan="2">Tanggal</th>
-                                        <th rowspan="2">OD</th>
-                                        <th rowspan="2">Hasil</th>
-                                        <th colspan="3">Reagen</th>
-                                        <th rowspan="2">Pencatat</th>
-                                        <th rowspan="2">Di Cek</th>
-                                        <th rowspan="2">Disahkan</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Lot</th>
-                                        <th>ED</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm mb-0">
+                    <thead style="background-color: mistyrose; color: #000;">
+                        <tr>
+                            <th rowspan="2">ID</th>
+                            <th rowspan="2">Kantong<br>Utama</th>
+                            <th rowspan="2">Tanggal</th>
+                            <th rowspan="2">OD</th>
+                            <th rowspan="2">Hasil</th>
+                            <th colspan="3">Reagen</th>
+                            <th rowspan="2">Pencatat</th>
+                            <th rowspan="2">Di Cek</th>
+                            <th rowspan="2">Disahkan</th>
+                        </tr>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Lot</th>
+                            <th>ED</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
                                     $no = 0;
                                     while ($imltdn = mysqli_fetch_assoc($sq_nat)) {
                                         $no++;
@@ -1798,87 +1886,87 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                             $var_imltd = '1';
                                         }
                                     ?>
-                                        <tr>
-                                            <td><?php echo $imltdn['id']; ?></td>
-                                            <td><?php echo $imltdn['noKantong']; ?></td>
-                                            <td><?php echo $imltdn['tglPeriksa']; ?></td>
-                                            <td><?php echo $imltdn['OD']; ?></td>
-                                            <td><?php echo $imltdn['Hasil']; ?></td>
-                                            <td>Ultrio</td>
-                                            <td><?php echo $imltdn['noLot']; ?></td>
-                                            <td><?php echo $imltdn['ed']; ?></td>
-                                            <td><?php echo $imltdn['dicatatOleh']; ?></td>
-                                            <td><?php echo $imltdn['dicatatOleh']; ?></td>
-                                            <td><?php echo $imltdn['DisahkanOleh']; ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    <?php if ($no == 0) { ?>
-                                        <tr>
-                                            <td colspan="11" class="text-center">TIDAK ADA DATA PEMERIKSAAN NAT</td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
+                        <tr>
+                            <td><?php echo $imltdn['id']; ?></td>
+                            <td><?php echo $imltdn['noKantong']; ?></td>
+                            <td><?php echo $imltdn['tglPeriksa']; ?></td>
+                            <td><?php echo $imltdn['OD']; ?></td>
+                            <td><?php echo $imltdn['Hasil']; ?></td>
+                            <td>Ultrio</td>
+                            <td><?php echo $imltdn['noLot']; ?></td>
+                            <td><?php echo $imltdn['ed']; ?></td>
+                            <td><?php echo $imltdn['dicatatOleh']; ?></td>
+                            <td><?php echo $imltdn['dicatatOleh']; ?></td>
+                            <td><?php echo $imltdn['DisahkanOleh']; ?></td>
+                        </tr>
+                        <?php } ?>
+                        <?php if ($no == 0) { ?>
+                        <tr>
+                            <td colspan="11" class="text-center">TIDAK ADA DATA PEMERIKSAAN NAT</td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
 
-                    </div>
-                </div>
-            <? } ?>
+        </div>
+    </div>
+    <?php } ?>
 
-            <br>
-            <?php
+    <br>
+    <?php
             if ($levelUser != 'logistik' && $levelUser != 'p2d2s' && $levelUser != 'kasir' && $levelUser != 'aftap' && $levelUser != 'mobile'  && $levelUser != 'imltd' && $levelUser != 'komponen'  && $levelUser != 'kasir2') {
             ?>
-                <div class="panel-card mt-4">
-                    <div class="panel-card-header">
-                        <div>Data Konfirmasi Golongan Darah</div>
-                        <div></div>
-                    </div>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Konfirmasi Golongan Darah</div>
+            <div></div>
+        </div>
 
-                    <div class="panel-body">
-                        <?php
+        <div class="panel-body">
+            <?php
                         $a = mysqli_query($dbi, "select * from dkonfirmasi where NoKantong='$no_kantonga' order by NoKonfirmasi ASC");
                         $no = 1;
                         ?>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm mb-0">
-                                <thead style="background-color: mistyrose; color: #000;">
-                                    <tr>
-                                        <th rowspan="3">No</th>
-                                        <th rowspan="3">Tanggal</th>
-                                        <th rowspan="3">No Konfirmasi</th>
-                                        <th rowspan="3">Kantong Utama</th>
-                                        <th rowspan="3">Gol(Rh) Darah Asal</th>
-                                        <th rowspan="3">Gol(Rh) Darah Baru</th>
-                                        <th rowspan="3">Hasil</th>
-                                        <th rowspan="3">Metode</th>
-                                        <th colspan="3">Anti A</th>
-                                        <th colspan="3">Anti B</th>
-                                        <th colspan="3">Anti D</th>
-                                        <th rowspan="3">TS-A</th>
-                                        <th rowspan="3">TS-B</th>
-                                        <th rowspan="3">TS-O</th>
-                                        <th rowspan="3">AC</th>
-                                        <th rowspan="3">BA 6%</th>
-                                        <th rowspan="3">Run Time</th>
-                                        <th rowspan="3">Petugas</th>
-                                    </tr>
-                                    <tr style="background-color: mistyrose; color: #000;">
-                                        <th rowspan="2">Nilai</th>
-                                        <th rowspan="2">Nolot</th>
-                                        <th rowspan="2">Epx.</th>
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm mb-0">
+                    <thead style="background-color: mistyrose; color: #000;">
+                        <tr>
+                            <th rowspan="3">No</th>
+                            <th rowspan="3">Tanggal</th>
+                            <th rowspan="3">No Konfirmasi</th>
+                            <th rowspan="3">Kantong Utama</th>
+                            <th rowspan="3">Gol(Rh) Darah Asal</th>
+                            <th rowspan="3">Gol(Rh) Darah Baru</th>
+                            <th rowspan="3">Hasil</th>
+                            <th rowspan="3">Metode</th>
+                            <th colspan="3">Anti A</th>
+                            <th colspan="3">Anti B</th>
+                            <th colspan="3">Anti D</th>
+                            <th rowspan="3">TS-A</th>
+                            <th rowspan="3">TS-B</th>
+                            <th rowspan="3">TS-O</th>
+                            <th rowspan="3">AC</th>
+                            <th rowspan="3">BA 6%</th>
+                            <th rowspan="3">Run Time</th>
+                            <th rowspan="3">Petugas</th>
+                        </tr>
+                        <tr style="background-color: mistyrose; color: #000;">
+                            <th rowspan="2">Nilai</th>
+                            <th rowspan="2">Nolot</th>
+                            <th rowspan="2">Epx.</th>
 
-                                        <th rowspan="2">Nilai</th>
-                                        <th rowspan="2">Nolot</th>
-                                        <th rowspan="2">Epx.</th>
+                            <th rowspan="2">Nilai</th>
+                            <th rowspan="2">Nolot</th>
+                            <th rowspan="2">Epx.</th>
 
-                                        <th rowspan="2">Nilai</th>
-                                        <th rowspan="2">Nolot</th>
-                                        <th rowspan="2">Epx.</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
+                            <th rowspan="2">Nilai</th>
+                            <th rowspan="2">Nolot</th>
+                            <th rowspan="2">Epx.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
                                     while ($a_dtransaksipermintaan = mysqli_fetch_assoc($a)) {
                                         if ($a_dtransaksipermintaan['Cocok'] == '1') {
                                             $var_kgd = '1';
@@ -1910,62 +1998,62 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
                                         $pengolahan = $a_dtransaksipermintaan['tgl'];
                                         $tglkel0 = date("Y-m-d", strtotime($pengolahan));
                                     ?>
-                                        <tr>
-                                            <td><?php echo $no++; ?>.</td>
-                                            <td><?php echo $tglkel0; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['NoKonfirmasi']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['NoKantong']; ?></td>
-                                            <td class="text-center">
-                                                <?php echo $a_dtransaksipermintaan['goldarah_asal']; ?>(<?php echo $a_dtransaksipermintaan['rhesus_asal']; ?>)
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo $a_dtransaksipermintaan['GolDarah']; ?>(<?php echo $a_dtransaksipermintaan['Rhesus']; ?>)
-                                            </td>
-                                            <td class="text-center"><?php echo $cocok1; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['metode']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['antiA']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['nolot_aa']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['expa']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['antiB']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['nolot_ab']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['expb']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['antiD']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['nolot_ad']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['expd']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['tA']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['tB']; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['tsO']; ?></td>
-                                            <td><?php echo $ac; ?></td>
-                                            <td><?php echo $ba; ?></td>
-                                            <td><?php echo $runtime_abd; ?></td>
-                                            <td><?php echo $a_dtransaksipermintaan['petugas']; ?></td>
-                                        </tr>
-                                    <?php } ?>
+                        <tr>
+                            <td><?php echo $no++; ?>.</td>
+                            <td><?php echo $tglkel0; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['NoKonfirmasi']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['NoKantong']; ?></td>
+                            <td class="text-center">
+                                <?php echo $a_dtransaksipermintaan['goldarah_asal']; ?>(<?php echo $a_dtransaksipermintaan['rhesus_asal']; ?>)
+                            </td>
+                            <td class="text-center">
+                                <?php echo $a_dtransaksipermintaan['GolDarah']; ?>(<?php echo $a_dtransaksipermintaan['Rhesus']; ?>)
+                            </td>
+                            <td class="text-center"><?php echo $cocok1; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['metode']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['antiA']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['nolot_aa']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['expa']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['antiB']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['nolot_ab']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['expb']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['antiD']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['nolot_ad']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['expd']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['tA']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['tB']; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['tsO']; ?></td>
+                            <td><?php echo $ac; ?></td>
+                            <td><?php echo $ba; ?></td>
+                            <td><?php echo $runtime_abd; ?></td>
+                            <td><?php echo $a_dtransaksipermintaan['petugas']; ?></td>
+                        </tr>
+                        <?php } ?>
 
-                                    <?php if ($no == 1) { ?>
-                                        <tr>
-                                            <td colspan="24" class="text-center">TIDAK ADA DATA PEMERIKSAAN KONFIRMASI GOLONGAN
-                                                DARAH
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            <? } ?>
+                        <?php if ($no == 1) { ?>
+                        <tr>
+                            <td colspan="24" class="text-center">TIDAK ADA DATA PEMERIKSAAN KONFIRMASI GOLONGAN
+                                DARAH
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
 
-            <?php
+    <?php
             if ($levelUser != 'logistik' && $levelUser != 'p2d2s' && $levelUser != 'kasir' && $levelUser != 'aftap' && $levelUser != 'mobile' && $levelUser != 'konfirmasi'  && $levelUser != 'imltd' && $levelUser != 'kasir2') {
             ?>
-                <div class="panel-card mt-4">
-                    <div class="panel-card-header">
-                        <div>Data Pengolahan Darah</div>
-                    </div>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Pengolahan Darah</div>
+        </div>
 
-                    <div class="panel-body">
-                        <?php
+        <div class="panel-body">
+            <?php
                         $a = mysqli_query($dbi, "SELECT  `id`, `noKantong`, `Produk`, `tgl`, `aPisah`, `aPutar`, `aBeku`, `tglPengerjaan`,                   
                     CASE WHEN `cara`='0' THEN 'Manual' ELSE 'Otomatis' END AS cara,
                     CASE
@@ -2005,83 +2093,82 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
 
                         if ($dt['NoTrans'] != "") {
                         ?>
-                            <div class="row">
-                                <div class="col-lg-6 mb-3">
-                                    <div class="table-box">
-                                        <table class="info-table">
-                                            <tr>
-                                                <td class="label">Nomor Transaksi</td>
-                                                <td class="value"><?php echo $dt['NoTrans']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tanggal Pengolahan</td>
-                                                <td class="value"><?php echo $komponen['tglPengerjaan']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Nama Produk</td>
-                                                <td class="value">
-                                                    <?php echo $komponen['Produk'] . ' (' . $komponen['lengkap'] . ')'; ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Metode Pengolahan</td>
-                                                <td class="value"><?php echo $komponen['cara']; ?></td>
-                                            </tr>
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Nomor Transaksi</td>
+                                <td class="value"><?php echo $dt['NoTrans']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tanggal Pengolahan</td>
+                                <td class="value"><?php echo $komponen['tglPengerjaan']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Nama Produk</td>
+                                <td class="value">
+                                    <?php echo $komponen['Produk'] . ' (' . $komponen['lengkap'] . ')'; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Metode Pengolahan</td>
+                                <td class="value"><?php echo $komponen['cara']; ?></td>
+                            </tr>
 
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 mb-3">
-                                    <div class="table-box">
-                                        <table class="info-table">
-                                            <tr>
-                                                <td class="label">Pemutaran/Sentrifugasi</td>
-                                                <td class="value">
-                                                    <?php echo $komponen['Produk'] === 'WB' ? 'Tidak dilakukan' : $alt_putar; ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Pemisahan</td>
-                                                <td class="value">
-                                                    <?php echo $komponen['Produk'] == 'WB' ? 'Tidak dilakukan' : $alt_pisah; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Pembekuan</td>
-                                                <td class="value">
-                                                    <?php echo $komponen['Produk'] === 'WB' ? 'Tidak dilakukan' : ($komponen['Produk'] === 'PRC' ? 'Tidak dilakukan' : $alt_beku); ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Petugas Pengolahan</td>
-                                                <td class="value">
-                                                    <?php echo $komponen['petugas'] . ' - ' . $komponen['nama_lengkap']; ?></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } else { ?>
-                            <div class="alert alert-warning" role="alert">
-                                Data pengolahan darah belum dilakukan.
-                            </div>
-                        <?php } ?>
+                        </table>
                     </div>
                 </div>
-            <? } ?>
 
-            <br>
-            <?php
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Pemutaran/Sentrifugasi</td>
+                                <td class="value">
+                                    <?php echo $komponen['Produk'] === 'WB' ? 'Tidak dilakukan' : $alt_putar; ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Pemisahan</td>
+                                <td class="value">
+                                    <?php echo $komponen['Produk'] == 'WB' ? 'Tidak dilakukan' : $alt_pisah; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Pembekuan</td>
+                                <td class="value">
+                                    <?php echo $komponen['Produk'] === 'WB' ? 'Tidak dilakukan' : ($komponen['Produk'] === 'PRC' ? 'Tidak dilakukan' : $alt_beku); ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Pengolahan</td>
+                                <td class="value">
+                                    <?php echo $komponen['petugas'] . ' - ' . $komponen['nama_lengkap']; ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <?php } else { ?>
+            <div class="alert alert-warning" role="alert">
+                Data pengolahan darah belum dilakukan.
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+    <?php } ?>
+
+    <?php
             if ($levelUser != 'logistik' && $levelUser != 'p2d2s' && $levelUser != 'kasir' && $levelUser != 'aftap' && $levelUser != 'imltd' && $levelUser != 'mobile' && $levelUser != 'konfirmasi' && $levelUser != 'komponen'  && $levelUser != 'kasir2') {
             ?>
-                <div class="panel-card mt-4">
-                    <div class="panel-card-header">
-                        <div>Data Release</div>
-                        <div></div>
-                    </div>
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Data Release</div>
+            <div></div>
+        </div>
 
-                    <div class="panel-body">
-                        <?php
+        <div class="panel-body">
+            <?php
                         $rel = "select * FROM `release` where `rnokantong`='$nkt'";
                         $tmp = mysqli_fetch_assoc(mysqli_query($dbi, $rel));
 
@@ -2102,618 +2189,936 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
 
                         if (strlen($tmp['rnotrans']) == 0) {
                         ?>
-                            <div class="alert alert-danger mb-0">
-                                <strong>Darah belum di RELEASE</strong>
-                            </div>
-                        <?php
+            <div class="alert alert-danger mb-0">
+                <strong>Darah belum di RELEASE</strong>
+            </div>
+            <?php
                         } else {
                         ?>
 
-                            <div class="row">
-                                <div class="col-lg-6 mb-3">
-                                    <div class="table-box">
-                                        <table class="info-table">
-                                            <tr>
-                                                <td class="label">Nomor Transaksi</td>
-                                                <td class="value"><?php echo $tmp['rnotrans']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tgl Release</td>
-                                                <td class="value"><?php echo $tmp['rtgl']; ?></td>
-                                            </tr>
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label">Nomor Transaksi</td>
+                                <td class="value"><?php echo $tmp['rnotrans']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tgl Release</td>
+                                <td class="value"><?php echo $tmp['rtgl']; ?></td>
+                            </tr>
 
-                                            <tr>
-                                                <td class="label" colspan="2"
-                                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
-                                                    SPESIFIKASI KANTONG
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Label & Identitas sesuai spesifikasi</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rspek_kantong'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Kode Unik/Barcode sesuai spesifikasi</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rkode_unik'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
+                            <tr>
+                                <td class="label" colspan="2"
+                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
+                                    SPESIFIKASI KANTONG
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Label & Identitas sesuai spesifikasi</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rspek_kantong'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Kode Unik/Barcode sesuai spesifikasi</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rkode_unik'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
 
-                                            <tr>
-                                                <td class="label" colspan="2"
-                                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
-                                                    SELEKSI & PENGAMBILAN
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Seleksi donor memenuhi kriteria</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rspek_seleksi'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Waktu Pengambilan terpenuhi</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rspek_aftap'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
+                            <tr>
+                                <td class="label" colspan="2"
+                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
+                                    SELEKSI & PENGAMBILAN
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Seleksi donor memenuhi kriteria</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rspek_seleksi'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Waktu Pengambilan terpenuhi</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rspek_aftap'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
 
-                                            <tr>
-                                                <td class="label" colspan="2"
-                                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
-                                                    PEMERIKSAAN VISUAL
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tidak ada kebocoran</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rkebocoran'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Selang kantong sesuai spesifikasi</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rselang'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tidak Hemolysis</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rhemolysis'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tidak Lipemik</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rlipemik'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tidak Ikterik</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rikterik'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Plasma tidak kehijauan</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rkehijauan'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tidak ada bekuan pada Sel Darah Merah</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rbekuan'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 mb-3">
-                                    <div class="table-box">
-                                        <table class="info-table">
-                                            <tr>
-                                                <td class="label" colspan="2"
-                                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
-                                                    PEMERIKSAAN DAN PENGOLAHAN
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Waktu Selesai Pengolahan terpenuhi</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rspek_pengolahan'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Volume sesuai dengan spesifikasi</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rspek_volume'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Hasil Pemeriksaan memenuhi spesifikasi</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rspek_imltd'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Pemeriksaan donasi sebelumnya terpenuhi</td>
-                                                <td class="value text-center">
-                                                    <?php if ($tmp['rspek_imltd_old'] == '1') { ?>
-                                                        &radic;
-                                                    <?php } else { ?>
-                                                        <span
-                                                            style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
-                                                    <?php } ?>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="label" colspan="2"
-                                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
-                                                    VOLUME
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Berat Kantong (gram)</td>
-                                                <td class="value"><?php echo number_format($tmp['rberat_timbang'], 2); ?> gr</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Tanggal Penimbangan</td>
-                                                <td class="value"><?php echo $tmbng['waktu']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Volume produk darah</td>
-                                                <td class="value"><?php echo number_format(round($tmp['rvolume'], 2)); ?> ml</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Petugas penimbangan</td>
-                                                <td class="value"><?php echo $ptg_timbang; ?></td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="label" style="background:#f7cfc9;font-weight:700;">HASIL RELEASE</td>
-                                                <td class="value"><?php echo $tmp['rsatus_ket']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Catatan</td>
-                                                <td class="value"><?php echo $tmp['rnote'] == "" ? "-" : $tmp['rnote']; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Petugas Release</td>
-                                                <td class="value"><?php echo $ptg_prolis; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Dicek oleh</td>
-                                                <td class="value"><?php echo $ptg_chek; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="label">Diverifikasi oleh</td>
-                                                <td class="value"><?php echo $ptg_sah; ?></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-                        <?php } ?>
+                            <tr>
+                                <td class="label" colspan="2"
+                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
+                                    PEMERIKSAAN VISUAL
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tidak ada kebocoran</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rkebocoran'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Selang kantong sesuai spesifikasi</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rselang'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tidak Hemolysis</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rhemolysis'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tidak Lipemik</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rlipemik'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tidak Ikterik</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rikterik'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Plasma tidak kehijauan</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rkehijauan'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tidak ada bekuan pada Sel Darah Merah</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rbekuan'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-                </div>
-            <?php }; ?>
 
-            <br>
-            <div class="panel-card mt-4">
-                <div class="panel-card-header">
-                    <div>Rekam Jejak Data Kantong (Audit Trail)</div>
-                    <div></div>
-                </div>
+                <div class="col-lg-6 mb-3">
+                    <div class="table-box">
+                        <table class="info-table">
+                            <tr>
+                                <td class="label" colspan="2"
+                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
+                                    PEMERIKSAAN DAN PENGOLAHAN
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Waktu Selesai Pengolahan terpenuhi</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rspek_pengolahan'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Volume sesuai dengan spesifikasi</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rspek_volume'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Hasil Pemeriksaan memenuhi spesifikasi</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rspek_imltd'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Pemeriksaan donasi sebelumnya terpenuhi</td>
+                                <td class="value text-center">
+                                    <?php if ($tmp['rspek_imltd_old'] == '1') { ?>
+                                    &radic;
+                                    <?php } else { ?>
+                                    <span
+                                        style="display:inline-block;background:#dc3545;color:#fff;padding:2px 10px;border-radius:4px;">X</span>
+                                    <?php } ?>
+                                </td>
+                            </tr>
 
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-sm mb-0">
-                            <thead style="background-color: mistyrose; color: #000;">
-                                <tr>
-                                    <th class="text-center">Tanggal</th>
-                                    <th class="text-center">Jam</th>
-                                    <th class="text-center">Modul</th>
-                                    <th class="text-center">Proses</th>
-                                    <th class="text-center">Personil</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $ada_audit = 0;
+                            <tr>
+                                <td class="label" colspan="2"
+                                    style="background:#f7cfc9;font-weight:700;text-align:center;">
+                                    VOLUME
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">Berat Kantong (gram)</td>
+                                <td class="value"><?php echo number_format($tmp['rberat_timbang'], 2); ?> gr</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Tanggal Penimbangan</td>
+                                <td class="value"><?php echo $tmbng['waktu']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Volume produk darah</td>
+                                <td class="value"><?php echo number_format(round($tmp['rvolume'], 2)); ?> ml</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas penimbangan</td>
+                                <td class="value"><?php echo $ptg_timbang; ?></td>
+                            </tr>
 
-                                // barcode
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer, user_log.time_aksi,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$nkt%' AND user_log.aksi_user LIKE '%barcode%'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                    $waktu_bukakantong = $komp['time_aksi'];
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td><?php echo $komp['tempat'] . $komp['aksi_user']; ?></td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // mutasi kantong ke aftap
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND user_log.aksi_user LIKE '%Pengesahan Kantong Logistik%'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td>
-                                            <?php
-                                            if ($kantongke == 'A') {
-                                                echo $komp['tempat'] . $komp['aksi_user'];
-                                            } else {
-                                                echo 'Kantong Utama : ' . $komp['tempat'] . $komp['aksi_user'];
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // Pengambilan Darah
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer, user_log.time_aksi,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND user_log.aksi_user LIKE '%Pengambilan%'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                    $waktu_aftap = $komp['time_aksi'];
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td>
-                                            <?php
-                                            if ($kantongke == 'A') {
-                                                echo $komp['tempat'] . $komp['aksi_user'];
-                                            } else {
-                                                echo 'Kantong Utama : ' . $komp['tempat'] . $komp['aksi_user'];
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // Pengesahan ke karantina
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND user_log.aksi_user LIKE '%Serah terima (Pengesahan)%'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td>
-                                            <?php
-                                            if ($kantongke == 'A') {
-                                                echo $komp['tempat'] . $komp['aksi_user'];
-                                            } else {
-                                                echo 'Kantong Utama : ' . $komp['tempat'] . $komp['aksi_user'];
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // KGD
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer, user_log.time_aksi,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND user_log.aksi_user LIKE '%KGD%' AND user_log.modul='KONFIRMASI'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td>
-                                            <?php
-                                            if ($kantongke == 'A') {
-                                                echo $komp['tempat'] . $komp['aksi_user'];
-                                            } else {
-                                                echo 'Kantong Utama : ' . $komp['tempat'] . $komp['aksi_user'];
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // IMLTD
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$no_kantonga%' AND (user_log.aksi_user LIKE '%IMLTD%' OR user_log.modul='IMLTD')
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td>
-                                            <?php
-                                            if ($kantongke == 'A') {
-                                                echo $komp['tempat'] . $komp['aksi_user'];
-                                            } else {
-                                                echo 'Kantong Utama : ' . $komp['tempat'] . $komp['aksi_user'];
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // Pengolahan
-                                $a1 = "SELECT 
-                                    DATE_FORMAT(d.tglPengerjaan, '%d/%m/%Y') as tgl_aksi,
-                                    DATE_FORMAT(d.tglPengerjaan, '%H:%i') as jam_aksi,
-                                    d.tglPengerjaan as time_aksi,
-                                    'PENGOLAHAN' as modul,
-                                    CONCAT('Pengolahan (', p.lengkap, ') No.Trans: ', d.NoTrans) as aksi_user,
-                                    u.nama_lengkap,
-                                    '' as tempat
-                                FROM dpengolahan d
-                                LEFT JOIN user u ON u.id_user = d.petugas
-                                LEFT JOIN produk p ON p.Nama = d.Produk
-                                WHERE d.noKantong = '$nkt'
-                                ORDER BY d.tglPengerjaan ASC";
-
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                    $waktu_komponen = $komp['time_aksi'];
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td><?php echo $komp['aksi_user']; ?></td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // Release
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer, user_log.time_aksi,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$nkt%' AND user_log.aksi_user LIKE '%Release%'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                    $waktu_komponen = $komp['time_aksi'];
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td><?php echo $komp['tempat'] . $komp['aksi_user']; ?></td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // cross
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer, user_log.time_aksi,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$nkt%' AND user_log.aksi_user LIKE '%crossmatch%'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                    $waktu_komponen = $komp['time_aksi'];
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td><?php echo $komp['tempat'] . $komp['aksi_user']; ?></td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // distribusi ke
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer, user_log.time_aksi,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$nkt%' AND user_log.aksi_user LIKE '%Kirim ke%'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                    $waktu_komponen = $komp['time_aksi'];
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td><?php echo $komp['tempat'] . $komp['aksi_user']; ?></td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                // Pemusnahan
-                                $a1 = "SELECT DATE_FORMAT(user_log.time_aksi, '%H:%i') as jam_aksi,
-                                  DATE_FORMAT(user_log.time_aksi, '%d/%m/%Y') as tgl_aksi,
-                                  user_log.user, user_log.komputer, user_log.time_aksi,
-                                  CASE WHEN SUBSTRING(user_log.tempat, 1, 1)='M' THEN 'Mobile Unit-' ELSE '' END as tempat,
-                                  user_log.modul, user_log.aksi_user, `user`.nama_lengkap
-                           FROM user_log
-                           LEFT JOIN user ON `user`.`id_user`=user_log.user
-                           WHERE user_log.aksi_user LIKE '%$nkt%' AND user_log.aksi_user LIKE '%musnah%'
-                           ORDER BY time_aksi ASC";
-                                $a = mysqli_query($dbi, $a1);
-                                while ($komp = mysqli_fetch_assoc($a)) {
-                                    $ada_audit = 1;
-                                    $waktu_komponen = $komp['time_aksi'];
-                                ?>
-                                    <tr>
-                                        <td><?php echo $komp['tgl_aksi']; ?></td>
-                                        <td><?php echo $komp['jam_aksi']; ?></td>
-                                        <td><?php echo $komp['modul']; ?></td>
-                                        <td><?php echo $komp['tempat'] . $komp['aksi_user']; ?></td>
-                                        <td><?php echo $komp['nama_lengkap']; ?></td>
-                                    </tr>
-                                <?php }
-
-                                if ($ada_audit == 0) {
-                                ?>
-                                    <tr>
-                                        <td colspan="5" class="text-center">TIDAK ADA DATA AUDIT TRAIL</td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
+                            <tr>
+                                <td class="label" style="background:#f7cfc9;font-weight:700;">HASIL RELEASE</td>
+                                <td class="value"><?php echo $tmp['rsatus_ket']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Catatan</td>
+                                <td class="value"><?php echo $tmp['rnote'] == "" ? "-" : $tmp['rnote']; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Petugas Release</td>
+                                <td class="value"><?php echo $ptg_prolis; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Dicek oleh</td>
+                                <td class="value"><?php echo $ptg_chek; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="label">Diverifikasi oleh</td>
+                                <td class="value"><?php echo $ptg_sah; ?></td>
+                            </tr>
                         </table>
                     </div>
                 </div>
             </div>
+
+            <?php } ?>
+        </div>
+    </div>
+    <?php }; ?>
+
+    <div class="panel-card mt-4">
+        <div class="panel-card-header">
+            <div>Rekam Jejak Data Kantong (Audit Trail)</div>
+            <div></div>
+        </div>
+
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm mb-0">
+                    <thead style="background-color: mistyrose; color: #000;">
+                        <tr>
+                            <th class="text-center">Tanggal</th>
+                            <th class="text-center">Jam</th>
+                            <th class="text-center">Modul</th>
+                            <th class="text-center">Proses</th>
+                            <th class="text-center">Personil</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <?php
+
+                                $ada_audit = 0;
+
+
+                                /*
+                     * =========================================================
+                     * ESCAPE DATA
+                     * =========================================================
+                     */
+
+                                $nkt_sql = mysqli_real_escape_string(
+                                    $dbi,
+                                    $nkt
+                                );
+
+                                $no_kantonga_sql = mysqli_real_escape_string(
+                                    $dbi,
+                                    $no_kantonga
+                                );
+
+
+                                /*
+                     * =========================================================
+                     * AUDIT USER_LOG
+                     *
+                     * Tidak JOIN ke table user.
+                     *
+                     * ul.user langsung digunakan sebagai Personil.
+                     *
+                     * Tidak mengambil tempat.
+                     * =========================================================
+                     */
+
+                                $audit_user_log = "
+                        SELECT
+                            ul.time_aksi AS time_aksi,
+
+                            DATE_FORMAT(
+                                ul.time_aksi,
+                                '%d/%m/%Y'
+                            ) AS tgl_aksi,
+
+                            DATE_FORMAT(
+                                ul.time_aksi,
+                                '%H:%i'
+                            ) AS jam_aksi,
+
+                            ul.modul AS modul,
+
+                            ul.aksi_user AS proses,
+
+                            ul.user AS nama_lengkap,
+
+                            '' AS tempat
+
+                        FROM user_log ul
+
+                        INNER JOIN
+                        (
+                            /*
+                             * =====================================================
+                             * DEDUP AKSI_USER
+                             *
+                             * Jika aksi_user sama persis lebih dari satu,
+                             * ambil yang paling awal.
+                             * =====================================================
+                             */
+
+                            SELECT
+                                aksi_user,
+                                MIN(time_aksi) AS time_aksi
+
+                            FROM user_log
+
+                            WHERE
+                            (
+                                /*
+                                 * =================================================
+                                 * BARCODE
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$nkt_sql%'
+                                    AND aksi_user LIKE '%barcode%'
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * PENGESAHAN KANTONG LOGISTIK
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$no_kantonga_sql%'
+                                    AND aksi_user LIKE '%Pengesahan Kantong Logistik%'
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * PENGAMBILAN
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$no_kantonga_sql%'
+                                    AND aksi_user LIKE '%Pengambilan%'
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * SERAH TERIMA
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$no_kantonga_sql%'
+                                    AND aksi_user LIKE '%Serah terima (Pengesahan)%'
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * RELEASE
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$nkt_sql%'
+                                    AND aksi_user LIKE '%Release%'
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * CROSSMATCH
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$nkt_sql%'
+                                    AND aksi_user LIKE '%crossmatch%'
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * KGD
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$no_kantonga_sql%'
+                                    AND aksi_user LIKE '%KGD%'
+                                    AND modul = 'KONFIRMASI'
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * IMLTD
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$no_kantonga_sql%'
+                                    AND
+                                    (
+                                        aksi_user LIKE '%IMLTD%'
+                                        OR modul = 'IMLTD'
+                                    )
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * KIRIM KE
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$nkt_sql%'
+                                    AND aksi_user LIKE '%Kirim ke%'
+                                )
+
+                                OR
+
+                                /*
+                                 * =================================================
+                                 * MUSNAH
+                                 * =================================================
+                                 */
+
+                                (
+                                    aksi_user LIKE '%$nkt_sql%'
+                                    AND aksi_user LIKE '%musnah%'
+                                )
+                            )
+
+                            GROUP BY aksi_user
+
+                        ) dup
+
+                            ON dup.aksi_user = ul.aksi_user
+                            AND dup.time_aksi = ul.time_aksi
+                    ";
+
+
+                                /*
+                     * =========================================================
+                     * AUDIT PENGOLAHAN
+                     * =========================================================
+                     */
+
+                                $audit_pengolahan = "
+                        SELECT
+                            d.tglPengerjaan AS time_aksi,
+
+                            DATE_FORMAT(
+                                d.tglPengerjaan,
+                                '%d/%m/%Y'
+                            ) AS tgl_aksi,
+
+                            DATE_FORMAT(
+                                d.tglPengerjaan,
+                                '%H:%i'
+                            ) AS jam_aksi,
+
+                            'PENGOLAHAN' AS modul,
+
+                            CONCAT(
+                                'Pengolahan (',
+                                p.lengkap,
+                                ') No.Trans: ',
+                                d.NoTrans
+                            ) AS proses,
+
+                            d.petugas AS nama_lengkap,
+
+                            '' AS tempat
+
+                        FROM dpengolahan d
+
+                        LEFT JOIN produk p
+                            ON p.Nama = d.Produk
+
+                        WHERE d.noKantong = '$nkt_sql'
+                    ";
+
+
+                                /*
+                     * =========================================================
+                     * AUDIT SAMPEL PANEL
+                     *
+                     * LOGIKA:
+                     *
+                     * A. NO TRANSAKSI WAJIB ADA.
+                     *
+                     * B. JIKA TIDAK ADA NOMOR KANTONG
+                     *    -> TAMPILKAN
+                     *
+                     * C. JIKA ADA NOMOR KANTONG
+                     *    -> HARUS SAMA DENGAN $nkt
+                     *
+                     * D. JIKA ADA NOMOR KANTONG LAIN
+                     *    -> JANGAN TAMPILKAN
+                     *
+                     * =========================================================
+                     */
+
+                                $audit_sampel_panel = '';
+
+                                if (
+                                    isset($sampelPanel) &&
+                                    isset($sampelPanel['notrans'])
+                                ) {
+
+                                    $noTrans_sp = mysqli_real_escape_string(
+                                        $dbi,
+                                        $sampelPanel['notrans']
+                                    );
+
+
+                                    if ($noTrans_sp != '') {
+
+
+                                        /*
+                             * =====================================================
+                             * QUERY SAMPEL PANEL
+                             * =====================================================
+                             */
+
+                                        $audit_sampel_panel = "
+                                SELECT
+                                    ul.time_aksi AS time_aksi,
+
+                                    DATE_FORMAT(
+                                        ul.time_aksi,
+                                        '%d/%m/%Y'
+                                    ) AS tgl_aksi,
+
+                                    DATE_FORMAT(
+                                        ul.time_aksi,
+                                        '%H:%i'
+                                    ) AS jam_aksi,
+
+                                    ul.modul AS modul,
+
+                                    ul.aksi_user AS proses,
+
+                                    ul.user AS nama_lengkap,
+
+                                    '' AS tempat
+
+                                FROM user_log ul
+
+                                INNER JOIN
+                                (
+                                    /*
+                                     * =================================================
+                                     * DEDUP SAMPEL PANEL
+                                     *
+                                     * Ambil hanya 1 jika aksi_user sama persis.
+                                     * =================================================
+                                     */
+
+                                    SELECT
+                                        aksi_user,
+                                        MIN(time_aksi) AS time_aksi
+
+                                    FROM user_log
+
+                                    WHERE
+
+                                        /*
+                                         * =========================================
+                                         * 1. NO TRANSAKSI WAJIB ADA
+                                         * =========================================
+                                         */
+
+                                        aksi_user LIKE '%$noTrans_sp%'
+
+                                        AND
+
+                                        /*
+                                         * =========================================
+                                         * 2. FILTER NOMOR KANTONG
+                                         *
+                                         * Ada dua kemungkinan:
+                                         *
+                                         * a. Aksi tidak mengandung nomor kantong
+                                         *    -> tetap tampil
+                                         *
+                                         * b. Aksi mengandung nomor kantong
+                                         *    -> harus mengandung $nkt
+                                         *
+                                         * =========================================
+                                         */
+
+                                        (
+                                            /*
+                                             * -------------------------------------
+                                             * KASUS A
+                                             *
+                                             * Aksi mengandung kantong yang dicari.
+                                             * -------------------------------------
+                                             */
+
+                                            aksi_user LIKE '%$nkt_sql%'
+
+                                            OR
+
+                                            /*
+                                             * -------------------------------------
+                                             * KASUS B
+                                             *
+                                             * Aksi TIDAK mengandung nomor kantong
+                                             * dengan format nomor kantong.
+                                             *
+                                             * -------------------------------------
+                                             *
+                                             * Format nomor kantong SIMDONDAR
+                                             * dideteksi sebagai:
+                                             *
+                                             * 3 angka
+                                             * + 1 huruf
+                                             * + angka
+                                             * + huruf/angka
+                                             *
+                                             * Contoh:
+                                             *
+                                             * 317P25002BFA
+                                             * 317P25002BFB
+                                             * 317P2600297A
+                                             *
+                                             * -------------------------------------
+                                             */
+
+                                            NOT (
+                                                aksi_user REGEXP
+                                                '[0-9]{3}[A-Za-z][0-9]+[A-Za-z0-9]+'
+                                            )
+                                        )
+
+                                    GROUP BY aksi_user
+
+                                ) sp
+
+                                    ON sp.aksi_user = ul.aksi_user
+
+                                    AND sp.time_aksi = ul.time_aksi
+                            ";
+                                    }
+                                }
+
+
+                                /*
+                     * =========================================================
+                     * GABUNGKAN SEMUA QUERY
+                     * =========================================================
+                     */
+
+                                $audit_sql = "
+                        SELECT
+                            q.tgl_aksi,
+                            q.jam_aksi,
+                            q.modul,
+                            q.proses,
+                            q.nama_lengkap,
+                            q.time_aksi
+
+                        FROM
+                        (
+                            $audit_user_log
+
+                            UNION ALL
+
+                            $audit_pengolahan
+                    ";
+
+
+                                /*
+                     * =========================================================
+                     * TAMBAHKAN SAMPEL PANEL
+                     * =========================================================
+                     */
+
+                                if ($audit_sampel_panel != '') {
+
+                                    $audit_sql .= "
+
+                            UNION ALL
+
+                            $audit_sampel_panel
+
+                        ";
+                                }
+
+
+                                /*
+                     * =========================================================
+                     * ORDER
+                     * =========================================================
+                     */
+
+                                $audit_sql .= "
+
+                        ) q
+
+                        ORDER BY
+                            q.time_aksi ASC
+
+                    ";
+
+
+                                /*
+                     * =========================================================
+                     * EXECUTE QUERY
+                     * =========================================================
+                     */
+
+                                $audit_q = mysqli_query(
+                                    $dbi,
+                                    $audit_sql
+                                );
+
+
+                                /*
+                     * =========================================================
+                     * DEBUG QUERY
+                     *
+                     * Aktifkan sementara jika ingin melihat error SQL.
+                     * =========================================================
+                     */
+
+                                /*
+                    if (!$audit_q) {
+
+                        echo '<pre>';
+                        echo 'ERROR MYSQL:' . "\n";
+                        echo mysqli_error($dbi);
+                        echo "\n\n";
+                        echo 'QUERY:' . "\n";
+                        echo $audit_sql;
+                        echo '</pre>';
+
+                    }
+                    */
+
+
+                                /*
+                     * =========================================================
+                     * TAMPILKAN HASIL
+                     * =========================================================
+                     */
+
+                                if (
+                                    $audit_q &&
+                                    mysqli_num_rows($audit_q) > 0
+                                ) {
+
+                                    while (
+                                        $komp = mysqli_fetch_assoc($audit_q)
+                                    ) {
+
+                                        $ada_audit = 1;
+
+                                ?>
+
+                        <tr>
+
+                            <!-- TANGGAL -->
+                            <td>
+                                <?php
+                                                echo htmlspecialchars(
+                                                    $komp['tgl_aksi'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                );
+                                                ?>
+                            </td>
+
+
+                            <!-- JAM -->
+                            <td>
+                                <?php
+                                                echo htmlspecialchars(
+                                                    $komp['jam_aksi'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                );
+                                                ?>
+                            </td>
+
+
+                            <!-- MODUL -->
+                            <td>
+                                <?php
+                                                echo htmlspecialchars(
+                                                    $komp['modul'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                );
+                                                ?>
+                            </td>
+
+
+                            <!-- PROSES -->
+                            <td>
+                                <?php
+                                                echo htmlspecialchars(
+                                                    $komp['proses'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                );
+                                                ?>
+                            </td>
+
+
+                            <!-- PERSONIL -->
+                            <td>
+                                <?php
+                                                echo htmlspecialchars(
+                                                    $komp['nama_lengkap'],
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                );
+                                                ?>
+                            </td>
+
+                        </tr>
+
+                        <?php
+                                    }
+                                }
+
+
+                                /*
+                     * =========================================================
+                     * TIDAK ADA DATA
+                     * =========================================================
+                     */
+
+                                if ($ada_audit == 0) {
+
+                                    echo '
+                            <tr>
+                                <td
+                                    colspan="5"
+                                    class="text-center"
+                                >
+                                    TIDAK ADA DATA AUDIT TRAIL
+                                </td>
+                            </tr>
+                        ';
+                                }
+
+                                ?>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <?php
         } else {
             echo "<SCRIPT>alert('Produk/Komponen darah yang anda masukkan tidak terdaftar/tidak ada dalam SIMDONDAR');</SCRIPT>";
@@ -2741,26 +3146,26 @@ if (isset($_GET['ajax_kantong']) && $_GET['ajax_kantong'] == '1') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script type="text/javascript">
-        document.forms['cekkantong'].elements['noktg'].focus();
+    document.forms['cekkantong'].elements['noktg'].focus();
     </script>
     <script>
-        $(document).on('click', '.btn-kantong', function() {
-            const nokantong = $(this).data('nokantong');
+    $(document).on('click', '.btn-kantong', function() {
+        const nokantong = $(this).data('nokantong');
 
-            $('#modalKantongNo').text(nokantong);
-            $('#modalKantongBody').html('<div class="text-center py-4">Memuat...</div>');
-            $('#modalKantong').modal('show');
+        $('#modalKantongNo').text(nokantong);
+        $('#modalKantongBody').html('<div class="text-center py-4">Memuat...</div>');
+        $('#modalKantong').modal('show');
 
-            const url = window.location.href.split('#')[0];
-            const joiner = url.indexOf('?') > -1 ? '&' : '?';
+        const url = window.location.href.split('#')[0];
+        const joiner = url.indexOf('?') > -1 ? '&' : '?';
 
-            $.get(url + joiner + 'ajax_kantong=1&noktg=' + encodeURIComponent(nokantong), function(html) {
-                $('#modalKantongBody').html(html);
-            }).fail(function() {
-                $('#modalKantongBody').html(
-                    '<div class="alert alert-danger mb-0">Gagal memuat data kantong.</div>');
-            });
+        $.get(url + joiner + 'ajax_kantong=1&noktg=' + encodeURIComponent(nokantong), function(html) {
+            $('#modalKantongBody').html(html);
+        }).fail(function() {
+            $('#modalKantongBody').html(
+                '<div class="alert alert-danger mb-0">Gagal memuat data kantong.</div>');
         });
+    });
     </script>
 </body>
 

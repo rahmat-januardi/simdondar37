@@ -593,41 +593,41 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <style>
     :root {
-        --warm-primary: #9a5b35;
-        --warm-primary-dark: #784329;
-        --warm-accent: #d7a26e;
-        --warm-bg: #fbf7f2;
-        --warm-surface: #ffffff;
-        --warm-border: #eadfd5;
-        --warm-text: #3f342d;
-        --warm-muted: #806f64;
-        --warm-success: #5f7d63;
+        --pmi-red: #c8102e;
+        --pmi-red-dark: #9f1239;
+        --pmi-red-soft: #fdecef;
+        --pmi-bg: #f8f9fa;
+        --pmi-surface: #ffffff;
+        --pmi-border: #e2e5e9;
+        --pmi-text: #343a40;
+        --pmi-muted: #6c757d;
+        --pmi-success: #198754;
     }
 
     body {
         background:
-            radial-gradient(circle at top right, rgba(215, 162, 110, .14), transparent 28%),
-            linear-gradient(135deg, #fbf7f2 0%, #f7f1eb 100%);
-        color: var(--warm-text);
+            radial-gradient(circle at top right, rgba(200, 16, 46, .08), transparent 28%),
+            linear-gradient(135deg, #f8f9fa 0%, #fff5f6 100%);
+        color: var(--pmi-text);
         min-height: 100vh;
     }
 
     .page-header {
         background: rgba(255, 255, 255, .88);
-        border: 1px solid var(--warm-border);
+        border: 1px solid var(--pmi-border);
         border-radius: 16px;
         padding: 18px 22px;
-        box-shadow: 0 5px 20px rgba(92, 59, 37, .07);
+        box-shadow: 0 5px 20px rgba(52, 58, 64, .07);
     }
 
     .page-title {
         font-weight: 700;
-        color: var(--warm-primary-dark);
+        color: var(--pmi-red-dark);
         letter-spacing: -.2px;
     }
 
     .page-subtitle {
-        color: var(--warm-muted);
+        color: var(--pmi-muted);
         font-size: .9rem;
     }
 
@@ -638,17 +638,17 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         align-items: center;
         justify-content: center;
         border-radius: 12px;
-        background: #f1dfcf;
-        color: var(--warm-primary);
+        background: var(--pmi-red-soft);
+        color: var(--pmi-red);
         font-size: 1.25rem;
         flex: 0 0 auto;
     }
 
     .card {
-        border: 1px solid var(--warm-border);
+        border: 1px solid var(--pmi-border);
         border-radius: 16px;
-        background: var(--warm-surface);
-        box-shadow: 0 8px 28px rgba(92, 59, 37, .08);
+        background: var(--pmi-surface);
+        box-shadow: 0 8px 28px rgba(52, 58, 64, .08);
         overflow: hidden;
     }
 
@@ -658,40 +658,42 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     /* ---- Tabs ---- */
     .nav-tabs-warm {
-        border-bottom: 1px solid var(--warm-border);
+        border-bottom: 1px solid var(--pmi-border);
         gap: 4px;
     }
 
     .nav-tabs-warm .nav-link {
         border: none;
         border-bottom: 3px solid transparent;
-        color: var(--warm-muted);
+        color: var(--pmi-muted);
         font-weight: 600;
         padding: 10px 16px;
         border-radius: 10px 10px 0 0;
     }
 
     .nav-tabs-warm .nav-link .badge {
-        background: #f1dfcf;
-        color: var(--warm-primary-dark);
+        background: var(--pmi-red-soft);
+        color: var(--pmi-red-dark);
         font-weight: 700;
     }
 
     .nav-tabs-warm .nav-link.active {
-        color: var(--warm-primary-dark);
-        border-bottom-color: var(--warm-primary);
-        background: #fff9f4;
+        color: var(--pmi-red-dark);
+        border-bottom-color: var(--pmi-red);
+        background: #fff5f6;
     }
 
     .nav-tabs-warm .nav-link.active .badge {
-        background: var(--warm-primary);
+        background: var(--pmi-red);
         color: #fff;
     }
 
     .table-responsive {
-        border: 1px solid var(--warm-border);
+        border: 1px solid var(--pmi-border);
         border-radius: 12px;
-        overflow: hidden;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
     }
 
     table.table-warm {
@@ -700,20 +702,20 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     table.table-warm thead th {
         white-space: nowrap;
-        background: #f7efe8;
-        color: #59463a;
-        border-bottom: 1px solid var(--warm-border);
+        background: var(--pmi-red);
+        color: #fff;
+        border-bottom: 1px solid var(--pmi-red-dark);
         font-weight: 650;
         font-size: .88rem;
     }
 
     table.table-warm tbody td {
-        color: #4b4039;
+        color: var(--pmi-text);
         vertical-align: middle;
     }
 
     table.table-warm tbody tr:hover {
-        background-color: #fff9f4;
+        background-color: #fff5f6;
     }
 
     .badge-kategori {
@@ -725,18 +727,18 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .badge-baru {
-        background: #f7e7d7;
-        color: #8a4f2c;
+        background: #e8f5ee;
+        color: #146c43;
     }
 
     .badge-revisi {
-        background: #ece7f4;
-        color: #67527f;
+        background: var(--pmi-red-soft);
+        color: var(--pmi-red-dark);
     }
 
     .badge-sudah {
-        background: #e5f0e6;
-        color: var(--warm-success);
+        background: #e8f5ee;
+        color: var(--pmi-success);
         padding: .42rem .68rem;
         border-radius: 999px;
         font-size: .76rem;
@@ -744,34 +746,34 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .btn-warm {
-        background: var(--warm-primary);
-        border-color: var(--warm-primary);
+        background: var(--pmi-red);
+        border-color: var(--pmi-red);
         color: #fff;
     }
 
     .btn-warm:hover,
     .btn-warm:focus {
-        background: var(--warm-primary-dark);
-        border-color: var(--warm-primary-dark);
+        background: var(--pmi-red-dark);
+        border-color: var(--pmi-red-dark);
         color: #fff;
     }
 
     .empty-state {
         text-align: center;
         padding: 40px 20px;
-        color: var(--warm-muted);
+        color: var(--pmi-muted);
     }
 
     .empty-state i {
         font-size: 2.2rem;
-        color: var(--warm-accent);
+        color: var(--pmi-red);
         display: block;
         margin-bottom: 10px;
     }
 
     /* ---- Modal detail dokumen ---- */
     .modal-content {
-        border: 1px solid var(--warm-border);
+        border: 1px solid var(--pmi-border);
         border-radius: 16px;
         overflow: hidden;
     }
@@ -781,30 +783,30 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .modal-header {
-        background: linear-gradient(135deg, #f8eee5, #fffaf6);
-        border-bottom: 1px solid var(--warm-border);
+        background: linear-gradient(135deg, #fff0f2, #ffffff);
+        border-bottom: 1px solid var(--pmi-border);
     }
 
     .modal-title {
-        color: var(--warm-primary-dark);
+        color: var(--pmi-red-dark);
         font-weight: 700;
     }
 
     .form-label {
-        color: #5b473a;
+        color: #495057;
         font-weight: 600;
         font-size: .9rem;
     }
 
     .form-control[readonly] {
-        background-color: #fbf7f2;
-        border-color: #ddcec2;
+        background-color: #f8f9fa;
+        border-color: #ced4da;
         border-radius: 9px;
     }
 
     .modal-footer {
-        background: #fcf8f4;
-        border-top: 1px solid var(--warm-border);
+        background: #f8f9fa;
+        border-top: 1px solid var(--pmi-border);
     }
 
     .btn-aksi-dokumen {
@@ -812,27 +814,27 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         min-height: 58px;
         border-radius: 12px;
         font-weight: 600;
-        border: 1px solid var(--warm-border);
+        border: 1px solid var(--pmi-border);
         background: #fff;
-        color: var(--warm-primary-dark);
+        color: var(--pmi-red-dark);
     }
 
     .btn-aksi-dokumen:hover:not(:disabled) {
-        background: #fff3e9;
-        border-color: var(--warm-accent);
+        background: #fff0f2;
+        border-color: var(--pmi-red);
     }
 
     .btn-aksi-dokumen:disabled {
-        background: #f0ede9;
-        color: #a79f95;
-        border-color: #e2ddd6;
+        background: #f1f3f5;
+        color: #868e96;
+        border-color: #dee2e6;
         cursor: not-allowed;
         opacity: 1;
     }
 
     .box-poin {
-        background: #fffaf6;
-        border: 1px solid #eadfd5;
+        background: #fff5f6;
+        border: 1px solid var(--pmi-border);
         border-radius: 12px;
         padding: 12px 14px;
         white-space: pre-line;
@@ -840,10 +842,36 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .form-check-konfirmasi {
-        background: #fff9f4;
-        border: 1px solid var(--warm-border);
+        background: #fff5f6;
+        border: 2px solid var(--pmi-red);
         border-radius: 12px;
         padding: 14px;
+        box-shadow: 0 0 0 3px rgba(200, 16, 46, .12), 0 4px 10px rgba(200, 16, 46, .08);
+    }
+
+    .form-check-konfirmasi .form-check-input {
+        width: 1.35em;
+        height: 1.35em;
+        margin-top: .1em;
+        border: 2px solid var(--pmi-red);
+        cursor: pointer;
+    }
+
+    .form-check-konfirmasi .form-check-input:checked {
+        background-color: var(--pmi-success);
+        border-color: var(--pmi-success);
+    }
+
+    .form-check-konfirmasi .form-check-input:focus {
+        border-color: var(--pmi-red);
+        box-shadow: 0 0 0 .2rem rgba(200, 16, 46, .2);
+    }
+
+    .form-check-konfirmasi .form-check-label {
+        padding-left: .35rem;
+        color: #343a40;
+        font-weight: 600;
+        cursor: pointer;
     }
 
     @media (max-width: 768px) {
@@ -1019,8 +1047,8 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
                 <div class="modal-footer" id="footerBelum">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-warm" id="btnSelesai" disabled>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-success" id="btnSelesai" disabled>
                         <i class="bi bi-check-lg"></i> Selesai
                     </button>
                 </div>
@@ -1204,10 +1232,8 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         /* ---------------- Tombol "Tampilkan Dokumen" ---------------- */
-        // Ambil nama file dari kolom `fileku` (dikirim backend sebagai file_url),
-        // cek apakah filenya benar-benar ada di folder dokumen/upload (file_ada),
-        // baru dibuka di tab baru. Tidak mencatat "sudah membaca" di sini -
-        // pencatatan hanya terjadi lewat tombol "Selesai".
+        // Buka wrapper HTML di tab baru agar toolbar PDF dapat disembunyikan
+        // dengan fragment #toolbar=0, sekaligus memblokir klik kanan pada tab tersebut.
         $('#btnTampilkanDokumen').on('click', function() {
             if (!dataSaatIni) return;
 
@@ -1223,7 +1249,41 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 return;
             }
 
-            window.open(dataSaatIni.file_url, '_blank');
+            var tabDokumen = window.open('', '_blank');
+            if (!tabDokumen) {
+                Swal.fire('Popup diblokir', 'Izinkan popup browser untuk menampilkan dokumen.',
+                    'warning');
+                return;
+            }
+
+            tabDokumen.document.open();
+            tabDokumen.document.write(
+                '<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8">' +
+                '<title>Tampilan Dokumen</title><style>' +
+                'html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#343a40}' +
+                'iframe{width:100%;height:100%;border:0}' +
+                '</style></head><body>' +
+                '<iframe id="viewerDokumen" title="Dokumen"></iframe>' +
+                '</body></html>'
+            );
+            tabDokumen.document.close();
+            tabDokumen.document.getElementById('viewerDokumen').src =
+                dataSaatIni.file_url + '#toolbar=0&navpanes=0&scrollbar=1';
+
+            // Gunakan fase capture supaya menu konteks dibatalkan sebelum
+            // handler lain pada halaman tab sempat memprosesnya.
+            var blokirKlikKanan = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            };
+            tabDokumen.addEventListener('contextmenu', blokirKlikKanan, true);
+            tabDokumen.document.addEventListener('contextmenu', blokirKlikKanan, true);
+            tabDokumen.document.addEventListener('keydown', function(e) {
+                if ((e.shiftKey && e.key === 'F10') || e.key === 'ContextMenu') {
+                    blokirKlikKanan(e);
+                }
+            }, true);
         });
 
         /* ---------------- Tombol "Cara Pengisian Dokumen" ---------------- */
@@ -1282,7 +1342,8 @@ if ($ajax === 'tandai_dibaca' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                 showCancelButton: true,
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Tidak',
-                confirmButtonColor: '#9a5b35'
+                confirmButtonColor: '#04a54f',
+                cancelButtonColor: '#f81010'
             }).then(function(result) {
                 if (result.isConfirmed) {
                     catatSudahDibaca(dataSaatIni.id, true);

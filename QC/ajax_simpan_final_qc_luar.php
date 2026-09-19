@@ -60,6 +60,7 @@ function renderTempRows($namauser)
             <td>" . $no++ . "</td>
             <td>" . htmlspecialchars($d['nokantong']) . "</td>
             <td>" . htmlspecialchars($d['volume']) . "</td>
+            <td>" . htmlspecialchars($d['vol_kantong_luar']) . "</td>
             <td>" . htmlspecialchars($d['merk']) . "</td>
             <td>" . htmlspecialchars(getJenisLabel($d['jenis'])) . "</td>
             <td>" . htmlspecialchars($asalDisplay) . "</td>
@@ -130,6 +131,7 @@ while ($d = mysql_fetch_assoc($q)) {
     $produk         = esc($d['produk']);
     $jenis_produk    = esc($d['jenis']);
     $volume         = esc($d['volume']);
+    $vol_kantong_luar = esc($d['vol_kantong_luar']);
     $goldarah       = esc($d['goldarah']);
     $rhesus         = esc($d['rhesus']);
     $tglaftap       = esc($d['tglaftap']);
@@ -144,9 +146,9 @@ while ($d = mysql_fetch_assoc($q)) {
 
     $sql = "
         INSERT INTO registrasi_qc
-        (nokantong, merk, produk, jenis_produk, volume, goldarah, rhesus, tgl, tglaftap, kadaluwarsa, tgl_pengolahan, petugas_terima, petugas_serah, asal_utd, suhu, jns_asal, catatan)
+        (nokantong, merk, produk, jenis_produk, volume, vol_kantong_luar, goldarah, rhesus, tgl, tglaftap, kadaluwarsa, tgl_pengolahan, petugas_terima, petugas_serah, asal_utd, suhu, jns_asal, catatan)
         VALUES
-        ('$nokantong', '$merk', '$produk', '$jenis_produk', '$volume', '$goldarah', '$rhesus', NOW(), '$tglaftap', '$kadaluwarsa', '$tgl_pengolahan', '$petugas_terima', '$petugas_serah', '$asal_utd', '$suhu', '$jns_asal', '$catatan')
+        ('$nokantong', '$merk', '$produk', '$jenis_produk', '$volume', '$vol_kantong_luar', '$goldarah', '$rhesus', NOW(), '$tglaftap', '$kadaluwarsa', '$tgl_pengolahan', '$petugas_terima', '$petugas_serah', '$asal_utd', '$suhu', '$jns_asal', '$catatan')
     ";
 
     $insert = mysql_query($sql);

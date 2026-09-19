@@ -102,7 +102,7 @@
 
       <form action="postdonor.php" method="post">
         <div class="input-group mb-3">
-          <input type="text" name="kode" class="form-control" placeholder="ketik kode pendonor / nomor registrasi" autocomplete="off" autofocus required >
+          <input type="text" name="kode" class="form-control" placeholder="ketik kode pendonor / No. KTP / No. HP" autocomplete="off" autofocus required >
         </div>
         
 

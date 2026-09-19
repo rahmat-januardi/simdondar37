@@ -2,6 +2,7 @@
 ob_start();
 session_start();
 require_once('config/db_connect.php');
+include_once dirname(__FILE__) . 'tcpdf/tcpdf.php';
 
 // date_default_timezone_set('Asia/Jakarta');
 error_reporting(E_ALL);
@@ -45,14 +46,90 @@ function setFlash($icon, $title, $text)
     );
 }
 
+function getJenisKantongKode($jenis)
+{
+    switch ((string)$jenis) {
+        case '1':
+            return array('SG', 'Single');
+        case '2':
+            return array('DB', 'Double');
+        case '3':
+            return array('TR', 'Triple');
+        case '4':
+            return array('QD', 'Quadruple');
+        case '5':
+            return array('QT', 'Pediatrik/Quintuple');
+        case '6':
+            return array('SX', 'Sextuple');
+        default:
+            return array('', '');
+    }
+}
+
+function renderBarcodePage($pdf, $namaudd, $kodejenis, $noKantong, $tipeBarcode, $volume, $tglEd, $merk, $produk)
+{
+    $style = array(
+        'position' => '',
+        'align' => 'L',
+        'stretch' => false,
+        'fitwidth' => true,
+        'cellfitalign' => '',
+        'border' => false,
+        'hpadding' => 'auto',
+        'vpadding' => 'auto',
+        'fgcolor' => array(0, 0, 0),
+        'bgcolor' => false,
+        'text' => false,
+        'font' => 'helvetica',
+        'fontsize' => 11,
+        'stretchtext' => 1
+    );
+
+    $pdf->AddPage();
+    $pdf->SetFont('helvetica', '', 7);
+    $pdf->SetXY(1, 1);
+    $pdf->Cell(1, 0, $namaudd, 0, 0);
+
+    $pdf->SetFont('helvetica', '', 7);
+    $pdf->SetXY(49, 1);
+    $pdf->Cell(0, 0, $kodejenis, 0, 0, 'R');
+
+    $pdf->SetXY(2, 4);
+    $pdf->write1DBarcode(strtoupper($noKantong), $tipeBarcode, '', '', '46', 9, 0.4, $style, 'N');
+
+    $pdf->SetFont('helvetica', '', 9);
+    $pdf->SetXY(1, 12);
+    $pdf->Cell(0, 0, strtoupper($noKantong), 0, 0);
+
+    $pdf->SetFont('helvetica', '', 6);
+    $pdf->SetXY(1, 17);
+    $pdf->Cell(0, 0, 'Sampel Panel', 0, 0, 'C');
+
+    $infoParts = array();
+    if (!empty($produk)) {
+        $infoParts[] = $produk;
+    }
+    if (!empty($volume)) {
+        $infoParts[] = $volume . ' ml';
+    }
+
+    $info = implode(' | ', $infoParts);
+    if ($info !== '') {
+        $pdf->SetFont('helvetica', '', 6);
+        $pdf->SetXY(1, 20);
+        $pdf->Cell(0, 0, $info, 0, 0, 'C');
+    }
+}
+
 $flash = isset($_SESSION['flash']) ? $_SESSION['flash'] : array();
 unset($_SESSION['flash']);
 
 $detail_header = array();
 $detail_rows = array();
 $show_detail_modal = false;
+$show_setting_label_modal = false;
 
-$redirect = "pmikasir2.php?module=rekap_sampel_panel";
+$redirect = 'pmi' . $_SESSION['leveluser'] . '.php?module=rekap_sampel_panel';
 
 /* =========================
    ACTION DETAIL / EXPORT
@@ -336,6 +413,9 @@ if (isset($_POST['submit'])) {
     if ($action == 'detail') {
         $show_detail_modal = true;
     }
+    if ($action == 'settingLabel') {
+        $show_setting_label_modal = true;
+    }
 }
 
 /* =========================
@@ -456,6 +536,15 @@ if (!$result_sampel_panel) {
                                 target="_blank" class="btn btn-warning btn-sm ms-1">
                                 Cetak Label
                             </a>
+
+                            <?php if ((int)$row['status'] == 2) { ?>
+                            <form method="POST" action="" style="margin:0; display:inline-block;">
+                                <input type="hidden" name="notrans" value="<?php echo h($row['notrans']); ?>">
+                                <button type="submit" name="submit" value="settingLabel" class="btn btn-danger btn-sm">
+                                    Cetak Label Tabung
+                                </button>
+                            </form>
+                            <?php } ?>
                         </td>
                     </tr>
                     <?php } ?>
@@ -587,6 +676,88 @@ if (!$result_sampel_panel) {
         </div>
     </div>
 
+    <!-- MODAL SETTING LABEL TABUNG -->
+    <div class="modal fade" id="settingLabelModal" tabindex="-1" aria-labelledby="settingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <form method="POST" action="imltd/cetak_label_panel_1baris.php" target="_blank"
+                    style="margin:0; display:inline-block;">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="settingModalLabel">Setting Cetak Label untuk Tabung</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                        <?php if (!empty($detail_header)) { ?>
+                        <div class="m-1">
+                            <!-- <label>Mode Cetak Label:</label> -->
+                            <input type="hidden" name="modeCetak" value="1baris">
+                            <!-- <label style="margin-left:10px;">1 Baris</label> -->
+                        </div>
+
+                        <hr>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped align-middle">
+                                <thead class="table-light">
+                                    <tr style="text-align: center;">
+                                        <th>No</th>
+                                        <th>No Kantong</th>
+                                        <th>Jenis Sampel</th>
+                                        <th>Banyak Cetak</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        if (count($detail_rows) > 0) {
+                                            $noDet = 1;
+                                            foreach ($detail_rows as $dt) {
+                                                $badgeJenis = ($dt['jenis_sampel'] == 'REAKTIF')
+                                                    ? '<span class="badge bg-danger">REAKTIF</span>'
+                                                    : '<span class="badge bg-success">NONREAKTIF</span>';
+                                        ?>
+                                    <tr style="text-align: center;">
+                                        <td><?php echo $noDet++; ?></td>
+                                        <td><?php echo h($dt['nokantong']); ?></td>
+                                        <td><?php echo $badgeJenis; ?></td>
+                                        <td>
+                                            <input type="number"
+                                                id="jumlah_<?php echo isset($dt['id']) ? (int)$dt['id'] : $noDet; ?>"
+                                                name="jumlah[<?php echo isset($dt['id']) ? (int)$dt['id'] : $noDet; ?>]"
+                                                value="0" min="0" max="100" step="1">
+                                        </td>
+                                    </tr>
+                                    <?php
+                                            }
+                                        } else {
+                                            ?>
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">Data detail belum ada</td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <?php } else { ?>
+                        <div class="alert alert-warning mb-0">Data detail tidak ditemukan.</div>
+                        <?php } ?>
+
+                        <div class="modal-footer">
+                            <?php if (!empty($detail_header)) { ?>
+                            <input type="hidden" name="notrans" value="<?php echo h($detail_header['notrans']); ?>">
+                            <button type="submit" class="btn btn-success">
+                                Cetak Label
+                            </button>
+                            <?php } ?>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
     $(document).ready(function() {
         if ($('#myTable').length) {
@@ -607,6 +778,16 @@ if (!$result_sampel_panel) {
     $(document).ready(function() {
         var detailModal = new bootstrap.Modal(document.getElementById('detailModal'));
         detailModal.show();
+    });
+    </script>
+    <?php } ?>
+
+    <!-- tampilkan modal setting sebelum cetak label pada tabung 5x2cm -->
+    <?php if ($show_setting_label_modal) { ?>
+    <script>
+    $(document).ready(function() {
+        var settingLabelModal = new bootstrap.Modal(document.getElementById('settingLabelModal'));
+        settingLabelModal.show();
     });
     </script>
     <?php } ?>

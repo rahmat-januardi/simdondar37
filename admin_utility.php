@@ -71,6 +71,7 @@ $(document).ready(function() {
         <li><a href="pmiadmin.php?module=changestatus"><img src="images/ubah_status_kantong.png" alt="" /></a></li>
         <li><a href="pmiadmin.php?module=edit_kantong"><img src="images/edit_kantong.png" alt="" /></a></li>
         <li><a href="pmiadmin.php?module=edit_transaksi"><img src="images/edit_transaksi2.png" alt="" /></a></li>
+        <li><a href="pmiadmin.php?module=edit_mcu"><img src="images/edit_mcu.png" alt="" /></a></li>
         <li><a href="pmiadmin.php?module=master_musnah"><img src="images/master_alasan_pemusnahan.png" alt="" /></a>
         </li>
     </ul>

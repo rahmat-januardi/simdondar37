@@ -103,6 +103,7 @@ while ($d = mysql_fetch_assoc($q)) {
         <td>" . $no++ . "</td>
         <td>" . htmlspecialchars($d['nokantong']) . "</td>
         <td>" . htmlspecialchars($d['volume']) . "</td>
+        <td>" . htmlspecialchars($d['vol_kantong_luar']) . "</td>
         <td>" . htmlspecialchars($d['merk']) . "</td>
          <td>" . htmlspecialchars(getJenisLabel($d['jenis'])) . "</td>
         <td>" . htmlspecialchars($asalDisplay) . "</td>

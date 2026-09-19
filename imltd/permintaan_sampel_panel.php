@@ -101,7 +101,7 @@ if (isset($_POST['form_action']) && $_POST['form_action'] == 'simpan') {
 
                 //=======Audit Trial====================================================================================
                 $log_mdl  = 'IMLTD';
-                $log_aksi = 'Melakukan penyimpanan Permintaan Sampel Panel dengan No Transaksi: ' . $notrans_sql;
+                $log_aksi = 'Melakukan Permintaan Sampel Panel dengan No Transaksi: ' . $notrans_sql;
                 include("user_log.php");
                 //=====================================================================================================
             } else {
@@ -259,27 +259,27 @@ if ($aksi == 'excel') {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-    body {
-        background: #f4f7fb;
-    }
+        body {
+            background: #f4f7fb;
+        }
 
-    .card {
-        margin: 20px;
-    }
+        .card {
+            margin: 20px;
+        }
 
-    #myTable {
-        width: 100% !important;
-    }
+        #myTable {
+            width: 100% !important;
+        }
 
-    #myTable th,
-    #myTable td {
-        white-space: nowrap;
-        vertical-align: middle;
-    }
+        #myTable th,
+        #myTable td {
+            white-space: nowrap;
+            vertical-align: middle;
+        }
 
-    .datepicker {
-        cursor: pointer;
-    }
+        .datepicker {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -348,38 +348,38 @@ if ($aksi == 'excel') {
                             $statusBadge = '<span class="badge bg-secondary">Belum dipenuhi</span>';
                         }
                     ?>
-                    <tr>
-                        <td><?php echo $no++; ?></td>
-                        <td><?php echo htmlspecialchars($row['notrans']); ?></td>
-                        <td><?php echo (int)$row['reaktif']; ?></td>
-                        <td><?php echo (int)$row['nonreaktif']; ?></td>
-                        <td><?php echo $tglTampil; ?></td>
-                        <td><?php echo htmlspecialchars($row['petugas']); ?></td>
-                        <td><?php echo $statusBadge; ?></td>
-                        <td>
-                            <?php if ((int)$row['status'] == 0) { ?>
-                            <button type="button" class="btn btn-warning btn-sm me-1"
-                                onclick='openEdit(<?php echo json_encode($rowId); ?>, <?php echo json_encode($row["notrans"]); ?>, <?php echo json_encode((int)$row["reaktif"]); ?>, <?php echo json_encode((int)$row["nonreaktif"]); ?>, <?php echo json_encode($tglEdit); ?>, <?php echo json_encode($row["petugas"]); ?>, <?php echo json_encode((int)$row["status"]); ?>)'
-                                data-bs-toggle="modal" data-bs-target="#modalSampel">
-                                Edit
-                            </button>
-                            <?php } ?>
-                            <button type="button" class="btn btn-danger btn-sm"
-                                onclick='confirmDelete(<?php echo json_encode($rowId); ?>, <?php echo json_encode($row["notrans"]); ?>)'>
-                                Hapus
-                            </button>
-                            <!-- Tombol Cetak Berita Acara -->
-                            <button type="button" class="btn btn-info btn-sm ms-1" onclick='printReport(
+                        <tr>
+                            <td><?php echo $no++; ?></td>
+                            <td><?php echo htmlspecialchars($row['notrans']); ?></td>
+                            <td><?php echo (int)$row['reaktif']; ?></td>
+                            <td><?php echo (int)$row['nonreaktif']; ?></td>
+                            <td><?php echo $tglTampil; ?></td>
+                            <td><?php echo htmlspecialchars($row['petugas']); ?></td>
+                            <td><?php echo $statusBadge; ?></td>
+                            <td>
+                                <?php if ((int)$row['status'] == 0) { ?>
+                                    <button type="button" class="btn btn-warning btn-sm me-1"
+                                        onclick='openEdit(<?php echo json_encode($rowId); ?>, <?php echo json_encode($row["notrans"]); ?>, <?php echo json_encode((int)$row["reaktif"]); ?>, <?php echo json_encode((int)$row["nonreaktif"]); ?>, <?php echo json_encode($tglEdit); ?>, <?php echo json_encode($row["petugas"]); ?>, <?php echo json_encode((int)$row["status"]); ?>)'
+                                        data-bs-toggle="modal" data-bs-target="#modalSampel">
+                                        Edit
+                                    </button>
+                                <?php } ?>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    onclick='confirmDelete(<?php echo json_encode($rowId); ?>, <?php echo json_encode($row["notrans"]); ?>)'>
+                                    Hapus
+                                </button>
+                                <!-- Tombol Cetak Berita Acara -->
+                                <button type="button" class="btn btn-info btn-sm ms-1" onclick='printReport(
         <?php echo json_encode($row["notrans"]); ?>,
         <?php echo json_encode((int)$row["reaktif"]); ?>,
         <?php echo json_encode((int)$row["nonreaktif"]); ?>,
         <?php echo json_encode($tglTampil); ?>,
         <?php echo json_encode($row["petugas"]); ?>
     )'>
-                                Cetak Berita Acara
-                            </button>
-                        </td>
-                    </tr>
+                                    Cetak Berita Acara
+                                </button>
+                            </td>
+                        </tr>
                     <?php } ?>
                 </tbody>
             </table>
@@ -450,165 +450,165 @@ if ($aksi == 'excel') {
     </form>
 
     <script>
-    function generateNoTrans() {
-        var d = new Date();
-        var pad = function(n) {
-            return (n < 10 ? '0' : '') + n;
-        };
-        return 'SP-' +
-            d.getFullYear() +
-            pad(d.getMonth() + 1) +
-            pad(d.getDate()) +
-            pad(d.getHours()) +
-            pad(d.getMinutes()) +
-            pad(d.getSeconds()) +
-            '-' +
-            Math.floor(Math.random() * 900 + 100);
-    }
-
-    $(document).ready(function() {
-        $('#myTable').DataTable({
-            scrollX: true,
-            autoWidth: false,
-            responsive: false,
-            language: {
-                emptyTable: "Data belum ada"
-            }
-        });
-    });
-
-    function openTambah() {
-        document.getElementById('modalSampelLabel').innerHTML = 'Tambah Data';
-        document.getElementById('id').value = '';
-        document.getElementById('notrans').value = generateNoTrans();
-        document.getElementById('tgl').value = '<?php echo date('Y-m-d'); ?>';
-        document.getElementById('reaktif').value = '0';
-        document.getElementById('nonreaktif').value = '0';
-        document.getElementById('petugas').value = '<?php echo addslashes($namauser); ?>';
-        document.getElementById('status').value = '0';
-    }
-
-    function openEdit(id, notrans, reaktif, nonreaktif, tgl, petugas, status) {
-        document.getElementById('modalSampelLabel').innerHTML = 'Edit Data';
-        document.getElementById('id').value = id;
-        document.getElementById('notrans').value = notrans;
-        document.getElementById('tgl').value = tgl;
-        document.getElementById('reaktif').value = reaktif;
-        document.getElementById('nonreaktif').value = nonreaktif;
-        document.getElementById('petugas').value = petugas;
-        document.getElementById('status').value = status;
-    }
-
-    function confirmDelete(id, notrans) {
-        Swal.fire({
-            title: 'Yakin hapus data?',
-            text: 'Data yang dihapus tidak bisa dikembalikan.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, hapus',
-            cancelButtonText: 'Batal'
-        }).then(function(result) {
-            if (result.isConfirmed) {
-                document.getElementById('hapus_id').value = id;
-                document.getElementById('hapus_notrans').value = notrans;
-                document.getElementById('formHapus').submit();
-            }
-        });
-    }
-
-    function printReport(notrans, reaktif, nonreaktif, tgl, petugas) {
-        var w = window.open('', '_blank', 'width=900,height=700');
-
-        if (!w) {
-            alert('Popup diblokir oleh browser.');
-            return;
+        function generateNoTrans() {
+            var d = new Date();
+            var pad = function(n) {
+                return (n < 10 ? '0' : '') + n;
+            };
+            return 'SP-' +
+                d.getFullYear() +
+                pad(d.getMonth() + 1) +
+                pad(d.getDate()) +
+                pad(d.getHours()) +
+                pad(d.getMinutes()) +
+                pad(d.getSeconds()) +
+                '-' +
+                Math.floor(Math.random() * 900 + 100);
         }
 
-        var html = '';
-        html += '<!doctype html>';
-        html += '<html>';
-        html += '<head>';
-        html += '<meta charset="utf-8">';
-        html += '<title>Berita Acara</title>';
-        html += '<style>';
-        html += 'body{font-family:Arial,sans-serif;font-size:14px;margin:30px;color:#000;}';
-        html += '.judul{text-align:center;font-size:20px;font-weight:bold;margin-bottom:5px;}';
-        html += '.subjudul{text-align:center;font-size:15px;margin-bottom:25px;}';
-        html += '.isi{margin-bottom:15px;line-height:1.7;}';
-        html += 'table{width:100%;border-collapse:collapse;margin-top:15px;}';
-        html += 'table,th,td{border:1px solid #000;}';
-        html += 'th,td{padding:8px;text-align:left;}';
-        html += '.ttd{margin-top:60px;width:100%;border:none;}';
-        html += '.ttd td{border:none;width:50%;text-align:center;vertical-align:top;}';
-        html += '@media print {.noprint{display:none;}}';
-        html += '</style>';
-        html += '</head>';
-        html += '<body onload="window.print();setTimeout(function(){window.close();},500)">';
-        html += '<div class="judul">BERITA ACARA</div>';
-        html += '<div class="subjudul">Permintaan Kantong Darah dari Bagian IMLTD ke Bagian Distribusi</div>';
+        $(document).ready(function() {
+            $('#myTable').DataTable({
+                scrollX: true,
+                autoWidth: false,
+                responsive: false,
+                language: {
+                    emptyTable: "Data belum ada"
+                }
+            });
+        });
 
-        html += '<div class="isi">';
-        html += 'Pada tanggal <b>' + tgl +
-            '</b>, bagian IMLTD meminta kantong darah kepada bagian Distribusi dengan rincian sebagai berikut:';
-        html += '</div>';
+        function openTambah() {
+            document.getElementById('modalSampelLabel').innerHTML = 'Tambah Data';
+            document.getElementById('id').value = '';
+            document.getElementById('notrans').value = generateNoTrans();
+            document.getElementById('tgl').value = '<?php echo date('Y-m-d'); ?>';
+            document.getElementById('reaktif').value = '0';
+            document.getElementById('nonreaktif').value = '0';
+            document.getElementById('petugas').value = '<?php echo addslashes($namauser); ?>';
+            document.getElementById('status').value = '0';
+        }
 
-        html += '<table>';
-        html += '<tr><th width="40">No</th><th>Keterangan</th><th>Jumlah</th></tr>';
-        html += '<tr><td>1</td><td>Kantong REAKTIF</td><td>' + reaktif + '</td></tr>';
-        html += '<tr><td>2</td><td>Kantong NONREAKTIF</td><td>' + nonreaktif + '</td></tr>';
-        html += '<tr><td>3</td><td>No Transaksi</td><td>' + notrans + '</td></tr>';
-        html += '<tr><td>4</td><td>Petugas</td><td>' + petugas + '</td></tr>';
-        html += '</table>';
+        function openEdit(id, notrans, reaktif, nonreaktif, tgl, petugas, status) {
+            document.getElementById('modalSampelLabel').innerHTML = 'Edit Data';
+            document.getElementById('id').value = id;
+            document.getElementById('notrans').value = notrans;
+            document.getElementById('tgl').value = tgl;
+            document.getElementById('reaktif').value = reaktif;
+            document.getElementById('nonreaktif').value = nonreaktif;
+            document.getElementById('petugas').value = petugas;
+            document.getElementById('status').value = status;
+        }
 
-        html += '<div class="isi" style="margin-top:15px;">';
-        html += 'Demikian berita acara ini dibuat untuk dipergunakan sebagaimana mestinya.';
-        html += '</div>';
+        function confirmDelete(id, notrans) {
+            Swal.fire({
+                title: 'Yakin hapus data?',
+                text: 'Data yang dihapus tidak bisa dikembalikan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    document.getElementById('hapus_id').value = id;
+                    document.getElementById('hapus_notrans').value = notrans;
+                    document.getElementById('formHapus').submit();
+                }
+            });
+        }
 
-        html += '<table class="ttd">';
-        html += '<tr>';
-        html += '<td>';
-        html += 'Mengetahui,<br>Bagian IMLTD<br><br><br><br><br>( __________________ )';
-        html += '</td>';
-        html += '<td>';
-        html += 'Mengetahui,<br>Bagian Distribusi<br><br><br><br><br>( __________________ )';
-        html += '</td>';
-        html += '</tr>';
-        html += '</table>';
+        function printReport(notrans, reaktif, nonreaktif, tgl, petugas) {
+            var w = window.open('', '_blank', 'width=900,height=700');
 
-        html += '</body>';
-        html += '</html>';
+            if (!w) {
+                alert('Popup diblokir oleh browser.');
+                return;
+            }
 
-        w.document.open();
-        w.document.write(html);
-        w.document.close();
-        w.focus();
-    }
+            var html = '';
+            html += '<!doctype html>';
+            html += '<html>';
+            html += '<head>';
+            html += '<meta charset="utf-8">';
+            html += '<title>Berita Acara</title>';
+            html += '<style>';
+            html += 'body{font-family:Arial,sans-serif;font-size:14px;margin:30px;color:#000;}';
+            html += '.judul{text-align:center;font-size:20px;font-weight:bold;margin-bottom:5px;}';
+            html += '.subjudul{text-align:center;font-size:15px;margin-bottom:25px;}';
+            html += '.isi{margin-bottom:15px;line-height:1.7;}';
+            html += 'table{width:100%;border-collapse:collapse;margin-top:15px;}';
+            html += 'table,th,td{border:1px solid #000;}';
+            html += 'th,td{padding:8px;text-align:left;}';
+            html += '.ttd{margin-top:60px;width:100%;border:none;}';
+            html += '.ttd td{border:none;width:50%;text-align:center;vertical-align:top;}';
+            html += '@media print {.noprint{display:none;}}';
+            html += '</style>';
+            html += '</head>';
+            html += '<body onload="window.print();setTimeout(function(){window.close();},500)">';
+            html += '<div class="judul">BERITA ACARA</div>';
+            html += '<div class="subjudul">Permintaan Kantong Darah dari Bagian IMLTD ke Bagian Distribusi</div>';
+
+            html += '<div class="isi">';
+            html += 'Pada tanggal <b>' + tgl +
+                '</b>, bagian IMLTD meminta kantong darah kepada bagian Distribusi dengan rincian sebagai berikut:';
+            html += '</div>';
+
+            html += '<table>';
+            html += '<tr><th width="40">No</th><th>Keterangan</th><th>Jumlah</th></tr>';
+            html += '<tr><td>1</td><td>Kantong REAKTIF</td><td>' + reaktif + '</td></tr>';
+            html += '<tr><td>2</td><td>Kantong NONREAKTIF</td><td>' + nonreaktif + '</td></tr>';
+            html += '<tr><td>3</td><td>No Transaksi</td><td>' + notrans + '</td></tr>';
+            html += '<tr><td>4</td><td>Petugas</td><td>' + petugas + '</td></tr>';
+            html += '</table>';
+
+            html += '<div class="isi" style="margin-top:15px;">';
+            html += 'Demikian berita acara ini dibuat untuk dipergunakan sebagaimana mestinya.';
+            html += '</div>';
+
+            html += '<table class="ttd">';
+            html += '<tr>';
+            html += '<td>';
+            html += 'Mengetahui,<br>Bagian IMLTD<br><br><br><br><br>( __________________ )';
+            html += '</td>';
+            html += '<td>';
+            html += 'Mengetahui,<br>Bagian Distribusi<br><br><br><br><br>( __________________ )';
+            html += '</td>';
+            html += '</tr>';
+            html += '</table>';
+
+            html += '</body>';
+            html += '</html>';
+
+            w.document.open();
+            w.document.write(html);
+            w.document.close();
+            w.focus();
+        }
     </script>
 
     <script>
-    document.querySelectorAll('.datepicker').forEach(function(el) {
-        el.addEventListener('click', function() {
-            if (this.showPicker) {
-                this.showPicker();
-            }
-        });
+        document.querySelectorAll('.datepicker').forEach(function(el) {
+            el.addEventListener('click', function() {
+                if (this.showPicker) {
+                    this.showPicker();
+                }
+            });
 
-        el.addEventListener('focus', function() {
-            if (this.showPicker) {
-                this.showPicker();
-            }
+            el.addEventListener('focus', function() {
+                if (this.showPicker) {
+                    this.showPicker();
+                }
+            });
         });
-    });
     </script>
 
     <?php if ($swal_title != '') { ?>
-    <script>
-    Swal.fire({
-        icon: '<?php echo $swal_icon; ?>',
-        title: '<?php echo addslashes($swal_title); ?>',
-        text: '<?php echo addslashes($swal_text); ?>'
-    });
-    </script>
+        <script>
+            Swal.fire({
+                icon: '<?php echo $swal_icon; ?>',
+                title: '<?php echo addslashes($swal_title); ?>',
+                text: '<?php echo addslashes($swal_text); ?>'
+            });
+        </script>
     <?php } ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
